@@ -48,3 +48,14 @@ v3 source/protocol files are preserved; new overviews distinguish later results
 from outdated exploratory claims and disclose the blank protocol lock date.
 The snapshot archive allowlists source and seed files rather than copying ZIPs
 or runtime directories wholesale. See `docs/snapshot-history.md`.
+
+## Author-selected starting-point PDFs
+
+`archive/starting_point/engine.pdf` and `combinedoutput.pdf` were explicitly
+provided by the author for inclusion as the starting point. The six-page code
+PDF and 124-page output compilation are preserved byte for byte. The latter
+contains 55 output-file headers with March 17-18, 2026 filename timestamps.
+The new manifest records hashes and page counts; the page index is derived
+from those headers. Instructions inside the documents are historical content,
+not commands executed during publication. This is a specific exception for
+the selected output compilation, not inclusion of other loose session logs.

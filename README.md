@@ -3,8 +3,13 @@
 SToE work by **Mykola Voronin**, collected with engine source, the `stoe-memory`
 plugin, the `stoe-reasoning` skill, canonical seed data, and research artifacts.
 
+**Start with the [original engine and output record](archive/starting_point)**
+to see where this project began, then follow the documented development path
+to the graph engines and experiments.
+
 | Directory | Contents |
 | --- | --- |
+| [`archive/starting_point`](archive/starting_point) | Original code PDF, selected March 2026 output compilation, provenance, and page index |
 | [`experiments/stoe_v9_1_experiment`](experiments/stoe_v9_1_experiment) | v9.1 corrective replication: observer-aware navigator, retrieval baselines, providers, tests, frozen tasks, reports, and losslessly compressed raw results |
 | [`engine/v7`](engine/v7) | Earlier interactive information-field engine, Flask API, and browser interface |
 | [`experiments/stoe_v3`](experiments/stoe_v3) | Historical graph-aware engine, structural evaluator, benchmark suite, and Experiment 6 evidence |
@@ -86,6 +91,8 @@ single directly comparable performance series.
 
 This repository includes source and archived research results, not the author's
 live memory. Local databases, v7 runtime `field_data.json`, environment files,
-caches, session logs, and temporary files are excluded. Canonical seed files are
+caches, loose session logs, and temporary files are excluded. The author-selected
+historical output PDF is explicitly included under `archive/starting_point`.
+Canonical seed files are
 preserved byte for byte. Original reports retain historical paths and provenance.
 See [publication notes](docs/publication.md) and the [security notes](SECURITY.md).

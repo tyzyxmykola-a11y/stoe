@@ -40,3 +40,8 @@ dist/
 .DS_Store
 desktop.ini
 Thumbs.db
+
+# Restored historical source and research output
+/archive/snapshots/restored/
+/experiments/stoe_v3/runs/*.json
+!/experiments/stoe_v3/runs/ARCHIVED_RESULTS.json

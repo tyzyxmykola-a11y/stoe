@@ -1,0 +1,2 @@
+# Only real Ollama calls require this dependency. Self-tests use the standard library.
+requests

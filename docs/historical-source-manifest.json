@@ -1,0 +1,251 @@
+[
+  {
+    "path": "experiments/stoe_v3/core/__init__.py",
+    "source": "stoe_v3/core/__init__.py",
+    "sha256": "d72b146a34ac84e6a66f7c8b7e99f0b601264abc0d9c4376464ca0eb9055c2b6",
+    "bytes": 1020
+  },
+  {
+    "path": "experiments/stoe_v3/core/evaluator.py",
+    "source": "stoe_v3/core/evaluator.py",
+    "sha256": "a1a6245839830b080b6d5e5d7e089550fc44b83cc3119e4bedf507c3c0a50a9f",
+    "bytes": 14487
+  },
+  {
+    "path": "experiments/stoe_v3/core/field.py",
+    "source": "stoe_v3/core/field.py",
+    "sha256": "28d3650d9828c13d88166c63eda526ee21220eb147e8f991f8890922fb339c47",
+    "bytes": 22138
+  },
+  {
+    "path": "experiments/stoe_v3/core/llm.py",
+    "source": "stoe_v3/core/llm.py",
+    "sha256": "0530e61e4cebd0a237c117c928ac2dee0f285f213496d15d5a38c9427b3d4960",
+    "bytes": 3772
+  },
+  {
+    "path": "experiments/stoe_v3/core/operators.py",
+    "source": "stoe_v3/core/operators.py",
+    "sha256": "9052199dbeb2f7a8985c7383f1ad546b563b1f1827ea29eaac753e0052f98418",
+    "bytes": 23116
+  },
+  {
+    "path": "experiments/stoe_v3/core/seed_loader.py",
+    "source": "stoe_v3/core/seed_loader.py",
+    "sha256": "f308bd0545d37e6506d0c5cad552397410cac5531620cf8cd27af6e310e767b4",
+    "bytes": 3037
+  },
+  {
+    "path": "experiments/stoe_v3/harness/__init__.py",
+    "source": "stoe_v3/harness/__init__.py",
+    "sha256": "44166f93341d4a60bf0828c447a2cd840a36092dbc76af4c57da09a55c50d4cb",
+    "bytes": 452
+  },
+  {
+    "path": "experiments/stoe_v3/harness/cli.py",
+    "source": "stoe_v3/harness/cli.py",
+    "sha256": "5270ca11b359374e6deff6b954d5e2caadee13a27b1e12f46b805020772652b4",
+    "bytes": 10076
+  },
+  {
+    "path": "experiments/stoe_v3/harness/context.py",
+    "source": "stoe_v3/harness/context.py",
+    "sha256": "569b731c0e907f79c11ef2bccc05d8bfdd68b9314940f23bb16cc944ac5cec91",
+    "bytes": 6444
+  },
+  {
+    "path": "experiments/stoe_v3/harness/runner.py",
+    "source": "stoe_v3/harness/runner.py",
+    "sha256": "e5f6ba4fa1853690350484aeb43269860f6ec3e99e82560c1c07277872c0aef9",
+    "bytes": 17671
+  },
+  {
+    "path": "experiments/stoe_v3/benchmark/__init__.py",
+    "source": "stoe_v3/benchmark/__init__.py",
+    "sha256": "fd22120bb7e393c00553390f8fc06e83c8466f7b0f1197f9468378730a5c5a00",
+    "bytes": 93
+  },
+  {
+    "path": "experiments/stoe_v3/benchmark/grader.py",
+    "source": "stoe_v3/benchmark/grader.py",
+    "sha256": "0d0377fdfd4f2e4a1255fd5c5dc061bd8c4862faef05b973b51dd946f3e77688",
+    "bytes": 7398
+  },
+  {
+    "path": "experiments/stoe_v3/benchmark/puzzles.json",
+    "source": "stoe_v3/benchmark/puzzles.json",
+    "sha256": "118cea969cb46877f4e521b2bc8c0ad00bddb1d557df5135ac90860e6ea140be",
+    "bytes": 18362
+  },
+  {
+    "path": "experiments/stoe_v3/tests/test_experiment_6.py",
+    "source": "stoe_v3/tests/test_experiment_6.py",
+    "sha256": "550602382e7250b91dcb0843dff22fae1b77bcc59ad247a5accd76976be7c4a2",
+    "bytes": 7381
+  },
+  {
+    "path": "experiments/stoe_v3/tests/test_slice1.py",
+    "source": "stoe_v3/tests/test_slice1.py",
+    "sha256": "1b08bca691d1b5593e3a87f6f552d9e620d3071cd91c35b70c31a59dc94d725d",
+    "bytes": 8388
+  },
+  {
+    "path": "experiments/stoe_v3/tests/test_slice2.py",
+    "source": "stoe_v3/tests/test_slice2.py",
+    "sha256": "a9d04ac7dc64459cdaa26a8678e090c4bc63ad227a25ac3020e49280c3d8db00",
+    "bytes": 12317
+  },
+  {
+    "path": "experiments/stoe_v3/tests/test_slice3.py",
+    "source": "stoe_v3/tests/test_slice3.py",
+    "sha256": "af6162a899f4392d65aa5199d5676eb2bf47000bd46a42fdbafe81fb2cc550bc",
+    "bytes": 12246
+  },
+  {
+    "path": "experiments/stoe_v3/tests/test_slice4.py",
+    "source": "stoe_v3/tests/test_slice4.py",
+    "sha256": "a036e709a83b5551fad6abb9e2a4a66a54f4ea7de24080cfd625b874ede33411",
+    "bytes": 12678
+  },
+  {
+    "path": "experiments/stoe_v3/seed/.chimera.sha256",
+    "source": "stoe_v3/seed/.chimera.sha256",
+    "sha256": "3ed470ebd63b93bffb78b0af671b18be87800be6459f1b987e92e70b7ae463af",
+    "bytes": 94
+  },
+  {
+    "path": "experiments/stoe_v3/seed/build_music_seed.py",
+    "source": "stoe_v3/seed/build_music_seed.py",
+    "sha256": "af38995b5abd08b368212eb602302cf32ee70d86fd6de234bf1abf5f1d15ac41",
+    "bytes": 19235
+  },
+  {
+    "path": "experiments/stoe_v3/seed/music_theory_seed.json",
+    "source": "stoe_v3/seed/music_theory_seed.json",
+    "sha256": "3887bf0a21e85e682498fe618742cb7aaff9356122bd87c621e16e0e90611cdb",
+    "bytes": 50957
+  },
+  {
+    "path": "experiments/stoe_v3/seed/music_theory_seed_reference.json",
+    "source": "stoe_v3/seed/music_theory_seed_reference.json",
+    "sha256": "3887bf0a21e85e682498fe618742cb7aaff9356122bd87c621e16e0e90611cdb",
+    "bytes": 50957
+  },
+  {
+    "path": "experiments/stoe_v3/seed/stoe_chimera_seed.json",
+    "source": "stoe_v3/seed/stoe_chimera_seed.json",
+    "sha256": "83259ff8bef74fe56c21fab5ef763350625f5efa5a3794996498b0f2b00e309f",
+    "bytes": 103638
+  },
+  {
+    "path": "experiments/stoe_v3/seed/stoe_seed.json",
+    "source": "stoe_v3/seed/stoe_seed.json",
+    "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+    "bytes": 96323
+  },
+  {
+    "path": "experiments/stoe_v3/seed/stoe_seed_reference.json",
+    "source": "stoe_v3/seed/stoe_seed_reference.json",
+    "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+    "bytes": 96323
+  },
+  {
+    "path": "experiments/stoe_v3/scripts/analyze_experiment_6.py",
+    "source": "stoe_v3/scripts/analyze_experiment_6.py",
+    "sha256": "417f247daa1f44f8f5c41b15994107ce21956655da303f6dc524668011001e31",
+    "bytes": 8133
+  },
+  {
+    "path": "experiments/stoe_v3/scripts/build_chimera_seed.py",
+    "source": "stoe_v3/scripts/build_chimera_seed.py",
+    "sha256": "adb1500d0b8da2df9ca0a002963f118f98bbac3a7afb7824510e86dd7df91915",
+    "bytes": 9610
+  },
+  {
+    "path": "experiments/stoe_v3/PLAN.md",
+    "source": "stoe_v3/PLAN.md",
+    "sha256": "a18d8ba61eafc9c77da941531bd8ec6cee7351188d811112d8d8744917836e5f",
+    "bytes": 18422
+  },
+  {
+    "path": "experiments/stoe_v3/PREREG_exp6.md",
+    "source": "stoe_v3/PREREG_exp6.md",
+    "sha256": "03287afe347c9cd5b51b4d9188966e46143a6e39ef8bcec99571c160bbe1527b",
+    "bytes": 7424
+  },
+  {
+    "path": "experiments/stoe_v3/README_exp6.md",
+    "source": "stoe_v3/README_exp6.md",
+    "sha256": "d611671c8580f5f854dc766b171508151b3ad30345e277fb42233163f42bed29",
+    "bytes": 4513
+  },
+  {
+    "path": "experiments/stoe_v3/run_experiment_6.sh",
+    "source": "stoe_v3/run_experiment_6.sh",
+    "sha256": "7a7ae047a858bc6cae30fa71a738b82f655933cd015a6cc45f1ee202eb2e1cf1",
+    "bytes": 4516
+  },
+  {
+    "path": "experiments/stoe_v3/runs/historical/INDEX.md",
+    "source": "stoe_v3/runs/INDEX.md",
+    "sha256": "a5f0919b0de7fdeeb1c480bc0ff23b02e07594e921473bdc78f0f304bdb12f51",
+    "bytes": 7787
+  },
+  {
+    "path": "experiments/stoe_v3/runs/historical/README.md",
+    "source": "stoe_v3/runs/README.md",
+    "sha256": "e0305e763c6b77027eefdea210b9974f4d34480e33b1cc3e057bd0319fc90f7c",
+    "bytes": 2074
+  },
+  {
+    "path": "research/texts/01_stoe_foundational.txt",
+    "source": "stoe_v3/_reference/papers/01_stoe_foundational.txt",
+    "sha256": "5ab44f3ca7e75f913effafd5409de5954043001c4826cd46ba3248da0e149a17",
+    "bytes": 22194,
+    "original_sha256": "6119de70c74ac46495c6a62807288d8f8291a7ca0aa4b9b10d84eb254cc11178",
+    "original_bytes": 22189,
+    "transformation": "Latin-1 / equivalent observed Windows-1252 characters to UTF-8"
+  },
+  {
+    "path": "research/texts/02_autoinjection.txt",
+    "source": "stoe_v3/_reference/papers/02_autoinjection.txt",
+    "sha256": "89a1fb71964cd511e74f0192eb73be252164d70363ace95038efba2c1cbf6c0c",
+    "bytes": 13878,
+    "original_sha256": "5787f1fdf32b34816b8fbb12713541b8034d93829f3cfc73e5f573716317d7b4",
+    "original_bytes": 13870,
+    "transformation": "Latin-1 / equivalent observed Windows-1252 characters to UTF-8"
+  },
+  {
+    "path": "research/texts/03_cognitive_architecture.txt",
+    "source": "stoe_v3/_reference/papers/03_cognitive_architecture.txt",
+    "sha256": "59fed425560fbc87c52f3a51a2b78a8afb030baa8141e0c61be9967207e00d03",
+    "bytes": 11515,
+    "original_sha256": "5ec84849eedeb017e849e6923587122320fd1cfe485e6e1b62467011aab784a7",
+    "original_bytes": 11503,
+    "transformation": "Latin-1 / equivalent observed Windows-1252 characters to UTF-8"
+  },
+  {
+    "path": "research/texts/04_architectural_gap.txt",
+    "source": "stoe_v3/_reference/papers/04_architectural_gap.txt",
+    "sha256": "f5155d5f26b524bb3a7eeb62532f47f79d7ad6090fdbe43da6672bed8c04b429",
+    "bytes": 33201,
+    "original_sha256": "e86b74762b3d600be1bb29ee5a393b4c4f1b736e8c8299d239e24cf34df254e7",
+    "original_bytes": 33183,
+    "transformation": "Latin-1 / equivalent observed Windows-1252 characters to UTF-8"
+  },
+  {
+    "path": "research/texts/05_three_laws.txt",
+    "source": "stoe_v3/_reference/papers/05_three_laws.txt",
+    "sha256": "70563ff0b2900106165f38c4be7715504b886707ff6e582fe0933475a8d62bd2",
+    "bytes": 19327,
+    "original_sha256": "471de8a003e5655552d267dd766d61b60a48c31c8934ec82995c7394501db38f",
+    "original_bytes": 19322,
+    "transformation": "Latin-1 / equivalent observed Windows-1252 characters to UTF-8"
+  },
+  {
+    "path": "archive/original_prototype/engine.py",
+    "source": "engine.py",
+    "sha256": "5641e799144ce73ccef5eb357ce37339505ee9eef5e6f45e186d1db5d153cdcc",
+    "bytes": 7615
+  }
+]

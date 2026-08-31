@@ -1,0 +1,3482 @@
+{
+  "format": 1,
+  "order": "numeric directory labels, not verified Git ancestry or release dates",
+  "excluded": [
+    ".env files",
+    "field_data.json",
+    "operators_custom.json",
+    "logs",
+    "session output",
+    "caches",
+    "original ZIPs"
+  ],
+  "snapshots": [
+    {
+      "name": "stoe_field",
+      "source_directory": "stoe_field/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "7c50b38fb85d1b37c90890321516707ff4b3c82563c6c363de14e7d0bcdd02ac",
+          "bytes": 11594
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "5eff8e7843c2a9d83e6131e6728b89ad01598fdb442edab4eafe266ddb236865",
+          "bytes": 7217
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "f6768b710bd1f7a2ad72d561958f99f51d10b36b497b334ede5df5d522ce2d7c",
+          "bytes": 37320
+        }
+      },
+      "markers": {
+        "openrouter": true,
+        "ollama": false,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_1",
+      "source_directory": "stoe_field_1/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "40cae2b90ef413181a51ce6820cec6856da3d5271791fb8f9dd56afdfa1bef03",
+          "bytes": 16856
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "c1a4fb322c909090f93bd2b1b149ff6b5698daadafdc8543fb6d1ebbe52a8637",
+          "bytes": 10009
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "45b5cfaa2a852a4cdb33c713fad5d31aac886f6c6b8b12e7b385fb3baa99dcce",
+          "bytes": 43833
+        }
+      },
+      "markers": {
+        "openrouter": true,
+        "ollama": false,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_2",
+      "source_directory": "stoe_field_2/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "274f54071403934ba5346bb418bb4e34954b21052cacba1abff89fc2e7959537",
+          "bytes": 10949
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "e82a56d1c0bedbbeabd8a22adeeb0b5c14a3e3f6af3ac9f56c50287897b6dd7d",
+          "bytes": 44732
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_3",
+      "source_directory": "stoe_field_3/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "8db7dac6be243787765095d821829d80c7d96b773f21bce179abfd73d29df7aa",
+          "bytes": 12470
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "91b6d78dcc2d5bfb89364b7220eae07f7319ee295a97cdf7bb90e38035898a79",
+          "bytes": 54303
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_4",
+      "source_directory": "stoe_field_4/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "8db7dac6be243787765095d821829d80c7d96b773f21bce179abfd73d29df7aa",
+          "bytes": 12470
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "c0ab32e57306d4b09d3398fbc2b8d99769a57704c4d099522845eae4d881f351",
+          "bytes": 52621
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_5",
+      "source_directory": "stoe_field_5/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "fa01346ccd22c5f430b043489579cf6d3330cdb3772d3b1d9564ee7352077d73",
+          "bytes": 12562
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "c0ab32e57306d4b09d3398fbc2b8d99769a57704c4d099522845eae4d881f351",
+          "bytes": 52621
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_7",
+      "source_directory": "stoe_field_7/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "95458b1b1ba03de6598c6054723535b9268d8d8e105a67fb736cce1bd6495e42",
+          "bytes": 13286
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "231ae1bd6a5107d0556baab5085ef3d7c1533cdeb363cf55ecffce4c70fb2195",
+          "bytes": 53933
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_8",
+      "source_directory": "stoe_field_8/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "13aee6a27fa69ecad5bb10437ab5324fd46ff705d0736b115a4642fc3f58cb76",
+          "bytes": 13381
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "231ae1bd6a5107d0556baab5085ef3d7c1533cdeb363cf55ecffce4c70fb2195",
+          "bytes": 53933
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_9",
+      "source_directory": "stoe_field_9/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "65406ddbad8ce81d4f51203f7a7e3d1473ddd0cd92a254d9ec3dad5cad8336a1",
+          "bytes": 13741
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "37034c1a70d284c4a8089b9e7a186ca1470ef1a5e196aef21ba0b9dca6972b00",
+          "bytes": 54989
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": false,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_10",
+      "source_directory": "stoe_field_10/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "f26f6df42a6ed1bd4684ce53bd27f18a19d10318ee9091a6f4a2a5dcbe1139f2",
+          "bytes": 14006
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "37034c1a70d284c4a8089b9e7a186ca1470ef1a5e196aef21ba0b9dca6972b00",
+          "bytes": 54989
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": false,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_11",
+      "source_directory": "stoe_field_11/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "014052cd5539225a7dac9834c460ea71f085c9ac697fdbc4c317c2f7455e1fd4",
+          "bytes": 14778
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "389f9798162e3cc624f5bf0525f89de32e0b0488ca1bc3e63f450a98b5a844f5",
+          "bytes": 71010
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_12",
+      "source_directory": "stoe_field_12/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "014052cd5539225a7dac9834c460ea71f085c9ac697fdbc4c317c2f7455e1fd4",
+          "bytes": 14778
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "9734fdc6d96fe72858edd4697d978a760734507d28ac0025ed57a4acf5f5cfb7",
+          "bytes": 64773
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_13",
+      "source_directory": "stoe_field_13/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "33655df2b3468807074d77cb9035fb3dd56aef071e015c45e5cbb38011d1ac7c",
+          "bytes": 14737
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "9734fdc6d96fe72858edd4697d978a760734507d28ac0025ed57a4acf5f5cfb7",
+          "bytes": 64773
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_14",
+      "source_directory": "stoe_field_14/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "428570ce07b7589758fcdbd1d1452d05fc99c636266378922e1b7853be7aa434",
+          "bytes": 14958
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "10c2ea65f7dec8c29f477d5a40b2b40ac2dbf8ae7783d154473d104b0d85585e",
+          "bytes": 65488
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_15",
+      "source_directory": "stoe_field_15/stoe_field_15",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "1a68f05d4b55d426906ce7f0eff0899773802d0281049ce9e1348efa921acda3",
+          "bytes": 14852
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "5457fb418a447c7fc656747abe9d978464863324f7b20d270bbf3721babb7887",
+          "bytes": 64262
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_16",
+      "source_directory": "stoe_field_16/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "0e9264d769dfa0baabb6d0ee76805837e4aab0c4a7377c249b147f95a3eba351",
+          "bytes": 15455
+        },
+        "start.py": {
+          "sha256": "5248278dd70ae0d3d2241f23d80fd645b96f257ae0dbd23cb9ebfe4eeba31b9d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8ffb02dc93674d8c614fff649a755dbea47b47dfc5586eede2514ffacbed4fdf",
+          "bytes": 65608
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_17",
+      "source_directory": "stoe_field_17/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "0711cd54002441b9ae03a4c282217fca091d3a597af42447ad8490f9811d53df",
+          "bytes": 15525
+        },
+        "start.py": {
+          "sha256": "6054a48e8fc64556a4e8e933d74df6a93607f103459fe049beaeb97df48cb9a7",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8ffb02dc93674d8c614fff649a755dbea47b47dfc5586eede2514ffacbed4fdf",
+          "bytes": 65608
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_18",
+      "source_directory": "stoe_field_18/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "0711cd54002441b9ae03a4c282217fca091d3a597af42447ad8490f9811d53df",
+          "bytes": 15525
+        },
+        "start.py": {
+          "sha256": "f1f67e9dd5d92ee10607b9ca5e7c351f68c7b5487d10fbaf617c27f71d1bb0c0",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "343f78d2825955c3ca12113d808bf24ff610d0bb2bbbc09f766e6fcf83f69f7a",
+          "bytes": 66292
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_19",
+      "source_directory": "stoe_field_19/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "e3ecf528010dc566622422b502e14705f20068ae401d34d08cc5c26cbcf4963e",
+          "bytes": 16009
+        },
+        "start.py": {
+          "sha256": "f92fcc0750057414e7a47bea8588d70c1d9ad236a4c94a16d2db6e6775c26d71",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8f2d3a0886633d1e7ad1e72f77bea14e69efb916b6b651d3498aa82b00804753",
+          "bytes": 67695
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_19_1",
+      "source_directory": "stoe_field_19_1/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "e3ecf528010dc566622422b502e14705f20068ae401d34d08cc5c26cbcf4963e",
+          "bytes": 16009
+        },
+        "start.py": {
+          "sha256": "f92fcc0750057414e7a47bea8588d70c1d9ad236a4c94a16d2db6e6775c26d71",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "1897fcccfe09a39a0b01d92146807abe34d51f014bc01897ff14a0610f916e44",
+          "bytes": 76785
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_20",
+      "source_directory": "stoe_field_20/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "e3ecf528010dc566622422b502e14705f20068ae401d34d08cc5c26cbcf4963e",
+          "bytes": 16009
+        },
+        "start.py": {
+          "sha256": "200f82b2284064bf413282cf0cea2f83b218b083031845f480ff7cab6f9acea8",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "1897fcccfe09a39a0b01d92146807abe34d51f014bc01897ff14a0610f916e44",
+          "bytes": 76785
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_21",
+      "source_directory": "stoe_field_21/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "e3ecf528010dc566622422b502e14705f20068ae401d34d08cc5c26cbcf4963e",
+          "bytes": 16009
+        },
+        "start.py": {
+          "sha256": "f070eaac8699d8f658091afbd3c871420bf4af50b5d58882ebaa77a0d0fa90c6",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "10367e3c3f28ab20ce6df7dbbbeb42a95aef314ee07d2c19d613779203fc454e",
+          "bytes": 76808
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_22",
+      "source_directory": "stoe_field_22/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "e3ecf528010dc566622422b502e14705f20068ae401d34d08cc5c26cbcf4963e",
+          "bytes": 16009
+        },
+        "start.py": {
+          "sha256": "490ce40986ac9b96fecd94722af9fdbd052a79d63cc7f4f93a2c7b7dcb29ab69",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "fa711e86ffdf2d1a5479f29179ee263fe8171a2255291bb6ee37e0662c201219",
+          "bytes": 77508
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_23",
+      "source_directory": "stoe_field_23/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "e3ecf528010dc566622422b502e14705f20068ae401d34d08cc5c26cbcf4963e",
+          "bytes": 16009
+        },
+        "start.py": {
+          "sha256": "dd4524b15b87f5563976c65375077046c1594e5d15084e0f59e02bb3290b228c",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "67daf49f6b72918904073dc707c05554c7b94f4b43140bdc6a95a6c8a1b3c785",
+          "bytes": 77517
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_24",
+      "source_directory": "stoe_field_24/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "3bebe2a364d85a3924913d0c4017698f0ce70981a11795e4c18f9f02e577ce8a",
+          "bytes": 16466
+        },
+        "start.py": {
+          "sha256": "a77db89704bca91c8bd4e5c62acd40f27ca298847a300a88ad249b9328663cf0",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8da0d5649cc987b7540daeee174361a4f1e120c7d0b450eb868831898c0222f2",
+          "bytes": 77666
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_25",
+      "source_directory": "stoe_field_25/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "58f67c0a284c9d3fcbeddebee942e8a862445c8777ca94d7a95b24339df73bf7",
+          "bytes": 17780
+        },
+        "start.py": {
+          "sha256": "46861ff55ab078b66c4ace43c8f79640b6417db7e290bacd84271692e17c8a52",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8da0d5649cc987b7540daeee174361a4f1e120c7d0b450eb868831898c0222f2",
+          "bytes": 77666
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": false,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_26",
+      "source_directory": "stoe_field_26/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "037126be2fb3bc74cbbedebcea058a3001ba44dca33ba660cd4bed45f0901fb8",
+          "bytes": 20061
+        },
+        "start.py": {
+          "sha256": "0510001c812f3410bc3030721a25728124f5de9b8434c75deb20e0b21a834550",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "4af3ac86f0e8a097c11b27b51c049302fff43078c1661edb22a254a46b4c6a76",
+          "bytes": 79023
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_27",
+      "source_directory": "stoe_field_27/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "037126be2fb3bc74cbbedebcea058a3001ba44dca33ba660cd4bed45f0901fb8",
+          "bytes": 20061
+        },
+        "start.py": {
+          "sha256": "02b277ffea7b132f2f256530a90b1cf6c93e76cd9a72944fae55b5710ceabcd6",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "191eeab5aeff82c454c6094044fb3183bb57807ac72e1fdbfbe3af5f50562b61",
+          "bytes": 78848
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_28",
+      "source_directory": "stoe_field_28/stoe_field",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "fa970c26f102b218a0800dcb52e2191a57741cdeb8d81856fc60fab1f2ef875c",
+          "bytes": 20679
+        },
+        "start.py": {
+          "sha256": "a974985c7d39ca5f8d2102805beec112c4a748faad96ae6328e69d8261caab42",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "c6b0e1f20d8ef04e6ec1ca8d8c4c0cfe31d3d8c85fb51e772212dffb33afe108",
+          "bytes": 81928
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_29",
+      "source_directory": "stoe_field_29/stoe_field_29",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "1f6ac5a825286538595edeffe14e60541eec03ba9c2c1a794cd833f6a0cad836",
+          "bytes": 10534
+        },
+        "server.py": {
+          "sha256": "fa970c26f102b218a0800dcb52e2191a57741cdeb8d81856fc60fab1f2ef875c",
+          "bytes": 20679
+        },
+        "start.py": {
+          "sha256": "a974985c7d39ca5f8d2102805beec112c4a748faad96ae6328e69d8261caab42",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "7a6181138569e7ee88d904333ced5fd2ea4f40a2b9bf15d079b242a23bc00229",
+          "bytes": 82781
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_30",
+      "source_directory": "stoe_field_30/stoe_field_30",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "2c21d1236de05607af0f564e09b418633c2ce46b7bdbf954e647008c37c50356",
+          "bytes": 17540
+        },
+        "server.py": {
+          "sha256": "481366e06fc21142f0277b1b56b47f59f3154ccf09ab41e2e95fdcb30578394a",
+          "bytes": 21726
+        },
+        "start.py": {
+          "sha256": "19ddd14aeb341cf1704a6373a39db5789b2d4a727c4d4e370fe31b6914df9752",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "fe2f03a68b321a55bf71a898ecffde02af48e169c8fc8f6027496f6ac450120e",
+          "bytes": 84187
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_31",
+      "source_directory": "stoe_field_31/stoe_field_31",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "2c21d1236de05607af0f564e09b418633c2ce46b7bdbf954e647008c37c50356",
+          "bytes": 17540
+        },
+        "server.py": {
+          "sha256": "305a6d71c22ac63401a1f968826976a1c6c422c1a29cecea08a0e43b17868666",
+          "bytes": 21691
+        },
+        "start.py": {
+          "sha256": "7242ebefcf9074cfdb904aec6032d584a1ce0715ba6b5868e51fbb891505d4f1",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8add9d57dd9db90d2c8c7903aa50750a9d978f9f094c2d8654802667d76a9629",
+          "bytes": 89730
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_32",
+      "source_directory": "stoe_field_32/stoe_field_32",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "2c21d1236de05607af0f564e09b418633c2ce46b7bdbf954e647008c37c50356",
+          "bytes": 17540
+        },
+        "server.py": {
+          "sha256": "305a6d71c22ac63401a1f968826976a1c6c422c1a29cecea08a0e43b17868666",
+          "bytes": 21691
+        },
+        "start.py": {
+          "sha256": "3a2e3b74acc23f0f6776a8b2fee0955dc62282979fd5f7dc05cb2ca081b92428",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "7791d727c5aff5fba589fd46d9d45ffcf0f319816eb00d15123f3271ec70b59f",
+          "bytes": 90127
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_33",
+      "source_directory": "stoe_field_33/stoe_field_33",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4a8d8e9ccf2804007ccc2ab96b742be3f28a82146aca633c23ef8a7cf6ad21d9",
+          "bytes": 16893
+        },
+        "field.py": {
+          "sha256": "2c21d1236de05607af0f564e09b418633c2ce46b7bdbf954e647008c37c50356",
+          "bytes": 17540
+        },
+        "server.py": {
+          "sha256": "305a6d71c22ac63401a1f968826976a1c6c422c1a29cecea08a0e43b17868666",
+          "bytes": 21691
+        },
+        "start.py": {
+          "sha256": "26e6064f58b565723831753d0e6dc9cf3ed4866b63c0930a19ac2ccc0a5a6deb",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "8f1b661cf09f4046d3624390d26b528ad65cd6830d9024783daae9f1d7ea4aec",
+          "bytes": 93113
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": false,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_34",
+      "source_directory": "stoe_field_34/stoe_field_34",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "43a4a68741dcceaedcf61722e35c8981dc064e6bc6a35281d4a4ef0e49d015ac",
+          "bytes": 15328
+        },
+        "field.py": {
+          "sha256": "110a29caff72a7418d9af85a0bec438dabf5f8d719854148db68b49307292fed",
+          "bytes": 17444
+        },
+        "server.py": {
+          "sha256": "305a6d71c22ac63401a1f968826976a1c6c422c1a29cecea08a0e43b17868666",
+          "bytes": 21691
+        },
+        "operators.py": {
+          "sha256": "6ca1d349246c3c56f91facc3caa111e762b9745d61bf45e23d89d1546422b394",
+          "bytes": 7546
+        },
+        "start.py": {
+          "sha256": "10e5bc711539ff0800e8fecda0df857039bdb2ff0106bbc26cecf3a2d4f7fafa",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "cc6ef05ebcbe4d170fb8e036c6a49073aa742dc7c321c896765f25217a055e04",
+          "bytes": 93113
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": false,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_35",
+      "source_directory": "stoe_field_35/stoe_field_35",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "7d84c6ab2a96762196d806291b2db6127707be54aa51d5a4093e2da7f6c4908b",
+          "bytes": 15328
+        },
+        "field.py": {
+          "sha256": "6f6d6bfc903881947f5ce2b6025188f287fb34579a5476396e6cb22d826eb295",
+          "bytes": 17444
+        },
+        "server.py": {
+          "sha256": "8451380f2cd5b38cf572f68dc68bb3823bba02808b87b3c69a4aa10a1815900d",
+          "bytes": 22407
+        },
+        "operators.py": {
+          "sha256": "3c5820fa7868ff5f346da0fc18c7c4451180a286aa0e0d8999ca9a81bff9914f",
+          "bytes": 7546
+        },
+        "start.py": {
+          "sha256": "85370353b7fa7b849f51fbc59a3b2587785c685f39a1895327c49ab10a585add",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "77644452975bfb632c24f83e646fbfe2db9c1c4a098f5ff05937f1ee3f2ad931",
+          "bytes": 100432
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_36",
+      "source_directory": "stoe_field_36/stoe_field_36",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "92d8dba468bc3f48f064914e59cacc17beec047989cd78915ce889f096beeda4",
+          "bytes": 15328
+        },
+        "field.py": {
+          "sha256": "58ca50a84c350bd54749aad5bde571e21f9afd1c78b9857a5eb7d2de07618c17",
+          "bytes": 17444
+        },
+        "server.py": {
+          "sha256": "8451380f2cd5b38cf572f68dc68bb3823bba02808b87b3c69a4aa10a1815900d",
+          "bytes": 22407
+        },
+        "operators.py": {
+          "sha256": "3f95e29ba830b0e632fcfb7bc7da5d596af2ddc362a3f9bd5cdb89a58661d297",
+          "bytes": 7546
+        },
+        "start.py": {
+          "sha256": "17e6825c0f21e942d297a29352d3a0d44d5bbf49e9e5745244413a4b40fde50c",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "6f1260575f6258ca5d17f192ee2eeeefb441690556e94875ceea6b08b98bc3f9",
+          "bytes": 102564
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_37",
+      "source_directory": "stoe_field_37/stoe_field_37",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "b5e79084178e0084428023fe8a1fcf154247620a5c8c27e32cece8fdc06d34ba",
+          "bytes": 15328
+        },
+        "field.py": {
+          "sha256": "898395531390d8a4bac3ffb3a4d46ab607e7466a14f46495a4807f26a809d8ba",
+          "bytes": 17444
+        },
+        "server.py": {
+          "sha256": "8451380f2cd5b38cf572f68dc68bb3823bba02808b87b3c69a4aa10a1815900d",
+          "bytes": 22407
+        },
+        "operators.py": {
+          "sha256": "30fbd231c35636313c2448878f798e6d7f406b93bc126f4ba1a410d03144b7ba",
+          "bytes": 7546
+        },
+        "start.py": {
+          "sha256": "b8eae9b0710ab21c1824c4e1a965531214a55c67a1d13d9b6a40ffdaf1c09e5f",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "985eb74559f4cbc70bc186572dc918b2a36a3617fd68749454f904dce0476e8e",
+          "bytes": 102712
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_38",
+      "source_directory": "stoe_field_38/stoe_field_38",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "e3b6f044b445f876db58a2300b241bf39e4bed4dd5d875a3d15b97b8d9353395",
+          "bytes": 15328
+        },
+        "field.py": {
+          "sha256": "5f4235fdf1c2aa74aa57fca319ce4624625fe041e02a5f73e58b7625091aca01",
+          "bytes": 17444
+        },
+        "server.py": {
+          "sha256": "8451380f2cd5b38cf572f68dc68bb3823bba02808b87b3c69a4aa10a1815900d",
+          "bytes": 22407
+        },
+        "operators.py": {
+          "sha256": "435c7dcac438aae19d0e7e457b2dbf5c461430d0fe2ff98bebeacaf2ce7666ce",
+          "bytes": 7546
+        },
+        "start.py": {
+          "sha256": "08eb3f1b515cf7b3d2de81b23ba424a49b5f3528994d072a70831379115a9b77",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "caaba3c1fde481e3fef87e5a0fc13e4cd1431a97c52a33852256f8dc6f45fe07",
+          "bytes": 103920
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_39",
+      "source_directory": "stoe_field_39/stoe_field_39",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "8c7948e70ce681dafd0b60fae56b4fa03e9ba2538dec981e3aa1cfae47f172d1",
+          "bytes": 15328
+        },
+        "field.py": {
+          "sha256": "877b39aa7cf0f2369fa4e9cce7470fbc39e6b9e95109a65099ccdee71c4fa0d3",
+          "bytes": 17149
+        },
+        "server.py": {
+          "sha256": "879a0d1b531eecbf7855e1e2f7b539088727563813d48299a27a3d6e1765f070",
+          "bytes": 25253
+        },
+        "operators.py": {
+          "sha256": "ec7d9c38ebad56d016e16c2993e84f443e5681f3086e23b7292451eb280e5bf3",
+          "bytes": 7546
+        },
+        "start.py": {
+          "sha256": "020b422ece220022e4175fbdee4fe12e1dd75df73cbc0de1f041e65d84ef930d",
+          "bytes": 1030
+        },
+        "static/index.html": {
+          "sha256": "9f6777a8e2e0586042300f8c014765632ccc1fad0c27844d9a7ec350dd7d21fc",
+          "bytes": 134498
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_41",
+      "source_directory": "stoe_field_41/stoe_field_41",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "64befa421e0f075ae5b39ec968200569ecf07987cc82319182cb708705f47f6f",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "f725f24f2e9e29c489a3dd98c05282a2dde4a976c97437f64cf7a41a2576f73d",
+          "bytes": 17155
+        },
+        "server.py": {
+          "sha256": "b635635f1816ff90316044e612b7734480f98643587cb605352b42dea85f8201",
+          "bytes": 25319
+        },
+        "operators.py": {
+          "sha256": "c793c856881da41aa18fe136204bb116a861acaee6da1c4772c951c8d7d62348",
+          "bytes": 7552
+        },
+        "start.py": {
+          "sha256": "4427174d775538f984116ea15c261c9c477eefa37688bc9e3ca391c26d7ced40",
+          "bytes": 1166
+        },
+        "static/index.html": {
+          "sha256": "2c5cf7c49bce7e93579cf9d3868eeaee1cd73871f11d892e6219032baa0dedd6",
+          "bytes": 138112
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_42",
+      "source_directory": "stoe_field_42/stoe_field_42",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "0a7a4584793f41eb3c517d4ac45f88b8a5b9b7e1a46ebd61dccc71e46a7eca66",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "f725f24f2e9e29c489a3dd98c05282a2dde4a976c97437f64cf7a41a2576f73d",
+          "bytes": 17155
+        },
+        "server.py": {
+          "sha256": "16dfd251db376bad7bdd24e860d0ed730189542ad4bc9e8725fde04dfb54b355",
+          "bytes": 25319
+        },
+        "operators.py": {
+          "sha256": "c793c856881da41aa18fe136204bb116a861acaee6da1c4772c951c8d7d62348",
+          "bytes": 7552
+        },
+        "start.py": {
+          "sha256": "e4820ee4b1669f069442767f898f5528ca77a61c00932c85b0f018bacfbe7e76",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "8eaf7537b6d5284cd160811437ba34fa8b6003155f9f14f247b2a4979ebcdf75",
+          "bytes": 138118
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_43",
+      "source_directory": "stoe_field_43/stoe_field_43",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "8d4dd2d68c84643904063f835207c2ca42cefab68c92bdaf5c870bf81cc41af3",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "f725f24f2e9e29c489a3dd98c05282a2dde4a976c97437f64cf7a41a2576f73d",
+          "bytes": 17155
+        },
+        "server.py": {
+          "sha256": "33e7000b3af300173a67f4edaf974fb4d27864f1b9aa4a81e7503f8a5f9a758e",
+          "bytes": 25319
+        },
+        "operators.py": {
+          "sha256": "c793c856881da41aa18fe136204bb116a861acaee6da1c4772c951c8d7d62348",
+          "bytes": 7552
+        },
+        "start.py": {
+          "sha256": "c328828d33be735c545a1d677e96fe896792c643fb217cdc3b2ab96f4e78872b",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "da1b8158f369f236c1419ffc2a66f918a469e89d714f155f3428ee8482aaacc3",
+          "bytes": 138119
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_44",
+      "source_directory": "stoe_field_44/stoe_field_44",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "6107b29deb3706096f047fcb252686a02aab31abeddc5336284e7f115954f393",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "f725f24f2e9e29c489a3dd98c05282a2dde4a976c97437f64cf7a41a2576f73d",
+          "bytes": 17155
+        },
+        "server.py": {
+          "sha256": "b86379b16ed8b6bef5af6ae32c070b13dc1b2838c3cfa76553c52a9cc6354497",
+          "bytes": 25319
+        },
+        "operators.py": {
+          "sha256": "c793c856881da41aa18fe136204bb116a861acaee6da1c4772c951c8d7d62348",
+          "bytes": 7552
+        },
+        "start.py": {
+          "sha256": "670148cea483ff1034125c8200b551c35b3f554a0e150be83cf8364492b84d93",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "3f429d59fa43bb4ec517394700ca499ba18a0fb56cf0a83f72ddab3c090c93bb",
+          "bytes": 138972
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_45",
+      "source_directory": "stoe_field_45/stoe_field_45",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "8073f495243afa355a5f5743f45e82c66f62da71c1bace8b1fe067a8f34a5db7",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "f725f24f2e9e29c489a3dd98c05282a2dde4a976c97437f64cf7a41a2576f73d",
+          "bytes": 17155
+        },
+        "server.py": {
+          "sha256": "96e6a085149194c2053f0f465a29b6d674209cca63410652e37a3b74a94242b8",
+          "bytes": 25319
+        },
+        "operators.py": {
+          "sha256": "c793c856881da41aa18fe136204bb116a861acaee6da1c4772c951c8d7d62348",
+          "bytes": 7552
+        },
+        "start.py": {
+          "sha256": "1ee8cb4b7c2d82b5f9277f198e0a93b194e35e09d556c3975b77c3fcb28daa87",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "15d36a326d421e6eb60ea881391711f21c5dcbe2a1370313d9c110b95f1a9cd6",
+          "bytes": 140296
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_46",
+      "source_directory": "stoe_field_46/stoe_field_46",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "94a5b33b44ee79818849cc5054f175f9e43e2ce3dc9a890882074df59c19279a",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "f725f24f2e9e29c489a3dd98c05282a2dde4a976c97437f64cf7a41a2576f73d",
+          "bytes": 17155
+        },
+        "server.py": {
+          "sha256": "27a8c566d84a8030961bce922487f39caf7240422a8b04536c761cd70bc9d750",
+          "bytes": 25319
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "184b48fd077c36dda6afdd44731bad12749396916549f7d3fdb065b7e6716d34",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "c048c4acf0b28fcd2d9e4a0efa4cc751d83bfb1084966fcdd6377460d935bbf5",
+          "bytes": 140130
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_47",
+      "source_directory": "stoe_field_47/stoe_field_47",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "d3d5056d5cb47c5a8ed54b2502bfc4e9d518dcfbf31cd65762f633d1b03a1019",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "f2fd7185c79e3a52279791427edfd2b7a9599a9141fe777619f23cf05a2cae3f",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "6a72f48e19422057e9243555040835aae730b281bf0c4bb61ec9714d79a8cf5f",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "0fbf86612d0b2f18184bef0bf13d5282edff713563b0acfda9e2748836e10de3",
+          "bytes": 140130
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_48",
+      "source_directory": "stoe_field_48/stoe_field_48",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "4394664cf08f963ab582d6a13d790bd9a36d4dac0ba6765b0727c6f3547a5116",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "028e5cb2f868a8de38dc77bd22be9887acd5499707ff26a325378f1dda20e9f6",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "5453d42bd2e77aeae5c70b3aa370c9088d893ee3fc6ec65badc10939aa53d97a",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "82d1e89ee78e8db2216639704a2a754790a206958d639f695a79585b7656655b",
+          "bytes": 150761
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_49",
+      "source_directory": "stoe_field_49/stoe_field_49",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "39c63feed64d3f2007d629c220d31fcc0c5406f31ceb839400d63f5983a4fa7e",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "9815a821d4ea07d2fa2ead8328715b572f6902783f2f7f5e30a999ab682d1de9",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "4556d16da426c66be8bb82e192b40c6146eff0e2b614b4c77e4653783304b9cd",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "7a3b3b3e3731ede76e53c2710c1561e4dabe75e73e785309c16d5f65d6b423ac",
+          "bytes": 150765
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_50",
+      "source_directory": "stoe_field_50/stoe_field_50",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "2921d1dcabd8eceaa2ad6400ff06f753c189c4de44988fd1b04a69ef8eac4305",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "b4438e5db13a3ebc36527e1bfe1166f2374b26d580598a549d75d0d38c2e6942",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "08d64d4ffca96a09333929b0b3cff91e6462893a43f568b06750b7a87d54a826",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "26b0553cd0857fc92e7a37b06ea0d42295f91a8b5f3efdfcebb1ca6396b1e0d4",
+          "bytes": 151674
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_51",
+      "source_directory": "stoe_field_51/stoe_field_51",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "ab1adb3c0adab73a5e3bcfdc62d7467f8d7862662f5e3af1fa5a38cb5e2f2ad6",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "5214957b11d06e1c4ff139a9e4a40c2e9a501b9cc386e03fb25e20de6371026a",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "8153c2910b5561fe7e755d72aba574c614de6977d736d1fc4da4367d0dba9354",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "7cf71187b0dcc2f312a71d13f8d91d3ae60366c37fe45c3c444ae0d132a31208",
+          "bytes": 152807
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_52",
+      "source_directory": "stoe_field_52/stoe_field_52",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "ed4bb0db6da40f86b5f51432b4fc17ea2e6683d5527a82f9842c2851af66b068",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "c6ffff145f2de9b37e2610e00ecc509748f90676317fe8d6bd84d738e0463d6f",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "da76e28d7b81401c98e3f665c9b7740cbdd9c4e31d6fcbb50e3dd112a4b1fea4",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "183ba05953ca25208b1fd90c350d166c900de3a93dd052e995aa7a4639089f0d",
+          "bytes": 152397
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_53",
+      "source_directory": "stoe_field_53/stoe_field_53",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "8deda554ad485df8bda8e2b75019236ea38d198f791bbb7cfd3035f848658222",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "5531ed0a74b630ddc9a955f193df1e82c5bf6726e86c55a2827b8b30fc189763",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "22efd3b98f916434168ea2767dbc51dfac8cec91104cec765427444d9ba188e1",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "b0ad4764397b88b84097bca18e107c3fc4cad68f213d56801401025ad0c95da8",
+          "bytes": 152399
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_54",
+      "source_directory": "stoe_field_54/stoe_field_54",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "635f3fc4422947fb6cacf5959d252479e4dfa2b256535f33745923f96809f32f",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "f9065e6fbd4a3ac1b6b34addba17a1421747ce83f84ff43ed9f6cc101df14d37",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "11ac017449ce2d09e0d5810f1340fb182290b2266a01614fadbe95fc631fd9b7",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "d79dadc968269f6713846fc90cbcb4ed3fbaa5f37c42769fbfe1f7a22ff0059b",
+          "bytes": 156562
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_55",
+      "source_directory": "stoe_field_55/stoe_field_55",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "9bec57c69c8154ad9b061b957f3061f45b771fbee918e19dfe87af82845afded",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "16dbbf5a66a5c8abb853c08d619f55db50c07544bd28ce02a649bfb03aaf1e71",
+          "bytes": 25348
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "d676d4797b60344c60108e71ff9356049ff09893707a93471c897e878ad193f2",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "74ee881357273950c2185b940889744ab940f33341fb9d78172de11aefea0c0d",
+          "bytes": 156575
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_56",
+      "source_directory": "stoe_field_56/stoe_field_56",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "1a06e76694f6299d574607830212d488d5b2ee00ea134308134269e0916d8bf6",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "8ab31a6616cc9d608cd14bc5270738535fa6cabe5caea827c9ccd7b902ac49ec",
+          "bytes": 24104
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "dbbd9878f72bdedbdfa57e2455e1eca5c51da4fadd1f4217ec1a0913100e541f",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "cd241f84d5b7d7cab724531a58f035eab2d62c22d6f619b100bff5eddd11ea8d",
+          "bytes": 156909
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_57",
+      "source_directory": "stoe_field_57/stoe_field_57",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "a16c92881565e974a520e3dce6115b9b553deec075127ca6a9ff699082912b7b",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "248676b24a09d54771ec286d998396850e5fbd2b3e697bcb64f81aa1d2edc934",
+          "bytes": 24222
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "5c321a0a287578b2465cc93c1f5505c1ddae520b317669921f5faa1ac81cfe2c",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "de4f5dee5a0b20b3556635b66f4af2aff1289ea2e74f0675b1d4a7716a8c6275",
+          "bytes": 156909
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_58",
+      "source_directory": "stoe_field_58/stoe_field_58",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "2f113810ec40963f111750d50c10aeb2ceee61302b9ea7e095e0db4615389997",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "a3b064c69bd87fd1c99fc04dfc819913a6010e714ef50b49c851837f75712704",
+          "bytes": 25070
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "6e4399c465e86f159c32acf027a58fb8e614b2f29968132f5965dbf8761536f7",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "9826ccf3a3e74cfe0b98b52c4a011f61ea30332fd5544a5a24dc3a5eb85e9dfd",
+          "bytes": 156909
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_60",
+      "source_directory": "stoe_field_60/stoe_field_60",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "bea9a4bee5c73564844c117013139498646f85ab28dbee850af3f65241ec88a6",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "8aa44d5b541361d01bc8e46e1dc3eca96ba71fa3c369b82907d96955878c4708",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "6c6ce7d83cf775e948627d7e997c446151f167b81253fa75dd6b5decd30e8f2d",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "93e52eed0fed5ce6010926a58e6cd9da15ebfbd762e0c7a7ea6743a1864561fc",
+          "bytes": 156909
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_61",
+      "source_directory": "stoe_field_61/stoe_field_61",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "6cf1d0b41ce0c576687cb48957ec60a73c04793a3f2f47299f2f900f21d32658",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "da022eacd803e1bbcdc9eb288b8cb5989ad2a0b697836d1dec4982c06e8276dc",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "371f9e63df2e41ba687d4e5693d063dcdd9ad2d2989d498594ab2fc8bf4df930",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "dd904e86c3d4d782744c521b878f96f40ab259ce95bdaf6166c61b7df9b55cd6",
+          "bytes": 162855
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_62",
+      "source_directory": "stoe_field_62/stoe_field_62",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "021d67a74dd84fe780a5fbcefbf8c827cf6e543d641e7b4305b38c369a53dc04",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "5d27d4784a0e8da1918724aea81073f11a584a3ffa679871c6c56d2f61114192",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "4c935a641b301e2b6f08d009458427d451b915455a1baa10577fbfc9cdc9f69d",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "df4e1264d4615c759b459b00258f0b32eef505b6cca4a67e8cc33d37b985e3b7",
+          "bytes": 162703
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_63",
+      "source_directory": "stoe_field_63/stoe_field_63",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "9aa4be17a5c17319ec9f3f5d19b032bf9884ac7ea47a743f890b133aafef7a76",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "7f4cde4519d0385d426261ab5bed130627f2c094e66f9da4a1249b5671487d8d",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "7e830fe5cc12551d8a602e70511ad81b0a5475959edbe03890419a376a782689",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "d7c13a24ab0b58f23eb3301cf2214ba364d9c9cd817b91ebe116040a9b0afa53",
+          "bytes": 164677
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_64",
+      "source_directory": "stoe_field_64/stoe_field_64",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "25d79d60b3a3a748d1e4da9685f6b6bb415cbe03e651fede4935199b51c15c92",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "79496cb98571a16eae27ac4c7eaf54954e874ad2aa0c35c02f8d1cfeae1bef92",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "3a2a54250b7c12391066cc0ba8d33547a331a5d339790b6bed49c21c6b0db7ae",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "99a9951e619adaf2610352aea2765a8a34288f854beb51303f9557a0f1c04dbb",
+          "bytes": 165555
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_65",
+      "source_directory": "stoe_field_65/stoe_field_65",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "bfbe7606ccb184e96b905712f3f025eed7f6c87ef7810004280ec638fa3e871d",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "e51c86941654ba5d10979bdd0e87a29f5bcef85764e15a78da45fe593c4bf721",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "93911c29abf3fd469cbdb528bf43908bd9ed68c0a71296b5a9406d5a0bb3921a",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "18fdb24ee7c19f184c88eaa7223c24d136b04e7c05a7adde41977e794310a6d4",
+          "bytes": 168256
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_66",
+      "source_directory": "stoe_field_66/stoe_field_66",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "9b1fe9fba1546e98a70d43d2fcc29d0a5b377219d0772f2b74b1a3eca2ca4b1e",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "78b359b609517f9a630af77c0efcdddad7796ca852ecd78cd78f03df61f16828",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "a8230c924cd4599338bab30828927b7a635b2fdaf4d9368df46e403fc97b5019",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "582670e998a13a0ca84e9c6e59ede405a1d411fbc5134ff02de224b4cd2912a0",
+          "bytes": 168257
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_67",
+      "source_directory": "stoe_field_67/stoe_field_67",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "66c6d6a79ea0abf8cc6af2ad6fa9f39a835237c33450e919e5b5635ee5e9a249",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "613ef669a30a340a0744df7403ad6fdcf62c02d84f2c42a21c4f703c7521a811",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "cf18fbc84813b0ab27d7850d2bc21b1a927c28a242c4c23894e0b82f3f50287a",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "284b323a5192cf73835730830cd2a795028d129beb8056002734058663e0ef27",
+          "bytes": 168842
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_68",
+      "source_directory": "stoe_field_68/stoe_field_68",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "2a2092a0208141bb1ed6d35978d5b3b8806c393432855d5495f1924f1964890e",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "499a0e5d44c9159fe321be5365db788c568ac88e760a5c746f7fe7fc667b094d",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "70ca89ca1d278560a3b13ecc79242a00accc0cc742262afc51788c20f7afc0d2",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "7029eaad7c5c7b908e6823da1074e6bf1f86d7766aea5fbee4738832f9f554db",
+          "bytes": 169107
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_69",
+      "source_directory": "stoe_field_69/stoe_field_69",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "f6ae75aa80a0643c5b53df09a1fa997c8ea2dddc75cacc4147b77b1c83df7786",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "616d6eadb2bb54eabd1127199d2e4603ae2f4ffc51f03dad312301c48730f39d",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "9dd05101c4e5c65e43775f1d977e644aa27d7794db99b8f77e936af286ced4ab",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "cc474a085884590e901a150b13c443e7a5955766d7238f928a1b98fc7e337b03",
+          "bytes": 171714
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_70",
+      "source_directory": "stoe_field_70/stoe_field_70",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "d0cf9fdc000db4332fd360713a97354d4e765634dd1ad05b3044133b7db000fd",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "f7de9282398fd73e3ad7a87b778eba71c82b321ff43819171cad24756ac3a02d",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "268a9b108c4198c4b73ad54636f0c164e39598742cf13414fdc616a7fdba4ee4",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "f0733311c8ad0eaa8932054f8ef55724dc4c3bcb6ab93f947a5737f4c8d334f3",
+          "bytes": 173106
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_71",
+      "source_directory": "stoe_field_71/stoe_field_71",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "42c69d6bddae0316aa4e0bb60729ef2216ad1f49b57f1cd2484615433df68a22",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "33e454c1c019e86fcdbd00d542394a681dde22119c20059be642c0fd3e10b187",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "1810183ad801467f382ef20f0b6d174cc3b31e9e5e17c7c640f9e100b4fb88e6",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "2a7ba0209fc4bcde68121005e81d4660a82e5da004de7340c303294e79bf3ec1",
+          "bytes": 173286
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_72",
+      "source_directory": "stoe_field_72/stoe_field_72",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "ea3a974b8ba9e43e035c1b2ad140a73142433428d618141fb9ab67cd06785701",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "a5e93a4cc2089877d0028ae540451485f102186a60b6d4e3b02f903552d29978",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "9c0df3f18311942829eb045c009c9efdbbedd6a16f2db689cd1aaeca10d71164",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "7ecd0b33cd1dbf167539d9e08226d5e96663e1a89531ccbbccad06f368229aef",
+          "bytes": 173361
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_73",
+      "source_directory": "stoe_field_73/stoe_field_73",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "21596a848d40442af812307a4a89a4b3eef129f687ecfae51f5dba049d5af492",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "99a8939d8146ee5bc6f951a62a04e8b7137f0826e84b9c6ffc29f568a3e4c567",
+          "bytes": 17535
+        },
+        "server.py": {
+          "sha256": "3c88dffd450a208bf61770561b5380a93c7df0c7172d768a3ce07b05072fc973",
+          "bytes": 25038
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "589f192f144e78e265f205c98d43238025dfdf7cccd6d8eb4df7ca76c61ba85f",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "83fc90bba9af43f276d4d6034b45e708473418b6d45e9ec31c358b4bb3351afa",
+          "bytes": 174041
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_74",
+      "source_directory": "stoe_field_74/stoe_field_74",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "15040e09cd7be7371607ca756a9fe5e508d257e2c2d5adf2edeac71d970a8a6e",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "6e691528740736b6c476ebfc6ad79841bdf04970f5c7518849f8289ffb06d93d",
+          "bytes": 18000
+        },
+        "server.py": {
+          "sha256": "b5ea69361d3ecb380cb43245fc6b8e0a8b6ff6a4d6090c333a3ac022625bfe17",
+          "bytes": 25323
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "7ecabc77a590cb388a9df8acd4a5ea1d3c4b196a41d76c120f6b5734db48d0c5",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "b23ea82c17e43434ffa51704511cbf3f9083321967154876273ac7960ca3df20",
+          "bytes": 174041
+        },
+        "stoe_seed.json": {
+          "sha256": "3177a48262a97d0fbea8aa6a3796de3fa3c15b995381b87f1d4ca2b183089723",
+          "bytes": 23376
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_75",
+      "source_directory": "stoe_field_75/stoe_field_75",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "44863b54b59eb47424856f1ba5ce9a624d96a4c2eb500a4c6c277994dbcc7c71",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "6e691528740736b6c476ebfc6ad79841bdf04970f5c7518849f8289ffb06d93d",
+          "bytes": 18000
+        },
+        "server.py": {
+          "sha256": "f1bdda3089a7c67b94fad8ce0e8c13476dca5ebb69be18750b357e16ada9fb87",
+          "bytes": 25323
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "27dc9e2b7d2e6fb0767f3780f1aca729065d24941e3dbb7a88c37ca6f6ec66f9",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "5fad4d9e987dcacab4b9adc470c3b6df214650428085ab3ceca0bab7ca814dc5",
+          "bytes": 174041
+        },
+        "stoe_seed.json": {
+          "sha256": "3e9c24beee9f3b10ea7e5757ff13c8a644606ca66be79c3514e946537f6b3301",
+          "bytes": 27577
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_76",
+      "source_directory": "stoe_field_76/stoe_field_76",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "b7181d5922767308e9594ffd3c3d749692979569a05e61068cbc5fb50875fc2d",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "6e691528740736b6c476ebfc6ad79841bdf04970f5c7518849f8289ffb06d93d",
+          "bytes": 18000
+        },
+        "server.py": {
+          "sha256": "4543e2c8e6d5f5d30a31d65bfbaea958be4c6f7640a1b0922ebe0506bcd5986e",
+          "bytes": 25323
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "f97747acf0bd790861b81aba8843511f08f6460279085e0873bbc54577167ece",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "baa36ebaf1d47642e45acfd47e04d6cd2697be2a76d08ba64de2553228fd9c25",
+          "bytes": 174345
+        },
+        "stoe_seed.json": {
+          "sha256": "3e9c24beee9f3b10ea7e5757ff13c8a644606ca66be79c3514e946537f6b3301",
+          "bytes": 27577
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_79",
+      "source_directory": "stoe_field_79/stoe_field_79",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "aa326e4f2e079caa690d816663177adfbfe93dfae8a75c305c19bb96ff906655",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "6e691528740736b6c476ebfc6ad79841bdf04970f5c7518849f8289ffb06d93d",
+          "bytes": 18000
+        },
+        "server.py": {
+          "sha256": "96330e150993663d6309605aab28d38544d97532c3568e34dff1830a423127ca",
+          "bytes": 25323
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "2503b01883720dceb56af3186fdb3a5ad713596ecb64fda2bb5ab45325c45ab8",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "43de5623145bbd882eccd1a4207b2da5a7d0135dbf061ceeff82ff7ae34c202f",
+          "bytes": 174366
+        },
+        "stoe_seed.json": {
+          "sha256": "e277132abdb4af46e4af555055fd4515d1cdb389710b11500bfc14fdcaf28d6e",
+          "bytes": 29428
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_81",
+      "source_directory": "stoe_field_81/stoe_field_81",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "da5b25da6f7411a7e9b0d4d18927dda9288b991348947f35694cb866b699daf1",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "fd78364250af5bc996c19d1c71c4c36a4461a6cad0ad124f2845c7e31bfe5550",
+          "bytes": 19020
+        },
+        "server.py": {
+          "sha256": "20b618dfcc8d9f4a61f4d03158f1da99e971010db79ae7f3c792eb06cfa596ac",
+          "bytes": 25394
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "f91ca3c1ca398972886ff61f9b799533fb8693294a18374d9830d76133c7b5c2",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "4b0825351d386a61a0ebed6cbcb649ca4da83bd7b249687f5eb30c1e37ac2785",
+          "bytes": 176744
+        },
+        "stoe_seed.json": {
+          "sha256": "15a6d21bb90f8802b485e253519769860d3de4bc2ceeae6751e02b93195895ce",
+          "bytes": 36409
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    },
+    {
+      "name": "stoe_field_82",
+      "source_directory": "stoe_field_82/stoe_field_82",
+      "files": {
+        "engine_v2.py": {
+          "sha256": "9dcca3fed0f8911b12788eb9f0ef0debd00d3994516b4c244053f2006090aadd",
+          "bytes": 15378
+        },
+        "field.py": {
+          "sha256": "fd78364250af5bc996c19d1c71c4c36a4461a6cad0ad124f2845c7e31bfe5550",
+          "bytes": 19020
+        },
+        "server.py": {
+          "sha256": "a66493dcf937916faac17f95a6015b304f1eb7059eeb0b3054724efc22c8ebbb",
+          "bytes": 25394
+        },
+        "operators.py": {
+          "sha256": "3f6fb9b09f43a529028b29d0d8646dd724946554a7d6f449684432173f5a47e8",
+          "bytes": 7883
+        },
+        "start.py": {
+          "sha256": "c9d81371f8f1c3a5a2f715236dda140fbedb334259fc5c8ef77cc5fe5668d582",
+          "bytes": 1167
+        },
+        "static/index.html": {
+          "sha256": "cc4f5b296da6cc4e4ffa5f2825a41b25b961761f6e421c32eddf6dd78c1ecc3e",
+          "bytes": 176744
+        },
+        "stoe_seed.json": {
+          "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+          "bytes": 96323
+        }
+      },
+      "markers": {
+        "openrouter": false,
+        "ollama": true,
+        "score_step": true,
+        "failed_from": true,
+        "operator_registry": true,
+        "server_ollama_chat": true,
+        "field_wipe": true,
+        "context_preview": false,
+        "trace": false,
+        "ontology_seed": true,
+        "field_merge": true,
+        "custom_operators": true,
+        "cytoscape": false
+      }
+    }
+  ],
+  "unique_blobs": 266
+}

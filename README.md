@@ -7,13 +7,18 @@ plugin, the `stoe-reasoning` skill, canonical seed data, and research artifacts.
 | --- | --- |
 | [`experiments/stoe_v9_1_experiment`](experiments/stoe_v9_1_experiment) | v9.1 corrective replication: observer-aware navigator, retrieval baselines, providers, tests, frozen tasks, reports, and losslessly compressed raw results |
 | [`engine/v7`](engine/v7) | Earlier interactive information-field engine, Flask API, and browser interface |
+| [`experiments/stoe_v3`](experiments/stoe_v3) | Historical graph-aware engine, structural evaluator, benchmark suite, and Experiment 6 evidence |
 | [`plugins/stoe-memory`](plugins/stoe-memory) | Local persistent SQLite reasoning field exposed through MCP over stdio |
 | [`skills/stoe-reasoning`](skills/stoe-reasoning) | Reusable reasoning protocol, references, seed, and seed validator |
 | [`research/corpus`](research/corpus) | Original research PDFs and the v9.1 ResearchGate manuscript |
+| [`research/texts`](research/texts) | Searchable text versions of five papers |
+| [`archive/snapshots`](archive/snapshots) | 78 deduplicated historical source snapshots, hashes, and a safe restore tool |
+| [`archive/original_prototype`](archive/original_prototype) | Original cloud-backed prompt-operator prototype |
 | [`docs/authentication.md`](docs/authentication.md) | Authentication components, request flows, credential handling, and trust boundaries |
 
-The v7 engine and v9.1 experiment are separate programs. The plugin is a third
-runtime; it does not automatically share v7's JSON field or the experiment's graphs.
+The v3, v7, and v9.1 engines and the plugin are separate runtimes. They do not
+automatically share a field. Read the [snapshot history](docs/snapshot-history.md)
+for their development paths and the limits of the version labels.
 
 ## Start with the experiment
 
@@ -70,6 +75,12 @@ dense comparator. The targeted difference was +33.3 percentage points, with a
 This is a small, deliberately constructed corrective replication, not an
 independent confirmation or evidence establishing the full SToE ontology.
 Read the report's limitations alongside its results.
+
+The earlier [v3 evidence archive](experiments/stoe_v3/runs/README.md) includes
+null/negative comparisons as well as exploratory findings. Its Experiment 6
+native-versus-rewired comparison scored 233/300 versus 234/300. It used a
+different model, benchmark, and architecture from v9.1; these runs are not a
+single directly comparable performance series.
 
 ## Publication and privacy
 

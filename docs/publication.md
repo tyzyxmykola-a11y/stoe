@@ -34,3 +34,17 @@ All supplied canonical seeds retain SHA-256
 Git attributes disable line-ending conversion to preserve original bytes.
 Original internal experiment manifests describe the frozen research artifacts;
 the new outer repository also contains packaging documentation.
+
+## Additional historical collection
+
+The v3 implementation, 61 benchmark JSON reports, original prototype, five
+paper text extracts, and 78 numbered source snapshots were subsequently copied
+from the local `stoe_engine` collection. The five text extracts were converted
+from legacy single-byte text to UTF-8 (Latin-1 and Windows-1252 agree for the
+observed bytes), without re-extracting or repairing mathematical notation.
+Reports and snapshots are stored in
+lossless archives with per-file SHA-256 manifests and restore tools. Original
+v3 source/protocol files are preserved; new overviews distinguish later results
+from outdated exploratory claims and disclose the blank protocol lock date.
+The snapshot archive allowlists source and seed files rather than copying ZIPs
+or runtime directories wholesale. See `docs/snapshot-history.md`.

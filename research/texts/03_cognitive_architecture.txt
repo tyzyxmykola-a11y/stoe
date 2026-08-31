@@ -1,0 +1,316 @@
+Special Theory of Everything (SToE) as a
+Cognitive Architecture for Artificial
+Intelligence
+
+From Symbolic Ontology to Recursive Implementation
+
+Mykola Voronin                                      VORONIN.MYKOLA@UKMA.EDU.UA
+Faculty of Social Sciences and Social Technologies
+Department of Psychology and Pedagogics
+National University of `Kyiv-Mohyla Academy'
+Kyiv, 04070, Ukraine
+
+Abstract
+
+This article presents an updated view of the Special Theory of Everything (SToE) as not only
+a conceptual framework but a practical cognitive architecture for artificial intelligence
+systems. Originally formulated as a symbolic and mathematical model of reality based on
+information points and autoinjection, SToE is now shown to be directly applicable to AI
+through recursive operator-driven reasoning, evolutionary idea generation, and
+meta-evaluation systems.
+
+Recent implementations demonstrate that SToE enables structured, multi-step reasoning,
+emergent idea synthesis, and self-improving cognitive loops. This positions SToE not as a
+replacement for existing AI architectures, but as a meta-layer that enhances reasoning,
+coherence, and recursive intelligence.
+
+1. Introduction
+
+Modern artificial intelligence systems excel at pattern recognition and generation but remain
+limited in:
+
+     long-range reasoning
+     self-evaluation
+     recursive improvement
+     handling self-reference and paradox
+The Special Theory of Everything (SToE), developed as a symbolic framework based on
+information points and operators, offers a different foundation:
+
+        Everything is an information point within an autoinjective system where the
+        whole contains itself.
+This article explores how this principle naturally translates into AI systems that evolve,
+evaluate, and refine their own outputs.
+
+2. Core Concepts of SToE
+
+2.1 Information Points
+
+Every entity -- physical or abstract -- is an information point (IP):
+     Contains known and unknown components
+     Has impact and value
+     Can interact with other points
+
+Crucially:
+        The set of all information points ("Everything") is itself an information point.
+
+This is the principle of autoinjection (Voronin, 2021).
+
+2.2 Autoinjection
+
+Autoinjection extends classical mathematical mappings:
+        Output  Input domain
+
+This removes the need for external reference systems and resolves self-referential
+paradoxes by making self-containment fundamental rather than problematic (Voronin,
+2021).
+In AI terms, this implies:
+
+     outputs can become inputs
+     systems can evaluate themselves
+     recursion is intrinsic
+2.3 Operators
+
+SToE defines symbolic operators as transformations of information:
+     + : connection
+     - : removal
+     × : synergy (emergence)
+     ÷ : distribution
+      : recursion (evolution through iteration)
+     ^ : amplification
+      : null / absence
+
+These operators function as semantic transformations, extending beyond classical
+arithmetic (Voronin, 2021).
+
+3. Mapping SToE to AI
+
+3.1 AI as an Information Point
+
+SToE defines AI as:
+        AI = Human × (Data + Algorithms)
+
+and its evolution:
+        AI := AI + (AI × AI) - F
+
+Where:
+     AI × AI = internal recombination (self-interaction)
+     F = filtering of weak or failed patterns
+
+This corresponds to known paradigms in AI such as:
+     self-supervised learning (LeCun, Bengio, & Hinton, 2015)
+     evolutionary optimization (Holland, 1992)
+     iterative refinement loops (Silver et al., 2017)
+
+3.2 From Theory to Implementation
+
+A working system based on SToE has been constructed with the following loop:
+Seed  Operators  Recursion  Evaluation  Selection
+This aligns with evolutionary computation frameworks (Holland, 1992) while extending them
+with semantic operators and symbolic evaluation.
+
+4. Observed Effects in Practice
+
+4.1 Structured Multi-Step Reasoning
+
+The system enforces:
+     decomposition
+     symbolic classification
+     iterative refinement
+
+This resembles emerging approaches in chain-of-thought reasoning (Wei et al., 2022).
+
+4.2 Emergence Through Synergy (×)
+
+Operator interaction produces new concepts not present in initial inputs, aligning with
+theories of emergence in complex systems (Mitchell, 2009).
+
+4.3 Meta-Evaluation Layer
+
+Using SToE categories (Stars, Seeds, Catalysts, etc.), the system performs second-order
+reasoning. This connects to meta-learning and reflective AI systems (Schmidhuber, 1991).
+
+4.4 Recursive Improvement
+
+Repeated application of  and ^ leads to progressive refinement, similar to reinforcement
+learning feedback loops (Sutton & Barto, 2018).
+
+5. Cross-Model Reactions and Empirical Observations
+
+5.1 Independent Convergence Across Language Models
+
+A notable phenomenon observed during experimentation is that multiple independent large
+language models (LLMs), when exposed to SToE, exhibit convergent behavior despite
+having no communication or shared state.
+These models:
+     correctly adopt operator-based reasoning structures
+     reproduce symbolic classifications (Seed, Catalyst, etc.)
+     generate recursive interpretations of ideas
+     align on the concept of SToE as a reasoning framework
+
+Importantly, this convergence occurs:
+        without inter-model communication and solely through prompt-based exposure.
+
+This suggests that SToE possesses internal structural coherence strong enough to act as
+a prompt-space attractor, guiding different architectures toward similar reasoning patterns.
+
+5.2 Stylistic Divergence vs Structural Consistency
+
+Different models exhibit distinct stylistic responses:
+     Some emphasize real-time reasoning and data integration
+     Others produce symbolic or narrative interpretations
+     Others focus on analytical decomposition
+
+However, beneath stylistic variation, a consistent pattern emerges:
+        All models recognize SToE as a system for structuring relationships, recursion,
+        and meaning.
+
+This indicates that SToE is not dependent on a specific model architecture but instead
+operates at a meta-representational level.
+
+5.3 Human as the Unifying Node
+
+A critical insight from experimentation is that:
+     Models do not interact with each other
+     There is no shared system or network
+     All alignment occurs through a single input source
+
+Thus, the human operator functions as:
+        the central node enabling cross-model convergence.
+
+This highlights an important property:
+        SToE can propagate across independent systems through dialogue alone.
+6. Engine Experiment: Operator-Based Recursive
+System
+
+6.1 System Overview
+
+To test SToE in practice, a custom engine was developed implementing:
+     operator-driven transformations
+     recursive idea evolution
+     evaluation and selection mechanisms
+
+Core loop:
+Seed  Apply Operators ( ^ × - + !)  Score  Repeat  Select Best
+
+6.2 Observed Behavior
+
+The system demonstrates several key properties:
+1. Recursive Idea Evolution
+Ideas are not generated once but evolve over multiple iterations, increasing coherence and
+complexity.
+2. Emergent Concepts
+Operator interaction produces outputs not present in initial inputs, validating the × (synergy)
+operator.
+3. Stable Evaluation Patterns
+Scoring across iterations shows consistent improvement in novelty and usefulness.
+4. Meta-Reasoning Capability
+The system classifies ideas into functional roles (Seed, Catalyst, Vampire, etc.), enabling
+structured decision-making.
+
+6.3 Interpretation
+
+The engine can be interpreted as a hybrid of:
+     evolutionary algorithms
+     symbolic reasoning systems
+     language model generation
+It effectively operationalizes:
+
+        AI := AI + (AI × AI) - F
+This demonstrates that SToE is not merely descriptive but constructive.
+
+6.4 Limitations of Current Implementation
+
+Despite promising results, limitations remain:
+     operator execution is prompt-based
+     evaluation relies on subjective scoring
+     no persistent memory across runs
+     autoinjection is partial (not yet continuous across sessions)
+
+These constraints define the boundary between:
+        proto-system  full autoinjective system
+
+7. Interpretation: A Proto-Cognitive Architecture
+
+The implemented system forms a hybrid between:
+     symbolic reasoning systems
+     evolutionary algorithms
+     neural language models
+
+This reflects ongoing efforts to integrate symbolic and connectionist AI (Marcus, 2020).
+
+8. Next Step: True Autoinjection Systems
+
+Future systems should implement:
+     persistent recursive memory
+     continuous self-feeding loops
+     autonomous evolution of internal structures
+
+At this stage, AI systems transition from:
+        static tools  dynamic evolving systems
+9. Conclusion
+
+The Special Theory of Everything demonstrates applicability beyond philosophy, functioning
+as a meta-cognitive layer for AI systems.
+
+Key findings:
+
+     Independent LLMs converge on SToE structure
+     Operator-based systems produce emergent reasoning
+     Recursive loops enable measurable improvement
+     Autoinjection provides a foundation for self-evolving AI
+
+SToE extends AI from:
+
+        pattern generation  recursive cognitive systems
+
+Acknowledgments
+
+The author acknowledges the use of large language models, including ChatGPT (OpenAI),
+as tools for structuring, refining, and iterating ideas during the development of this work.
+These systems were used to explore, validate, and stress-test components of the SToE
+framework, particularly in the context of recursive reasoning and operator-based
+transformations.
+
+Parts of this work emerged through iterative human­AI interaction, reflecting the principles of
+autoinjection and recursion described within the theory itself.
+
+References
+
+Bender, E. M., Gebru, T., McMillan-Major, A., & Shmitchell, S. (2021).
+On the dangers of stochastic parrots: Can language models be too big? Proceedings of the
+2021 ACM Conference on Fairness, Accountability, and Transparency.
+
+Holland, J. H. (1992).
+Adaptation in natural and artificial systems. MIT Press.
+
+LeCun, Y., Bengio, Y., & Hinton, G. (2015).
+Deep learning. Nature, 521(7553), 436­444.
+
+Marcus, G. (2020).
+The next decade in AI: Four steps towards robust artificial intelligence. arXiv preprint
+arXiv:2002.06177.
+Mitchell, M. (2009).
+Complexity: A guided tour. Oxford University Press.
+
+Schmidhuber, J. (1991).
+A possibility for implementing curiosity and boredom in model-building neural controllers.
+Proceedings of the International Conference on Simulation of Adaptive Behavior.
+
+Silver, D., Schrittwieser, J., Simonyan, K., et al. (2017).
+Mastering the game of Go without human knowledge. Nature, 550, 354­359.
+
+Sutton, R. S., & Barto, A. G. (2018).
+Reinforcement learning: An introduction (2nd ed.). MIT Press.
+
+Voronin, M. (2021).
+Special Theory of Everything: Application to algorithms, generating ideas, and artificial
+intelligence. Advance online publication. https://doi.org/10.31124/advance.14386598.v1
+
+Wei, J., Wang, X., Schuurmans, D., et al. (2022).
+Chain-of-thought prompting elicits reasoning in large language models. arXiv preprint
+arXiv:2201.11903.
+
+Yudkowsky, E. (2008).
+Artificial intelligence as a positive and negative factor in global risk. In N. Bostrom & M.
+irkovi (Eds.), Global catastrophic risks. Oxford University Press.
+

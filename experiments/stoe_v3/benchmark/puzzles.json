@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "description": "Backtrack-required puzzles for v3 falsification of paper 4's prediction. Each puzzle has a verified unique answer. Solving requires hypothesis-test-fail-retry behavior, which is what the conserving + topology-aware architecture is hypothesized to do better than similarity-RAG.",
+  "categories": {
+    "logic_grid": "Constraint-satisfaction across N entities and M attribute axes. Backtracking forced when partial assignment violates a constraint discovered later.",
+    "cryptarithmetic": "Letter-to-digit assignment puzzles. Each guess constrains others; contradictions force revisiting earlier guesses.",
+    "knights_knaves": "Truth-teller / liar puzzles. Hypothesis chains hit contradictions; flipping an earlier assumption is required.",
+    "csp_word": "Discrete state-space search problems with explicit constraints (river crossings, jug puzzles, small Sudoku, etc.)."
+  },
+  "answer_formats": {
+    "kv_pipe": "key=value pairs, '|'-separated. e.g. 'Alice: blue, fish | Bob: green, dog | Carol: red, cat'. Whitespace and case normalized at grading.",
+    "letter_to_digit": "Comma-separated 'L=N' assignments. e.g. 'D=7,E=5,N=6,O=0,R=8,M=1,Y=2,S=9'.",
+    "kn_list": "Each name with knight/knave label. e.g. 'A=knight, B=knave, C=knight'. Order-insensitive at grading.",
+    "single_value": "Single integer or short string answer.",
+    "move_sequence": "Numbered list of moves. Multiple valid sequences may exist; grader accepts any verifiably-correct sequence by simulating."
+  },
+  "scoring_protocol": {
+    "k_seeds": 5,
+    "thresholds": {
+      "strong_pass": "topology mode solve rate exceeds similarity mode solve rate by >=15 pp AND topology mode shows >=3x more failed_from edge traversals",
+      "weak_pass": "solve rates equal but topology mode uses fewer operator applications on average",
+      "falsification": "solve rates equal AND topology shows no extra dead-end traversal"
+    }
+  },
+  "puzzles": [
+    {
+      "id": "LG-001",
+      "category": "logic_grid",
+      "difficulty": "easy",
+      "statement": "Three friends — Alice, Bob, and Carol — each own one pet (cat, dog, or fish) and live in one colored house (red, blue, or green). Each friend has a different pet and house. Constraints: (1) The fish owner lives in the blue house. (2) Alice does not live in the red house. (3) Bob owns the dog. (4) Carol does not own the fish. (5) The dog does not live in the red house. Output one line per friend in the format NAME: house, pet.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "alice: blue, fish | bob: green, dog | carol: red, cat",
+      "verified": true
+    },
+    {
+      "id": "LG-002",
+      "category": "logic_grid",
+      "difficulty": "easy",
+      "statement": "Three coworkers — David, Emma, and Frank — drive different cars (sedan, truck, SUV) and drink different beverages at lunch (coffee, tea, water). Constraints: (1) The sedan driver drinks coffee. (2) Emma drives the SUV. (3) Frank does not drink tea. (4) David does not drive the truck. Output one line per person in the format NAME: car, beverage.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "david: sedan, coffee | emma: suv, tea | frank: truck, water",
+      "verified": true
+    },
+    {
+      "id": "LG-003",
+      "category": "logic_grid",
+      "difficulty": "medium",
+      "statement": "Four students — Grace, Henry, Ivy, and Jack — each major in one subject (history, biology, physics, art) and were born in one month (January, March, July, October). Each student is unique. Constraints: (1) The biology major was born in March. (2) Grace majors in biology. (3) Henry majors in physics. (4) The history major was born in January. (5) Ivy was born in October. (6) Jack was not born in July. Output one line per student in the format NAME: major, month.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "grace: biology, march | henry: physics, july | ivy: art, october | jack: history, january",
+      "verified": true
+    },
+    {
+      "id": "LG-004",
+      "category": "logic_grid",
+      "difficulty": "medium",
+      "statement": "Four houses sit in a row, numbered 1 to 4 from left to right. Each is painted a different color (white, yellow, blue, green) and each owner has a different occupation (doctor, chef, teacher, lawyer). Constraints: (1) The doctor lives in house 1. (2) The yellow house is to the right of the blue house. (3) The chef lives in the green house. (4) The teacher lives next to the chef. (5) House 3 is white. (6) The lawyer lives in house 4. Output one line per house in the format HOUSE_N: color, occupation.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "house_1: blue, doctor | house_2: green, chef | house_3: white, teacher | house_4: yellow, lawyer",
+      "verified": true
+    },
+    {
+      "id": "LG-005",
+      "category": "logic_grid",
+      "difficulty": "medium",
+      "statement": "Four guests at a hotel — Mia, Noah, Olivia, and Peter — each checked into a different room (101, 102, 103, 104), booked a different number of nights (1, 2, 3, or 4), and ordered a different breakfast (eggs, pancakes, oatmeal, fruit). Constraints: (1) The guest in room 101 booked 4 nights. (2) The guest in room 104 ordered pancakes. (3) Olivia is in room 102 and booked 2 nights. (4) Peter ordered eggs. (5) The guest who ordered oatmeal stayed 1 night. (6) Mia did not order fruit. (7) Mia is in room 103. Output one line per guest in the format NAME: room, nights, breakfast.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "peter: 101, 4, eggs | olivia: 102, 2, fruit | mia: 103, 1, oatmeal | noah: 104, 3, pancakes",
+      "verified": true
+    },
+    {
+      "id": "LG-006",
+      "category": "logic_grid",
+      "difficulty": "easy",
+      "statement": "Three friends — Alice, Bob, and Carol — have three different favorite colors (red, blue, green) and three different favorite numbers (1, 7, 9). Constraints: (1) Alice's favorite color is not red. (2) Bob's favorite number is 7. (3) The person who likes red likes the number 9. (4) Carol does not like 1. (5) The person who likes green likes the number 1. Output one line per friend in the format NAME: color, number.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "alice: green, 1 | bob: blue, 7 | carol: red, 9",
+      "verified": true
+    },
+    {
+      "id": "LG-007",
+      "category": "logic_grid",
+      "difficulty": "medium",
+      "statement": "Four artists — Anna, Ben, Cleo, and Dan — paint with different mediums (oil, watercolor, acrylic, pastel) and have shows in different cities (NYC, LA, Tokyo, Paris) in different months (January, March, June, September). Constraints: (1) Cleo paints with oil. (2) The watercolor artist shows in Paris. (3) Ben shows in NYC. (4) The Tokyo show is in March. (5) Anna's show is in January. (6) The acrylic artist shows in June. (7) Dan does not paint with pastel. (8) Anna shows in Paris. Output one line per artist in the format NAME: medium, city, month.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "anna: watercolor, paris, january | ben: pastel, nyc, september | cleo: oil, tokyo, march | dan: acrylic, la, june",
+      "verified": true
+    },
+    {
+      "id": "LG-008",
+      "category": "logic_grid",
+      "difficulty": "medium",
+      "statement": "Four runners — Eve, Finn, Gus, and Hana — finished a race in 1st through 4th place. Each wore a different shoe color (red, blue, white, black) and is from a different city (Boston, Chicago, Denver, Miami). Constraints: (1) The runner from Boston finished first. (2) Eve wore blue shoes. (3) Finn finished third. (4) The runner who wore black shoes is from Miami. (5) Gus is from Denver. (6) The runner from Chicago finished fourth. (7) Hana wore white shoes. (8) Eve finished before Finn. Output one line per runner in the format NAME: place, city, shoes.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "eve: 1, boston, blue | gus: 2, denver, red | finn: 3, miami, black | hana: 4, chicago, white",
+      "verified": true
+    },
+    {
+      "id": "LG-009",
+      "category": "logic_grid",
+      "difficulty": "easy",
+      "statement": "Three siblings — Lily, Max, and Nora — were each given a different colored balloon (red, blue, yellow) for their birthday and are each a different age (5, 7, 9). Constraints: (1) The youngest got the red balloon. (2) Max is older than Lily. (3) Nora got the blue balloon. (4) The 9-year-old did not get the yellow balloon. Output one line per sibling in the format NAME: age, balloon.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "lily: 5, red | max: 7, yellow | nora: 9, blue",
+      "verified": true
+    },
+    {
+      "id": "LG-010",
+      "category": "logic_grid",
+      "difficulty": "medium",
+      "statement": "Four colleagues — Pia, Quinn, Rio, and Sage — work on different floors of a building (1, 2, 3, 4), have different roles (designer, manager, intern, analyst), and work different hours per week (30, 35, 40, 45). Constraints: (1) The designer works 45 hours per week. (2) The intern is on floor 1. (3) Quinn is the manager. (4) Pia works 30 hours per week. (5) The person on floor 4 works 35 hours per week. (6) Rio is on floor 3. (7) Sage works more hours than Quinn. (8) Pia is the intern. (9) Sage is the designer. Output one line per colleague in the format NAME: floor, role, hours.",
+      "answer_format": "kv_pipe",
+      "expected_answer": "pia: 1, intern, 30 | sage: 2, designer, 45 | rio: 3, analyst, 40 | quinn: 4, manager, 35",
+      "verified": true
+    },
+    {
+      "id": "CA-001",
+      "category": "cryptarithmetic",
+      "difficulty": "hard",
+      "statement": "Solve the cryptarithmetic puzzle SEND + MORE = MONEY where each letter stands for a unique digit 0-9, and no leading digit is zero. Output the assignment as letter=digit pairs.",
+      "answer_format": "letter_to_digit",
+      "expected_answer": "s=9,e=5,n=6,d=7,m=1,o=0,r=8,y=2",
+      "verified": true,
+      "verification_check": "9567 + 1085 = 10652"
+    },
+    {
+      "id": "CA-002",
+      "category": "cryptarithmetic",
+      "difficulty": "hard",
+      "statement": "Solve the cryptarithmetic puzzle DONALD + GERALD = ROBERT where each letter stands for a unique digit 0-9, and no leading digit is zero. Output the assignment as letter=digit pairs.",
+      "answer_format": "letter_to_digit",
+      "expected_answer": "d=5,o=2,n=6,a=4,l=8,g=1,e=9,r=7,b=3,t=0",
+      "verified": true,
+      "verification_check": "526485 + 197485 = 723970"
+    },
+    {
+      "id": "CA-003",
+      "category": "cryptarithmetic",
+      "difficulty": "easy",
+      "statement": "Solve the cryptarithmetic puzzle ME + ME = BEE where each letter stands for a unique digit 0-9, and no leading digit is zero. Output the assignment as letter=digit pairs.",
+      "answer_format": "letter_to_digit",
+      "expected_answer": "m=5,e=0,b=1",
+      "verified": true,
+      "verification_check": "50 + 50 = 100"
+    },
+    {
+      "id": "CA-004",
+      "category": "cryptarithmetic",
+      "difficulty": "medium",
+      "statement": "Solve the cryptarithmetic puzzle COCA + COLA = OASIS where each letter stands for a unique digit 0-9, and no leading digit is zero. Output the assignment as letter=digit pairs.",
+      "answer_format": "letter_to_digit",
+      "expected_answer": "c=8,o=1,l=0,a=6,s=2,i=9",
+      "verified": true,
+      "verification_check": "8186 + 8106 = 16292 (unique solution by brute force)"
+    },
+    {
+      "id": "KK-001",
+      "category": "knights_knaves",
+      "difficulty": "easy",
+      "statement": "On an island, knights always tell the truth and knaves always lie. You meet two people, A and B. A says: 'B is a knave.' B says: 'Neither of us is a knave.' Determine the type of each. Output as A=knight or A=knave, etc.",
+      "answer_format": "kn_list",
+      "expected_answer": "a=knight, b=knave",
+      "verified": true
+    },
+    {
+      "id": "KK-002",
+      "category": "knights_knaves",
+      "difficulty": "easy",
+      "statement": "On an island where knights always tell the truth and knaves always lie, you meet three people: A, B, and C. A says: 'All of us are knaves.' B says: 'Exactly one of us is a knight.' Determine the type of each.",
+      "answer_format": "kn_list",
+      "expected_answer": "a=knave, b=knight, c=knave",
+      "verified": true
+    },
+    {
+      "id": "KK-003",
+      "category": "knights_knaves",
+      "difficulty": "medium",
+      "statement": "On an island where knights always tell the truth and knaves always lie, you meet three people: A, B, and C. A says: 'B is a knight.' B says: 'C is a knave.' C says: 'A and B are different types.' Determine the type of each.",
+      "answer_format": "kn_list",
+      "expected_answer": "a=knight, b=knight, c=knave",
+      "verified": true
+    },
+    {
+      "id": "KK-004",
+      "category": "knights_knaves",
+      "difficulty": "medium",
+      "statement": "On an island where knights always tell the truth and knaves always lie, you meet three people: A, B, and C. A says: 'All of us are knights.' B says: 'Exactly one of us is a knight.' C says: 'B is a knave.' Determine the type of each.",
+      "answer_format": "kn_list",
+      "expected_answer": "a=knave, b=knight, c=knave",
+      "verified": true
+    },
+    {
+      "id": "KK-005",
+      "category": "knights_knaves",
+      "difficulty": "hard",
+      "statement": "On an island where knights always tell the truth and knaves always lie, you meet four people: A, B, C, and D. A says: 'B and C are both knights.' B says: 'A is a knave.' C says: 'D is a knight.' D says: 'A and C are different types.' Determine the type of each.",
+      "answer_format": "kn_list",
+      "expected_answer": "a=knave, b=knight, c=knave, d=knave",
+      "verified": true
+    },
+    {
+      "id": "KK-006",
+      "category": "knights_knaves",
+      "difficulty": "hard",
+      "statement": "On an island where knights always tell the truth and knaves always lie, you meet four people: A, B, C, and D. A says: 'Exactly two of us are knights.' B says: 'A is a knight.' C says: 'D is a knave.' D says: 'Exactly two of us are knaves.' Determine the type of each.",
+      "answer_format": "kn_list",
+      "expected_answer": "a=knave, b=knave, c=knight, d=knave",
+      "verified": true
+    },
+    {
+      "id": "CSP-001",
+      "category": "csp_word",
+      "difficulty": "easy",
+      "statement": "A farmer must transport a wolf, a goat, and a cabbage across a river using a boat that can carry only the farmer plus one item at a time. The wolf cannot be left alone with the goat (the wolf would eat the goat). The goat cannot be left alone with the cabbage (the goat would eat the cabbage). What is the minimum number of one-way crossings required to get all three across?",
+      "answer_format": "single_value",
+      "expected_answer": "7",
+      "verified": true,
+      "notes": "Canonical solution: take goat, return alone, take wolf, return with goat, take cabbage, return alone, take goat. 7 one-way crossings."
+    },
+    {
+      "id": "CSP-002",
+      "category": "csp_word",
+      "difficulty": "medium",
+      "statement": "Four people must cross a bridge at night with one flashlight. The bridge holds at most 2 people at a time. The flashlight is required for any crossing. When two people cross together, they go at the slower person's speed. The four people take 1, 2, 5, and 10 minutes individually to cross. What is the minimum total time for all four to reach the other side?",
+      "answer_format": "single_value",
+      "expected_answer": "17",
+      "verified": true,
+      "notes": "Optimal sequence: 1+2 cross (2), 1 returns (1), 5+10 cross (10), 2 returns (2), 1+2 cross (2). Total: 17 minutes. The non-greedy step (1 returning instead of 10 returning) is the dead-end-required structure."
+    },
+    {
+      "id": "CSP-003",
+      "category": "csp_word",
+      "difficulty": "medium",
+      "statement": "In a 4x4 Sudoku, place the numbers 1, 2, 3, 4 into the empty cells so that each row, each column, and each 2x2 block contains all four numbers exactly once. The starting grid is: Row 1: _, 2, 3, _ | Row 2: 3, _, _, _ | Row 3: _, _, _, 1 | Row 4: _, _, 4, _. What is the value in the top-left cell (Row 1, Column 1)?",
+      "answer_format": "single_value",
+      "expected_answer": "1",
+      "verified": true
+    },
+    {
+      "id": "CSP-004",
+      "category": "csp_word",
+      "difficulty": "easy",
+      "statement": "Tower of Hanoi: 4 disks of different sizes are stacked on the leftmost of three pegs, with the largest at the bottom. Move all disks to the rightmost peg. Only one disk may move at a time, and a larger disk may never rest on a smaller one. What is the minimum number of moves?",
+      "answer_format": "single_value",
+      "expected_answer": "15",
+      "verified": true,
+      "notes": "2^n - 1 for n disks. 2^4 - 1 = 15. Note: this is a classic recursive problem, not strictly backtrack-required. Included to test whether the LLM can solve a structured problem at all."
+    },
+    {
+      "id": "CSP-005",
+      "category": "csp_word",
+      "difficulty": "medium",
+      "statement": "You have a 3-gallon jug and a 5-gallon jug, both initially empty. You can: fill either jug from a tap, empty either jug, or pour water from one jug to the other (stopping when the source is empty or the destination is full). What is the minimum number of operations needed to measure exactly 4 gallons in one of the jugs?",
+      "answer_format": "single_value",
+      "expected_answer": "6",
+      "verified": true,
+      "notes": "Sequence: fill 5, pour 5->3, empty 3, pour 5->3, fill 5, pour 5->3 (5-jug now has 4). 6 operations."
+    },
+    {
+      "id": "CSP-006",
+      "category": "csp_word",
+      "difficulty": "medium",
+      "statement": "Place 4 queens on a 4x4 chess board so that no two queens attack each other (no two share a row, column, or diagonal). The queen in row 1 is in column 2. What column is the queen in row 4?",
+      "answer_format": "single_value",
+      "expected_answer": "3",
+      "verified": true,
+      "notes": "Solution: row1=col2, row2=col4, row3=col1, row4=col3. The other 4-queens solution is the reflection (row1=col3,...) which is excluded by the row 1 constraint."
+    }
+  ]
+}

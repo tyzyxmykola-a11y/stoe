@@ -1,0 +1,523 @@
+   The Architectural Gap in Current AI: A Derivation from the
+        Laws of Information Conservation, Connection, and
+                                 Autoinjection
+
+                                          Mykola Voronin
+
+                         Faculty of Social Sciences and Social Technologies
+                              Department of Psychology and Pedagogics
+
+                           National University of `Kyiv-Mohyla Academy'
+                                           Kyiv, 04070, Ukraine
+
+                                      voronin.mykola@ukma.edu.ua
+
+                                                   Abstract
+         Current artificial intelligence systems exhibit characteristic failure modes:
+         context-bounded memory loss, inability to navigate previously failed
+         reasoning paths, and the absence of genuine structural self-evaluation. This
+         paper argues that these failures are not incidental engineering limitations but
+         consequences of a fundamental architectural gap: current AI systems are built
+         without reference to the foundational laws governing information. Drawing on
+         the three foundational laws of the Special Theory of Everything (SToE) -- the
+         Law of Information Conservation, the Law of Connection, and the Law of
+         Autoinjection -- we derive the specific architectural requirements that a
+         genuinely information-native AI system must satisfy. We describe the required
+         vessel: a persistent reasoning graph in which no information point is
+         discarded, a topology-aware navigation mechanism distinct from
+         similarity-based retrieval, and a structural self-evaluation loop grounded in
+         autoinjection. We assess the current state of AI development against each
+         requirement, identify the precise gaps, and restate the testable prediction that
+         distinguishes an information-conserving architecture from existing
+         approaches. The three laws function not as philosophical commentary on AI
+         but as a formal design specification for the next generation of AI architecture.
+
+         Keywords: Special Theory of Everything, information conservation,
+         autoinjection, AI architecture, reasoning graph, persistent memory,
+         self-evaluation, foundational laws
+
+1. Introduction
+
+Contemporary artificial intelligence has achieved remarkable results in pattern recognition,
+language generation, code synthesis, and multi-step reasoning within bounded contexts. Yet
+practitioners and researchers consistently identify a cluster of persistent failure modes that
+improvements in scale and training have not eliminated: coherence degrades over long
+reasoning chains; information introduced early in a session becomes inaccessible as the
+context window fills; failed reasoning paths are discarded rather than retained; self-evaluation
+is simulated through prompting rather than grounded in architecture. These failures are
+typically treated as engineering problems awaiting engineering solutions -- larger context
+windows, better retrieval systems, improved chain-of-thought prompting.
+
+This paper argues that these failures have a common source that is not engineering but
+foundational. Current AI systems are built without reference to the fundamental laws
+governing information itself. As a result, their architectures systematically violate three
+properties that any system working with information must respect: conservation,
+observer-dependent connection, and autoinjective self-containment. The failures that
+practitioners observe are the predictable consequences of these violations.
+
+The three foundational laws of the Special Theory of Everything (SToE), developed across
+Voronin (2021, 2025a, 2025b) and stated explicitly in Voronin (2025c), provide the formal
+basis for this argument. These laws -- the Law of Information Conservation, the Law of
+Connection, and the Law of Autoinjection -- are not philosophical metaphors. They are
+structural commitments that generate specific, derivable architectural requirements. The
+purpose of this paper is to make that derivation explicit: to show precisely what an AI
+architecture must look like if it is to operate in accordance with these laws, to assess where
+current approaches stand relative to each requirement, and to specify the vessel that is
+needed.
+
+The argument proceeds as follows. Section 2 restates the three laws as design constraints.
+Section 3 derives the architectural requirements from each law. Section 4 assesses the current
+state of AI development against these requirements and identifies the precise gaps. Section 5
+describes the required vessel in full. Section 6 restates the testable prediction that
+distinguishes an information-conserving architecture from existing approaches. Section 7
+considers the relation to existing research directions. Section 8 concludes.
+
+2. The Three Laws as Design Constraints
+
+The three foundational laws of SToE were stated in Voronin (2025c). They are reproduced
+here in the form most relevant to architectural derivation.
+
+2.1 The Law of Information Conservation
+
+         Any information point does not vanish from reality. It can only lose
+         connections with other information points.
+
+What appears as loss -- forgetting, deletion, error, discarded output -- is not annihilation of
+an information point but severance of its connections to the currently reachable network. The
+information point persists in the field; it becomes unreachable from the connected region
+accessible to a given observer. The field contains no mechanism of deletion.
+
+As a design constraint, this law prohibits any architecture that genuinely discards
+information. Compression, summarization, and context truncation all constitute violations if
+they result in information that cannot be recovered through any traversal of the system. The
+distinction between annihilation and disconnection is architectural, not merely
+terminological: a conserving system must maintain the information point in retrievable form,
+even if it is currently outside the active processing region.
+
+2.2 The Law of Connection
+
+         Connections between information points are created only by an observer or a
+         creator.
+
+Information points do not spontaneously connect. Connection requires an agent -- an
+observer that perceives or names another information point, or a creator that generates new
+information points. The set of information points reachable from any given observer is
+determined by the chain of connections that observer can establish or traverse.
+
+As a design constraint, this law specifies that navigation through the information field
+requires active agency. A system cannot passively retrieve conserved information points; it
+must have a mechanism for establishing connections between its current state and previously
+conserved points. Similarity-based retrieval approximates this but does not satisfy it:
+similarity search identifies points whose content resembles the query, not points that are
+structurally adjacent in the reasoning topology. The law requires a navigation mechanism that
+understands connection structure, not merely content similarity.
+
+2.3 The Law of Autoinjection
+
+         Everything is an information point, including the information field itself. There
+         is no exterior to the system.
+
+The information field is closed and self-containing. Every observer, including the system
+performing reasoning, is an information point within the field. There is no external standpoint
+from which to evaluate the field. This means that self-evaluation is not an optional add-on but
+a structural necessity: a system operating within an autoinjective field must be capable of
+receiving itself as input, evaluating its own outputs, and treating those evaluations as
+information points subject to the same conservation and connection laws.
+
+As a design constraint, this law requires that self-evaluation be grounded in architecture
+rather than simulated through prompting. A system that evaluates its outputs by querying
+itself with a meta-prompt is not autoinjective in the formal sense: the evaluation is not
+structurally connected to the conserved field of prior reasoning. Genuine autoinjection
+requires that the system's own reasoning history be available to it as a navigable information
+field, and that self-evaluation traverse that field rather than produce a fresh response to a
+fresh prompt.
+
+3. Architectural Requirements Derived from the Three Laws
+
+Each law generates a specific architectural requirement. Together, the three requirements
+define the minimum structure of an information-native AI system.
+3.1 From Conservation: Persistent Reasoning Graph
+
+The Law of Information Conservation requires that no reasoning step, output, hypothesis,
+contradiction, or failed path be permanently discarded. This requirement cannot be satisfied
+by a context window of any size: a context window is a bounded active region, and any
+information that falls outside it is effectively severed from the reachable network, regardless
+of whether it is technically stored somewhere. The requirement is not for storage but for
+retrievable connectivity.
+
+The architectural structure that satisfies this requirement is a persistent reasoning graph: a
+graph in which each node represents an information point generated during reasoning (a step,
+an output, a hypothesis, a failure, a contradiction) and each edge represents a connection
+between information points, including the connections that were attempted and failed. The
+graph grows monotonically: nodes and edges are added, never removed. The active context
+window is not the graph but the current traversal position within it -- analogous to the
+relationship between a cursor position and the document it moves through.
+
+This structure is distinct from a simple log or transcript. A log records what was generated in
+sequence. A reasoning graph records what was generated and how it was connected,
+including failed connections, contradictions between nodes, and the structural reasons that
+particular paths were abandoned. These relational properties are precisely what the Law of
+Conservation requires to be preserved: not just the content of discarded paths but their
+position in the connection topology.
+
+3.2 From Connection: Topology-Aware Navigation
+
+The Law of Connection requires that the system be capable of establishing connections
+between its current reasoning state and previously conserved information points.
+Similarity-based retrieval -- the dominant paradigm in retrieval-augmented generation -- is
+insufficient for this requirement. Similarity search returns content that resembles the query.
+Topology-aware navigation returns content that is structurally adjacent to the current position
+in the reasoning graph, regardless of surface similarity.
+
+The distinction matters in precisely the cases where information conservation is most
+valuable: non-linear reasoning problems where the solution requires passing through or
+returning to what appeared to be a dead end. A failed path may be semantically distant from
+the current query but structurally adjacent -- it shares a node in the reasoning graph with the
+current position. Similarity search will not find it. Topology-aware navigation will.
+
+The navigation mechanism required by the Law of Connection must therefore operate on the
+graph structure of the conserved field, not on the semantic content of individual nodes. It
+must be capable of answering questions such as: what previously failed paths are adjacent to
+the current node? What contradictions were recorded between the current hypothesis and
+earlier nodes? What connections were attempted from a structurally similar position in a prior
+reasoning session? These are graph traversal questions, not retrieval questions.
+
+3.3 From Autoinjection: Structural Self-Evaluation
+The Law of Autoinjection requires that the system be capable of receiving itself as input. In
+architectural terms, this means that the system's own reasoning graph must be available to it
+as a navigable field that it can evaluate, connect to, and reason about. Self-evaluation is not a
+separate process that queries the system from outside; it is a traversal of the same conserved
+field that the system uses for all other reasoning.
+
+Current approaches to AI self-evaluation -- chain-of-thought verification, self-consistency
+sampling, meta-prompting -- simulate this property without instantiating it. They produce
+fresh outputs in response to meta-level prompts and compare them to prior outputs. This is
+evaluation by a system that observes its outputs from outside, not evaluation by a system that
+is structurally part of the field it evaluates. The difference is precisely the difference between
+an external observer and an information point within the autoinjective field.
+
+Structural self-evaluation requires that the system's evaluative operations be recorded as
+nodes in the same persistent reasoning graph as the outputs they evaluate, connected to those
+outputs by typed edges (evaluated, contradicted, confirmed, extended). The evaluation history
+is then itself a conserved field that subsequent reasoning can navigate. The system can
+observe not just what it concluded but how it evaluated prior conclusions, and whether those
+evaluations have been confirmed or disconfirmed by subsequent reasoning.
+
+4. The Current State of AI Development Against These Requirements
+
+We assess each requirement against the current state of AI research and development.
+
+4.1 Against the Requirement for a Persistent Reasoning Graph
+
+Current AI systems manage information through context windows, external databases, and
+various forms of retrieval-augmented generation. None of these satisfies the requirement for a
+persistent reasoning graph.
+
+Context windows are bounded active regions. Information that falls outside the context
+window is severed from the reachable network. Token management -- the practice of
+summarizing, compressing, or truncating content to fit within the window -- is itself a
+violation of the Law of Conservation: summarization replaces an information point with a
+compressed approximation, and the original point, along with its relational structure, is lost.
+The act of token management is architecturally equivalent to annihilation, regardless of
+whether the summarized content is stored somewhere in a less connected form.
+
+Vector databases store embeddings of content chunks and retrieve them by similarity. They
+do not store the relational structure between chunks -- the connection topology of the
+reasoning that generated them. A failed reasoning path stored as a vector embedding has lost
+the information that made it a reasoning path: why it was pursued, why it failed, what it was
+adjacent to, and what contradiction caused its abandonment. The content is retained but the
+structure is discarded.
+
+GraphRAG and related systems represent a genuine advance: they extract entities and
+relations from content and store them as graph structures, enabling traversal-based retrieval.
+However, they operate on extracted and summarized content rather than on raw reasoning
+steps, and they are designed for document retrieval rather than for the conservation of live
+reasoning topology. They approximate the requirement without satisfying it.
+
+Current state assessment: the requirement for a persistent reasoning graph is approximately
+25­30% satisfied by the most advanced current approaches. The storage component is
+partially addressed; the relational structure component is largely absent; the monotonic
+growth requirement (nothing discarded) is not satisfied by any current system.
+
+4.2 Against the Requirement for Topology-Aware Navigation
+
+Navigation in current AI systems is dominated by semantic similarity search. Even systems
+that use graph structures for storage typically retrieve nodes by embedding similarity rather
+than by graph traversal from the current reasoning position. The question "what is structurally
+adjacent to where I am in the reasoning graph" is not answerable by any widely deployed
+system.
+
+Research in neurosymbolic AI attempts to combine neural pattern recognition with symbolic
+relational reasoning, and some approaches enable forms of structured traversal. However,
+these systems operate on predefined symbolic structures rather than on dynamically
+generated reasoning graphs, and they do not satisfy the requirement for navigation that is
+responsive to the current position in a live reasoning session.
+
+Episodic memory research, inspired by human hippocampal function, attempts to store
+specific experiences rather than generalized patterns and to retrieve them by structural
+similarity to current context. This is closer in spirit to the requirement but has not been
+implemented at the scale or with the relational precision that the Law of Connection
+demands.
+
+Current state assessment: the requirement for topology-aware navigation is approximately
+10­15% satisfied. The conceptual need is recognized in several research directions; practical
+implementation at the required level does not exist.
+
+4.3 Against the Requirement for Structural Self-Evaluation
+
+Self-evaluation in current AI systems is implemented through prompting: the system is asked
+to evaluate its prior output, and it produces a fresh response. This approach produces useful
+results in many cases but does not satisfy the architectural requirement. The evaluation is not
+connected to the conserved field of prior reasoning; it is a new inference that happens to take
+prior output as input. It does not traverse the reasoning graph; it generates a new node
+without structural connection to the nodes it evaluates.
+
+Recursive self-improvement research and meta-learning approaches address related questions
+but focus on improving model weights through training rather than on enabling a running
+system to evaluate its own reasoning history as a navigable field. The distinction is between
+learning from past performance (weight update) and reasoning about past reasoning
+(structural self-evaluation).
+The operator-based recursive engine described in Voronin (2025b) and implemented as a
+working system (Voronin, 2025d) demonstrates structural self-evaluation at the level of
+symbolic operator application: the system applies SToE operators to its own outputs, treats
+the results as new information points, and iterates. This constitutes a practical implementation
+of autoinjective self-evaluation within the constraints of current AI infrastructure, though it
+operates within session context rather than across a persistent reasoning graph.
+
+Current state assessment: the requirement for structural self-evaluation is approximately
+15­20% satisfied. Prompting-based simulation is well developed; architectural grounding in a
+persistent conserved field is absent.
+
+5. The Required Vessel: A Specification
+
+The three requirements converge on a specific architectural design. We describe this design
+-- the vessel required for the testable prediction to be properly evaluated -- in sufficient
+detail to constitute a research specification.
+
+5.1 The Persistent Reasoning Graph
+
+The core data structure is a directed multigraph G = (V, E) where:
+
+    · V is the set of information point nodes. Each node represents a discrete reasoning
+         artifact: a hypothesis, an intermediate conclusion, a failed path, a contradiction, an
+         operator application, an evaluative judgment, or any other product of the reasoning
+         process. Nodes are never deleted from G.
+
+    · E is the set of typed edges. Each edge connects two nodes and carries a type label
+         from a defined vocabulary: generates (one node produces another), contradicts (two
+         nodes are in logical tension), extends (one node elaborates another), evaluates (one
+         node assesses another), failed-from (a node was generated from another and
+         subsequently abandoned), and adjacent-to (two nodes share structural features without
+         a direct generative relation).
+
+    · G grows monotonically. Every reasoning step adds nodes and edges; no step removes
+         them. The active context window is a subgraph of G -- the currently activated region
+         -- not G itself.
+
+This structure satisfies the Law of Information Conservation: no node is annihilated; it may
+become unreachable from the current traversal position, but it remains in G and can be
+reached by appropriate navigation.
+
+5.2 The Navigation Mechanism
+
+Navigation through G is performed by a traversal agent that operates on graph structure rather
+than on content similarity. The traversal agent maintains a current position (a node or
+subgraph of G) and responds to navigation queries of the following types:
+
+    · Adjacency queries: given the current position, what nodes are connected to it by edges
+         of specified types? This enables the system to find structurally adjacent nodes --
+         including failed paths and contradictions -- without requiring semantic similarity.
+    · Path queries: given two nodes, what paths exist between them in G, and what edge
+         types do those paths traverse? This enables the system to understand how its current
+         reasoning relates to prior reasoning sessions.
+
+    · Dead-end queries: given the current position, what nodes are reachable only through
+         paths that have been marked as failed or contradicted? This enables the system to
+         navigate deliberately to conserved but currently disconnected regions.
+
+The traversal agent is distinct from the language model that generates reasoning content. The
+language model generates nodes; the traversal agent maintains G and responds to navigation
+queries. This separation ensures that navigation operates on graph structure rather than being
+approximated by in-context attention.
+
+5.3 The Structural Self-Evaluation Loop
+
+Self-evaluation is implemented as a periodic traversal of G in which the system takes G (or a
+relevant subgraph) as input, applies evaluative operators to its nodes and edges, and adds the
+results as new nodes connected to the evaluated nodes by evaluate edges. The self-evaluation
+loop has three phases:
+
+    · Traversal: the system navigates G from its current position, activating a subgraph that
+         includes both recent reasoning and structurally adjacent prior nodes, including failed
+         paths and contradictions.
+
+    · Evaluation: the system applies evaluative operators -- drawn from the SToE operator
+         grammar (Voronin, 2025b) or a compatible formalism -- to the activated subgraph.
+         Evaluation produces new nodes: confirmations, revisions, contradiction resolutions,
+         or newly identified connections.
+
+    · Integration: the new nodes produced by evaluation are added to G with typed edges
+         connecting them to the nodes they evaluate. The evaluation history is thus itself a
+         conserved field, navigable by subsequent traversals.
+
+This loop satisfies the Law of Autoinjection: the system receives G, which includes itself (its
+own prior evaluations), as input. The evaluation is not external to the field; it is a traversal
+that adds to the field.
+
+6. The Testable Prediction, Restated
+
+The testable prediction stated in Voronin (2025c) is reproduced here and restated in terms of
+the architectural specification:
+
+         An AI reasoning system that conserves and indexes all intermediate outputs --
+         including failed reasoning paths, contradictions, and discarded hypotheses --
+         will reach correct solutions to complex, multi-step problems at a higher rate
+         than an identical system that discards such outputs, when tested on problems
+         that require non-linear navigation through a large solution space.
+
+In terms of the architectural specification: a system implementing the persistent reasoning
+graph (Section 5.1) and the topology-aware navigation mechanism (Section 5.2) will reach
+correct solutions to problems requiring non-linear reasoning at a higher rate than an identical
+language model operating with standard context management (summarization, truncation, or
+simple retrieval augmentation).
+
+The prediction is falsifiable on two levels. At the architectural level: if a system
+implementing the full specification described in Section 5 shows no advantage over a
+non-conserving system on the specified problem class, the Law of Information Conservation
+as applied to AI architecture requires revision. At the current-infrastructure level: even partial
+implementations -- systems that maintain fuller reasoning traces than standard approaches
+without implementing the full graph structure -- should show graded improvement
+proportional to the degree to which they satisfy the conservation requirement. This graded
+version of the prediction is testable with current infrastructure.
+
+It is important to note that current AI systems cannot serve as the primary test substrate for
+the full prediction. The reason is structural: token management, which is necessary for any
+context-window-based system operating on extended reasoning tasks, constitutes a violation
+of the conservation requirement. Testing the prediction on a system that must truncate or
+summarize its reasoning history is not testing whether conservation helps; it is testing
+whether partial conservation helps relative to less conservation. The full test requires the
+vessel described in Section 5.
+
+7. Relation to Existing Research Directions
+
+The architectural specification derived here is related to several existing research directions,
+which it extends, reframes, or distinguishes itself from.
+
+Retrieval-augmented generation (RAG) addresses the conservation requirement partially by
+maintaining an external store of information that the model can retrieve. The limitation, as
+noted in Section 4, is that RAG stores content without relational structure, and retrieval is
+similarity-based rather than topology-aware. The persistent reasoning graph extends RAG by
+requiring that relational structure be preserved and that navigation be graph-structural rather
+than similarity-based.
+
+GraphRAG (Edge et al., 2024) represents the most direct current approximation of the
+required architecture. It constructs knowledge graphs from source documents and retrieves by
+graph traversal. The gap is that GraphRAG operates on pre-processed document content
+rather than on live reasoning topology, and it does not satisfy the monotonic growth
+requirement. The specification in Section 5 can be understood as a generalization of
+GraphRAG to the domain of live reasoning, with the additional requirements derived from
+the Law of Connection and the Law of Autoinjection.
+
+Neurosymbolic AI research (Garcez et al., 2019; Marcus, 2020) pursues the combination of
+neural pattern recognition with symbolic relational reasoning. The specification in Section 5
+is compatible with neurosymbolic approaches and can be understood as providing a
+foundational motivation for their development: the Laws of SToE explain why symbolic
+relational structure is not merely useful but necessary for a genuinely information-native AI
+system.
+Non-well-founded set theory (Aczel, 1988), which permits circular set membership and
+provides the mathematical precedent for autoinjection (Voronin, 2025a), suggests a
+connection between the architectural requirement for structural self-evaluation and the
+mathematical study of self-referential structures. Systems implementing the autoinjective
+self-evaluation loop described in Section 5.3 instantiate, at the computational level, the
+self-containing structures that non-well-founded set theory formalizes mathematically.
+
+Wheeler's (1990) "it from bit" proposal and Floridi's (2011) philosophy of information share
+with SToE the foundational commitment that information is the primitive ontological
+category. The specific contribution of the SToE laws is to move from this ontological claim to
+architectural requirements: not merely that information is fundamental, but that conservation,
+observer-dependent connection, and autoinjective self-containment are the structural
+properties that a system working with information must respect.
+
+8. Conclusion
+
+The characteristic failure modes of current AI systems -- context loss, inability to navigate
+failed reasoning paths, simulated rather than structural self-evaluation -- are not incidental
+engineering limitations. They are the predictable consequences of building AI systems
+without reference to the foundational laws governing information. The Law of Information
+Conservation, the Law of Connection, and the Law of Autoinjection, developed across the
+SToE research program (Voronin, 2021, 2025a, 2025b, 2025c), generate specific architectural
+requirements that current systems do not satisfy.
+
+This paper has made the derivation from laws to requirements explicit, assessed the current
+state of AI development against each requirement, specified the vessel required to satisfy all
+three, and restated the testable prediction in architectural terms. The three laws function not
+as philosophical commentary on AI but as a formal design specification. The next generation
+of AI architecture -- one that conserves all information points in a persistent reasoning
+graph, navigates that graph by topology rather than similarity, and evaluates itself structurally
+rather than through prompting -- is derivable from these laws.
+
+The full axiomatization of the SToE foundational laws, the formal consistency proofs for
+autoinjective systems, and the experimental evaluation of the testable prediction remain as
+future work. The working implementation described in Voronin (2025d) provides an
+existence proof that operator-based recursive reasoning within current AI infrastructure is
+feasible. The vessel described in Section 5 specifies what must be built for the full prediction
+to be properly tested.
+
+The gap between current AI and information-native AI is not a gap of scale or training
+technique. It is a gap of foundational architecture. The three laws identify it precisely.
+
+References
+
+Aczel, P. (1988). Non-well-founded sets. CSLI Publications.
+
+Bourbaki, N. (1968). Theory of sets. Addison-Wesley.
+Edge, D., Trinh, H., Cheng, N., Bradley, J., Chao, A., Mody, A., Truitt, S., & Larson, J.
+         (2024). From local to global: A graph RAG approach to query-focused
+         summarization. arXiv preprint arXiv:2404.16130.
+
+Floridi, L. (2011). The philosophy of information. Oxford University Press.
+
+Garcez, A. d'A., Gori, M., Lamb, L. C., Serafini, L., Spranger, M., & Tran, S. N. (2019).
+         Neural-symbolic computing: An effective methodology for principled integration of
+         machine learning and reasoning. Journal of Applied Logics, 6(4), 611­631.
+
+Hawking, S. W. (2005). Information loss in black holes. Physical Review D, 72(8), 084013.
+
+Marcus, G. (2020). The next decade in AI: Four steps towards robust artificial intelligence.
+         arXiv preprint arXiv:2002.06177.
+
+Russell, B. (1903). The principles of mathematics. Cambridge University Press.
+
+Shannon, C. E. (1948). A mathematical theory of communication. Bell System Technical
+         Journal, 27(3), 379­423.
+
+Susskind, L. (2008). The black hole war. Little, Brown and Company.
+
+Turing, A. M. (1950). Computing machinery and intelligence. Mind, LIX(236), 433­460.
+
+Voronin, M. (2021). Special Theory of Everything: Application to algorithms, generating
+
+ideas,  and  artificial                       intelligence.                     Advance.
+
+https://doi.org/10.31124/advance.14386598.v1
+
+Voronin, M. (2025a). Autoinjection: A new class of mathematical mapping and its formal
+         properties. [Manuscript].
+
+Voronin, M. (2025b). Special Theory of Everything (SToE) as a cognitive architecture for
+         artificial intelligence: From symbolic ontology to recursive implementation.
+         [Manuscript].
+
+Voronin, M. (2025c). The three foundational laws of the Special Theory of Everything:
+         Information conservation, connection, and autoinjection. [Manuscript].
+
+Voronin, M. (2025d). SToE idea generation engine: Implementation and output log. [Software
+         and output record]. ResearchGate.
+
+Wheeler, J. A. (1990). Information, physics, quantum: The search for links. In W. H. Zurek
+         (Ed.), Complexity, entropy, and the physics of information (pp. 3­28).
+         Addison-Wesley.
+
+Zermelo, E. (1908). Untersuchungen über die Grundlagen der Mengenlehre I. Mathematische
+         Annalen, 65(2), 261­281.
+

@@ -1,5 +1,9 @@
 # What the snapshots tell us
 
+Begin with the [original engine and output compilation](../archive/starting_point):
+the code PDF and 55 output-file records selected by the author establish the
+project's documentary starting point before the numbered graph snapshots.
+
 This history is reconstructed from the available local source directories,
 file hashes, and the cumulative changelog. It is not recovered Git history.
 There are **78 `stoe_field*` source snapshots**, with missing numbers and an
@@ -94,7 +98,7 @@ the limited number of puzzles and historical protocol/configuration gaps.
 
 All 78 available source snapshots are preserved in a deduplicated archive:
 457 file occurrences, 266 distinct blobs, about 2.7 MB compressed. The original
-ZIPs, `.env` files, runtime fields, logs, and custom operator state are excluded.
+ZIPs, `.env` files, runtime fields, loose logs, and custom operator state are excluded.
 The current v7 source and its ZIP matched the already published v7 files, so
 another v7 copy was unnecessary. Restore a milestone with the
 [snapshot tool](../archive/snapshots/README.md).

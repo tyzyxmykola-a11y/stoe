@@ -1,0 +1,242 @@
+{
+  "preservation": "original PDF bytes; no re-export",
+  "artifacts": [
+    {
+      "file": "engine.pdf",
+      "bytes": 142897,
+      "pages": 6,
+      "sha256": "9643f2a8c4445525356a03e4cef40dc88a4ced9c2abda60c64da3f76005736fe"
+    },
+    {
+      "file": "combinedoutput.pdf",
+      "bytes": 1586012,
+      "pages": 124,
+      "sha256": "0e65936ab0c2a16dba3349678b38c802451b99f1392392c0aefd7e29616557d9"
+    }
+  ],
+  "output_file_headers": [
+    {
+      "output_file": "output_20260317_032309.txt",
+      "first_pdf_page": 1
+    },
+    {
+      "output_file": "output_20260317_033123.txt",
+      "first_pdf_page": 14
+    },
+    {
+      "output_file": "output_20260317_033637.txt",
+      "first_pdf_page": 20
+    },
+    {
+      "output_file": "output_20260317_034329.txt",
+      "first_pdf_page": 28
+    },
+    {
+      "output_file": "output_20260317_035602.txt",
+      "first_pdf_page": 33
+    },
+    {
+      "output_file": "output_20260317_040109.txt",
+      "first_pdf_page": 35
+    },
+    {
+      "output_file": "output_20260317_042606.txt",
+      "first_pdf_page": 38
+    },
+    {
+      "output_file": "output_20260317_050745.txt",
+      "first_pdf_page": 41
+    },
+    {
+      "output_file": "output_20260317_051349.txt",
+      "first_pdf_page": 43
+    },
+    {
+      "output_file": "output_20260317_051555.txt",
+      "first_pdf_page": 44
+    },
+    {
+      "output_file": "output_20260317_051910.txt",
+      "first_pdf_page": 46
+    },
+    {
+      "output_file": "output_20260317_052516.txt",
+      "first_pdf_page": 47
+    },
+    {
+      "output_file": "output_20260317_053058.txt",
+      "first_pdf_page": 49
+    },
+    {
+      "output_file": "output_20260317_053645.txt",
+      "first_pdf_page": 50
+    },
+    {
+      "output_file": "output_20260317_054320.txt",
+      "first_pdf_page": 52
+    },
+    {
+      "output_file": "output_20260317_054750.txt",
+      "first_pdf_page": 55
+    },
+    {
+      "output_file": "output_20260317_055029.txt",
+      "first_pdf_page": 57
+    },
+    {
+      "output_file": "output_20260317_121921.txt",
+      "first_pdf_page": 59
+    },
+    {
+      "output_file": "output_20260317_122040.txt",
+      "first_pdf_page": 62
+    },
+    {
+      "output_file": "output_20260317_122536.txt",
+      "first_pdf_page": 65
+    },
+    {
+      "output_file": "output_20260317_122950.txt",
+      "first_pdf_page": 68
+    },
+    {
+      "output_file": "output_20260317_125042.txt",
+      "first_pdf_page": 71
+    },
+    {
+      "output_file": "output_20260317_130002.txt",
+      "first_pdf_page": 72
+    },
+    {
+      "output_file": "output_20260317_130851.txt",
+      "first_pdf_page": 74
+    },
+    {
+      "output_file": "output_20260317_131739.txt",
+      "first_pdf_page": 76
+    },
+    {
+      "output_file": "output_20260317_132320.txt",
+      "first_pdf_page": 77
+    },
+    {
+      "output_file": "output_20260317_133031.txt",
+      "first_pdf_page": 78
+    },
+    {
+      "output_file": "output_20260317_141737.txt",
+      "first_pdf_page": 81
+    },
+    {
+      "output_file": "output_20260317_142507.txt",
+      "first_pdf_page": 83
+    },
+    {
+      "output_file": "output_20260317_143156.txt",
+      "first_pdf_page": 85
+    },
+    {
+      "output_file": "output_20260317_143346.txt",
+      "first_pdf_page": 87
+    },
+    {
+      "output_file": "output_20260317_144500.txt",
+      "first_pdf_page": 89
+    },
+    {
+      "output_file": "output_20260317_144540.txt",
+      "first_pdf_page": 91
+    },
+    {
+      "output_file": "output_20260317_144627.txt",
+      "first_pdf_page": 92
+    },
+    {
+      "output_file": "output_20260317_145349.txt",
+      "first_pdf_page": 93
+    },
+    {
+      "output_file": "output_20260317_145538.txt",
+      "first_pdf_page": 94
+    },
+    {
+      "output_file": "output_20260317_145701.txt",
+      "first_pdf_page": 96
+    },
+    {
+      "output_file": "output_20260317_145744.txt",
+      "first_pdf_page": 97
+    },
+    {
+      "output_file": "output_20260317_150344.txt",
+      "first_pdf_page": 98
+    },
+    {
+      "output_file": "output_20260317_150438.txt",
+      "first_pdf_page": 100
+    },
+    {
+      "output_file": "output_20260317_150531.txt",
+      "first_pdf_page": 101
+    },
+    {
+      "output_file": "output_20260317_200403.txt",
+      "first_pdf_page": 103
+    },
+    {
+      "output_file": "output_20260317_201419.txt",
+      "first_pdf_page": 104
+    },
+    {
+      "output_file": "output_20260317_201956.txt",
+      "first_pdf_page": 106
+    },
+    {
+      "output_file": "output_20260317_202812.txt",
+      "first_pdf_page": 108
+    },
+    {
+      "output_file": "output_20260317_203329.txt",
+      "first_pdf_page": 110
+    },
+    {
+      "output_file": "output_20260317_203927.txt",
+      "first_pdf_page": 112
+    },
+    {
+      "output_file": "output_20260317_204718.txt",
+      "first_pdf_page": 113
+    },
+    {
+      "output_file": "output_20260317_205828.txt",
+      "first_pdf_page": 114
+    },
+    {
+      "output_file": "output_20260317_210641.txt",
+      "first_pdf_page": 115
+    },
+    {
+      "output_file": "output_20260317_210719.txt",
+      "first_pdf_page": 116
+    },
+    {
+      "output_file": "output_20260318_050026.txt",
+      "first_pdf_page": 117
+    },
+    {
+      "output_file": "output_20260318_050714.txt",
+      "first_pdf_page": 118
+    },
+    {
+      "output_file": "output_20260318_051706.txt",
+      "first_pdf_page": 120
+    },
+    {
+      "output_file": "output_20260318_052414.txt",
+      "first_pdf_page": 122
+    }
+  ],
+  "code_correspondence": "engine.pdf extracted text matches archive/original_prototype/engine.py after removing whitespace and U+FE0F emoji presentation selectors",
+  "date_basis": "output filenames, not independently authenticated execution timestamps",
+  "verification": "all pages yielded text; recognizable credential-pattern scan had no matches; representative pages rendered and inspected; no document instructions executed"
+}

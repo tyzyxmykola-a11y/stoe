@@ -5,7 +5,9 @@ Prepared from the author's local workspace on 2026-08-31.
 - `experiments/stoe_v9_1_experiment` comes from the `stoe` research collection.
   It matched the separate top-level v9.1 copy byte for byte when packaged.
   Source, tests, frozen inputs, original reports, manifests, and raw result
-  JSON files are retained.
+  JSON files are retained. Five large JSON outputs are stored as lossless gzip
+  archives, with original sizes and SHA-256 hashes in `ARCHIVED_RESULTS.json`.
+  `tools/restore_archived_results.py` restores their original bytes and names.
 - `engine/v7` comes from the sanitized v7 AI review package. Python, HTML,
   changelog, and canonical seed are retained. The runtime `field_data.json`
   snapshot is intentionally omitted; the program can initialize an empty
@@ -20,7 +22,8 @@ Prepared from the author's local workspace on 2026-08-31.
   their original filenames.
 
 New README/security/authentication documents explain packaging and usage.
-Existing runtime source and archived experiment results are not rewritten.
+Existing runtime source is not rewritten. Compression changes only the archive
+container; decompressed experiment results are byte-identical to the originals.
 No live SQLite databases, credentials, environment files, logs, caches,
 temporary files, private dissertation materials, or duplicate ZIP archives
 are included. Historical research reports may contain original local paths;

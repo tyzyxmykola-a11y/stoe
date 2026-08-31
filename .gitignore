@@ -19,7 +19,14 @@ logs/
 sessions/
 tmp/
 .tmp/
-mock-results.json
+mock-results.json*
+
+# Restored archives (tracked copies use lossless .json.gz)
+/experiments/stoe_v9_1_experiment/V9_1_COUNTERFACTUAL_RESULTS.json
+/experiments/stoe_v9_1_experiment/V9_1_PRIMARY_RAW_TRACES.json
+/experiments/stoe_v9_1_experiment/V9_1_PRIMARY_RESULTS.json
+/experiments/stoe_v9_1_experiment/V9_1_SERIALIZATION_DRY_RUN.json
+/experiments/stoe_v9_1_experiment/V9_CONTEXT_EXPOSURE_AUDIT.json
 
 # Python and OS artifacts
 __pycache__/

@@ -10,8 +10,9 @@
 - Plugin manifest validator: **passed**.
 - Reasoning skill canonical-seed validator: **passed** (36 core IPs, 113 typed
   relations, and the expected SHA-256).
-- All **86 copied source/research files** match their originals byte for byte.
-- All **33 Python files** parsed successfully; packaged JSON parsed successfully.
+- All **86 copied source/research files** match their originals byte for byte,
+  with five archived JSON outputs compared after lossless decompression.
+- All **33 original Python files** parsed successfully; packaged JSON parsed successfully.
 - New documentation's relative links resolved locally.
 - Pattern checks found no private-key blocks, recognizable GitHub/API/cloud
   token formats, credential-bearing URLs, or obvious assigned secrets in the

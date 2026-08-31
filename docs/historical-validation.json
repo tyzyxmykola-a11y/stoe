@@ -1,0 +1,10 @@
+{
+  "copied_files_verified": 39,
+  "snapshot_files_verified": 457,
+  "unique_snapshot_blobs": 266,
+  "benchmark_json_reports_verified": 61,
+  "restore_round_trips": "passed",
+  "overwrite_refusal": "passed",
+  "recomputed_experiment_6_verdict": "exact match",
+  "secret_scan_and_link_findings": []
+}

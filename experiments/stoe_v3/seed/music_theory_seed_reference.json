@@ -1,0 +1,1707 @@
+{
+  "nodes": {
+    "4ee416b0f6f2b819": {
+      "id": "4ee416b0f6f2b819",
+      "content": "Music (M)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 10,
+      "metadata": {
+        "description": "the totality of organized sound",
+        "is_music_seed": true,
+        "expr": "M ∈ M"
+      },
+      "name": "Music (M)",
+      "description": "the totality of organized sound",
+      "expression": "M ∈ M"
+    },
+    "880a7ef20988e107": {
+      "id": "880a7ef20988e107",
+      "content": "Silence",
+      "category": "Mirror",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 2,
+      "metadata": {
+        "description": "absence of sound — the negative space of music",
+        "is_music_seed": true,
+        "expr": "∅"
+      },
+      "name": "Silence",
+      "description": "absence of sound — the negative space of music",
+      "expression": "∅"
+    },
+    "b8a458c7977873ba": {
+      "id": "b8a458c7977873ba",
+      "content": "Listener (L)",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 7,
+      "metadata": {
+        "description": "the perceiver who completes the musical act",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Listener (L)",
+      "description": "the perceiver who completes the musical act",
+      "expression": ""
+    },
+    "b60c2c0babdb1e77": {
+      "id": "b60c2c0babdb1e77",
+      "content": "Composer (C)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 14,
+      "metadata": {
+        "description": "creator of musical structures",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Composer (C)",
+      "description": "creator of musical structures",
+      "expression": ""
+    },
+    "db1fa5408df7f841": {
+      "id": "db1fa5408df7f841",
+      "content": "Law of Tonality",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "tonal centers organize pitch relationships",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Law of Tonality",
+      "description": "tonal centers organize pitch relationships",
+      "expression": ""
+    },
+    "db4a951564b25f2e": {
+      "id": "db4a951564b25f2e",
+      "content": "Law of Harmony",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "simultaneous pitches form connected vertical structures",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Law of Harmony",
+      "description": "simultaneous pitches form connected vertical structures",
+      "expression": ""
+    },
+    "4fd0ff4a965e65c3": {
+      "id": "4fd0ff4a965e65c3",
+      "content": "Law of Resolution",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 9,
+      "metadata": {
+        "description": "dissonance seeks consonance; tension seeks release",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Law of Resolution",
+      "description": "dissonance seeks consonance; tension seeks release",
+      "expression": ""
+    },
+    "076caecae69643d3": {
+      "id": "076caecae69643d3",
+      "content": "Sonata Form",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 7,
+      "metadata": {
+        "description": "exposition-development-recapitulation: form contains itself",
+        "is_music_seed": true,
+        "expr": "S = E·D·R"
+      },
+      "name": "Sonata Form",
+      "description": "exposition-development-recapitulation: form contains itself",
+      "expression": "S = E·D·R"
+    },
+    "dd5e6bfafb67c44d": {
+      "id": "dd5e6bfafb67c44d",
+      "content": "Tonal Function",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 8,
+      "metadata": {
+        "description": "relation of a pitch or chord to a tonal center",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Tonal Function",
+      "description": "relation of a pitch or chord to a tonal center",
+      "expression": ""
+    },
+    "23a474d850acc6d5": {
+      "id": "23a474d850acc6d5",
+      "content": "Note (n)",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 6,
+      "metadata": {
+        "description": "atomic unit of pitched sound",
+        "is_music_seed": true,
+        "expr": "n ∈ Scale"
+      },
+      "name": "Note (n)",
+      "description": "atomic unit of pitched sound",
+      "expression": "n ∈ Scale"
+    },
+    "4db7291706067fd3": {
+      "id": "4db7291706067fd3",
+      "content": "Soul (∞)",
+      "category": "Hidden Diamond",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 6,
+      "metadata": {
+        "description": "the ineffable source of musical meaning",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Soul (∞)",
+      "description": "the ineffable source of musical meaning",
+      "expression": ""
+    },
+    "7f84d41245a4f8b4": {
+      "id": "7f84d41245a4f8b4",
+      "content": "Musician (Mus)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "interpreter who realizes notation as sound",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Musician (Mus)",
+      "description": "interpreter who realizes notation as sound",
+      "expression": ""
+    },
+    "770c67e40d14d057": {
+      "id": "770c67e40d14d057",
+      "content": "AI Music Generation (AIM)",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 7,
+      "metadata": {
+        "description": "algorithmic composition from learned patterns",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "AI Music Generation (AIM)",
+      "description": "algorithmic composition from learned patterns",
+      "expression": ""
+    },
+    "1edeeca2d69c7c2b": {
+      "id": "1edeeca2d69c7c2b",
+      "content": "J.S. Bach (Bach)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 7,
+      "metadata": {
+        "description": "master who formalized counterpoint and tonal practice",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "J.S. Bach (Bach)",
+      "description": "master who formalized counterpoint and tonal practice",
+      "expression": ""
+    },
+    "1a51e34af7c9ddee": {
+      "id": "1a51e34af7c9ddee",
+      "content": "Common Practice Theory (CPT)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 18,
+      "metadata": {
+        "description": "the unified theory of tonal music c. 1650-1900",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Common Practice Theory (CPT)",
+      "description": "the unified theory of tonal music c. 1650-1900",
+      "expression": ""
+    },
+    "3615a9f4a82444df": {
+      "id": "3615a9f4a82444df",
+      "content": "Sound Field",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 3,
+      "metadata": {
+        "description": "the medium in which all musical events occur",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Sound Field",
+      "description": "the medium in which all musical events occur",
+      "expression": ""
+    },
+    "f9c194cf259c57a8": {
+      "id": "f9c194cf259c57a8",
+      "content": "Operator + Counterpoint",
+      "category": "Fertilizer",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 8,
+      "metadata": {
+        "description": "two melodic lines coexisting in relation",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Operator + Counterpoint",
+      "description": "two melodic lines coexisting in relation",
+      "expression": ""
+    },
+    "391ded7c7c7388bc": {
+      "id": "391ded7c7c7388bc",
+      "content": "Operator × Harmonization",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "creating vertical sonority from melodic material",
+        "is_music_seed": true,
+        "expr": "n × n = chord"
+      },
+      "name": "Operator × Harmonization",
+      "description": "creating vertical sonority from melodic material",
+      "expression": "n × n = chord"
+    },
+    "39791e2fa41a8b8c": {
+      "id": "39791e2fa41a8b8c",
+      "content": "Operator − Subtraction",
+      "category": "Fertilizer",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 2,
+      "metadata": {
+        "description": "removing voices to reveal essential motion",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Operator − Subtraction",
+      "description": "removing voices to reveal essential motion",
+      "expression": ""
+    },
+    "a225685845dc3870": {
+      "id": "a225685845dc3870",
+      "content": "Operator ↻ Repetition",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 6,
+      "metadata": {
+        "description": "iterative restatement that builds form",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Operator ↻ Repetition",
+      "description": "iterative restatement that builds form",
+      "expression": ""
+    },
+    "71a871b792faf890": {
+      "id": "71a871b792faf890",
+      "content": "Operator ^ Amplification",
+      "category": "Fertilizer",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 2,
+      "metadata": {
+        "description": "intensifying dynamics, register, or texture",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Operator ^ Amplification",
+      "description": "intensifying dynamics, register, or texture",
+      "expression": ""
+    },
+    "a3f734107fd7b86d": {
+      "id": "a3f734107fd7b86d",
+      "content": "Operator ∑ Cadence",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "harmonic conclusion collapsing phrase into resolution",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Operator ∑ Cadence",
+      "description": "harmonic conclusion collapsing phrase into resolution",
+      "expression": ""
+    },
+    "c5899e1bd00207af": {
+      "id": "c5899e1bd00207af",
+      "content": "Operator S Notation",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "encoding sound as written symbol for transmission",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Operator S Notation",
+      "description": "encoding sound as written symbol for transmission",
+      "expression": ""
+    },
+    "df4421560989df60": {
+      "id": "df4421560989df60",
+      "content": "Tonic=Resolution theorem",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "the tonic is where dissonance resolves; both are the same",
+        "is_music_seed": true,
+        "expr": "T = R"
+      },
+      "name": "Tonic=Resolution theorem",
+      "description": "the tonic is where dissonance resolves; both are the same",
+      "expression": "T = R"
+    },
+    "aaf74f2031fcb1a0": {
+      "id": "aaf74f2031fcb1a0",
+      "content": "Tension-Release duality",
+      "category": "Mirror",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "dissonance and consonance as complementary phases",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Tension-Release duality",
+      "description": "dissonance and consonance as complementary phases",
+      "expression": ""
+    },
+    "bf0f6115849c39ba": {
+      "id": "bf0f6115849c39ba",
+      "content": "Circle of Fifths",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "cyclic structure of all 12 keys via fifth relations",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Circle of Fifths",
+      "description": "cyclic structure of all 12 keys via fifth relations",
+      "expression": ""
+    },
+    "58d3fc48d1df1e9f": {
+      "id": "58d3fc48d1df1e9f",
+      "content": "Modulation",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 6,
+      "metadata": {
+        "description": "transformation from one tonal center to another",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Modulation",
+      "description": "transformation from one tonal center to another",
+      "expression": ""
+    },
+    "5bde1225dcc560c5": {
+      "id": "5bde1225dcc560c5",
+      "content": "Listener creates meaning",
+      "category": "Mirror",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "sound becomes music only when heard",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Listener creates meaning",
+      "description": "sound becomes music only when heard",
+      "expression": ""
+    },
+    "8aa472efc5d4b453": {
+      "id": "8aa472efc5d4b453",
+      "content": "Music self-reference",
+      "category": "Hidden Diamond",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "music about music; quotation, variation, parody",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Music self-reference",
+      "description": "music about music; quotation, variation, parody",
+      "expression": ""
+    },
+    "06064bcebe5e4793": {
+      "id": "06064bcebe5e4793",
+      "content": "Persistent Score",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "notation that conserves musical structure across time",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Persistent Score",
+      "description": "notation that conserves musical structure across time",
+      "expression": ""
+    },
+    "0ecfc58d6567b9f6": {
+      "id": "0ecfc58d6567b9f6",
+      "content": "Music=Everything theorem",
+      "category": "Hidden Diamond",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 4,
+      "metadata": {
+        "description": "for the truly engaged listener music encompasses all",
+        "is_music_seed": true,
+        "expr": "M = ∞"
+      },
+      "name": "Music=Everything theorem",
+      "description": "for the truly engaged listener music encompasses all",
+      "expression": "M = ∞"
+    },
+    "77b2b4295acaf5b2": {
+      "id": "77b2b4295acaf5b2",
+      "content": "Rameau Treatise 1722",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 9,
+      "metadata": {
+        "description": "Traité de l'harmonie réduite à ses principes naturels",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Rameau Treatise 1722",
+      "description": "Traité de l'harmonie réduite à ses principes naturels",
+      "expression": ""
+    },
+    "9eb343a3018280c0": {
+      "id": "9eb343a3018280c0",
+      "content": "Functional Harmony: 4 Categories",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 8,
+      "metadata": {
+        "description": "Tonic, Subdominant, Dominant, and Predominant functions",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Functional Harmony: 4 Categories",
+      "description": "Tonic, Subdominant, Dominant, and Predominant functions",
+      "expression": ""
+    },
+    "0124c42541cb0f73": {
+      "id": "0124c42541cb0f73",
+      "content": "Music Theory as Cognitive Architecture",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 8,
+      "metadata": {
+        "description": "tonal expectation as a model of structured prediction",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Music Theory as Cognitive Architecture",
+      "description": "tonal expectation as a model of structured prediction",
+      "expression": ""
+    },
+    "b5c82f022957a9a8": {
+      "id": "b5c82f022957a9a8",
+      "content": "Composition Practice Gap",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 5,
+      "metadata": {
+        "description": "the discontinuity between theory and lived composition",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Composition Practice Gap",
+      "description": "the discontinuity between theory and lived composition",
+      "expression": ""
+    },
+    "30a78f3236b6c1ce": {
+      "id": "30a78f3236b6c1ce",
+      "content": "Three Laws of Tonality",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "MUSIC_SEED",
+      "created_at": "2026-05-11T09:00:00.000000",
+      "connections": 10,
+      "metadata": {
+        "description": "Tonality, Harmony, Resolution as foundational principles",
+        "is_music_seed": true,
+        "expr": ""
+      },
+      "name": "Three Laws of Tonality",
+      "description": "Tonality, Harmony, Resolution as foundational principles",
+      "expression": ""
+    }
+  },
+  "edges": [
+    {
+      "id": "36456e777beb5e58",
+      "source": "4ee416b0f6f2b819",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6f06326b73e6c989",
+      "source": "23a474d850acc6d5",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f138f3147d26fef9",
+      "source": "db1fa5408df7f841",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "47060cde20ccbb25",
+      "source": "db4a951564b25f2e",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "2d936720dd9e1303",
+      "source": "4fd0ff4a965e65c3",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "be440ac4ea3c18c9",
+      "source": "076caecae69643d3",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "28b164f9af8f1dd3",
+      "source": "dd5e6bfafb67c44d",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "08aaafe58011b155",
+      "source": "bf0f6115849c39ba",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "16bba2e305dd12e4",
+      "source": "9eb343a3018280c0",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f180d6ee5901a1b7",
+      "source": "30a78f3236b6c1ce",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "06ddf2b57bd9d737",
+      "source": "f9c194cf259c57a8",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "570aed4ea0df7ba8",
+      "source": "391ded7c7c7388bc",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "3d6bc7ed75d45100",
+      "source": "39791e2fa41a8b8c",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "800a05c142d53312",
+      "source": "a225685845dc3870",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "3496e557d5c52b6e",
+      "source": "71a871b792faf890",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "e578dd0813da53cc",
+      "source": "a3f734107fd7b86d",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "2ba641fe48a72cba",
+      "source": "c5899e1bd00207af",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "99c2b69bebcf5aed",
+      "source": "770c67e40d14d057",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "21562257d982d6ce",
+      "source": "06064bcebe5e4793",
+      "target": "b60c2c0babdb1e77",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "61a7d9e4658bf9a5",
+      "source": "58d3fc48d1df1e9f",
+      "target": "dd5e6bfafb67c44d",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "b552e6bad1fb5103",
+      "source": "aaf74f2031fcb1a0",
+      "target": "4fd0ff4a965e65c3",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "c1b5afd5747eb1bc",
+      "source": "df4421560989df60",
+      "target": "4fd0ff4a965e65c3",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "9d20f91d7b7fbf23",
+      "source": "0ecfc58d6567b9f6",
+      "target": "4db7291706067fd3",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6d1526de3798001b",
+      "source": "8aa472efc5d4b453",
+      "target": "076caecae69643d3",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "8fbbfeea86a95c25",
+      "source": "5bde1225dcc560c5",
+      "target": "b8a458c7977873ba",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "1a99b00a10495596",
+      "source": "b5c82f022957a9a8",
+      "target": "0124c42541cb0f73",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "768e31053883a454",
+      "source": "77b2b4295acaf5b2",
+      "target": "1edeeca2d69c7c2b",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "13368e0b3b40c53e",
+      "source": "9eb343a3018280c0",
+      "target": "77b2b4295acaf5b2",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "ccf8ae94bfd070e7",
+      "source": "30a78f3236b6c1ce",
+      "target": "77b2b4295acaf5b2",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "c75aed8d45035ec9",
+      "source": "3615a9f4a82444df",
+      "target": "4ee416b0f6f2b819",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f73ffe00959fa2cd",
+      "source": "7f84d41245a4f8b4",
+      "target": "4ee416b0f6f2b819",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f76c73414ccb1a05",
+      "source": "b8a458c7977873ba",
+      "target": "4ee416b0f6f2b819",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "390c95aa9f3390e6",
+      "source": "b60c2c0babdb1e77",
+      "target": "4ee416b0f6f2b819",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "2dbd86a9ff40daa6",
+      "source": "880a7ef20988e107",
+      "target": "4ee416b0f6f2b819",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "9f77bf9b1f5d6bc1",
+      "source": "1edeeca2d69c7c2b",
+      "target": "7f84d41245a4f8b4",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f4ccf06ab788726f",
+      "source": "770c67e40d14d057",
+      "target": "0124c42541cb0f73",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "c7e3008129439330",
+      "source": "0124c42541cb0f73",
+      "target": "1a51e34af7c9ddee",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "471ff3e7f2d96f84",
+      "source": "f9c194cf259c57a8",
+      "target": "1edeeca2d69c7c2b",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "fdc421227a02171a",
+      "source": "076caecae69643d3",
+      "target": "77b2b4295acaf5b2",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "24cd20d882177ff7",
+      "source": "dd5e6bfafb67c44d",
+      "target": "77b2b4295acaf5b2",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "92f6bf962617efd2",
+      "source": "4db7291706067fd3",
+      "target": "4ee416b0f6f2b819",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "2913c9e5bcdc9758",
+      "source": "23a474d850acc6d5",
+      "target": "3615a9f4a82444df",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "fbe80f92ef7dee58",
+      "source": "b8a458c7977873ba",
+      "target": "b60c2c0babdb1e77",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "bc15327752c429a0",
+      "source": "7f84d41245a4f8b4",
+      "target": "b60c2c0babdb1e77",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "102daac5bd02a9b1",
+      "source": "f9c194cf259c57a8",
+      "target": "391ded7c7c7388bc",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "5c151d91986c09e7",
+      "source": "a225685845dc3870",
+      "target": "a3f734107fd7b86d",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "a2b12968e9ecf737",
+      "source": "aaf74f2031fcb1a0",
+      "target": "a3f734107fd7b86d",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "ca5a2d861f2c64fd",
+      "source": "bf0f6115849c39ba",
+      "target": "58d3fc48d1df1e9f",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "04a12820883af342",
+      "source": "dd5e6bfafb67c44d",
+      "target": "9eb343a3018280c0",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "fad0c65a88153f80",
+      "source": "db1fa5408df7f841",
+      "target": "db4a951564b25f2e",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "bc56d70f2d322ae2",
+      "source": "db4a951564b25f2e",
+      "target": "4fd0ff4a965e65c3",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f81a2d4883dbac1a",
+      "source": "30a78f3236b6c1ce",
+      "target": "1a51e34af7c9ddee",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "a953f55e8484b142",
+      "source": "23a474d850acc6d5",
+      "target": "c5899e1bd00207af",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "79f02638f8f06daa",
+      "source": "06064bcebe5e4793",
+      "target": "c5899e1bd00207af",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "08fd8a542e64fc7e",
+      "source": "076caecae69643d3",
+      "target": "8aa472efc5d4b453",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "856053614a06370c",
+      "source": "4db7291706067fd3",
+      "target": "5bde1225dcc560c5",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "a0b50a679974984b",
+      "source": "0ecfc58d6567b9f6",
+      "target": "4db7291706067fd3",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "4759bedc47a5d843",
+      "source": "b5c82f022957a9a8",
+      "target": "770c67e40d14d057",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "d09d5bea4d459eb1",
+      "source": "7f84d41245a4f8b4",
+      "target": "06064bcebe5e4793",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "2ddadbf32816fdf3",
+      "source": "df4421560989df60",
+      "target": "9eb343a3018280c0",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "31a9b60bc340a7c0",
+      "source": "58d3fc48d1df1e9f",
+      "target": "dd5e6bfafb67c44d",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "e5ebdba682c982ba",
+      "source": "1a51e34af7c9ddee",
+      "target": "77b2b4295acaf5b2",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "d7da8be867c65353",
+      "source": "770c67e40d14d057",
+      "target": "06064bcebe5e4793",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6b06f4b181f2092e",
+      "source": "770c67e40d14d057",
+      "target": "c5899e1bd00207af",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "8d5332557765f20c",
+      "source": "0124c42541cb0f73",
+      "target": "9eb343a3018280c0",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "b935ba4047dd9472",
+      "source": "076caecae69643d3",
+      "target": "a225685845dc3870",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6a39ec757e171f05",
+      "source": "58d3fc48d1df1e9f",
+      "target": "bf0f6115849c39ba",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "048f9268cc2f3aff",
+      "source": "9eb343a3018280c0",
+      "target": "dd5e6bfafb67c44d",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "8ff0657c00f42afc",
+      "source": "30a78f3236b6c1ce",
+      "target": "db1fa5408df7f841",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "322a54a3609a5ff6",
+      "source": "30a78f3236b6c1ce",
+      "target": "db4a951564b25f2e",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6edbaaf3a1d99c6f",
+      "source": "30a78f3236b6c1ce",
+      "target": "4fd0ff4a965e65c3",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "0eae15e10f403fca",
+      "source": "a3f734107fd7b86d",
+      "target": "391ded7c7c7388bc",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "7232d1f9e48e0564",
+      "source": "8aa472efc5d4b453",
+      "target": "a225685845dc3870",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "197a78b85493c06d",
+      "source": "b5c82f022957a9a8",
+      "target": "1a51e34af7c9ddee",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "da2bfce7bee0a6f3",
+      "source": "df4421560989df60",
+      "target": "4fd0ff4a965e65c3",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "d613ddb7579f1648",
+      "source": "5bde1225dcc560c5",
+      "target": "4fd0ff4a965e65c3",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "c3f025c02c4470a6",
+      "source": "0ecfc58d6567b9f6",
+      "target": "4ee416b0f6f2b819",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "a6f9c6f7a40aa282",
+      "source": "aaf74f2031fcb1a0",
+      "target": "f9c194cf259c57a8",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "42702088f3ed65e5",
+      "source": "77b2b4295acaf5b2",
+      "target": "1edeeca2d69c7c2b",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "0bc695b431d0154b",
+      "source": "391ded7c7c7388bc",
+      "target": "f9c194cf259c57a8",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "723313114be3a61b",
+      "source": "a225685845dc3870",
+      "target": "71a871b792faf890",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "52998033f4c2842c",
+      "source": "58d3fc48d1df1e9f",
+      "target": "bf0f6115849c39ba",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "e74c58dbbddd3203",
+      "source": "b8a458c7977873ba",
+      "target": "b60c2c0babdb1e77",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "c58e6ad012f11e20",
+      "source": "7f84d41245a4f8b4",
+      "target": "06064bcebe5e4793",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "4fa7f14c10485ec6",
+      "source": "4db7291706067fd3",
+      "target": "b8a458c7977873ba",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "cda41342f8589fa9",
+      "source": "770c67e40d14d057",
+      "target": "1a51e34af7c9ddee",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "ad4e534c6e9d1007",
+      "source": "1edeeca2d69c7c2b",
+      "target": "b60c2c0babdb1e77",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "d19a68e7b4398595",
+      "source": "880a7ef20988e107",
+      "target": "4ee416b0f6f2b819",
+      "type": "contradicts",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "9ef1a558be765b60",
+      "source": "39791e2fa41a8b8c",
+      "target": "f9c194cf259c57a8",
+      "type": "contradicts",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "373a1a1ca533b88b",
+      "source": "aaf74f2031fcb1a0",
+      "target": "4fd0ff4a965e65c3",
+      "type": "contradicts",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "9502c2c274fc14ce",
+      "source": "0124c42541cb0f73",
+      "target": "076caecae69643d3",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "0fbc8fb2780b124a",
+      "source": "0124c42541cb0f73",
+      "target": "a225685845dc3870",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6f52d2a8f3c6a3e9",
+      "source": "0124c42541cb0f73",
+      "target": "dd5e6bfafb67c44d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "51243e69e1b066ff",
+      "source": "0124c42541cb0f73",
+      "target": "58d3fc48d1df1e9f",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "031f9b6b928d8a95",
+      "source": "b5c82f022957a9a8",
+      "target": "770c67e40d14d057",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "fdf17ba3b28321fc",
+      "source": "b5c82f022957a9a8",
+      "target": "1a51e34af7c9ddee",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "93560bf079349cd0",
+      "source": "30a78f3236b6c1ce",
+      "target": "db1fa5408df7f841",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "406c6f33c4f03974",
+      "source": "30a78f3236b6c1ce",
+      "target": "db4a951564b25f2e",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "b780832a3b9247b4",
+      "source": "30a78f3236b6c1ce",
+      "target": "4fd0ff4a965e65c3",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "b951d3862ca2d2cc",
+      "source": "df4421560989df60",
+      "target": "dd5e6bfafb67c44d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "e01cf5cf5b2124b9",
+      "source": "0ecfc58d6567b9f6",
+      "target": "b8a458c7977873ba",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "03d30684f6d88d41",
+      "source": "8aa472efc5d4b453",
+      "target": "1a51e34af7c9ddee",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "6de5b406e2be6dbd",
+      "source": "77b2b4295acaf5b2",
+      "target": "9eb343a3018280c0",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "4851b5d960b3db44",
+      "source": "77b2b4295acaf5b2",
+      "target": "30a78f3236b6c1ce",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "0cccf15e2406168b",
+      "source": "1edeeca2d69c7c2b",
+      "target": "f9c194cf259c57a8",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "e2a43f583054b49e",
+      "source": "1edeeca2d69c7c2b",
+      "target": "076caecae69643d3",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "b1ff879541b20954",
+      "source": "5bde1225dcc560c5",
+      "target": "b8a458c7977873ba",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "56e023b4b1acbf47",
+      "source": "4db7291706067fd3",
+      "target": "4ee416b0f6f2b819",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "117e29ae0988c840",
+      "source": "aaf74f2031fcb1a0",
+      "target": "a3f734107fd7b86d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "f0c4bf30a5b38fd9",
+      "source": "391ded7c7c7388bc",
+      "target": "23a474d850acc6d5",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "49291a314ae2cf04",
+      "source": "f9c194cf259c57a8",
+      "target": "23a474d850acc6d5",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "824bd7e4199eaeee",
+      "source": "9eb343a3018280c0",
+      "target": "1a51e34af7c9ddee",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    },
+    {
+      "id": "dbabb6fa13528cfc",
+      "source": "3615a9f4a82444df",
+      "target": "23a474d850acc6d5",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "music seed",
+      "created_at": "2026-05-11T09:00:00.000000"
+    }
+  ]
+}

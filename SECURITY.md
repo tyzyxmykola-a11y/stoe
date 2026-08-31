@@ -16,6 +16,13 @@ This is research and local tooling, not an authenticated multi-user service.
 - Never put API keys, passwords, personal records, or other secrets into field
   content that may later be retrieved into a model context. Excluding databases
   from Git does not encrypt or otherwise protect them on disk.
+- The archived original prototype reads `OPENROUTER_API_KEY` and sends a Bearer
+  credential plus prompt content to OpenRouter. No key is included. Historical
+  snapshots may contain cloud calls, open listeners, and destructive routes;
+  restoration does not execute them or make them safe for public hosting.
+- v3's Ollama client has no application authentication. Its test/benchmark
+  artifacts are distinct from private live memory; review model-response
+  excerpts before redistributing them outside the research archive.
 - GitHub repository access credentials belong to the GitHub client or Git
   credential manager. They are not SToE application credentials and are not
   included in this repository.

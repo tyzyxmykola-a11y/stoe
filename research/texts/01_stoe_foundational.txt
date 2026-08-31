@@ -1,0 +1,320 @@
+Special Theory of Everything: Application to Algorithms,
+    Generating Ideas, and Artificial Intelligence
+
+Mykola Voronin                                      VORONIN.MYKOLA@UKMA.EDU.UA
+Faculty of Social Sciences and Social Technologies
+Department of Psychology and Pedagogics
+National University of `Kyiv-Mohyla Academy'
+Kyiv, 04070, Ukraine
+
+                                             Abstract
+In this paper, the Special Theory of Everything is introduced. It is based on the new
+concepts of information field, information points, and information functions. This article
+also reviews possible applications of this theory to some famous problems such as Cat
+Paradox by Schrodinger or the problem of human and God origin. Possible findings with
+the help of this theory and the example of password checking algorithm improvements are
+described. Insights from this theory in the field of Artificial Intelligence are also briefly
+presented.
+Keywords: Special Theory of Everything, Information Points, Artificial Intelligence,
+Paradox, Algorithms, Ideas
+Highlights
+
+     Everything consists of information field, information field consists of information
+         points, Everything has an endless quantity of information points and is nothing more
+         than information point from this endless quantity.
+
+     Information function is a relation between two or more information points that can
+         produce any number of information points.
+
+     `God' is the information point that created everything axiomatically. The exact and
+         basic similarity between God and human beings is found and it can be seen as the
+         ability to create information points in the information field.
+
+     It is impossible to observe a sun ray reflection in the sea waves without an observer,
+         but it exists as the information point when we name it, so it does not exist until seen
+         or named by the other information point.
+
+     Artificial intelligence can also create information points. So, there is no importance if
+         the machine can think or not, it is more significant what information points machines
+         can create.
+
+1. Introduction
+
+It is known that scientists work on describing universe processes using applied mathematics.
+
+One of the most intriguing problems that is not fully described yet is the Theory of
+
+Everything. Scientists from different places and times consolidated their efforts to describe
+
+everything in one fundamental theory that can be seen as a mathematical model filled with
+
+some equations and laws that are understandable in terms of modern mathematics. For
+
+instance, teaching Artificial Intelligence everything requires at least the Theory of Everything
+
+that will be taught including God, Religion, and Human origin, paradoxes, etc.
+
+On the other hand, the history of science has shown that the most interesting and significant
+
+progress was achieved by revolutionary changes in mathematics. A good example is
+
+differential equations that were introduced to the world by Newton and Leibniz. In Chapter 2
+
+of Isaac Newton's work (written between 1664 and 1671) called `Methodus fluxionum et
+
+Serierum Infinitarum', he listed three kinds of differential equations that significantly changed
+
+the understanding of the fundamental Universe Laws.
+It is also known that it is impossible to describe mathematically and precisely any tree on the
+planet. There is no theory that could accomplish this mission. As a reasonable effort, the
+mathematics of fractals (Mandelbrot, 1983, Falconer, 2003) can be considered, but still it is
+too far from being 100% precise. To describe a tree or any other natural process precisely
+mathematics should be changed significantly. Modern mathematics is based on numbers.
+Numbers stand behind almost every mathematical law or theory, which describes any natural
+process. They can be considered as a basis of modern mathematics and modelling. The
+numbers were good when the shepherd needed to count his sheep, but it is obvious that they
+are not capable of describing a tree or any other natural process precisely because there are
+too many things in the Universe that can not be counted.
+
+In fact, modern mathematics is able to make operations with infinity by means of lemniscate
+introduced by John Wallis (J. F. Scott, 1981), but it is certainly also not enough to describe a
+simple tree. Reasonable progress in mathematics was achieved by inventing functions and
+operations with different forms of variables. However, the precise description of a tree still
+remains unsolved by modern mathematics, because it has no list of equations or formulas
+describing a simple tree 100% precisely. On the other hand, we describe a tree in modern
+language without any problems. At least most people can differentiate a tree from a car. To
+describe a tree precisely or any other natural process, the mathematical basis that consistently
+leads us to numbers needs to be changed.
+
+In this article, a new mathematical basis is suggested instead of numbers, which led to the
+creation of the theory that can describe everything. Possible assumptions, axioms, and
+applications of this theory are also introduced. Of course, some ideas from this article can
+look arguable, but we remember that almost every paradigm changing idea in science was not
+accepted from the very beginning, in fact, some of the most significant ideas were refused by
+scientific society at the start.
+2. Information field and information point
+The first assumption to be made is that everything consists of information. Let us assume that
+Everything is an Information Space of all possible and impossible Information Spaces.
+Information is everything that surrounds human beings and human beings can also be seen as
+information. Let us call it the information field. The second assumption is that this
+information field consists of the information points.
+
+These information points are naturally much wider than the points that were defined by Euclid
+in his textbook called `The Elements' or Tarski, or Whitehead, Nicod, de Laguna, Menger,
+(Clarke, Bowman, 1985). They can also be formulas, operators from boolean algebra,
+theories, ideas or concepts, and of course they do have parts and certainly they have not only
+numbers or coordinates as their parameter, all they have an endless number of other
+information points to which they can be connected.
+
+The information point is a concept in the field of information. Any concept that can be
+described in any way. Trousers, tea, pens, algebra, equations, geometry, hats, dogs, trees, sons
+or suns, daughters, love, infinity, science, numbers, philosophy, or any other concept you can
+imagine is the information point in the information field. It is obvious that a great number of
+information points that we know including those which we do not know, are nothing more
+than one simple information point called `Everything'. The famous Russell-Zermelo Paradox
+(Irvine, Andrew David and Deutsch, Harry, 2016) can be understood better from the
+information point side here. And this paradox is nothing more than another information point
+as well as a naive set theory and any other theory we can imagine.
+
+3. Information function
+Let us create one more concept and call it `information function'. Information function is
+much wider than the ordinary function well known in mathematics, starting from Gottfried
+Leibniz letters to Johan Bernoulli in 1673 or sign suggested by Alexis Claude Clairaut and
+Leonhard Euler in 1734. The modern concept of function in mathematics describes it as
+`relation between the input set of points and the set of permissible output points with the
+property that each input is related to exactly one output' (CTI Reviews, 2016). Information
+function is a relation between two or more information points that can produce any number
+of information points. Of course, information function is the information point at the same
+time as any other concept or idea in the Universe.
+
+In ordinary mathematics, we have three classes describing the manner in which arguments
+(input points from the domain) correspond to images (output points from codomain):
+injection, surjection, and bijection that are coined to Bourbaki group. Of course, these three
+are not enough to describe all relations between information points by means of information
+functions. To describe everything, we need to create autoinjection prior to others. Information
+function can be called autoinjective if the output information point is the information point
+from the set of inputs. This means nothing more than the fact that the whole image codomain
+can be a simple point from the input domain. The information point called `Everything' can
+serve as a good example. `Everything' is a set that consists of an infinite number of
+information points, but at the same time it is nothing more than a simple information point of
+this set called `Everything'.
+
+4. The Special Theory of Everything and some answers it can give
+Information field and information points can describe absolutely everything that we know and
+even the things we are not aware of. In fact, the things that we are not aware of are nothing
+more than a simple information point called `the things we are not aware of'. Every
+information point is simple and complex at the same time. Every information point has got
+finite characteristics which we can count and infinity inside and outside it at the same time.
+These points are big and small, have got margins and endless, variable and constant, have got
+size, and do not have it at the same time. They can be absolutely anything we can imagine and
+of course they can exceed our imagination. This theory is as close to the reality we face as
+possible, and it describes the reality in the manner homo sapiens perceive it. This is the theory
+of concepts and ideas (information points), the bricks from which the information field
+(everything) is built. That is why it can be considered as a theory of everything.
+
+One of the most important questions the information field theory answers is the origin of
+everything. It is obvious that information points can originate from the information point only.
+It is also well known that we do not have a lot of information points that are able to produce
+other information points. The information point called `homo sapiens' is capable of creating
+other information points, concepts and ideas. In fact, there is one more information point that
+is known as an information point capable of creating other information points. Some `homo
+sapiens' call it `God'. `God' is the information point that created everything axiomatically.
+Here we come to the conclusion that the exact and basic similarity between God and human
+being is found and it can be seen as the ability to create information points in the information
+field. This information field theory answers also a question of God's creation. As we assume
+every concept or idea is an information point, the same assumption can be made for time.
+`Time' is nothing more than an information point in the information field that is created by us,
+and it can have any unknown parameter every information point has. It exists everywhere and
+nowhere, it exists and does not exist at the same time. So as the `Time' information point can
+have unknown parameters, the idea that God created Humans to give Humans a chance to
+create God, looks reasonable. Indeed, people created `God' as an information point which
+created everything and they still keep working on His creation in Churches, Bible discussions,
+prayers, and in ordinary life.
+
+One more extension from the information field theory that can be received is the
+understanding of the famous Shroedinger's cat paradox in quantum mechanics (Trimmer,
+1980). In terms of this theory, the cat in the box does not exist until it is named or seen in that
+box by any other information point. This includes not only the observer and the other person
+who inserted that cat in the box but also includes the Shroedinger himself as a creator of this
+paradox as an information point. Good illustration can be found during sunrise or sunset in the
+sea. It is impossible to observe a sun ray reflection in the sea waves without an observer, but it
+exists as the information point when we name it, so it does not exist until seen or named by
+the other information point. To go further, the information point does not exist until it is
+named by other information point.
+
+5. Application to algorithms and ideas generation
+One of the applications of this theory can be found in finding solutions for building better
+algorithms. For instance, in case of finding passwords, with the help of much more efficient
+algorithm than the brute-force. To find some original solutions, more information points can
+be taken into our consideration. Alan Turing in his article (1950) mentioned that a computer
+works as a machine that makes commands from a programme (reads symbols), step by step
+and we assume it describes in general modern central processor unit work and asks a question
+if a machine can think. In most algorithms a computer checks, if the password is correct, it
+compares it with the encrypted right answer. The processor compares the correct answer with
+the user input step by step, byte by byte. By brute force, the algorithm user inputs all possible
+variants to make the computer compare inputs with the right answer until the correct
+password is found. It is well known that in most cases, there are too many possible variants to
+check them all. With this information field theory the process of comparison can be described
+more precisely. Let us include the information point called `Time' into the comparison of
+user's input passwords with the correct answer. In most cases, the computer checks the input
+symbols one by one and as it finds the first correct symbol, it goes to checking the second
+one. This means that the computer makes more operations after finding the first correct
+symbol.
+
+Hence, the time for the comparison and clearly for the response will increase. If we assume
+that we theoretically are able to measure the time of the response made by the computer, we
+can write algorithms with much fewer variants than brute-force. Check the first symbol,
+measure time, and if the time increases, then the first correct symbol is found, go to the input
+of two symbols changing only the second one, measure time, and if the time increases, then,
+the second correct symbol is found, go to the input of three symbols changing only the third
+one, and so on. To find the password with this algorithm, there are much fewer input variants
+needed than brute-force.
+If we have got an 8 symbol password that consists of English alphabet letters and decimal
+numbers (62 possible inputs: 26 capital letters, 26 ordinary letters, and 10 numbers), then the
+number of possible input variants for brute force will be:
+
+                                          628 = 218340105584896
+Time evaluating algorithm will reduce it to:
+
+                                                62  8 = 496
+
+Of course, time-protected algorithms can be created, they could make fake operations
+randomly during password check to hide the real response time, but they are not essential now
+because there is no physical opportunity to measure response time precisely enough and no
+opportunity to distinguish password checking process from other parallel tasks that the
+processor resolves. On the other hand, the experiment proving efficiency of time including
+algorithm, can be made in the modern computer era.
+The Information point theory can be used in finding interesting ideas such as a virtual phone
+server called `phone cloud' which allows every registered user to have any desirable phone on
+the cloud server backing up private information, settings or applications, it can also expand
+phone user opportunities by using server storage and processor capacity. Phones of the future
+may look like terminals with basic offline functions and significantly extended opportunities
+while connected to the cloud.
+One more interesting idea which was received with the help of this theory is the idea of an
+international language based on music. Creating Esperanto was an interesting approach, but it
+is not very popular in the modern world. If we create a language based on the frequency of the
+sound differences (music) for a computer, it will not be a problem to write the algorithm for
+distinguishing frequency changes. Therefore it looks much easier to create and popularize
+such a language for computers and humans' international communication. One can start from
+two or three simple words combining two or three low and high notes which can be used by
+ordinary users instead of remote control they always tend to lose. It can be developed into a
+full international language based on computer understanding later.
+
+Information point called `QR Code' can be used effectively with bank cards facilitating their
+users' daily payments. It is significantly easier to protect clients from unauthorized money
+withdrawal than while having contactless credit cards in payment systems.
+
+6. Application to artificial intelligence
+
+Let us define artificial intelligence as an information point capable of creating other
+information points. As we know, artificial intelligence systems already create information
+points. The famous portrait `Edmond de Belamy' created by the artificial intelligence system
+from French art collective called Obvious can serve as a good example. The system not only
+creates its own portraits, but also compares them to ones made by humans and stops when its
+internal algorithm says to it that they are comparable enough. Thus, artificial intelligence
+systems can already stand in one row with human beings and God Himself, but the
+importance and significance and the quality of the information points created by artificial
+intelligence can be discussed more.
+
+The first thing we need to understand is that we will not create a 100% copy of a human
+intellect because we cannot define a human intellect that precisely. We can copy some
+functions of the intellect we know that are already defined as information points. Second, we
+need to find the purpose of creating an artificial intelligence system and according to this
+goal, we need to include the necessary functions we can copy it with.
+
+The most interesting application of the information field theory can be found while modelling
+intellect. The first step of such modelling on the basis of information points is gathering all
+known information points and establishing information functional connections between them.
+A good idea is to use artificial intelligence for modelling the information field of artificial
+intelligence. It can map all information points we know into an information map and can be
+capable of producing interesting scientific progress in chemistry, for example.
+
+Of course, we need to understand that the information points base for further artificial
+intelligence development is made from the information field which we as humans have
+created with the help of God and artificial intelligence, and we will need fitting and
+developing it in the future systems.
+
+On the other hand, artificial intelligence simultaneous to information field theory and any
+knowledge we possess, can be used for the destruction and purpose of war. An important
+concern of ours is to restrict or manage their further development in order not to destroy
+human beings.
+
+7. Conclusion
+In conclusion, the information field theory can be a paradigm-changing revolution in
+mathematics capable of describing everything in the Universe as precisely as possible in
+terms of information points and information functions. By this theory, an answer to the Alan
+Turing's question (1950) can be restructured like this: `There is no importance if the machine
+can think or not, it is more significant what machines can create.' It doesn't naturally mean
+that we came to some end of the research in this field of information, it can be considered as a
+beginning of a new and interesting direction for further scientific endowments.
+
+Acknowledgements
+This theory is dedicated to all the scientists that were seeking the solution for describing
+everything as a problem, but two of them are special researchers that need to be mentioned:
+Stephen Hawking and Albert Einstein.
+
+         Conflict of interest statement
+The corresponding author states that there is no conflict of interest.
+
+         References
+1. I. Newton (1736). Methodus Fluxionum et Serierum Infinitarum (The Method of
+Fluxions and Infinite Series), published in 1736 [Opuscula, 1744, Vol. I. p. 66]; English tr. in
+D.T. Whiteside (ed.) The Mathematical Papers of Isaac Newton, vol. III, Cambridge
+University Press, Cambridge, 1969.
+2. B. Mandelbrot (1983). The fractal geometry of nature. Macmillan.
+3. K. Falconer (2003). Fractal Geometry: Mathematical Foundations and Applications.
+John Wiley & Sons. xxv.
+4. J. F. Scott. The mathematical work of John Wallis, D.D., F.R.S., (1616­1703), Chelsea
+Publishing Company, 1981.
+5. Clark, Bowman (1985). Individuals and Points. Notre Dame Journal of Formal Logic
+26: 61­75. 10.1305/ndjfl/1093870761.
+6. Irvine, Andrew David and Deutsch, Harry, (2016) `Russell's Paradox', The Stanford
+Encyclopedia of Philosophy (Winter 2016 Edition), Edward N. Zalta (ed.).
+7. CTI Reviews (2016). A Course of Modern Analysis: Mathematics, Mathematical
+analysis. Cram101 Textbook Reviews.
+8. J. D. Trimmer (1980). The Present Situation in Quantum Mechanics: A Translation of
+Schrödinger's `Cat Paradox' Paper. Proceedings of the American Philosophical Society, vol.
+124, no. 5, pp. 323­338.
+9. Alan Turing (1950). `Computing Machinery and Intelligence', Mind, LIX (236):
+433­460, 10.1093/mind/LIX.236.433.
+

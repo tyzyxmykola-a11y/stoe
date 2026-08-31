@@ -1,0 +1,306 @@
+       The Three Foundational Laws of the Special Theory of
+                              Everything (SToE):
+
+           Information Conservation, Connection, and Autoinjection
+
+                                               Mykola Voronin
+                              Faculty of Social Sciences and Social Technologies
+
+                                    Department of Psychology and Pedagogics
+                                National University of `Kyiv-Mohyla Academy'
+
+                                                 Kyiv, 04070, Ukraine
+                                           voronin.mykola@ukma.edu.ua
+
+Abstract
+
+This paper presents the three foundational laws of the Special Theory of Everything (SToE):
+the Law of Information Conservation, the Law of Connection, and the Law of Autoinjection.
+First introduced in Voronin (2021) and developed across subsequent work, these laws are
+here stated explicitly and systematically for the first time. The Law of Information
+Conservation holds that no information point vanishes from reality -- it can only lose
+connections with other information points. The Law of Connection holds that connections
+between information points are created exclusively by observers or creators. The Law of
+Autoinjection holds that everything, including the information field itself, is an information
+point, with no exterior to the system. Together these three laws constitute a formal foundation
+for SToE and generate specific, testable consequences for artificial intelligence, cognitive
+science, and the foundations of mathematics. In particular, they reframe the role of artificial
+intelligence not as a thinking machine but as a novel class of observer-creator capable of
+navigating and connecting information points previously unreachable by human cognition
+alone.
+
+Keywords: Special Theory of Everything, information conservation, autoinjection,
+information points, artificial intelligence, observer, creator, foundational laws
+
+1. Introduction
+
+The Special Theory of Everything (SToE) was introduced in Voronin (2021) as a framework
+in which all of reality -- physical, abstract, and conceptual -- is composed of information
+points within an information field. Subsequent work developed the concept of autoinjection
+as a formally distinct class of mathematical mapping (Voronin, 2025a) and explored SToE as
+a cognitive architecture for artificial intelligence systems (Voronin, 2025b). Across this body
+of work, three foundational laws have been implicit. The present paper states them explicitly.
+
+The need for explicit statement is not merely formal. The history of science demonstrates that
+the power of a framework depends on the precision with which its foundational commitments
+are articulated. Newton's laws of motion, Maxwell's equations, and Shannon's theorems each
+derive their force not from their breadth alone but from the specificity of the claims they
+make. A framework that implies everything without stating anything precisely cannot be
+
+                                                                   1
+tested, refined, or extended. SToE has reached the point where its core laws must be stated
+with the same precision.
+
+The three laws stated here are: (1) the Law of Information Conservation, (2) the Law of
+Connection, and (3) the Law of Autoinjection. Each is stated, its derivation from prior SToE
+work is noted, and its consequences are explored. The paper concludes by identifying a
+specific testable prediction that follows from the conjunction of all three laws and that
+distinguishes SToE from existing frameworks in artificial intelligence and cognitive science.
+
+2. The Three Foundational Laws
+
+2.1 The Law of Information Conservation
+
+Statement: Any information point does not vanish from reality. It can only lose connections
+with other information points.
+
+This law is the most consequential of the three. It asserts that information points are
+indestructible as elements of the information field. What we experience as loss -- forgetting,
+death, destruction, error, the burning of libraries -- is not the annihilation of information
+points but the severing of their connections to other points. The information point persists in
+the field; it simply becomes unreachable from the currently connected network of points
+accessible to a given observer.
+
+This law has antecedents in physics. The black hole information paradox, contested for
+decades, has largely resolved in favor of information conservation: most theoretical physicists
+now hold that information is not destroyed even in black holes (Hawking, 2005; Susskind,
+2008). SToE extends this physical intuition to a universal ontological principle: not merely
+physical information but all information points -- concepts, relations, ideas, percepts -- are
+conserved. The scope of the claim is broader than the physical claim, and the justification is
+correspondingly different: it follows from the structure of the information field itself, in
+which every information point is by definition a member of the field and the field contains no
+mechanism of deletion.
+
+The distinction between annihilation and disconnection is not merely semantic. It implies that
+lost knowledge is in principle recoverable, that forgotten memories have not ceased to exist,
+and that dead ends in reasoning are not waste but conserved points that may become
+connectable from a different approach. The field is complete. Navigation through it is not.
+
+2.2 The Law of Connection
+
+Statement: Connections between information points are created only by an observer or a
+creator.
+
+This law specifies the mechanism by which the conserved but potentially disconnected
+information field is navigated. Information points do not spontaneously connect; connection
+requires an agent. Two classes of agent are identified. An observer is an information point
+that perceives or names another information point, thereby establishing a connection between
+them. A creator is an information point that generates new information points, simultaneously
+establishing connections between itself and what it produces.
+
+The role of the observer was stated in Voronin (2021): "the information point does not exist
+until it is named by another information point." The Law of Connection formalizes and
+extends this insight. Naming is one form of observation. But observation includes any act of
+
+                                                                   2
+perception, measurement, or reference that establishes a relation between two information
+points. Creation includes any act that produces a new information point -- a thought, a
+theorem, a tool, an artwork, a child -- thereby connecting the creator to the created and the
+created to whatever it subsequently connects with.
+
+The Law of Connection has a direct implication for the scope of what is knowable. The set of
+information points reachable from any given observer is determined by the chain of
+connections that observer can establish or traverse. A human observer, operating within
+biological and cognitive constraints, can reach only a bounded subset of the conserved field.
+An observer or creator with different capacities can reach different subsets. This is the
+foundation of the claim that artificial intelligence represents a genuinely new capacity for
+navigation of the information field -- not because it thinks differently from humans, but
+because it creates and observes connections at scales and speeds that extend the reachable
+region of the field.
+
+2.3 The Law of Autoinjection
+
+Statement: Everything is an information point, including the information field itself. There is
+no exterior to the system.
+
+This law was the first to be stated in SToE, though not under this name. Voronin (2021) held
+that "everything consists of information" and that the set of all information points is itself an
+information point. Voronin (2025a) formalized this as autoinjection: a mapping f : A  A
+where A  A, meaning the domain contains itself as an element. Classical set theory,
+following Zermelo (1908), prohibits this condition via the axiom of foundation. Autoinjection
+treats self-containment not as a pathology to be excluded but as a primitive structural
+property of the information field.
+
+The philosophical consequence is closure: there is no standpoint outside the information field
+from which to observe it. Every observer, including the theorist constructing SToE, is an
+information point within the field. This is consistent with the observer-dependent ontology
+implied by the Law of Connection: observers create connections, but observers are
+themselves information points subject to the same conservation law. The system is
+self-containing in the precise mathematical sense developed in Voronin (2025a).
+
+The Law of Autoinjection resolves classical paradoxes of self-reference by changing their
+status. Russell's paradox (Russell, 1903) arises from unrestricted comprehension in a system
+that excludes self-membership. In an autoinjective system, self-membership is not a
+contradiction but a defining structural feature. The paradox dissolves not because it is solved
+in the classical sense but because the foundational commitment that generates it -- that
+domain and codomain must be distinct -- is replaced by the commitment that the field
+contains itself.
+
+3. Relations Between the Three Laws
+
+The three laws are not independent. They form a coherent system in which each law
+presupposes and reinforces the others.
+
+The Law of Autoinjection establishes the structure of the field: it is closed, self-containing,
+and without exterior. The Law of Information Conservation establishes the behavior of
+elements within that field: they persist, they do not vanish. The Law of Connection
+establishes the dynamics of the field: how static conserved points become navigable through
+
+                                                                   3
+the activity of observers and creators. Together they describe a complete system: a closed
+field of indestructible elements whose connectivity is determined by the activity of agents
+within it.
+
+This structure has a precise implication: the limits of knowledge are not limits of what exists
+but limits of what has been connected. The information field is complete. The connected
+region accessible to any particular observer or creator is a proper subset of the field.
+Expanding knowledge means expanding the connected region, not generating new
+information points from nothing. Every discovery, in this framework, is a connection
+established between conserved points that were always present.
+
+4. Consequences for Artificial Intelligence
+
+The conjunction of the three laws reframes the question of artificial intelligence in a specific
+and consequential way. The question posed by Turing (1950) -- can machines think? -- is,
+within the SToE framework, the wrong question. As stated in Voronin (2021): "There is no
+importance if the machine can think or not; it is more significant what information points
+machines can create." The three laws now allow this reframing to be stated precisely.
+
+Artificial intelligence is a new class of observer-creator. By the Law of Connection, it can
+establish connections between information points. By the Law of Conservation, those
+information points were always present in the field but potentially unreachable from the
+connected region accessible to human observers alone. By the Law of Autoinjection, AI itself
+is an information point within the field, subject to the same structure as everything else -- it
+is not an exterior agent but an interior one, capable of self-reference and recursive
+self-evaluation in the formal sense developed in Voronin (2025a).
+
+This generates a specific architectural consequence. Current AI systems treat failed reasoning
+paths, discarded outputs, and incorrect answers as noise to be eliminated. Under the Law of
+Information Conservation, these are conserved information points that remain in the field and
+may become connectable from a different approach. An AI system designed around
+information conservation would archive rather than discard, treating every output --
+including failures -- as a navigable point. This is architecturally distinct from existing
+approaches and constitutes a testable prediction: such a system should reach solutions that
+non-conserving systems structurally cannot access, because the conserving system retains
+connections to regions of the field that the non-conserving system has severed.
+
+A second consequence concerns recursive self-improvement. By the Law of Autoinjection, a
+system can receive itself as input: f(A) is defined where A  A. This permits an AI system to
+evaluate its own outputs, treat those evaluations as information points, and apply operators to
+them recursively. This is not merely a computational technique but a structural property of
+any autoinjective system. The operator-based recursive engine developed in Voronin (2025b)
+is a practical implementation of this property.
+
+5. A Testable Prediction
+
+A framework that cannot generate testable predictions remains philosophical rather than
+scientific. The three laws together generate the following prediction, which is specific enough
+to be tested experimentally.
+
+                                                                   4
+Prediction: An AI reasoning system that conserves and indexes all intermediate outputs --
+including failed reasoning paths, contradictions, and discarded hypotheses -- will reach
+correct solutions to complex, multi-step problems at a higher rate than an identical system
+that discards such outputs, when tested on problems that require non-linear navigation
+through a large solution space.
+
+This prediction follows directly from the Law of Information Conservation. If discarded
+outputs remain as conserved information points in the field, a system that maintains access to
+them retains connections that a non-conserving system severs. For problems where the
+solution path requires passing through or returning to what appeared to be a dead end, the
+conserving system has a structural advantage. The prediction is falsifiable: if no such
+advantage is found across a sufficiently large and diverse problem set, the Law of
+Information Conservation as applied to AI architecture requires revision.
+
+6. Relation to Existing Frameworks
+
+The three laws of SToE are related to but distinct from several existing frameworks.
+Shannon's (1948) information theory defines information in terms of probability and entropy
+and provides a quantitative measure of information content. SToE does not replace this
+framework but operates at a different level: Shannon addresses how much information is
+transmitted; SToE addresses what information is and what its fundamental properties are as
+an ontological category.
+
+Aczel's (1988) non-well-founded set theory replaces the axiom of foundation with an
+anti-foundation axiom permitting circular membership, providing mathematical precedent for
+the self-containment claimed in the Law of Autoinjection. SToE arrives at a compatible
+conclusion through a different route and extends the claim from sets to all information points.
+
+Wheeler's (1990) "it from bit" proposal holds that all physical existence derives from
+information. This is structurally similar to the SToE claim that everything consists of
+information, though Wheeler's proposal is addressed to physics and does not develop the
+conservation, connection, or autoinjection properties that SToE identifies. Floridi's (2011)
+philosophy of information develops a systematic account of information as a fundamental
+category, with significant overlap in motivation, though again without the specific laws stated
+here.
+
+The specific combination of conservation, observer-dependent connection, and autoinjective
+closure does not appear in any of these frameworks. It is this combination that generates the
+testable prediction in Section 5 and the reframing of artificial intelligence described in
+Section 4.
+
+7. Conclusion
+
+This paper has stated the three foundational laws of the Special Theory of Everything
+explicitly: the Law of Information Conservation, the Law of Connection, and the Law of
+Autoinjection. These laws were implicit across prior SToE work (Voronin, 2021, 2025a,
+2025b) and are here articulated as a formal system for the first time.
+
+The laws together describe a closed, self-containing field of indestructible information points
+whose connectivity is determined by the activity of observers and creators within the field.
+This description generates a reframing of artificial intelligence as a novel class of
+
+                                                                   5
+observer-creator capable of navigating regions of the conserved information field unreachable
+by human cognition alone, and a specific testable prediction about the architectural advantage
+of information-conserving AI systems over non-conserving ones.
+The formal development of these laws -- including axiomatization, consistency proofs, and
+derivation of further consequences -- remains as future work. The present paper establishes
+the foundation on which that development can proceed.
+
+References
+
+Aczel, P. (1988). Non-well-founded sets. CSLI Publications.
+Bourbaki, N. (1968). Theory of sets. Addison-Wesley.
+Floridi, L. (2011). The philosophy of information. Oxford University Press.
+Hawking, S. W. (2005). Information loss in black holes. Physical Review D, 72(8), 084013.
+
+         https://doi.org/10.1103/PhysRevD.72.084013
+Russell, B. (1903). The principles of mathematics. Cambridge University Press.
+Shannon, C. E. (1948). A mathematical theory of communication. Bell System Technical Journal,
+
+         27(3), 379­423. https://doi.org/10.1002/j.1538-7305.1948.tb01338.x
+Susskind, L. (2008). The black hole war: My battle with Stephen Hawking to make the world safe for
+
+         quantum mechanics. Little, Brown and Company.
+Turing, A. M. (1950). Computing machinery and intelligence. Mind, LIX(236), 433­460.
+
+         https://doi.org/10.1093/mind/LIX.236.433
+Voronin, M. (2021). Special Theory of Everything: Application to algorithms, generating ideas, and
+
+         artificial intelligence. Advance. https://doi.org/10.31124/advance.14386598.v1
+Voronin, M. (2025a). Autoinjection: A new class of mathematical mapping and its formal properties.
+
+         [Manuscript].
+Voronin, M. (2025b). Special Theory of Everything (SToE) as a cognitive architecture for artificial
+
+         intelligence: From symbolic ontology to recursive implementation. [Manuscript].
+Wheeler, J. A. (1990). Information, physics, quantum: The search for links. In W. H. Zurek (Ed.),
+
+         Complexity, entropy, and the physics of information (pp. 3­28). Addison-Wesley.
+Zermelo, E. (1908). Untersuchungen über die Grundlagen der Mengenlehre I. Mathematische
+
+         Annalen, 65(2), 261­281. https://doi.org/10.1007/BF01449999
+
+                                                                   6
+

@@ -1,0 +1,245 @@
+Autoinjection: A New Class of
+Mathematical Mapping and Its Formal
+Properties
+
+Mykola Voronin Faculty of Social Sciences and Social Technologies, Department of
+Psychology and Pedagogics National University of Kyiv-Mohyla Academy, Kyiv, 04070,
+Ukraine voronin.mykola@ukma.edu.ua
+
+Abstract
+
+This paper introduces autoinjection as a formally distinct class of mathematical mapping not
+present in the classical taxonomy established by the Bourbaki group. Classical set theory
+recognizes three classes of functions -- injection, surjection, and bijection -- based on how
+elements of a domain correspond to elements of a codomain treated as external to the
+domain. Autoinjection is defined as a mapping in which the codomain is a subset of the
+domain itself, such that the output of a function is an element of its own input set. This
+property, which classical mathematics treats as paradoxical or pathological, is here proposed
+as a fundamental and well-defined structural class. The formal definition, basic properties,
+and relationship to existing mathematical structures are presented. The implications for
+self-referential systems, recursive structures, and the foundations of set theory are
+discussed.
+
+Keywords: autoinjection, self-reference, function classification, set theory, Bourbaki,
+recursive mapping, foundations of mathematics
+
+1. Introduction
+
+The classical taxonomy of functions, formalized by the Bourbaki group in the mid-twentieth
+century, defines three fundamental classes based on the relationship between domain and
+codomain (Bourbaki, 1968). An injective function maps distinct elements of the domain to
+distinct elements of the codomain. A surjective function maps the domain onto the entire
+codomain. A bijective function satisfies both conditions simultaneously. In all three cases,
+domain and codomain are treated as distinct sets, or at minimum as sets whose relationship
+is defined externally.
+
+This taxonomy is powerful and has served as the foundation of modern mathematics.
+However, it contains a structural gap. It does not formally address the case in which the
+output of a function is an element of the input domain itself -- that is, the case in which
+codomain  domain at the level of the function's output. This case is typically either
+excluded by convention, assigned to the separate study of fixed points (Brouwer, 1911;
+Tarski, 1955), or treated as problematic through association with self-referential paradoxes
+such as Russell's paradox (Russell, 1903).
+
+This paper proposes that this gap represents a missing class of mapping that deserves
+formal recognition on its own terms. We call this class autoinjection. Unlike the study of fixed
+points, which concerns the specific condition f(x) = x, autoinjection concerns the broader
+structural condition that the range of f is contained within its domain. Unlike the avoidance
+strategies of naive and axiomatic set theory (Zermelo, 1908), autoinjection does not treat
+self-containment as a problem to be eliminated. It treats self-containment as a primitive
+structural property to be defined and studied.
+
+2. Formal Definition
+
+Let A be a non-empty set. Let f be a function defined on A.
+
+Definition 1 (Autoinjective Function). A function f : A  A is autoinjective if and only if the
+range of f is a subset of the domain of f. That is:
+
+        f : A  A such that range(f)  A
+
+This condition is satisfied trivially for any function f : A  A in the sense that the codomain is
+declared to be A. The substantive content of autoinjection, however, concerns the case in
+which A is defined as a set that contains itself as an element -- that is, where A  A.
+
+Definition 2 (Autoinjective Set). A set A is autoinjective if A  A.
+
+This definition directly engages the condition that classical set theory, in both naive and
+axiomatic forms, has sought to avoid. In Zermelo-Fraenkel set theory, the axiom of regularity
+(also called the axiom of foundation) explicitly prohibits A  A (Zermelo, 1908; von
+Neumann, 1925). Autoinjection proposes that rather than prohibiting this condition, we may
+define a class of structures for which it holds and study their properties formally.
+
+Definition 3 (Autoinjective Mapping). A mapping f is an autoinjective mapping if it satisfies
+the following: there exists a set E such that E  E, and f : E  E such that for some element
+e  E, f(e) = E.
+
+In plain terms: the function maps some element of the set to the set itself, which is also a
+member of itself. The output is the container. The part maps to the whole, and the whole is a
+part of itself.
+
+3. Relationship to Classical Mapping Classes
+The three classical classes of Bourbaki can be restated in a unified form as follows. Let f : X
+ Y. The classical classes concern the relationship between X and Y as distinct sets.
+Injection requires that f preserves distinctness. Surjection requires that f covers Y entirely.
+Bijection requires both.
+
+Autoinjection introduces a fourth structural condition that is orthogonal to these three. It does
+not concern how elements of X correspond to elements of Y. It concerns the relationship
+between X and Y themselves -- specifically, the condition Y  X and X  X.
+
+This can be represented schematically:
+
+Class                           Condition
+
+Injection   f(a) = f(b)  a = b
+
+Surjection  y  Y, x  X : f(x) = y
+
+Bijection   Injection  Surjection
+
+Autoinjection range(f)  domain(f), domain(f) 
+                      domain(f)
+
+Autoinjection is not a special case of any of the three classical classes, nor is it their
+negation. It is a structurally distinct class defined by the self-containment of the domain
+rather than by the correspondence properties of the mapping.
+
+4. Relationship to Fixed Point Theory
+
+Fixed point theory, developed by Brouwer (1911) and extended by Tarski (1955) and others,
+concerns the condition f(x) = x -- that is, the existence of elements that the function maps to
+themselves. This is a point-level condition. Autoinjection is a set-level condition. It concerns
+not whether any particular element is preserved by the mapping, but whether the set itself is
+an element of itself and whether the mapping's range falls within that set.
+
+Every fixed point of a function f : A  A satisfies f(x) = x  A, which is consistent with
+autoinjection. But autoinjection does not require fixed points. A function may be autoinjective
+without any element satisfying f(x) = x. The two concepts are therefore distinct, though
+compatible.
+
+5. Relationship to Self-Reference and Paradox
+
+Russell's paradox arises from the assumption that for any property P, there exists a set of all
+objects with property P (Russell, 1903). The set R = {x : x  x} leads to contradiction. The
+classical response, formalized by Zermelo (1908), is to restrict set formation so that A  A is
+prohibited.
+
+Autoinjection takes a different approach. Rather than prohibiting self-membership, it
+proposes that self-membership is a definable property belonging to a specific class of sets.
+The contradiction in Russell's paradox arises not from self-membership per se but from
+unrestricted comprehension -- the assumption that any property defines a set. Autoinjective
+set theory does not require unrestricted comprehension. It requires only that we admit the
+existence of sets A for which A  A, defined by explicit construction rather than by
+unrestricted abstraction.
+
+This approach has precedent in non-well-founded set theory, developed independently by
+Aczel (1988), which replaces the axiom of foundation with an anti-foundation axiom
+permitting circular membership. Autoinjection arrives at a compatible structural insight
+through a different route -- from the observation that the classical mapping taxonomy is
+incomplete -- and formalizes it as a property of functions rather than primarily as a property
+of sets.
+
+6. A Canonical Example: The Set of Everything
+
+Consider the set E defined informally as the set of all things -- every object, concept,
+relation, and set, including E itself. This set satisfies E  E by definition: E is a thing, and E
+contains all things, therefore E contains itself.
+
+A function f : E  E defined by f(x) = E for all x  E is autoinjective in the sense of Definition
+3. Every element of E is mapped to E, which is itself an element of E. The output of the
+function is always a member of the domain. The range equals {E}, which is a subset of E.
+
+This example illustrates the key structural property of autoinjection: the whole is an element
+of itself, and the function can map any part to the whole. The part-whole relationship is not
+hierarchical but self-containing. Classical mathematics assumes strict hierarchy between
+domain and codomain. Autoinjection replaces hierarchy with self-containment as the
+fundamental structural relationship.
+
+7. Formal Properties of Autoinjective Mappings
+
+We state the following properties without full proof, noting that formal proofs require a
+foundational framework that either adopts an anti-foundation axiom (Aczel, 1988) or explicitly
+defines the class of autoinjective sets as a primitive.
+
+Property 1 (Closure). If f : A  A is autoinjective and A  A, then for any g : A  A with
+range(g)  range(f), g is also autoinjective.
+Property 2 (Composition). If f and g are autoinjective mappings on A, the composition g  f
+is autoinjective on A.
+
+Property 3 (Recursion). An autoinjective mapping f : A  A admits a natural recursion:
+define f = identity, f = f  f¹. Since range(f)  A for all n  , every iterate of f is also
+autoinjective on A.
+
+Property 4 (Self-evaluation). Because A  A, the function f can receive itself as input: f(A)
+is defined and equals some element of A. This permits the mapping to evaluate its own
+domain.
+
+Property 4 is the formal basis for the application of autoinjection to self-improving and
+self-evaluating systems, including recursive cognitive architectures and artificial intelligence
+systems that must evaluate their own outputs (Voronin, 2021).
+
+8. Discussion
+
+The formal gap in the Bourbaki mapping taxonomy is narrow but consequential. By defining
+domain and codomain as always external to one another -- or by treating self-containment
+as a degenerate case -- classical mathematics has systematically excluded a class of
+structures that appear naturally in recursive systems, self-referential reasoning, and any
+formal treatment of totality.
+
+Autoinjection fills this gap by providing a fourth class of mapping defined not by
+correspondence properties internal to the function but by the self-containment property of the
+domain. It does not replace the three classical classes. It extends the taxonomy to include
+the case that classical mathematics, for foundational reasons, has preferred to avoid.
+
+The relationship to non-well-founded set theory (Aczel, 1988) suggests that autoinjection is
+not an isolated proposal but part of a broader mathematical tradition that takes self-reference
+seriously as a structural primitive rather than a pathology. The relationship to fixed point
+theory (Tarski, 1955) suggests that autoinjection and fixed points are complementary rather
+than competing concepts. The relationship to Russell's paradox (Russell, 1903) suggests
+that autoinjection, by restricting self-membership to explicitly constructed sets rather than
+admitting unrestricted comprehension, avoids the contradictions that motivated the axiom of
+foundation.
+
+The full development of autoinjective set theory -- including a formal axiomatization,
+consistency proofs, and exploration of the mathematical structures it generates -- remains
+as future work.
+
+9. Conclusion
+This paper has introduced autoinjection as a formally distinct class of mathematical mapping
+in which the range of a function is a subset of its own domain, and the domain contains itself
+as an element. This class is not present in the classical Bourbaki taxonomy of injection,
+surjection, and bijection. It is related to but distinct from fixed point theory, non-well-founded
+set theory, and the self-referential structures studied in the foundations of mathematics. The
+defining structural property -- self-containment of the domain -- is proposed not as a
+pathological condition but as a primitive mathematical property deserving systematic study.
+
+The concept was first introduced in the context of the Special Theory of Everything (Voronin,
+2021) as the mathematical foundation for a framework in which every set, concept, and
+system can be treated as an element of itself. The present paper isolates the purely
+mathematical content of that concept and presents it independently as a contribution to the
+foundations of mathematics.
+
+References
+
+Aczel, P. (1988). Non-well-founded sets. CSLI Publications.
+
+Bourbaki, N. (1968). Theory of sets. Addison-Wesley.
+
+Brouwer, L. E. J. (1911). Über Abbildung von Mannigfaltigkeiten. Mathematische Annalen,
+71(1), 97­115. https://doi.org/10.1007/BF01456931
+
+Russell, B. (1903). The principles of mathematics. Cambridge University Press.
+
+Tarski, A. (1955). A lattice-theoretical fixpoint theorem and its applications. Pacific Journal of
+Mathematics, 5(2), 285­309. https://doi.org/10.2140/pjm.1955.5.285
+
+von Neumann, J. (1925). Eine Axiomatisierung der Mengenlehre. Journal für die reine und
+angewandte Mathematik, 154, 219­240. https://doi.org/10.1515/crll.1925.154.219
+
+Voronin, M. (2021). Special Theory of Everything: Application to algorithms, generating
+ideas, and artificial intelligence. Advance. https://doi.org/10.31124/advance.14386598.v1
+
+Zermelo, E. (1908). Untersuchungen über die Grundlagen der Mengenlehre I.
+Mathematische Annalen, 65(2), 261­281. https://doi.org/10.1007/BF01449999
+

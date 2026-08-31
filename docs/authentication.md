@@ -1,8 +1,9 @@
 # Authentication, request flow, and token handling
 
-The supplied code does **not** implement user authentication. There are three
-separate execution paths with different trust boundaries. Repository access
-through GitHub is separate from all three.
+The local engines and plugin do **not** implement user login authentication.
+The paths below have different trust boundaries. An archived cloud prototype
+does use an external provider API key, described separately below. Repository
+access through GitHub is separate from application/provider credentials.
 
 ## Components
 
@@ -94,6 +95,28 @@ mechanism. The historical entry point binds `0.0.0.0:5000`; the
 [v7 README](../engine/v7/README.md) documents a loopback-only invocation.
 
 ## Credentials and lifecycle
+
+### Historical additions: v3 and the original prototype
+
+The [v3 client](../experiments/stoe_v3/core/llm.py) posts to the configured
+Ollama `/api/chat` endpoint with model/messages/stream fields and no Bearer
+header. It has no login/token lifecycle. Its local field and trial IDs are
+data identifiers rather than credentials.
+
+The [original prototype](../archive/original_prototype/engine.py) calls
+`load_dotenv()`, reads `OPENROUTER_API_KEY` from the environment, and constructs
+`Authorization: Bearer <key>` for OpenRouter's chat-completions endpoint.
+The key is not embedded in the source and no `.env` is published. Prompts leave
+the machine when that prototype runs; input/output logs are written locally.
+The prototype does not issue, refresh, rotate, encrypt, or revoke that provider
+key. Key provisioning and revocation belong to the provider/account owner.
+
+The [source snapshot archive](../archive/snapshots/README.md) contains historical
+variants, some with cloud-provider integrations. It intentionally excludes all
+environment and runtime-memory files. Do not infer that every archived version
+has the same network behavior as the current local components.
+
+### Current local components
 
 There are no application passwords to hash, login sessions to expire, tokens
 to rotate, or logout/revocation endpoints in the supplied implementations.

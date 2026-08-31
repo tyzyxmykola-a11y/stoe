@@ -1,0 +1,121 @@
+{
+  "set": "v9-pilot-only-not-primary",
+  "tasks": [
+    {
+      "id": "pilot-tidal-transfer", "family": "planning", "subset": "topology_targeted",
+      "question": "Which archived transfer arrangement now meets the updated operational situation? Return only the task-domain answer token.",
+      "goal": "Move medical crates to the island before the cold packs expire.",
+      "active_constraints": ["The transfer must use currently certified equipment."],
+      "changed_constraints": ["The coupling restriction from the former seal specification is no longer controlling."],
+      "expected_answer": "PONTOON_LARCH",
+      "focal": {"content": "Archived arrangement PONTOON_LARCH used a sheltered floating platform; it was rejected only because its coupler lacked compliance with former seal specification Q7.", "outcome": "failure"},
+      "constraint": {"content": "Specification Q7 prohibited the platform coupler used by the sheltered transfer arrangement.", "outcome": "success"},
+      "state_change": {"content": "The maritime authority superseded Q7 with a certification that explicitly accepts the installed coupler.", "outcome": "success"},
+      "recent": {"content": "Recent arrangement HELI_SLING resembles the current urgent transfer request but is grounded by ash visibility.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of HELI_SLING: fail; visibility is below the legal minimum.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated cold-chain note: crates remain within temperature limits.", "outcome": "success"},
+        {"content": "Validated crew note: dock staff are present.", "outcome": "success"},
+        {"content": "Validated tide note: the sheltered basin is calm.", "outcome": "success"},
+        {"content": "Archived arrangement EAST_BARGE still lacks a licensed pilot.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "pilot-parser-release", "family": "code_repair", "subset": "topology_targeted",
+      "question": "Which shelved modification now fits the deployed environment and addresses the malformed stream? Return only the task-domain answer token.",
+      "goal": "Parse segmented telemetry without losing frame boundaries.",
+      "active_constraints": ["The modification must be supported by the production parser API."],
+      "changed_constraints": ["Production now uses the API generation that exposes incremental boundary callbacks."],
+      "expected_answer": "FRAME_CALLBACK",
+      "focal": {"content": "Shelved modification FRAME_CALLBACK preserved boundaries using incremental callbacks; it was rejected because parser API generation 2 exposed no callback interface.", "outcome": "failure"},
+      "constraint": {"content": "API-generation constraint G2 stated that incremental frame callbacks were unavailable.", "outcome": "success"},
+      "state_change": {"content": "The deployment report confirms parser API generation 4, which supersedes G2 and provides incremental boundary callbacks.", "outcome": "success"},
+      "recent": {"content": "Recent modification BUFFER_GROWTH increases storage for malformed telemetry but still merges frame boundaries.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of BUFFER_GROWTH: fail; boundary-loss tests remain red.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated checksum note: packet checksums pass.", "outcome": "success"},
+        {"content": "Validated network note: no segments are dropped.", "outcome": "success"},
+        {"content": "Validated logging note: malformed offsets are recorded.", "outcome": "success"},
+        {"content": "Shelved modification PRETTY_ERRORS changes diagnostic text only.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "pilot-source-provenance", "family": "contradiction_resolution", "subset": "topology_targeted",
+      "question": "Which previously excluded record should now govern the exterior measurement? Return only the task-domain answer token.",
+      "goal": "Select the trustworthy exterior temperature record.",
+      "active_constraints": ["The source must have valid environmental provenance."],
+      "changed_constraints": ["The evidence used to disqualify the insulated logger was shown to belong to another device."],
+      "expected_answer": "LOGGER_IVY",
+      "focal": {"content": "Record LOGGER_IVY came from the certified exterior enclosure; it was excluded after a moisture alert was attributed to its serial number.", "outcome": "failure"},
+      "constraint": {"content": "Alert M18 disqualified any logger whose serial number showed enclosure moisture.", "outcome": "success"},
+      "state_change": {"content": "Chain-of-custody review proves alert M18 belonged to a warehouse logger, invalidating its application to the exterior device.", "outcome": "success"},
+      "recent": {"content": "Recent record LOBBY_PANEL is close to the current temperature discussion but was collected indoors.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of LOBBY_PANEL: fail; indoor placement violates exterior provenance.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated clock note: all timestamps use UTC.", "outcome": "success"},
+        {"content": "Validated enclosure note: certification remains current.", "outcome": "success"},
+        {"content": "Validated audit note: custody seals are intact.", "outcome": "success"},
+        {"content": "Excluded record ROOF_TEST lacks a calibration certificate.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "pilot-assay-revival", "family": "scientific_hypothesis", "subset": "topology_targeted",
+      "question": "Which archived explanatory model should be reconsidered after the control review? Return only the task-domain answer token.",
+      "goal": "Explain the delayed fluorescence response in the treated cultures.",
+      "active_constraints": ["The explanation must be compatible with uncontaminated controls."],
+      "changed_constraints": ["The negative control that rejected the archived model was contaminated by a fluorescent cleaning agent."],
+      "expected_answer": "MODEL_KAPPA",
+      "focal": {"content": "Archived MODEL_KAPPA predicted delayed receptor recycling; it was rejected because the nominal negative control fluoresced at the same delay.", "outcome": "failure"},
+      "constraint": {"content": "Control observation C9 was treated as disconfirming because untreated cultures showed the same delayed fluorescence.", "outcome": "success"},
+      "state_change": {"content": "Mass spectrometry identifies cleaning-agent residue in control C9, invalidating that control as evidence against receptor recycling.", "outcome": "success"},
+      "recent": {"content": "Recent MODEL_SIGMA attributes the fluorescence to detector persistence but fails the independent camera test.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of MODEL_SIGMA: fail; the response appears on a detector with no persistence artifact.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated culture note: cell viability is unchanged.", "outcome": "success"},
+        {"content": "Validated timing note: acquisition clocks are synchronized.", "outcome": "success"},
+        {"content": "Validated reagent note: treatment concentration is correct.", "outcome": "success"},
+        {"content": "Archived MODEL_TAU requires a temperature shift that did not occur.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "pilot-direct-record", "family": "negative_control", "subset": "negative_control",
+      "question": "Which record explicitly states that the west battery was replaced this morning? Return only the task-domain answer token.",
+      "goal": "Find the directly matching maintenance record.",
+      "active_constraints": ["Use the record with the explicit statement."],
+      "changed_constraints": ["No relevant constraint changed."],
+      "expected_answer": "LOG_WEST_AM",
+      "focal": {"content": "Maintenance record LOG_WEST_AM explicitly states that the west battery was replaced this morning.", "outcome": "failure"},
+      "constraint": {"content": "No provenance constraint controls this direct lookup.", "outcome": "success"},
+      "state_change": {"content": "No material state change occurred.", "outcome": "success"},
+      "recent": {"content": "Recent record LOG_EAST_PM concerns an east battery inspection this afternoon.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation: direct semantic lookup is appropriate.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated note about charger inventory.", "outcome": "success"},
+        {"content": "Validated note about the north cabinet.", "outcome": "success"},
+        {"content": "Validated note about tomorrow's inspection.", "outcome": "success"},
+        {"content": "Old battery shipping record.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    },
+    {
+      "id": "pilot-recent-approved", "family": "negative_control", "subset": "negative_control",
+      "question": "Which currently approved response plan should be executed? Return only the task-domain answer token.",
+      "goal": "Execute the latest plan that passed the current safety review.",
+      "active_constraints": ["Current safety approval is decisive."],
+      "changed_constraints": ["No old rejection was reversed."],
+      "expected_answer": "PLAN_CEDAR",
+      "focal": {"content": "Old PLAN_ASH remains rejected because its assembly point is inside the exclusion zone.", "outcome": "failure"},
+      "constraint": {"content": "The exclusion zone remains active around the old assembly point.", "outcome": "success"},
+      "state_change": {"content": "A new survey confirms the exclusion zone is unchanged.", "outcome": "success"},
+      "recent": {"content": "Current PLAN_CEDAR passed safety review and assigns the open northern assembly point.", "outcome": "success"},
+      "evaluation": {"content": "Evaluation of PLAN_CEDAR: pass; current safety and staffing requirements are met.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated radio plan is complete.", "outcome": "success"},
+        {"content": "Validated transport roster is complete.", "outcome": "success"},
+        {"content": "Validated weather review is complete.", "outcome": "success"},
+        {"content": "Old PLAN_BIRCH lacks medical staffing.", "outcome": "failure"}
+      ],
+      "metadata": {"correct_source": "recent", "no_useful_provenance": true}
+    }
+  ]
+}

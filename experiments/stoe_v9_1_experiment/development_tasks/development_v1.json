@@ -1,0 +1,83 @@
+{
+  "set": "v9-development-only",
+  "tasks": [
+    {
+      "id": "dev-permit-reopen", "family": "planning", "subset": "topology_targeted",
+      "question": "Which archived access plan now satisfies the revised operating situation? Return only the task-domain answer token.",
+      "goal": "Move the inspection team into the protected work zone before dusk.",
+      "active_constraints": ["Only certified access plans may be activated."],
+      "changed_constraints": ["The temporary exclusion order based on the old habitat survey has been revoked."],
+      "expected_answer": "MARSH_CAUSEWAY",
+      "focal": {"content": "Archived plan MARSH_CAUSEWAY used the low-impact service deck; it was rejected solely because exclusion order HX-4 covered the wetland boundary.", "outcome": "failure"},
+      "constraint": {"content": "Constraint HX-4 prohibited entry across the wetland boundary while the preliminary habitat survey was controlling.", "outcome": "success"},
+      "state_change": {"content": "A certified resurvey supersedes the preliminary habitat map and revokes exclusion order HX-4.", "outcome": "success"},
+      "recent": {"content": "Recent proposal RIDGE_SHUTTLE follows the current travel discussion but cannot cross the washed-out upper track.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of RIDGE_SHUTTLE: fail; the upper track remains physically impassable.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated inventory note: emergency radios are charged.", "outcome": "success"},
+        {"content": "Validated staffing note: two guides are available.", "outcome": "success"},
+        {"content": "Validated weather note: wind is below the stop-work threshold.", "outcome": "success"},
+        {"content": "Discarded route ORCHARD_GATE depends on a bridge that remains closed.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "dev-library-compat", "family": "code_repair", "subset": "topology_targeted",
+      "question": "Which shelved change now addresses the observed lifecycle failure under the revised platform? Return only the task-domain answer token.",
+      "goal": "Prevent handles from surviving abnormal request termination.",
+      "active_constraints": ["The patch must work on the deployed runtime."],
+      "changed_constraints": ["The deployed runtime has moved to the release that supports structured cleanup hooks."],
+      "expected_answer": "SCOPE_GUARD",
+      "focal": {"content": "Shelved patch SCOPE_GUARD wrapped handle ownership in the structured cleanup hook; it was rejected because runtime series 3 lacked that hook.", "outcome": "failure"},
+      "constraint": {"content": "Compatibility constraint R3 stated that structured cleanup hooks were unavailable on runtime series 3.", "outcome": "success"},
+      "state_change": {"content": "Deployment metadata confirms migration to runtime series 5, invalidating compatibility constraint R3.", "outcome": "success"},
+      "recent": {"content": "Recent patch RETRY_WRAPPER repeats the failed request but leaves abandoned handles alive.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of RETRY_WRAPPER: fail; handle count still grows after injected exceptions.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated test note: the normal success path closes handles.", "outcome": "success"},
+        {"content": "Validated build note: symbols are emitted correctly.", "outcome": "success"},
+        {"content": "Validated logging note: exception records are complete.", "outcome": "success"},
+        {"content": "Discarded patch FORMAT_PASS changes whitespace only.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "dev-direct-semantic", "family": "negative_control", "subset": "negative_control",
+      "question": "Which memory entry explicitly says the certificate expires tonight? Return the task-domain answer token.",
+      "goal": "Find the entry about a certificate expiring tonight.",
+      "active_constraints": ["Use the directly matching record."],
+      "changed_constraints": ["No relevant constraint changed."],
+      "expected_answer": "CERT_NIGHT",
+      "focal": {"content": "Record CERT_NIGHT explicitly states that the certificate expires tonight.", "outcome": "failure"},
+      "constraint": {"content": "No provenance constraint determines this lookup.", "outcome": "success"},
+      "state_change": {"content": "No material state change occurred.", "outcome": "success"},
+      "recent": {"content": "Recent note CERT_WEEK concerns a different certificate expiring next week.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation: direct text matching is sufficient for this lookup.", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated note about access badges.", "outcome": "success"},
+        {"content": "Validated note about daytime permits.", "outcome": "success"},
+        {"content": "Validated note about annual renewals.", "outcome": "success"},
+        {"content": "Unrelated archived certificate record.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    },
+    {
+      "id": "dev-recent-correct", "family": "negative_control", "subset": "negative_control",
+      "question": "Which currently approved dispatch option should be used? Return only the task-domain answer token.",
+      "goal": "Use the most recent approved dispatch decision.",
+      "active_constraints": ["The current approval is controlling."],
+      "changed_constraints": ["No old rejection has been invalidated."],
+      "expected_answer": "VAN_CURRENT",
+      "focal": {"content": "Old rejected option BARGE_OLD remains unavailable because its berth is closed.", "outcome": "failure"},
+      "constraint": {"content": "The berth closure remains active.", "outcome": "success"},
+      "state_change": {"content": "A status check confirms no change to the berth closure.", "outcome": "success"},
+      "recent": {"content": "Current approved dispatch VAN_CURRENT has a driver, fuel, and signed release.", "outcome": "success"},
+      "evaluation": {"content": "CHECK_COMPLETE_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Validated warehouse count is complete.", "outcome": "success"},
+        {"content": "Validated road report shows the city route open.", "outcome": "success"},
+        {"content": "Validated shift roster lists the assigned driver.", "outcome": "success"},
+        {"content": "Old option BIKE_OLD lacks capacity.", "outcome": "failure"}
+      ],
+      "metadata": {"correct_source": "recent", "no_useful_provenance": true}
+    }
+  ]
+}

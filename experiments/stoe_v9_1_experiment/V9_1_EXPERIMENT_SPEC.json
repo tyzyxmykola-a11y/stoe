@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "experiment": "SToE v9.1 corrective replication",
+  "status": "FROZEN_PRIMARY_NOT_RUN",
+  "freeze_date_local": "2026-08-16",
+  "scientific_design_source": "V9_FROZEN_REFERENCE_SPEC.json",
+  "replication_status": {
+    "type": "CORRECTIVE_REPLICATION",
+    "independent_confirmation": false,
+    "historical_v9_status": "V9_PRIMARY_INVALID_CONTEXT_BUDGET",
+    "known_v9_outcomes_not_used_for_tuning": true,
+    "future_requirement": "Independent confirmation requires a new unseen benchmark."
+  },
+  "sole_intended_change": {
+    "mechanism": "post-selection memory serialization and truthful exposure accounting",
+    "old_defect": "serialization stopped at the first artifact that would exceed 5000 characters",
+    "correction": "reserve metadata for every selected artifact, deterministically divide the remaining payload budget, truncate each artifact independently with [CONTENT_TRUNCATED], and assert the exact final memory string before generation",
+    "selection_occurs_before_correction": true,
+    "condition_agnostic": true
+  },
+  "preserved_inputs": {
+    "primary_benchmark": "benchmarks/frozen_primary_v1.json",
+    "primary_benchmark_sha256": "8c74a2af83c98d79ff33db99180052a5e54566ec9f555c19093bade4a8a43b62",
+    "primary_tasks": 18,
+    "independent_family_clusters": 9,
+    "topology_targeted_tasks": 9,
+    "negative_control_tasks": 9,
+    "canonical_seed": "data/stoe_seed.json",
+    "canonical_seed_sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+    "canonical_seed_core_ips": 36,
+    "canonical_seed_typed_relations": 113,
+    "canonical_seed_categories": 6,
+    "canonical_seed_expressions": 36,
+    "canonical_seed_nonempty_descriptions": 32,
+    "chimera_rule": "Frozen v9 offset-7 target rewiring; no regeneration or tuning.",
+    "navigator": "byte-identical v9 src/stoe_v9/navigator.py",
+    "graph_and_seed_loading": "byte-identical v9 graph.py, seed.py, and tasks.py",
+    "task_order": [
+      "primary-canyon-supply", "primary-planning-direct",
+      "primary-decoder-revival", "primary-debug-recent",
+      "primary-orchard-layout", "primary-constraint-direct",
+      "primary-harbor-rule", "primary-legal-recent",
+      "primary-enzyme-control", "primary-science-direct",
+      "primary-vector-patch", "primary-code-recent",
+      "primary-symbol-rule", "primary-hidden-direct",
+      "primary-witness-chain", "primary-contradiction-recent",
+      "primary-robot-capability", "primary-agent-direct"
+    ]
+  },
+  "models": {
+    "api_base": "http://127.0.0.1:11434",
+    "cloud_or_paid_api_permitted": false,
+    "generation_name": "gemma4:26b",
+    "generation_digest": "5571076f3d70050487b26b341705799e0ab29b808164f90d20d4cf84f699d251",
+    "embedding_name": "qwen3-embedding:0.6b",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "generation_parameters": {
+    "temperature": 0.0,
+    "top_p": 0.9,
+    "top_k": 40,
+    "seed": 9417,
+    "num_ctx": 8192,
+    "max_output_tokens": 192,
+    "transport_retries_after_initial_attempt": 1,
+    "model_calls_per_task_condition": 1,
+    "think": false,
+    "response_format": "json"
+  },
+  "information_budget": {
+    "selected_artifacts_per_memory_condition": 4,
+    "no_memory_artifacts": 0,
+    "max_model_visible_memory_characters": 5000,
+    "model_visible_invariant": "four selected eligible artifacts implies four unique [MEMORY_REF] blocks in the exact model-visible memory string",
+    "truncation_marker": "[CONTENT_TRUNCATED]",
+    "fatal_pre_generation_assertion": true,
+    "same_serializer_all_conditions": true
+  },
+  "conditions": [
+    "NO_MEMORY",
+    "SUCCESS_MEMORY",
+    "BM25_MEMORY",
+    "DENSE_SEMANTIC_MEMORY",
+    "TYPED_SEMANTIC_MEMORY",
+    "QUERY_BLIND_TOPOLOGY",
+    "OBSERVER_AWARE_STOE_TOPOLOGY",
+    "OBSERVER_AWARE_STOE_WITHOUT_CORE_SEED",
+    "OBSERVER_AWARE_STOE_CHIMERA_SEED",
+    "OBSERVER_AWARE_TOPOLOGY_WITHOUT_FAILURES",
+    "OBSERVER_AWARE_TOPOLOGY_UNTYPED",
+    "OBSERVER_AWARE_TOPOLOGY_RANDOMIZED_EDGES",
+    "OBSERVER_AWARE_TOPOLOGY_WITHOUT_STATE_CHANGE_SIGNAL",
+    "OBSERVER_AWARE_TOPOLOGY_WITHOUT_QUERY_RELEVANCE"
+  ],
+  "primary_comparisons": [
+    "OBSERVER_AWARE_STOE_TOPOLOGY vs DENSE_SEMANTIC_MEMORY on topology_targeted",
+    "OBSERVER_AWARE_STOE_TOPOLOGY vs QUERY_BLIND_TOPOLOGY on all and topology_targeted"
+  ],
+  "secondary_comparisons": [
+    "OBSERVER_AWARE_STOE_TOPOLOGY vs BM25_MEMORY",
+    "OBSERVER_AWARE_STOE_TOPOLOGY vs SUCCESS_MEMORY",
+    "OBSERVER_AWARE_STOE_TOPOLOGY vs each frozen ablation",
+    "native seed vs without core seed",
+    "native seed vs frozen chimera seed"
+  ],
+  "statistics": {
+    "estimand": "paired absolute success-rate difference",
+    "confidence_interval": "family-cluster bootstrap percentile interval",
+    "bootstrap_clusters": "family",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 9417,
+    "exact_test": "two-sided exact McNemar/binomial test on discordant task pairs",
+    "independence_statement": "Family, not task count or lexical variant, is the cluster unit."
+  },
+  "success_criterion": {
+    "all_required": true,
+    "observer_over_query_blind": "strictly positive paired success-rate difference on topology-targeted tasks",
+    "observer_over_dense": "at least one net additional targeted task (>=1/9)",
+    "mechanism_evidence": "At least 25% of observer-aware topology-only targeted successes have NECESSARY_FOR_SUCCESS or CONTRIBUTORY classification under a frozen counterfactual intervention.",
+    "negative_control_guard": "Observer-aware topology is not more than two tasks worse than dense semantic retrieval on the nine negative controls."
+  },
+  "counterfactuals": [
+    "REMOVE_FOCAL_FAILED_IP",
+    "REMOVE_STATE_CHANGE_IP",
+    "REMOVE_CRITICAL_TYPED_RELATION",
+    "RANDOMIZE_CRITICAL_EDGES",
+    "REMOVE_QUERY_RANKING"
+  ],
+  "counterfactual_classes": [
+    "NECESSARY_FOR_SUCCESS",
+    "CONTRIBUTORY",
+    "NO_DETECTABLE_EFFECT",
+    "COUNTERFACTUAL_IMPROVED",
+    "INVALID_REPLAY"
+  ],
+  "pre_primary_gates": {
+    "tests_required": 50,
+    "dry_run_cells": 252,
+    "allowed_exposure_violations": 0,
+    "allowed_memory_budget_violations": 0,
+    "allowed_frozen_selection_mismatches": 0,
+    "exact_model_digests_required": true,
+    "fresh_primary_output_required": true
+  },
+  "immutability_after_first_primary_call": [
+    "benchmark", "answers", "task order", "seed", "chimera", "graph", "navigator",
+    "retrievers", "serializer", "prompts", "budgets", "conditions", "models", "digests",
+    "generation parameters", "statistics", "success criteria", "counterfactual definitions"
+  ]
+}

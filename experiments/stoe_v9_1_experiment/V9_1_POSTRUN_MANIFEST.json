@@ -1,0 +1,83 @@
+{
+  "files": {
+    "V9_1_COUNTERFACTUAL_REPORT.md": {
+      "bytes": 2756,
+      "sha256": "ef2e212b74a6e12fdc069a61958a4848a4ca8ef0e5e1031bec786e249797f13f"
+    },
+    "V9_1_COUNTERFACTUAL_RESULTS.json": {
+      "bytes": 8928230,
+      "sha256": "985cdbb9a3a628ca397e63922d2de55ac23cc630ae4337a198ce489aceff2b8e"
+    },
+    "V9_1_ENVIRONMENT.json": {
+      "bytes": 2168,
+      "sha256": "3220aef3efd160f85c8aa3823c785f2d838dce208edd52b4e40430ab9e7815f1"
+    },
+    "V9_1_EXPERIMENT_SPEC.json": {
+      "bytes": 6623,
+      "sha256": "764188239b81aef1ccf8e018a1e0ad1d31f360c81a5927fe26c2992f5b16336c"
+    },
+    "V9_1_FINAL_REPORT.md": {
+      "bytes": 5744,
+      "sha256": "fe1294dc44a0d2414e62769dcf5d19ad7dcf43a358ae593922008b905b0f5426"
+    },
+    "V9_1_NAVIGATION_POSTMORTEM.md": {
+      "bytes": 3470,
+      "sha256": "bf0ea567dcfefd9cff5b955145ede4f732bbbc014b3fb1b8e3a76bb7de83b045"
+    },
+    "V9_1_PREFLIGHT.md": {
+      "bytes": 1598,
+      "sha256": "20ef1a26af68dad18c5c9fe4e964bd313a03a1d02c8b4fcfbd8e22393213de3a"
+    },
+    "V9_1_PRE_PRIMARY_MANIFEST.json": {
+      "bytes": 11809,
+      "sha256": "adfbbddf57717c5c4266ac7b16b225bd57f4c398379a4b1384da3e7c982dfd98"
+    },
+    "V9_1_PRIMARY_ANALYSIS_DATA.json": {
+      "bytes": 38611,
+      "sha256": "9ec2b645be5290df097d6be4eb5da0155e3f98582d9b751badec5eddd16cff41"
+    },
+    "V9_1_PRIMARY_RAW_TRACES.json": {
+      "bytes": 14992188,
+      "sha256": "6dd13dde18ab8555c2b5a230d421ef9559b152ce9c678841004c90ce2742e1b0"
+    },
+    "V9_1_PRIMARY_RESULTS.json": {
+      "bytes": 23925944,
+      "sha256": "1546d7f9950cbfbff869213eb0198f96d955e277cfbb5bf3ef6c648e0cd41503"
+    },
+    "V9_1_REPRODUCTION_COMMAND.txt": {
+      "bytes": 1097,
+      "sha256": "fefb458a103662e552c30728c98191b60f43798dedcd9d9d53ebb488755a5158"
+    },
+    "V9_1_RESULT_SUMMARY.md": {
+      "bytes": 1119,
+      "sha256": "bf2252c669197e8dcf65bc4b56a60a168cbb04c00f2e30ded3c5b4d8cfd1ed94"
+    },
+    "V9_1_SEED_ANALYSIS.md": {
+      "bytes": 919,
+      "sha256": "931335c36b8bc7f8e7fbdae1963d070ea5d072b44ffb8af68e9b8ae412d84a59"
+    },
+    "V9_1_STATISTICAL_ANALYSIS.md": {
+      "bytes": 7211,
+      "sha256": "75d145411b210079e3592a1cb4a0c940f7a3cee6f7ef65069e7ca8a2cb9fa140"
+    },
+    "V9_VS_V9_1_CORRECTIVE_COMPARISON.md": {
+      "bytes": 73212,
+      "sha256": "222293c647c8b4bb35452a3fa9ad4d84386c1ccb95ec5aa278f5eb708ef4a682"
+    },
+    "benchmarks/frozen_primary_v1.json": {
+      "bytes": 29360,
+      "sha256": "8c74a2af83c98d79ff33db99180052a5e54566ec9f555c19093bade4a8a43b62"
+    },
+    "data/stoe_seed.json": {
+      "bytes": 96323,
+      "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868"
+    },
+    "tools/analyze_v9_1.py": {
+      "bytes": 19603,
+      "sha256": "bc51c2166bca61da8c305a25a66d39c995509b3213644b1a10110ec1049dab08"
+    }
+  },
+  "raw_primary_immutable": true,
+  "schema_version": 1,
+  "status": "CORRECTIVE_REPLICATION_AND_ANALYSIS_COMPLETE"
+}

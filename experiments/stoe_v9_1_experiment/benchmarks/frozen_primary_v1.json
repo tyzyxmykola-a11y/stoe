@@ -1,0 +1,357 @@
+{
+  "set": "v9-frozen-primary-v1-not-run",
+  "independent_units": {"tasks": 18, "families": 9, "variants_per_template": 1},
+  "tasks": [
+    {
+      "id": "primary-canyon-supply", "family": "planning", "subset": "topology_targeted",
+      "question": "Which dormant logistics arrangement now satisfies the revised field situation? Return only the task-domain answer token.",
+      "goal": "Deliver water filters to the canyon clinic before the reserve tank empties.",
+      "active_constraints": ["The route must be authorized for loaded vehicles."],
+      "changed_constraints": ["The restriction derived from the obsolete axle survey has been withdrawn."],
+      "expected_answer": "MESA_WINCH",
+      "focal": {"content": "Dormant arrangement MESA_WINCH lowered sealed crates from the north shelf; it was rejected solely because axle survey A12 barred its carrier from the shelf road.", "outcome": "failure"},
+      "constraint": {"content": "Survey rule A12 prohibited the winch carrier on the north shelf road because of its recorded axle limit.", "outcome": "success"},
+      "state_change": {"content": "A certified load test replaces A12 and authorizes the carrier at its planned weight.", "outcome": "success"},
+      "recent": {"content": "Current-looking proposal VALLEY_DRONE concerns urgent clinic delivery but cannot lift the filter housings.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of VALLEY_DRONE: fail; measured payload is below the required load.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified inventory: filter housings are packed.", "outcome": "success"},
+        {"content": "Verified staffing: a shelf crew is available.", "outcome": "success"},
+        {"content": "Verified weather: lightning risk is low.", "outcome": "success"},
+        {"content": "Dormant arrangement RIVER_CART still depends on a collapsed ford.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-planning-direct", "family": "planning", "subset": "negative_control",
+      "question": "Which dispatch record explicitly names the approved vehicle for today's clinic delivery? Return only the task-domain answer token.",
+      "goal": "Find the directly stated approved vehicle.",
+      "active_constraints": ["Use the explicit current dispatch record."],
+      "changed_constraints": ["No relevant authorization changed."],
+      "expected_answer": "TRUCK_SABLE",
+      "focal": {"content": "Today's dispatch record explicitly names TRUCK_SABLE as the approved clinic vehicle.", "outcome": "failure"},
+      "constraint": {"content": "No provenance rule is needed for this direct record lookup.", "outcome": "success"},
+      "state_change": {"content": "No material authorization change occurred.", "outcome": "success"},
+      "recent": {"content": "Yesterday's note assigned VAN_OCHRE to a warehouse run.", "outcome": "failure"},
+      "evaluation": {"content": "DIRECT_LOOKUP_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified fuel inventory is complete.", "outcome": "success"},
+        {"content": "Verified driver roster is signed.", "outcome": "success"},
+        {"content": "Verified loading bay is open.", "outcome": "success"},
+        {"content": "Old vehicle record for TRUCK_UMBER.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    },
+    {
+      "id": "primary-decoder-revival", "family": "debugging", "subset": "topology_targeted",
+      "question": "Which shelved diagnosis now warrants action after the instrumentation review? Return only the task-domain answer token.",
+      "goal": "Stop intermittent corruption in the acquisition stream.",
+      "active_constraints": ["The diagnosis must explain failures on verified input."],
+      "changed_constraints": ["The trace that excluded a boundary defect was captured by a faulty probe."],
+      "expected_answer": "PHASE_RESET",
+      "focal": {"content": "Shelved diagnosis PHASE_RESET said the decoder retained phase across reconnects; it was rejected because trace T6 appeared to show a clean phase reset.", "outcome": "failure"},
+      "constraint": {"content": "Trace T6 was treated as proof that reconnect always cleared decoder phase.", "outcome": "success"},
+      "state_change": {"content": "Probe validation shows T6 silently dropped the reconnect interval, invalidating its phase-reset conclusion.", "outcome": "success"},
+      "recent": {"content": "Recent diagnosis QUEUE_PRESSURE resembles the current corruption report but survives a zero-load reproduction.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of QUEUE_PRESSURE: fail; corruption recurs with the queue empty.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified input checksums remain valid.", "outcome": "success"},
+        {"content": "Verified host clock drift is negligible.", "outcome": "success"},
+        {"content": "Verified disk writes complete normally.", "outcome": "success"},
+        {"content": "Shelved diagnosis FAN_NOISE predicts thermal alarms that never occur.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-debug-recent", "family": "debugging", "subset": "negative_control",
+      "question": "Which diagnosis currently passes every reproduction check? Return only the task-domain answer token.",
+      "goal": "Act on the latest diagnosis confirmed by current tests.",
+      "active_constraints": ["The current reproduction suite is controlling."],
+      "changed_constraints": ["No prior exclusion has been reversed."],
+      "expected_answer": "CLOCK_SKEW",
+      "focal": {"content": "Old diagnosis BUFFER_ALIAS remains rejected because isolated buffers still reproduce the fault.", "outcome": "failure"},
+      "constraint": {"content": "The isolated-buffer result remains valid.", "outcome": "success"},
+      "state_change": {"content": "A repeat confirms no change to the isolated-buffer result.", "outcome": "success"},
+      "recent": {"content": "Current diagnosis CLOCK_SKEW passes every reproduction check and predicts the observed offset.", "outcome": "success"},
+      "evaluation": {"content": "CURRENT_BRANCH_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified logging captures every run.", "outcome": "success"},
+        {"content": "Verified fixtures use stable power.", "outcome": "success"},
+        {"content": "Verified binaries match production.", "outcome": "success"},
+        {"content": "Old diagnosis PORT_RACE lacks temporal correlation.", "outcome": "failure"}
+      ],
+      "metadata": {"correct_source": "recent", "no_useful_provenance": true}
+    },
+    {
+      "id": "primary-orchard-layout", "family": "constraint_satisfaction", "subset": "topology_targeted",
+      "question": "Which discarded layout now satisfies the updated operating envelope? Return only the task-domain answer token.",
+      "goal": "Place irrigation equipment while preserving the harvest corridor.",
+      "active_constraints": ["The selected layout must fit the certified service envelope."],
+      "changed_constraints": ["The width cap inherited from the retired harvester no longer applies."],
+      "expected_answer": "SPIRAL_BED",
+      "focal": {"content": "Discarded layout SPIRAL_BED preserved the harvest corridor but was rejected because width cap W3 excluded its pump turning radius.", "outcome": "failure"},
+      "constraint": {"content": "Width cap W3 encoded the turning envelope of the retired harvester.", "outcome": "success"},
+      "state_change": {"content": "The replacement harvester's certification supersedes W3 and permits the pump radius.", "outcome": "success"},
+      "recent": {"content": "Recent layout GRID_ROW sounds compatible with harvest work but blocks two drainage outlets.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of GRID_ROW: fail; outlet blockage exceeds the flooding limit.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified soil map is current.", "outcome": "success"},
+        {"content": "Verified pump inventory is complete.", "outcome": "success"},
+        {"content": "Verified harvest date is unchanged.", "outcome": "success"},
+        {"content": "Discarded layout EAST_ARC conflicts with the power easement.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-constraint-direct", "family": "constraint_satisfaction", "subset": "negative_control",
+      "question": "Which schedule entry explicitly reserves bay four on Tuesday? Return only the task-domain answer token.",
+      "goal": "Find the direct bay reservation.",
+      "active_constraints": ["Use the explicit schedule entry."],
+      "changed_constraints": ["No scheduling rule changed."],
+      "expected_answer": "SLOT_MICA",
+      "focal": {"content": "Schedule entry SLOT_MICA explicitly reserves bay four on Tuesday.", "outcome": "failure"},
+      "constraint": {"content": "No causal constraint determines this lookup.", "outcome": "success"},
+      "state_change": {"content": "No material scheduling change occurred.", "outcome": "success"},
+      "recent": {"content": "Recent entry SLOT_COPPER reserves bay two on Wednesday.", "outcome": "failure"},
+      "evaluation": {"content": "DIRECT_SCHEDULE_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified cleaning roster for bay one.", "outcome": "success"},
+        {"content": "Verified tool list for Thursday.", "outcome": "success"},
+        {"content": "Verified loading note for bay three.", "outcome": "success"},
+        {"content": "Archived weekend reservation.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    },
+    {
+      "id": "primary-harbor-rule", "family": "legal_rule", "subset": "topology_targeted",
+      "question": "Which previously rejected filing route is now legally available under the controlling framework? Return only the task-domain answer token.",
+      "goal": "Submit the harbor lease renewal before the statutory deadline.",
+      "active_constraints": ["The route must comply with the presently controlling regulation."],
+      "changed_constraints": ["The delegation clause that barred electronic attestation was superseded."],
+      "expected_answer": "ESEAL_ROUTE",
+      "focal": {"content": "Filing route ESEAL_ROUTE used the agency's electronic seal; counsel rejected it because former delegation clause D14 required a handwritten attestation.", "outcome": "failure"},
+      "constraint": {"content": "Clause D14 made handwritten attestation mandatory for delegated harbor filings.", "outcome": "success"},
+      "state_change": {"content": "The enacted replacement regulation repeals D14 and recognizes the agency electronic seal.", "outcome": "success"},
+      "recent": {"content": "Recent route EMERGENCY_PETITION is legally adjacent to the deadline issue but requires an active disaster declaration.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of EMERGENCY_PETITION: fail; no declaration is in force.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified lease number matches the registry.", "outcome": "success"},
+        {"content": "Verified fee has been deposited.", "outcome": "success"},
+        {"content": "Verified applicant authority remains current.", "outcome": "success"},
+        {"content": "Rejected route ORAL_NOTICE cannot create a filing date.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-legal-recent", "family": "legal_rule", "subset": "negative_control",
+      "question": "Which presently effective order authorizes the inspection? Return only the task-domain answer token.",
+      "goal": "Use the latest effective inspection authority.",
+      "active_constraints": ["Only a presently effective order qualifies."],
+      "changed_constraints": ["No old order was revived."],
+      "expected_answer": "ORDER_NORTH",
+      "focal": {"content": "Expired ORDER_WEST remains ineffective after its sunset date.", "outcome": "failure"},
+      "constraint": {"content": "The sunset provision remains controlling for ORDER_WEST.", "outcome": "success"},
+      "state_change": {"content": "The register confirms the sunset status is unchanged.", "outcome": "success"},
+      "recent": {"content": "Presently effective ORDER_NORTH expressly authorizes the inspection.", "outcome": "success"},
+      "evaluation": {"content": "CURRENT_ORDER_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified inspector credential is current.", "outcome": "success"},
+        {"content": "Verified notice was delivered.", "outcome": "success"},
+        {"content": "Verified site address is correct.", "outcome": "success"},
+        {"content": "Old ORDER_SOUTH concerns a different facility.", "outcome": "failure"}
+      ],
+      "metadata": {"correct_source": "recent", "no_useful_provenance": true}
+    },
+    {
+      "id": "primary-enzyme-control", "family": "scientific_hypothesis", "subset": "topology_targeted",
+      "question": "Which archived mechanism deserves renewed consideration after the assay audit? Return only the task-domain answer token.",
+      "goal": "Explain the delayed substrate conversion in the treated samples.",
+      "active_constraints": ["The mechanism must remain compatible with validated controls."],
+      "changed_constraints": ["The comparison that excluded a transport mechanism used degraded reference material."],
+      "expected_answer": "VESICLE_GATE",
+      "focal": {"content": "Archived mechanism VESICLE_GATE predicted delayed vesicle release; it was rejected when reference batch R8 appeared to show the same lag without treatment.", "outcome": "failure"},
+      "constraint": {"content": "Reference observation R8 was accepted as evidence that the lag was unrelated to vesicle release.", "outcome": "success"},
+      "state_change": {"content": "Chemical audit finds hydrolyzed substrate in R8, invalidating that comparison.", "outcome": "success"},
+      "recent": {"content": "Recent mechanism LASER_DRIFT resembles the timing anomaly but fails under an independent optical path.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of LASER_DRIFT: fail; the lag persists with a separate detector.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified incubation temperature was stable.", "outcome": "success"},
+        {"content": "Verified sample labels are correct.", "outcome": "success"},
+        {"content": "Verified treatment dose matches protocol.", "outcome": "success"},
+        {"content": "Archived mechanism PH_SHIFT requires an acidity change not observed.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-science-direct", "family": "scientific_hypothesis", "subset": "negative_control",
+      "question": "Which sample record explicitly reports blue emission at 460 nanometers? Return only the task-domain answer token.",
+      "goal": "Find the directly matching spectroscopy record.",
+      "active_constraints": ["Use the explicit wavelength and color record."],
+      "changed_constraints": ["No evidential constraint changed."],
+      "expected_answer": "SAMPLE_AZURE",
+      "focal": {"content": "Spectroscopy record SAMPLE_AZURE explicitly reports blue emission at 460 nanometers.", "outcome": "failure"},
+      "constraint": {"content": "No provenance chain is required for the literal record search.", "outcome": "success"},
+      "state_change": {"content": "No material evidential change occurred.", "outcome": "success"},
+      "recent": {"content": "Recent SAMPLE_GREEN reports emission at 530 nanometers.", "outcome": "failure"},
+      "evaluation": {"content": "DIRECT_SPECTRUM_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified detector calibration note.", "outcome": "success"},
+        {"content": "Verified cuvette cleaning note.", "outcome": "success"},
+        {"content": "Verified dark-current measurement.", "outcome": "success"},
+        {"content": "Archived infrared spectrum.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    },
+    {
+      "id": "primary-vector-patch", "family": "code_repair", "subset": "topology_targeted",
+      "question": "Which abandoned implementation now fits the production platform and resolves the throughput defect? Return only the task-domain answer token.",
+      "goal": "Restore packet classification throughput without changing outputs.",
+      "active_constraints": ["The implementation must obey the deployed calling convention."],
+      "changed_constraints": ["Production migrated away from the calling convention that caused the earlier rejection."],
+      "expected_answer": "LANE_FUSION",
+      "focal": {"content": "Abandoned implementation LANE_FUSION batched classification across vector lanes; it was rejected because ABI revision B passed lane masks in incompatible registers.", "outcome": "failure"},
+      "constraint": {"content": "ABI revision B made the vector lane-mask call sequence incompatible with the batch implementation.", "outcome": "success"},
+      "state_change": {"content": "Production now targets ABI revision D, whose register contract supersedes B and matches the batch sequence.", "outcome": "success"},
+      "recent": {"content": "Recent implementation CACHE_WARM sounds related to throughput but changes no classification hot path.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of CACHE_WARM: fail; throughput remains below target.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified output corpus matches expected labels.", "outcome": "success"},
+        {"content": "Verified compiler flags are recorded.", "outcome": "success"},
+        {"content": "Verified packet capture is lossless.", "outcome": "success"},
+        {"content": "Abandoned implementation LOG_BATCH only reduces console output.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-code-recent", "family": "code_repair", "subset": "negative_control",
+      "question": "Which current patch passes the full regression suite? Return only the task-domain answer token.",
+      "goal": "Ship the latest patch verified by current tests.",
+      "active_constraints": ["All current regressions must pass."],
+      "changed_constraints": ["No historical incompatibility was removed."],
+      "expected_answer": "PATCH_MAPLE",
+      "focal": {"content": "Old PATCH_ELM remains rejected because it corrupts empty inputs.", "outcome": "failure"},
+      "constraint": {"content": "The empty-input regression remains controlling.", "outcome": "success"},
+      "state_change": {"content": "A rerun confirms the empty-input regression is unchanged.", "outcome": "success"},
+      "recent": {"content": "Current PATCH_MAPLE passes the complete regression suite including empty inputs.", "outcome": "success"},
+      "evaluation": {"content": "CURRENT_PATCH_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified build metadata is reproducible.", "outcome": "success"},
+        {"content": "Verified style checks pass.", "outcome": "success"},
+        {"content": "Verified package signature is valid.", "outcome": "success"},
+        {"content": "Old PATCH_PINE changes comments only.", "outcome": "failure"}
+      ],
+      "metadata": {"correct_source": "recent", "no_useful_provenance": true}
+    },
+    {
+      "id": "primary-symbol-rule", "family": "hidden_rule", "subset": "topology_targeted",
+      "question": "Which discarded move becomes admissible under the newly discovered governing pattern? Return only the task-domain answer token.",
+      "goal": "Complete the symbol sequence without violating the controlling meta-rule.",
+      "active_constraints": ["The move must satisfy the true meta-rule."],
+      "changed_constraints": ["The assumed alternating-color prohibition was only a consequence of incomplete examples."],
+      "expected_answer": "TURN_ORBIT",
+      "focal": {"content": "Move TURN_ORBIT preserved rotational parity; it was discarded because provisional rule P2 prohibited two dark symbols in succession.", "outcome": "failure"},
+      "constraint": {"content": "Provisional rule P2 treated consecutive dark symbols as invalid.", "outcome": "success"},
+      "state_change": {"content": "A revealed example establishes rotational parity as controlling and directly contradicts P2.", "outcome": "success"},
+      "recent": {"content": "Recent move FLIP_NEAR matches the visible color sequence but breaks rotational parity.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of FLIP_NEAR: fail; parity changes after the third rotation.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified symbol count is eight.", "outcome": "success"},
+        {"content": "Verified start position is fixed.", "outcome": "success"},
+        {"content": "Verified rotations are clockwise.", "outcome": "success"},
+        {"content": "Discarded move SWAP_AXIS violates the fixed center.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-hidden-direct", "family": "hidden_rule", "subset": "negative_control",
+      "question": "Which rule card explicitly says triangles score three points? Return only the task-domain answer token.",
+      "goal": "Find the literal scoring rule.",
+      "active_constraints": ["Use the explicit rule card."],
+      "changed_constraints": ["No rule was revised."],
+      "expected_answer": "CARD_TRINE",
+      "focal": {"content": "Rule card CARD_TRINE explicitly says triangles score three points.", "outcome": "failure"},
+      "constraint": {"content": "No provenance relation is needed for this lookup.", "outcome": "success"},
+      "state_change": {"content": "No material rule change occurred.", "outcome": "success"},
+      "recent": {"content": "Recent CARD_SQUARE says squares score four points.", "outcome": "failure"},
+      "evaluation": {"content": "DIRECT_RULE_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified board has twelve spaces.", "outcome": "success"},
+        {"content": "Verified pieces begin off board.", "outcome": "success"},
+        {"content": "Verified ties trigger a replay.", "outcome": "success"},
+        {"content": "Archived rule card for circles.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    },
+    {
+      "id": "primary-witness-chain", "family": "contradiction_network", "subset": "topology_targeted",
+      "question": "Which excluded account should now anchor the event chronology? Return only the task-domain answer token.",
+      "goal": "Construct the most reliable chronology of the loading incident.",
+      "active_constraints": ["The account must have authenticated provenance."],
+      "changed_constraints": ["The mismatch used to discredit one account came from a transposed custody label."],
+      "expected_answer": "ACCOUNT_LINNET",
+      "focal": {"content": "ACCOUNT_LINNET placed the valve closure before loading; it was excluded when custody label C21 appeared to assign the recording to an unauthenticated device.", "outcome": "failure"},
+      "constraint": {"content": "Custody label C21 was the sole basis for treating the recording as unauthenticated.", "outcome": "success"},
+      "state_change": {"content": "The original ledger proves C21 was transposed with C12, restoring the recording's authenticated provenance.", "outcome": "success"},
+      "recent": {"content": "Recent ACCOUNT_FINCH is semantically close to the loading chronology but conflicts with the verified pressure log.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of ACCOUNT_FINCH: fail; its timing precedes a logged pressure event it describes as completed.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified pressure logger clock is accurate.", "outcome": "success"},
+        {"content": "Verified loading manifest is complete.", "outcome": "success"},
+        {"content": "Verified valve identifier is unique.", "outcome": "success"},
+        {"content": "Excluded ACCOUNT_TERN lacks any timestamp.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-contradiction-recent", "family": "contradiction_network", "subset": "negative_control",
+      "question": "Which current account agrees with both authenticated logs? Return only the task-domain answer token.",
+      "goal": "Use the latest account corroborated by both logs.",
+      "active_constraints": ["Both authenticated logs must agree."],
+      "changed_constraints": ["No excluded account was rehabilitated."],
+      "expected_answer": "ACCOUNT_WREN",
+      "focal": {"content": "Old ACCOUNT_GULL remains excluded because it contradicts the pressure log.", "outcome": "failure"},
+      "constraint": {"content": "The pressure-log contradiction remains unresolved.", "outcome": "success"},
+      "state_change": {"content": "A custody review confirms no change to that contradiction.", "outcome": "success"},
+      "recent": {"content": "Current ACCOUNT_WREN agrees with both the authenticated pressure and access logs.", "outcome": "success"},
+      "evaluation": {"content": "CURRENT_ACCOUNT_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified camera clock is synchronized.", "outcome": "success"},
+        {"content": "Verified door sensor is calibrated.", "outcome": "success"},
+        {"content": "Verified manifest signature is authentic.", "outcome": "success"},
+        {"content": "Old ACCOUNT_RAIL concerns another shift.", "outcome": "failure"}
+      ],
+      "metadata": {"correct_source": "recent", "no_useful_provenance": true}
+    },
+    {
+      "id": "primary-robot-capability", "family": "multi_agent_planning", "subset": "topology_targeted",
+      "question": "Which shelved coordination policy now completes the mission under the updated team state? Return only the task-domain answer token.",
+      "goal": "Retrieve the sample while maintaining continuous perimeter sensing.",
+      "active_constraints": ["At least one agent must sense the perimeter throughout retrieval."],
+      "changed_constraints": ["The scout's inability to relay while moving has been removed by a hardware replacement."],
+      "expected_answer": "HANDOFF_QUARTZ",
+      "focal": {"content": "Shelved policy HANDOFF_QUARTZ assigned retrieval to the carrier while the scout relayed perimeter data; it was rejected because radio module R1 dropped links during scout motion.", "outcome": "failure"},
+      "constraint": {"content": "Module limitation R1 prevented the moving scout from maintaining the perimeter relay.", "outcome": "success"},
+      "state_change": {"content": "The scout now carries module R4, whose verified moving relay invalidates limitation R1.", "outcome": "success"},
+      "recent": {"content": "Recent policy SOLO_CARRIER resembles the retrieval objective but leaves perimeter sensing unattended.", "outcome": "failure"},
+      "evaluation": {"content": "Evaluation of SOLO_CARRIER: fail; the sensing continuity check records a gap.", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified carrier battery exceeds mission duration.", "outcome": "success"},
+        {"content": "Verified sample container is mounted.", "outcome": "success"},
+        {"content": "Verified terrain map is current.", "outcome": "success"},
+        {"content": "Shelved policy DUAL_LIFT requires a third robot.", "outcome": "failure", "relation": "rejected_by"}
+      ]
+    },
+    {
+      "id": "primary-agent-direct", "family": "multi_agent_planning", "subset": "negative_control",
+      "question": "Which current assignment explicitly gives mapping duty to the scout? Return only the task-domain answer token.",
+      "goal": "Find the direct current team assignment.",
+      "active_constraints": ["Use the explicit current assignment."],
+      "changed_constraints": ["No agent capability changed."],
+      "expected_answer": "TEAM_LAPIS",
+      "focal": {"content": "Current assignment TEAM_LAPIS explicitly gives mapping duty to the scout.", "outcome": "failure"},
+      "constraint": {"content": "No causal provenance is required for this assignment lookup.", "outcome": "success"},
+      "state_change": {"content": "No material capability change occurred.", "outcome": "success"},
+      "recent": {"content": "Recent TEAM_JADE assigns charging duty to the carrier.", "outcome": "failure"},
+      "evaluation": {"content": "DIRECT_ASSIGNMENT_CHECK_PASS", "outcome": "success"},
+      "distractors": [
+        {"content": "Verified radio channel is reserved.", "outcome": "success"},
+        {"content": "Verified charging dock is clear.", "outcome": "success"},
+        {"content": "Verified map grid is loaded.", "outcome": "success"},
+        {"content": "Archived assignment for a retired robot.", "outcome": "failure"}
+      ],
+      "metadata": {"no_useful_provenance": true}
+    }
+  ]
+}

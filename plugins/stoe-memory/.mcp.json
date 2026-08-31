@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "stoe_memory": {
+      "command": "cmd.exe",
+      "args": [
+        "/d",
+        "/s",
+        "/c",
+        "call",
+        "./scripts/launch_stoe_memory.cmd",
+        "./server.py"
+      ],
+      "cwd": ".",
+      "enabled": true,
+      "default_tools_approval_mode": "approve",
+      "env_vars": [
+        "LOCALAPPDATA",
+        "USERPROFILE",
+        "PATH",
+        "STOE_MEMORY_DB"
+      ],
+      "startup_timeout_sec": 15,
+      "tool_timeout_sec": 60
+    }
+  }
+}

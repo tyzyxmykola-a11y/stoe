@@ -5,7 +5,7 @@ plugin, the `stoe-reasoning` skill, canonical seed data, and research artifacts.
 
 | Directory | Contents |
 | --- | --- |
-| [`experiments/stoe_v9_1_experiment`](experiments/stoe_v9_1_experiment) | v9.1 corrective replication: observer-aware navigator, retrieval baselines, providers, tests, frozen tasks, reports, and raw results |
+| [`experiments/stoe_v9_1_experiment`](experiments/stoe_v9_1_experiment) | v9.1 corrective replication: observer-aware navigator, retrieval baselines, providers, tests, frozen tasks, reports, and losslessly compressed raw results |
 | [`engine/v7`](engine/v7) | Earlier interactive information-field engine, Flask API, and browser interface |
 | [`plugins/stoe-memory`](plugins/stoe-memory) | Local persistent SQLite reasoning field exposed through MCP over stdio |
 | [`skills/stoe-reasoning`](skills/stoe-reasoning) | Reusable reasoning protocol, references, seed, and seed validator |
@@ -37,6 +37,18 @@ for the model and embedding digests; replace its historical machine-specific
 Python executable path with your own. Run new experiments into new output files
 instead of overwriting the archived results.
 
+Large archived JSON outputs are stored as `.json.gz` for reliable transfer.
+Restore the original filenames and verify their SHA-256 hashes before running
+tools that read those outputs:
+
+```text
+python tools/restore_archived_results.py
+```
+
+Run this from the experiment directory. The restore script refuses to overwrite
+changed results. Source, tasks, small JSON inputs, and reports remain directly
+readable without restoration.
+
 ## Use the memory plugin
 
 See the [plugin README](plugins/stoe-memory/README.md) for dependencies and launch
@@ -66,4 +78,3 @@ live memory. Local databases, v7 runtime `field_data.json`, environment files,
 caches, session logs, and temporary files are excluded. Canonical seed files are
 preserved byte for byte. Original reports retain historical paths and provenance.
 See [publication notes](docs/publication.md) and the [security notes](SECURITY.md).
-

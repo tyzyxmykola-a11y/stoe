@@ -1,0 +1,32 @@
+[
+  {
+    "file": "V9_1_COUNTERFACTUAL_RESULTS.json",
+    "archive": "V9_1_COUNTERFACTUAL_RESULTS.json.gz",
+    "bytes": 8928230,
+    "sha256": "985cdbb9a3a628ca397e63922d2de55ac23cc630ae4337a198ce489aceff2b8e"
+  },
+  {
+    "file": "V9_1_PRIMARY_RAW_TRACES.json",
+    "archive": "V9_1_PRIMARY_RAW_TRACES.json.gz",
+    "bytes": 14992188,
+    "sha256": "6dd13dde18ab8555c2b5a230d421ef9559b152ce9c678841004c90ce2742e1b0"
+  },
+  {
+    "file": "V9_1_PRIMARY_RESULTS.json",
+    "archive": "V9_1_PRIMARY_RESULTS.json.gz",
+    "bytes": 23925944,
+    "sha256": "1546d7f9950cbfbff869213eb0198f96d955e277cfbb5bf3ef6c648e0cd41503"
+  },
+  {
+    "file": "V9_1_SERIALIZATION_DRY_RUN.json",
+    "archive": "V9_1_SERIALIZATION_DRY_RUN.json.gz",
+    "bytes": 1202373,
+    "sha256": "44fb2c8ab82172c0a61764b5e7ce2c267ba412021336bcc1d10eba6889b74eea"
+  },
+  {
+    "file": "V9_CONTEXT_EXPOSURE_AUDIT.json",
+    "archive": "V9_CONTEXT_EXPOSURE_AUDIT.json.gz",
+    "bytes": 448363,
+    "sha256": "a30997f837ad4acc95ca65e1d5aab4bb3657adad04cb65092322d856d9984cd9"
+  }
+]

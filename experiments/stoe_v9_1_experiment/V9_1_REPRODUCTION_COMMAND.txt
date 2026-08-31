@@ -1,0 +1,10 @@
+V9.1 CORRECTIVE REPLICATION — FROZEN INVOCATION
+
+PowerShell from stoe_v9_1_experiment, using the same Python 3.11.15 runtime as v9:
+
+$env:PYTHONPATH=(Resolve-Path '.\src')
+& 'C:\Users\Bozuron\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\python.exe' -m unittest discover -s tests -v
+& 'C:\Users\Bozuron\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\python.exe' tools\run_serialization_dry_run.py --ollama http://127.0.0.1:11434
+& 'C:\Users\Bozuron\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\python.exe' -m stoe_v9 run --tasks benchmarks\frozen_primary_v1.json --provider ollama --api-base http://127.0.0.1:11434 --model gemma4:26b --model-digest 5571076f3d70050487b26b341705799e0ab29b808164f90d20d4cf84f699d251 --embedding-model qwen3-embedding:0.6b --embedding-digest ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d --output V9_1_PRIMARY_RESULTS.json --allow-primary
+
+The run is a corrective replication, not an independent confirmation. Total model-visible memory remains capped at 5000 characters in every memory condition.

@@ -1,0 +1,27 @@
+{
+  "name": "stoe-memory",
+  "version": "0.1.0",
+  "description": "Local persistent observer-aware SToE reasoning field",
+  "author": {
+    "name": "Mykola Voronin"
+  },
+  "interface": {
+    "displayName": "SToE Memory",
+    "shortDescription": "Persistent observer-aware reasoning field",
+    "longDescription": "Stores reasoning IPs, typed provenance, failures, evaluations, and observer-state changes locally, then exposes bounded direction-aware navigation and counterfactual contexts to Codex.",
+    "developerName": "Mykola Voronin",
+    "category": "Productivity",
+    "capabilities": [
+      "Local persistent memory",
+      "Observer-aware retrieval",
+      "Typed provenance traces"
+    ],
+    "defaultPrompt": [
+      "Use SToE memory for this changing-constraint problem.",
+      "Show the SToE retrieval trace for this decision.",
+      "Revisit failed ideas invalidated by the new evidence."
+    ],
+    "brandColor": "#5B4BDB"
+  },
+  "mcpServers": "./.mcp.json"
+}

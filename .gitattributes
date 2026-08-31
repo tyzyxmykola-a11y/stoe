@@ -1,0 +1,4 @@
+# Preserve archived hashes and canonical seed bytes; no automatic CRLF conversion.
+* -text
+*.pdf binary
+*.gz binary

@@ -1,0 +1,2 @@
+# Version present in the source development runtime; exposes mcp.server.MCPServer.
+mcp==2.0.0

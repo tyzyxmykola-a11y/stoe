@@ -1,0 +1,14 @@
+interface:
+  display_name: "SToE Reasoning Field"
+  short_description: "Observer-aware memory for failures and state changes"
+  brand_color: "#5B4BDB"
+  default_prompt: "Use $stoe-reasoning to preserve failed paths and revisit them when constraints change."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "stoe_memory"
+      description: "Local persistent SToE reasoning field and observer-aware navigator"
+
+policy:
+  allow_implicit_invocation: true

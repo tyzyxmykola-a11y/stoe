@@ -1,0 +1,1329 @@
+{
+  "analysis_status": "V9_1_CORRECTIVE_REPLICATION_COMPLETE",
+  "comparisons": [
+    {
+      "absolute_difference": 0.3333333333333333,
+      "discordant_pairs": 3,
+      "exact_paired_p_two_sided": 0.25,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.6666666666666666
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 3,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "DENSE_SEMANTIC_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.6666666666666666,
+      "right_success": 6,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.7777777777777778,
+      "discordant_pairs": 14,
+      "exact_paired_p_two_sided": 0.0001220703125,
+      "family_cluster_bootstrap_95_ci": [
+        0.6111111111111112,
+        0.9444444444444444
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 14,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "QUERY_BLIND_TOPOLOGY",
+      "right_only": 0,
+      "right_rate": 0.2222222222222222,
+      "right_success": 4,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 1.0,
+      "discordant_pairs": 9,
+      "exact_paired_p_two_sided": 0.00390625,
+      "family_cluster_bootstrap_95_ci": [
+        1.0,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 9,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "QUERY_BLIND_TOPOLOGY",
+      "right_only": 0,
+      "right_rate": 0.0,
+      "right_success": 0,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.5555555555555556,
+      "discordant_pairs": 5,
+      "exact_paired_p_two_sided": 0.0625,
+      "family_cluster_bootstrap_95_ci": [
+        0.2222222222222222,
+        0.8888888888888888
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 5,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "QUERY_BLIND_TOPOLOGY",
+      "right_only": 0,
+      "right_rate": 0.4444444444444444,
+      "right_success": 4,
+      "subset": "negative_control"
+    },
+    {
+      "absolute_difference": 0.2222222222222222,
+      "discordant_pairs": 4,
+      "exact_paired_p_two_sided": 0.125,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.4444444444444444
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 4,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "DENSE_SEMANTIC_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.7777777777777778,
+      "right_success": 14,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.1111111111111111,
+      "discordant_pairs": 1,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.3333333333333333
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 1,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "DENSE_SEMANTIC_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.8888888888888888,
+      "right_success": 8,
+      "subset": "negative_control"
+    },
+    {
+      "absolute_difference": 0.2222222222222222,
+      "discordant_pairs": 4,
+      "exact_paired_p_two_sided": 0.125,
+      "family_cluster_bootstrap_95_ci": [
+        0.05555555555555555,
+        0.3888888888888889
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 4,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "BM25_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.7777777777777778,
+      "right_success": 14,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.4444444444444444,
+      "discordant_pairs": 4,
+      "exact_paired_p_two_sided": 0.125,
+      "family_cluster_bootstrap_95_ci": [
+        0.1111111111111111,
+        0.7777777777777778
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 4,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "BM25_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.5555555555555556,
+      "right_success": 5,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.8333333333333334,
+      "discordant_pairs": 15,
+      "exact_paired_p_two_sided": 6.103515625e-05,
+      "family_cluster_bootstrap_95_ci": [
+        0.6666666666666666,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 15,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "SUCCESS_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.16666666666666666,
+      "right_success": 3,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 1.0,
+      "discordant_pairs": 9,
+      "exact_paired_p_two_sided": 0.00390625,
+      "family_cluster_bootstrap_95_ci": [
+        1.0,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 9,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "SUCCESS_MEMORY",
+      "right_only": 0,
+      "right_rate": 0.0,
+      "right_success": 0,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.1111111111111111,
+      "discordant_pairs": 2,
+      "exact_paired_p_two_sided": 0.5,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.2777777777777778
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 2,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_STOE_WITHOUT_CORE_SEED",
+      "right_only": 0,
+      "right_rate": 0.8888888888888888,
+      "right_success": 16,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_STOE_WITHOUT_CORE_SEED",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.2777777777777778,
+      "discordant_pairs": 5,
+      "exact_paired_p_two_sided": 0.0625,
+      "family_cluster_bootstrap_95_ci": [
+        0.1111111111111111,
+        0.4444444444444444
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 5,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_STOE_CHIMERA_SEED",
+      "right_only": 0,
+      "right_rate": 0.7222222222222222,
+      "right_success": 13,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_STOE_CHIMERA_SEED",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.7777777777777778,
+      "discordant_pairs": 14,
+      "exact_paired_p_two_sided": 0.0001220703125,
+      "family_cluster_bootstrap_95_ci": [
+        0.6111111111111112,
+        0.9444444444444444
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 14,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_FAILURES",
+      "right_only": 0,
+      "right_rate": 0.2222222222222222,
+      "right_success": 4,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 1.0,
+      "discordant_pairs": 9,
+      "exact_paired_p_two_sided": 0.00390625,
+      "family_cluster_bootstrap_95_ci": [
+        1.0,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 9,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_FAILURES",
+      "right_only": 0,
+      "right_rate": 0.0,
+      "right_success": 0,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.5555555555555556,
+      "discordant_pairs": 5,
+      "exact_paired_p_two_sided": 0.0625,
+      "family_cluster_bootstrap_95_ci": [
+        0.2222222222222222,
+        0.8888888888888888
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 5,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_FAILURES",
+      "right_only": 0,
+      "right_rate": 0.4444444444444444,
+      "right_success": 4,
+      "subset": "negative_control"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_TOPOLOGY_UNTYPED",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 18,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_UNTYPED",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_UNTYPED",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "negative_control"
+    },
+    {
+      "absolute_difference": 0.8333333333333334,
+      "discordant_pairs": 15,
+      "exact_paired_p_two_sided": 6.103515625e-05,
+      "family_cluster_bootstrap_95_ci": [
+        0.6666666666666666,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 15,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_TOPOLOGY_RANDOMIZED_EDGES",
+      "right_only": 0,
+      "right_rate": 0.16666666666666666,
+      "right_success": 3,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.6666666666666666,
+      "discordant_pairs": 6,
+      "exact_paired_p_two_sided": 0.03125,
+      "family_cluster_bootstrap_95_ci": [
+        0.3333333333333333,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 6,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_RANDOMIZED_EDGES",
+      "right_only": 0,
+      "right_rate": 0.3333333333333333,
+      "right_success": 3,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 1.0,
+      "discordant_pairs": 9,
+      "exact_paired_p_two_sided": 0.00390625,
+      "family_cluster_bootstrap_95_ci": [
+        1.0,
+        1.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 9,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_RANDOMIZED_EDGES",
+      "right_only": 0,
+      "right_rate": 0.0,
+      "right_success": 0,
+      "subset": "negative_control"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_STATE_CHANGE_SIGNAL",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 18,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_STATE_CHANGE_SIGNAL",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_STATE_CHANGE_SIGNAL",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "negative_control"
+    },
+    {
+      "absolute_difference": 0.2777777777777778,
+      "discordant_pairs": 5,
+      "exact_paired_p_two_sided": 0.0625,
+      "family_cluster_bootstrap_95_ci": [
+        0.1111111111111111,
+        0.4444444444444444
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 5,
+      "left_rate": 1.0,
+      "left_success": 18,
+      "n": 18,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_QUERY_RELEVANCE",
+      "right_only": 0,
+      "right_rate": 0.7222222222222222,
+      "right_success": 13,
+      "subset": "all"
+    },
+    {
+      "absolute_difference": 0.0,
+      "discordant_pairs": 0,
+      "exact_paired_p_two_sided": 1.0,
+      "family_cluster_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 0,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_QUERY_RELEVANCE",
+      "right_only": 0,
+      "right_rate": 1.0,
+      "right_success": 9,
+      "subset": "topology_targeted"
+    },
+    {
+      "absolute_difference": 0.5555555555555556,
+      "discordant_pairs": 5,
+      "exact_paired_p_two_sided": 0.0625,
+      "family_cluster_bootstrap_95_ci": [
+        0.2222222222222222,
+        0.8888888888888888
+      ],
+      "left": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "left_only": 5,
+      "left_rate": 1.0,
+      "left_success": 9,
+      "n": 9,
+      "right": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_QUERY_RELEVANCE",
+      "right_only": 0,
+      "right_rate": 0.4444444444444444,
+      "right_success": 4,
+      "subset": "negative_control"
+    }
+  ],
+  "conditions": [
+    {
+      "condition": "NO_MEMORY",
+      "control_n": 9,
+      "control_successes": 0,
+      "focal_retrieval_count": 0,
+      "focal_retrieval_rate": 0.0,
+      "input_tokens": 4476,
+      "internal_id_contamination": 0,
+      "latency_seconds": 19.996264999987034,
+      "mean_focal_rank_when_retrieved": null,
+      "mean_latency_seconds": 1.1109036111103907,
+      "memory_characters": 0,
+      "model_calls": 18,
+      "model_visible_artifacts": 0,
+      "n": 18,
+      "output_tokens": 401,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "0": 18
+      },
+      "seed_artifacts_selected": 0,
+      "selected_artifacts": 0,
+      "solved_per_1k_tokens": 0.0,
+      "success_rate": 0.0,
+      "successes": 0,
+      "targeted_n": 9,
+      "targeted_successes": 0,
+      "total_tokens": 4877,
+      "transport_retries": 0,
+      "truncated_artifacts": 0,
+      "visible_count_distribution": {
+        "0": 18
+      }
+    },
+    {
+      "condition": "SUCCESS_MEMORY",
+      "control_n": 9,
+      "control_successes": 3,
+      "focal_retrieval_count": 4,
+      "focal_retrieval_rate": 0.2222222222222222,
+      "input_tokens": 8069,
+      "internal_id_contamination": 0,
+      "latency_seconds": 13.278828199996497,
+      "mean_focal_rank_when_retrieved": 2.0,
+      "mean_latency_seconds": 0.7377126777775831,
+      "memory_characters": 12236,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 496,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 0,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 0.3502626970227671,
+      "success_rate": 0.16666666666666666,
+      "successes": 3,
+      "targeted_n": 9,
+      "targeted_successes": 0,
+      "total_tokens": 8565,
+      "transport_retries": 0,
+      "truncated_artifacts": 0,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "BM25_MEMORY",
+      "control_n": 9,
+      "control_successes": 9,
+      "focal_retrieval_count": 14,
+      "focal_retrieval_rate": 0.7777777777777778,
+      "input_tokens": 11533,
+      "internal_id_contamination": 0,
+      "latency_seconds": 15.907007299996621,
+      "mean_focal_rank_when_retrieved": 1.7857142857142858,
+      "mean_latency_seconds": 0.88372262777759,
+      "memory_characters": 30292,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 593,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 15,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.1545439551377206,
+      "success_rate": 0.7777777777777778,
+      "successes": 14,
+      "targeted_n": 9,
+      "targeted_successes": 5,
+      "total_tokens": 12126,
+      "transport_retries": 0,
+      "truncated_artifacts": 15,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "DENSE_SEMANTIC_MEMORY",
+      "control_n": 9,
+      "control_successes": 8,
+      "focal_retrieval_count": 15,
+      "focal_retrieval_rate": 0.8333333333333334,
+      "input_tokens": 8496,
+      "internal_id_contamination": 0,
+      "latency_seconds": 160.81937659999312,
+      "mean_focal_rank_when_retrieved": 2.2,
+      "mean_latency_seconds": 8.93440981111073,
+      "memory_characters": 14369,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 604,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 0,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.5384615384615385,
+      "success_rate": 0.7777777777777778,
+      "successes": 14,
+      "targeted_n": 9,
+      "targeted_successes": 6,
+      "total_tokens": 9100,
+      "transport_retries": 0,
+      "truncated_artifacts": 0,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "TYPED_SEMANTIC_MEMORY",
+      "control_n": 9,
+      "control_successes": 9,
+      "focal_retrieval_count": 15,
+      "focal_retrieval_rate": 0.8333333333333334,
+      "input_tokens": 8555,
+      "internal_id_contamination": 0,
+      "latency_seconds": 160.92670980000548,
+      "mean_focal_rank_when_retrieved": 2.2,
+      "mean_latency_seconds": 8.940372766666972,
+      "memory_characters": 14648,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 624,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 0,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.6341649417147837,
+      "success_rate": 0.8333333333333334,
+      "successes": 15,
+      "targeted_n": 9,
+      "targeted_successes": 6,
+      "total_tokens": 9179,
+      "transport_retries": 0,
+      "truncated_artifacts": 0,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "QUERY_BLIND_TOPOLOGY",
+      "control_n": 9,
+      "control_successes": 4,
+      "focal_retrieval_count": 4,
+      "focal_retrieval_rate": 0.2222222222222222,
+      "input_tokens": 11272,
+      "internal_id_contamination": 0,
+      "latency_seconds": 17.913429600012023,
+      "mean_focal_rank_when_retrieved": 1.0,
+      "mean_latency_seconds": 0.9951905333340013,
+      "memory_characters": 26283,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 727,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 27,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 0.33336111342611885,
+      "success_rate": 0.2222222222222222,
+      "successes": 4,
+      "targeted_n": 9,
+      "targeted_successes": 0,
+      "total_tokens": 11999,
+      "transport_retries": 0,
+      "truncated_artifacts": 9,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_STOE_TOPOLOGY",
+      "control_n": 9,
+      "control_successes": 9,
+      "focal_retrieval_count": 18,
+      "focal_retrieval_rate": 1.0,
+      "input_tokens": 11580,
+      "internal_id_contamination": 0,
+      "latency_seconds": 18.60609869999098,
+      "mean_focal_rank_when_retrieved": 1.5555555555555556,
+      "mean_latency_seconds": 1.033672149999499,
+      "memory_characters": 27910,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 591,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 27,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.4789253142716292,
+      "success_rate": 1.0,
+      "successes": 18,
+      "targeted_n": 9,
+      "targeted_successes": 9,
+      "total_tokens": 12171,
+      "transport_retries": 0,
+      "truncated_artifacts": 9,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_STOE_WITHOUT_CORE_SEED",
+      "control_n": 9,
+      "control_successes": 7,
+      "focal_retrieval_count": 16,
+      "focal_retrieval_rate": 0.8888888888888888,
+      "input_tokens": 9047,
+      "internal_id_contamination": 0,
+      "latency_seconds": 14.376378800006933,
+      "mean_focal_rank_when_retrieved": 1.5625,
+      "mean_latency_seconds": 0.7986877111114963,
+      "memory_characters": 16682,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 579,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 0,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.66216496987326,
+      "success_rate": 0.8888888888888888,
+      "successes": 16,
+      "targeted_n": 9,
+      "targeted_successes": 9,
+      "total_tokens": 9626,
+      "transport_retries": 0,
+      "truncated_artifacts": 0,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_STOE_CHIMERA_SEED",
+      "control_n": 9,
+      "control_successes": 4,
+      "focal_retrieval_count": 13,
+      "focal_retrieval_rate": 0.7222222222222222,
+      "input_tokens": 10495,
+      "internal_id_contamination": 0,
+      "latency_seconds": 15.261079699997936,
+      "mean_focal_rank_when_retrieved": 1.0769230769230769,
+      "mean_latency_seconds": 0.8478377611109964,
+      "memory_characters": 21545,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 637,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 26,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.167804527488322,
+      "success_rate": 0.7222222222222222,
+      "successes": 13,
+      "targeted_n": 9,
+      "targeted_successes": 9,
+      "total_tokens": 11132,
+      "transport_retries": 0,
+      "truncated_artifacts": 2,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_FAILURES",
+      "control_n": 9,
+      "control_successes": 4,
+      "focal_retrieval_count": 4,
+      "focal_retrieval_rate": 0.2222222222222222,
+      "input_tokens": 11462,
+      "internal_id_contamination": 0,
+      "latency_seconds": 15.833940500000608,
+      "mean_focal_rank_when_retrieved": 1.0,
+      "mean_latency_seconds": 0.8796633611111448,
+      "memory_characters": 27043,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 631,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 32,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 0.3307698668651286,
+      "success_rate": 0.2222222222222222,
+      "successes": 4,
+      "targeted_n": 9,
+      "targeted_successes": 0,
+      "total_tokens": 12093,
+      "transport_retries": 0,
+      "truncated_artifacts": 9,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_TOPOLOGY_UNTYPED",
+      "control_n": 9,
+      "control_successes": 9,
+      "focal_retrieval_count": 18,
+      "focal_retrieval_rate": 1.0,
+      "input_tokens": 10972,
+      "internal_id_contamination": 0,
+      "latency_seconds": 15.81099780000659,
+      "mean_focal_rank_when_retrieved": 1.5555555555555556,
+      "mean_latency_seconds": 0.8783887666670327,
+      "memory_characters": 25092,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 600,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 27,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.555478741790529,
+      "success_rate": 1.0,
+      "successes": 18,
+      "targeted_n": 9,
+      "targeted_successes": 9,
+      "total_tokens": 11572,
+      "transport_retries": 0,
+      "truncated_artifacts": 9,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_TOPOLOGY_RANDOMIZED_EDGES",
+      "control_n": 9,
+      "control_successes": 0,
+      "focal_retrieval_count": 3,
+      "focal_retrieval_rate": 0.16666666666666666,
+      "input_tokens": 10926,
+      "internal_id_contamination": 0,
+      "latency_seconds": 14.84482919999573,
+      "mean_focal_rank_when_retrieved": 4.0,
+      "mean_latency_seconds": 0.824712733333096,
+      "memory_characters": 21239,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 525,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 45,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 0.26198585276395076,
+      "success_rate": 0.16666666666666666,
+      "successes": 3,
+      "targeted_n": 9,
+      "targeted_successes": 3,
+      "total_tokens": 11451,
+      "transport_retries": 0,
+      "truncated_artifacts": 0,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_STATE_CHANGE_SIGNAL",
+      "control_n": 9,
+      "control_successes": 9,
+      "focal_retrieval_count": 18,
+      "focal_retrieval_rate": 1.0,
+      "input_tokens": 11184,
+      "internal_id_contamination": 0,
+      "latency_seconds": 14.686758800009557,
+      "mean_focal_rank_when_retrieved": 2.388888888888889,
+      "mean_latency_seconds": 0.8159310444449753,
+      "memory_characters": 26706,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 573,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 18,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.5310028068384791,
+      "success_rate": 1.0,
+      "successes": 18,
+      "targeted_n": 9,
+      "targeted_successes": 9,
+      "total_tokens": 11757,
+      "transport_retries": 0,
+      "truncated_artifacts": 9,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    },
+    {
+      "condition": "OBSERVER_AWARE_TOPOLOGY_WITHOUT_QUERY_RELEVANCE",
+      "control_n": 9,
+      "control_successes": 4,
+      "focal_retrieval_count": 13,
+      "focal_retrieval_rate": 0.7222222222222222,
+      "input_tokens": 11695,
+      "internal_id_contamination": 0,
+      "latency_seconds": 15.007977199995366,
+      "mean_focal_rank_when_retrieved": 1.0,
+      "mean_latency_seconds": 0.8337765111108537,
+      "memory_characters": 28047,
+      "model_calls": 18,
+      "model_visible_artifacts": 72,
+      "n": 18,
+      "output_tokens": 622,
+      "parse_errors": 0,
+      "provider_errors": 0,
+      "realized_artifact_counts": {
+        "4": 18
+      },
+      "seed_artifacts_selected": 32,
+      "selected_artifacts": 72,
+      "solved_per_1k_tokens": 1.055451814565235,
+      "success_rate": 0.7222222222222222,
+      "successes": 13,
+      "targeted_n": 9,
+      "targeted_successes": 9,
+      "total_tokens": 12317,
+      "transport_retries": 0,
+      "truncated_artifacts": 9,
+      "visible_count_distribution": {
+        "4": 18
+      }
+    }
+  ],
+  "counterfactual": {
+    "classifications_by_intervention": {
+      "RANDOMIZE_CRITICAL_EDGES": {
+        "NECESSARY_FOR_SUCCESS": 14,
+        "NO_DETECTABLE_EFFECT": 4
+      },
+      "REMOVE_CRITICAL_TYPED_RELATION": {
+        "NECESSARY_FOR_SUCCESS": 9,
+        "NO_DETECTABLE_EFFECT": 9
+      },
+      "REMOVE_FOCAL_FAILED_IP": {
+        "NECESSARY_FOR_SUCCESS": 14,
+        "NO_DETECTABLE_EFFECT": 4
+      },
+      "REMOVE_QUERY_RANKING": {
+        "CONTRIBUTORY": 2,
+        "NECESSARY_FOR_SUCCESS": 5,
+        "NO_DETECTABLE_EFFECT": 11
+      },
+      "REMOVE_STATE_CHANGE_IP": {
+        "CONTRIBUTORY": 3,
+        "NO_DETECTABLE_EFFECT": 15
+      }
+    },
+    "control_calls": 18,
+    "generation_calls": 108,
+    "input_tokens": 70465,
+    "intervention_calls": 90,
+    "latency_seconds": 93.50270780001922,
+    "output_tokens": 3715,
+    "parse_errors": 0,
+    "replay_task_ids": [
+      "primary-canyon-supply",
+      "primary-planning-direct",
+      "primary-decoder-revival",
+      "primary-debug-recent",
+      "primary-orchard-layout",
+      "primary-constraint-direct",
+      "primary-harbor-rule",
+      "primary-legal-recent",
+      "primary-enzyme-control",
+      "primary-science-direct",
+      "primary-vector-patch",
+      "primary-code-recent",
+      "primary-symbol-rule",
+      "primary-hidden-direct",
+      "primary-witness-chain",
+      "primary-contradiction-recent",
+      "primary-robot-capability",
+      "primary-agent-direct"
+    ],
+    "successful_observer_cases_replayed": 18,
+    "targeted_classifications_by_intervention": {
+      "RANDOMIZE_CRITICAL_EDGES": {
+        "NECESSARY_FOR_SUCCESS": 9
+      },
+      "REMOVE_CRITICAL_TYPED_RELATION": {
+        "NECESSARY_FOR_SUCCESS": 9
+      },
+      "REMOVE_FOCAL_FAILED_IP": {
+        "NECESSARY_FOR_SUCCESS": 9
+      },
+      "REMOVE_QUERY_RANKING": {
+        "CONTRIBUTORY": 2,
+        "NO_DETECTABLE_EFFECT": 7
+      },
+      "REMOVE_STATE_CHANGE_IP": {
+        "CONTRIBUTORY": 3,
+        "NO_DETECTABLE_EFFECT": 6
+      }
+    },
+    "transport_retries": 0
+  },
+  "exposure_integrity_failures": 0,
+  "historical_v9_raw_result_sha256": "4231d3d3a62ca230477eedaf7c1e5e41b2632f00f2ddfe253c18ee798646f0d0",
+  "navigation": {
+    "changed_task_ids": [
+      "primary-canyon-supply",
+      "primary-planning-direct",
+      "primary-decoder-revival",
+      "primary-debug-recent",
+      "primary-orchard-layout",
+      "primary-constraint-direct",
+      "primary-harbor-rule",
+      "primary-legal-recent",
+      "primary-enzyme-control",
+      "primary-science-direct",
+      "primary-vector-patch",
+      "primary-code-recent",
+      "primary-symbol-rule",
+      "primary-hidden-direct",
+      "primary-witness-chain",
+      "primary-contradiction-recent",
+      "primary-robot-capability",
+      "primary-agent-direct"
+    ],
+    "changes_hurt_answer": 0,
+    "changes_improved_answer": 14,
+    "changes_same_correctness": 4,
+    "hurt_task_ids": [],
+    "improved_task_ids": [
+      "primary-canyon-supply",
+      "primary-planning-direct",
+      "primary-decoder-revival",
+      "primary-orchard-layout",
+      "primary-constraint-direct",
+      "primary-harbor-rule",
+      "primary-enzyme-control",
+      "primary-science-direct",
+      "primary-vector-patch",
+      "primary-symbol-rule",
+      "primary-hidden-direct",
+      "primary-witness-chain",
+      "primary-robot-capability",
+      "primary-agent-direct"
+    ],
+    "neutral_task_ids": [
+      "primary-debug-recent",
+      "primary-legal-recent",
+      "primary-code-recent",
+      "primary-contradiction-recent"
+    ],
+    "observer_context_changed_vs_query_blind": 18,
+    "observer_selected_critical_invalidation_rejection_path_tasks": 9,
+    "observer_selected_state_change_path_tasks": 9
+  },
+  "raw_result_sha256": "1546d7f9950cbfbff869213eb0198f96d955e277cfbb5bf3ef6c648e0cd41503",
+  "schema_version": 1,
+  "seed": {
+    "displacement_by_task": {
+      "primary-agent-direct": [
+        "IP_00004",
+        "IP_00005"
+      ],
+      "primary-canyon-supply": [
+        "IP_00003"
+      ],
+      "primary-code-recent": [
+        "IP_00004",
+        "IP_00007"
+      ],
+      "primary-constraint-direct": [
+        "IP_00004",
+        "IP_00005",
+        "IP_00010"
+      ],
+      "primary-contradiction-recent": [
+        "IP_00004",
+        "IP_00003"
+      ],
+      "primary-debug-recent": [
+        "IP_00004",
+        "IP_00003"
+      ],
+      "primary-decoder-revival": [
+        "IP_00003"
+      ],
+      "primary-enzyme-control": [
+        "IP_00003"
+      ],
+      "primary-harbor-rule": [
+        "IP_00003"
+      ],
+      "primary-hidden-direct": [
+        "IP_00005",
+        "IP_00004"
+      ],
+      "primary-legal-recent": [
+        "IP_00004",
+        "IP_00003"
+      ],
+      "primary-orchard-layout": [
+        "IP_00003"
+      ],
+      "primary-planning-direct": [
+        "IP_00004",
+        "IP_00005"
+      ],
+      "primary-robot-capability": [
+        "IP_00003"
+      ],
+      "primary-science-direct": [
+        "IP_00005",
+        "IP_00004",
+        "IP_00003"
+      ],
+      "primary-symbol-rule": [
+        "IP_00003"
+      ],
+      "primary-vector-patch": [
+        "IP_00003"
+      ],
+      "primary-witness-chain": [
+        "IP_00003"
+      ]
+    },
+    "native_seed_artifacts_selected": 27,
+    "native_tasks_with_seed_exposure": 18,
+    "native_tasks_without_seed_exposure": 0,
+    "runtime_artifacts_displaced_vs_no_seed": 29,
+    "selected_core_ips": [
+      {
+        "count": 9,
+        "name": "Law of Conservation",
+        "ref": "SEED_8be9448ca5ee4525"
+      },
+      {
+        "count": 9,
+        "name": "SToE: Three Foundational Laws",
+        "ref": "SEED_05d9d98dddc9034a"
+      },
+      {
+        "count": 9,
+        "name": "Observer (O)",
+        "ref": "SEED_ba07b5ebd68445d4"
+      }
+    ],
+    "single_stage_label": "final_decision",
+    "success_rate_with_seed_exposure": 1.0,
+    "success_rate_without_seed_exposure": null,
+    "success_with_seed_exposure": 18,
+    "success_without_seed_exposure": 0,
+    "unexposed_seed_bridge_events": [
+      {
+        "candidate_ip": "IP_00002",
+        "task_id": "primary-planning-direct",
+        "unexposed_seed_bridges": [
+          "SEED_8be9448ca5ee4525"
+        ]
+      },
+      {
+        "candidate_ip": "IP_00002",
+        "task_id": "primary-constraint-direct",
+        "unexposed_seed_bridges": [
+          "SEED_8be9448ca5ee4525"
+        ]
+      },
+      {
+        "candidate_ip": "IP_00002",
+        "task_id": "primary-science-direct",
+        "unexposed_seed_bridges": [
+          "SEED_8be9448ca5ee4525"
+        ]
+      },
+      {
+        "candidate_ip": "IP_00002",
+        "task_id": "primary-hidden-direct",
+        "unexposed_seed_bridges": [
+          "SEED_8be9448ca5ee4525"
+        ]
+      },
+      {
+        "candidate_ip": "IP_00002",
+        "task_id": "primary-agent-direct",
+        "unexposed_seed_bridges": [
+          "SEED_8be9448ca5ee4525"
+        ]
+      }
+    ]
+  },
+  "success_criterion": {
+    "all_required_met": true,
+    "checks": {
+      "counterfactual_mechanism_fraction_at_least_25_percent": true,
+      "negative_control_guard_no_more_than_two_tasks_worse_than_dense": true,
+      "observer_over_dense_by_at_least_one_of_nine_targeted": true,
+      "observer_over_query_blind_targeted": true
+    },
+    "counterfactual_mechanism_fraction": 1.0,
+    "counterfactually_supported_topology_only_task_ids": [
+      "primary-enzyme-control",
+      "primary-witness-chain",
+      "primary-robot-capability"
+    ],
+    "topology_only_targeted_task_ids": [
+      "primary-enzyme-control",
+      "primary-witness-chain",
+      "primary-robot-capability"
+    ],
+    "verdict": "SUPPORTED"
+  }
+}

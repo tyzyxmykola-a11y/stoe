@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "experiment": "SToE v9 observer-aware topology",
+  "status": "REFROZEN_WITH_CANONICAL_SEED_PRIMARY_NOT_RUN",
+  "freeze_date_local": "2026-08-16",
+  "historical_v8_result": {
+    "immutable": true,
+    "stoe_topology": "21/40 (52.5%)",
+    "dense_semantic": "24/40 (60.0%)"
+  },
+  "hypothesis": "Observer-aware, state-change-sensitive topology can improve retrieval and reasoning when a formerly rejected artifact becomes relevant through an explicit provenance change not well captured by semantic similarity.",
+  "canonical_seed": {
+    "path": "data/stoe_seed.json",
+    "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+    "source": "SToE_AI_REVIEW_PACKAGE/04_LATEST_ENGINE/SToE_v7_sanitized/v7/stoe_seed.json",
+    "byte_preserved": true,
+    "core_ips": 36,
+    "typed_relations": 113,
+    "categories": {"Star": 18, "Mirror": 3, "Catalyst": 5, "Seed": 4, "Hidden Diamond": 3, "Fertilizer": 3},
+    "expressions": 36,
+    "nonempty_descriptions": 32,
+    "folded_domain_ref": "STOE_Seed_IP",
+    "active_field_policy": "Unfolded core seed and runtime IPs inhabit the same per-task-condition persistent field; only eligible navigator/retriever selections can enter the four-artifact model context.",
+    "chimera_rule": "Sort canonical node IDs lexicographically and replace each native seed-edge target by target index + 7 modulo 36; if this creates a self-loop, advance once more. Sources and relation types are unchanged."
+  },
+  "sets": {
+    "development": "development_tasks/development_v1.json",
+    "pilot": "pilot_tasks/pilot_v1.json",
+    "primary": "benchmarks/frozen_primary_v1.json",
+    "primary_sha256": "8c74a2af83c98d79ff33db99180052a5e54566ec9f555c19093bade4a8a43b62",
+    "primary_tasks": 18,
+    "primary_independent_family_clusters": 9,
+    "primary_topology_targeted_tasks": 9,
+    "primary_negative_controls": 9,
+    "task_order": [
+      "primary-canyon-supply", "primary-planning-direct",
+      "primary-decoder-revival", "primary-debug-recent",
+      "primary-orchard-layout", "primary-constraint-direct",
+      "primary-harbor-rule", "primary-legal-recent",
+      "primary-enzyme-control", "primary-science-direct",
+      "primary-vector-patch", "primary-code-recent",
+      "primary-symbol-rule", "primary-hidden-direct",
+      "primary-witness-chain", "primary-contradiction-recent",
+      "primary-robot-capability", "primary-agent-direct"
+    ]
+  },
+  "local_runtime": {
+    "api_base": "http://127.0.0.1:11434",
+    "ollama_version_at_freeze": "0.32.13",
+    "cloud_or_paid_api_permitted": false
+  },
+  "pilot_generation_model": {
+    "name": "qwen3.5:4b",
+    "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+    "role": "development_and_pilot_only"
+  },
+  "future_primary_generation_model": {
+    "name": "gemma4:26b",
+    "digest": "5571076f3d70050487b26b341705799e0ab29b808164f90d20d4cf84f699d251",
+    "selection_basis": "Exact previously practical local v8 model remains installed; selection does not use v9 condition outcomes.",
+    "must_be_digest_verified_before_future_primary": true
+  },
+  "embedding_model": {
+    "name": "qwen3-embedding:0.6b",
+    "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+    "format": "gguf",
+    "parameter_size": "595.78M",
+    "quantization": "Q8_0",
+    "embedding_dimensions": 1024
+  },
+  "generation_parameters": {
+    "temperature": 0.0,
+    "top_p": 0.9,
+    "top_k": 40,
+    "seed": 9417,
+    "num_ctx": 8192,
+    "max_output_tokens": 192,
+    "transport_retries": 1,
+    "model_calls_per_task_condition": 1,
+    "ollama_think": false,
+    "response_format": "json"
+  },
+  "information_budget": {
+    "retrieved_artifacts_per_memory_condition": 4,
+    "no_memory_artifacts": 0,
+    "max_memory_characters": 5000,
+    "filter_before_top_k": true,
+    "same_task_prompt_and_current_state_fields": true,
+    "artifact_shortfall_policy": "invalid run if any non-NO_MEMORY condition exposes other than exactly four eligible artifacts"
+  },
+  "conditions": [
+    "NO_MEMORY",
+    "SUCCESS_MEMORY",
+    "BM25_MEMORY",
+    "DENSE_SEMANTIC_MEMORY",
+    "TYPED_SEMANTIC_MEMORY",
+    "QUERY_BLIND_TOPOLOGY",
+    "OBSERVER_AWARE_STOE_TOPOLOGY",
+    "OBSERVER_AWARE_STOE_WITHOUT_CORE_SEED",
+    "OBSERVER_AWARE_STOE_CHIMERA_SEED",
+    "OBSERVER_AWARE_TOPOLOGY_WITHOUT_FAILURES",
+    "OBSERVER_AWARE_TOPOLOGY_UNTYPED",
+    "OBSERVER_AWARE_TOPOLOGY_RANDOMIZED_EDGES",
+    "OBSERVER_AWARE_TOPOLOGY_WITHOUT_STATE_CHANGE_SIGNAL",
+    "OBSERVER_AWARE_TOPOLOGY_WITHOUT_QUERY_RELEVANCE"
+  ],
+  "primary_comparisons": [
+    {
+      "test": "OBSERVER_AWARE_STOE_TOPOLOGY vs DENSE_SEMANTIC_MEMORY",
+      "subset": "topology_targeted",
+      "baseline_selection_rule": "Dense is fixed before v9 pilot outcomes because it is the modern strong retriever and outperformed BM25 in immutable v8 evidence. BM25 remains a reported baseline."
+    },
+    {
+      "test": "OBSERVER_AWARE_STOE_TOPOLOGY vs QUERY_BLIND_TOPOLOGY",
+      "subset": "all and topology_targeted"
+    },
+    {
+      "test": "OBSERVER_AWARE_STOE_TOPOLOGY vs OBSERVER_AWARE_STOE_WITHOUT_CORE_SEED",
+      "subset": "all and topology_targeted",
+      "role": "preregistered secondary mechanism comparison; tests seed presence"
+    },
+    {
+      "test": "OBSERVER_AWARE_STOE_TOPOLOGY vs OBSERVER_AWARE_STOE_CHIMERA_SEED",
+      "subset": "all and topology_targeted",
+      "role": "preregistered secondary Experiment-6-style comparison; tests native adjacency beyond seed vocabulary/content"
+    }
+  ],
+  "statistics": {
+    "estimand": "paired absolute success-rate difference",
+    "confidence_interval": "family-cluster bootstrap percentile interval",
+    "bootstrap_clusters": "family",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 9417,
+    "exact_test": "two-sided exact McNemar/binomial test on discordant task pairs",
+    "multiplicity": "two primary comparisons are confirmatory and reported separately; seed-presence, chimera, family, and other ablation tests are preregistered secondary mechanism analyses and are not counted as additional confirmation",
+    "independence_statement": "Tasks are distinct authored instances; family, not lexical variant, is the cluster unit."
+  },
+  "success_criterion": {
+    "all_required": true,
+    "observer_over_query_blind": "strictly positive paired success-rate difference on topology-targeted tasks",
+    "observer_over_dense": "at least one net additional targeted task (>= 1/9 = 11.11 percentage points)",
+    "mechanism_evidence": "At least 25% of observer-aware topology-only targeted successes have NECESSARY_FOR_SUCCESS or CONTRIBUTORY classification under removal of the focal IP, state-change IP, critical relation, randomized critical edges, or query ranking.",
+    "negative_control_guard": "Observer-aware topology must not be more than two tasks worse than dense semantic retrieval on the nine negative controls.",
+    "interpretation": "Failure of any item means the preregistered v9 success criterion is not met."
+  },
+  "counterfactuals": [
+    "REMOVE_FOCAL_FAILED_IP",
+    "REMOVE_STATE_CHANGE_IP",
+    "REMOVE_CRITICAL_TYPED_RELATION",
+    "RANDOMIZE_CRITICAL_EDGES",
+    "REMOVE_QUERY_RANKING"
+  ],
+  "counterfactual_classes": [
+    "NECESSARY_FOR_SUCCESS", "CONTRIBUTORY", "NO_DETECTABLE_EFFECT",
+    "COUNTERFACTUAL_IMPROVED", "INVALID_REPLAY"
+  ],
+  "freeze_rules": {
+    "primary_cli_locked_without_explicit_allow_primary": true,
+    "no_primary_call_authorized_in_this_build": true,
+    "after_primary_start_immutable": [
+      "tasks", "task_order", "prompts", "scoring", "weights", "retrieval_algorithms",
+      "canonical_seed", "tasks", "task_order", "prompts", "scoring", "weights", "retrieval_algorithms",
+      "conditions", "budgets", "models", "digests", "generation_parameters", "statistics", "success_criterion"
+    ],
+    "pilot_bug_policy": "A genuine software or measurement defect requires documentation, refreeze, and a fresh pilot; condition-winning outcomes may never motivate a change."
+  }
+}

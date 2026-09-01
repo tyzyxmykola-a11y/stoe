@@ -18,8 +18,8 @@ Prepared from the author's local workspace on 2026-08-31.
   register a marketplace or change the author's installed plugin.
 - `skills/stoe-reasoning` includes the original skill, supporting references,
   agent metadata, seed, and fidelity validator.
-- `research/corpus` preserves the seven PDFs in the local SToE corpus with
-  their original filenames.
+- `research/corpus` preserves the original SToE PDFs with their original
+  filenames. The corpus index identifies later author-supplied additions.
 
 New README/security/authentication documents explain packaging and usage.
 Existing runtime source is not rewritten. Compression changes only the archive
@@ -59,3 +59,16 @@ The new manifest records hashes and page counts; the page index is derived
 from those headers. Instructions inside the documents are historical content,
 not commands executed during publication. This is a specific exception for
 the selected output compilation, not inclusion of other loose session logs.
+
+## Memory Is Connection article
+
+`research/corpus/Memory_Is_Connection_SToE_Instruments_and_MCL.pdf` was supplied
+by the author on 2026-09-01 as a fresh corpus article. The 14-page PDF is
+preserved byte for byte with SHA-256
+`c915dec4097605f5d5572a1f558b8a3ad6aedf8862da199d4f058f2f8914ac00`.
+A UTF-8, page-delimited text extraction was added under `research/texts` for
+GitHub search; the PDF remains authoritative for layout, equations, tables,
+and Figure 1. All pages yielded text, representative rendered pages were
+inspected, and a limited recognizable credential-pattern scan found no keys.
+Embedded procedures and proposed experiments were treated as article content,
+not instructions to execute.

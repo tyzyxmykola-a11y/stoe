@@ -15,8 +15,8 @@ to the graph engines and experiments.
 | [`experiments/stoe_v3`](experiments/stoe_v3) | Historical graph-aware engine, structural evaluator, benchmark suite, and Experiment 6 evidence |
 | [`plugins/stoe-memory`](plugins/stoe-memory) | Local persistent SQLite reasoning field exposed through MCP over stdio |
 | [`skills/stoe-reasoning`](skills/stoe-reasoning) | Reusable reasoning protocol, references, seed, and seed validator |
-| [`research/corpus`](research/corpus) | Original research PDFs and the v9.1 ResearchGate manuscript |
-| [`research/texts`](research/texts) | Searchable text versions of five papers |
+| [`research/corpus`](research/corpus) | Original research PDFs, including the new *Memory Is Connection* article and the v9.1 manuscript |
+| [`research/texts`](research/texts) | Searchable paper text, including a page-delimited companion to the new article |
 | [`archive/snapshots`](archive/snapshots) | 78 deduplicated historical source snapshots, hashes, and a safe restore tool |
 | [`archive/original_prototype`](archive/original_prototype) | Original cloud-backed prompt-operator prototype |
 | [`docs/authentication.md`](docs/authentication.md) | Authentication components, request flows, credential handling, and trust boundaries |

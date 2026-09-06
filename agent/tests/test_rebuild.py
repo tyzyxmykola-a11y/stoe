@@ -93,12 +93,33 @@ class FakeModelClient:
                     "The public changed-constraint probe missed a newly feasible failed IP.",
                     "The public evidence probe preferred an untested claim to an evaluation.",
                 ],
+                "diagnostic_findings": [
+                    {
+                        "case": "raised_storage_ceiling",
+                        "observed_selection": ["DIAG_STORAGE_DISTRACTOR"],
+                        "missed_required": ["DIAG_STORAGE_FAILED"],
+                        "source_mechanism": "The query uses goal overlap but ignores changed_constraints and failure_condition.",
+                        "relation_to_hypothesis": "Conditional failure relevance could recover the missed candidate.",
+                    },
+                    {
+                        "case": "unchanged_offline_constraint",
+                        "observed_selection": ["DIAG_OFFLINE_GENERIC"],
+                        "missed_required": ["DIAG_OFFLINE_LOCAL"],
+                        "source_mechanism": "The goal-only overlap ignores active_constraints and outcome feasibility.",
+                        "relation_to_hypothesis": "Active rejection conditions should suppress infeasible failures.",
+                    },
+                    {
+                        "case": "measured_evidence",
+                        "observed_selection": ["DIAG_EVIDENCE_IDEA"],
+                        "missed_required": ["DIAG_EVIDENCE_EVAL"],
+                        "source_mechanism": "The overlap score ignores origin, outcome, and evidence fields.",
+                        "relation_to_hypothesis": "Relevant observed evaluations should outrank untested claims.",
+                    },
+                ],
                 "source_diagnosis": "The active source tokenizes only goal and content.",
                 "proposed_change": "Score all observer fields and condition failed-IP relevance on active versus changed constraints.",
                 "expected_benefit": "More relevant research evidence under the same item and character budgets.",
                 "risks": ["Heuristic weights may not generalize."],
-                "acceptance_condition": "Strict held-out improvement with no regression or critical failure.",
-                "rollback_condition": "Any protected regression or fresh-process health failure.",
             }
         else:
             payload = {"source": IMPROVED_SOURCE, "implementation_note": "Observer-aware deterministic scorer."}
@@ -120,6 +141,7 @@ class RebuildTests(unittest.TestCase):
             protected_eval_dir=self.agent_root / "protected_evals",
             report_dir=root,
             accepted_version_dir=root,
+            rejected_candidate_dir=root,
             model="fake-local-model",
         )
         return RebuildSupervisor(config, model_client=FakeModelClient())
@@ -160,10 +182,36 @@ class RebuildTests(unittest.TestCase):
             self.assertGreater(report["activation"]["health"]["persistent_node_count"], 37)
             self.assertTrue(report["investigation"]["observed_failure_refs"])
             self.assertTrue(report["investigation"]["synthesis_navigation_run_id"].startswith("RETRIEVAL_"))
+            self.assertTrue(
+                any(item["origin"] == "failure_history" for item in report["investigation"]["bounded_prior_context"])
+            )
             self.assertEqual(3, report["investigation"]["case_count"])
             self.assertTrue(Path(report["report_path"]).exists())
             active = supervisor.read_active_pointer()
             self.assertTrue(active["version"].startswith("generated_"))
+
+    def test_proposal_gate_rejects_ungrounded_abstraction(self):
+        proposal = {
+            "hypothesis": "Abstract observer validation may help.",
+            "observed_evidence": ["A graph exists."],
+            "diagnostic_findings": [],
+            "source_diagnosis": "The field is evolving.",
+            "proposed_change": "Strengthen validation.",
+            "expected_benefit": "Improvement.",
+            "risks": ["Complexity."],
+        }
+        investigation = {
+            "diagnostics": [
+                {
+                    "case": "observed_failure",
+                    "selector_passed": False,
+                    "selector_selected": ["WRONG"],
+                    "missed_refs": ["RIGHT"],
+                }
+            ]
+        }
+        with self.assertRaisesRegex(RuntimeError, "diagnostic_findings"):
+            RebuildSupervisor._validate_proposal(proposal, investigation)
 
     def test_deliberate_activation_failure_rolls_back_in_isolation(self):
         with self.temporary_root("stoe_rollback_test_") as raw:

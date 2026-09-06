@@ -79,8 +79,10 @@ class OllamaClient:
             parsed = json.loads(response_text)
         except json.JSONDecodeError as exc:
             raise RuntimeError(f"Ollama returned malformed JSON: {exc}") from exc
+        response_trace = {key: value for key, value in raw.items() if key != "context"}
         trace = {
             "request": payload,
-            "response": raw,
+            "response": response_trace,
+            "omitted_response_fields": ["context"] if "context" in raw else [],
         }
         return parsed, trace

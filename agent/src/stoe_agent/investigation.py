@@ -337,6 +337,13 @@ def investigate_selector(
         current_reasoning_ref=component_ref,
         session_id=SESSION_ID,
     )
+    for failure_ref in observed_failure_refs:
+        journal.relate(
+            investigation_state["observer_state_ref"],
+            failure_ref,
+            "depends_on",
+            "The successor decision depends on this observed diagnostic failure",
+        )
     bounded = journal.store.navigate(
         observer_state_ref=investigation_state["observer_state_ref"],
         limit=8,

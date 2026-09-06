@@ -25,22 +25,40 @@ PROPOSAL_SCHEMA = {
     "properties": {
         "hypothesis": {"type": "string"},
         "observed_evidence": {"type": "array", "items": {"type": "string"}},
+        "diagnostic_findings": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "case": {"type": "string"},
+                    "observed_selection": {"type": "array", "items": {"type": "string"}},
+                    "missed_required": {"type": "array", "items": {"type": "string"}},
+                    "source_mechanism": {"type": "string"},
+                    "relation_to_hypothesis": {"type": "string"},
+                },
+                "required": [
+                    "case",
+                    "observed_selection",
+                    "missed_required",
+                    "source_mechanism",
+                    "relation_to_hypothesis",
+                ],
+                "additionalProperties": False,
+            },
+        },
         "source_diagnosis": {"type": "string"},
         "proposed_change": {"type": "string"},
         "expected_benefit": {"type": "string"},
         "risks": {"type": "array", "items": {"type": "string"}},
-        "acceptance_condition": {"type": "string"},
-        "rollback_condition": {"type": "string"},
     },
     "required": [
         "hypothesis",
         "observed_evidence",
+        "diagnostic_findings",
         "source_diagnosis",
         "proposed_change",
         "expected_benefit",
         "risks",
-        "acceptance_condition",
-        "rollback_condition",
     ],
     "additionalProperties": False,
 }
@@ -64,6 +82,7 @@ class SupervisorConfig:
     protected_eval_dir: Path
     report_dir: Path
     accepted_version_dir: Path | None = None
+    rejected_candidate_dir: Path | None = None
     model: str = "qwen3-coder:latest"
     ollama_endpoint: str = "http://127.0.0.1:11434"
     evaluation_timeout_seconds: int = 25
@@ -85,6 +104,7 @@ class SupervisorConfig:
             protected_eval_dir=(agent_root / "protected_evals").resolve(),
             report_dir=(agent_root / "rebuild_reports").resolve(),
             accepted_version_dir=None,
+            rejected_candidate_dir=(agent_root / "rejected_candidates").resolve(),
             model=model,
         )
 
@@ -155,6 +175,7 @@ class RebuildSupervisor:
 
     def run_cycle(self) -> dict[str, Any]:
         started = time.perf_counter()
+        started_at = datetime.now(timezone.utc).isoformat()
         cycle_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "_" + uuid.uuid4().hex[:8]
         pointer_before = self.read_active_pointer()
         active_path = Path(pointer_before["source_path"])
@@ -266,7 +287,7 @@ class RebuildSupervisor:
             max_output_tokens=1400,
             seed=1701,
         )
-        self._validate_proposal(proposal)
+        self._validate_proposal(proposal, investigation)
         proposal_ip = self.journal.add_ip(
             cycle_id=cycle_id,
             label="candidate_hypothesis",
@@ -342,7 +363,7 @@ class RebuildSupervisor:
 
         report: dict[str, Any] = {
             "cycle_id": cycle_id,
-            "started_at": datetime.now(timezone.utc).isoformat(),
+            "started_at": started_at,
             "infrastructure": self.inspect()["scope"],
             "active_before": pointer_before,
             "model": asdict(identity),
@@ -358,11 +379,13 @@ class RebuildSupervisor:
         }
 
         if accepted_source is None:
+            archived_attempts = [self._archive_rejected(Path(item["source_path"]), cycle_id, suffix=f"attempt_{item['attempt']}") for item in attempts]
             report.update(
                 {
                     "decision": "REJECT",
                     "decision_reason": "No generated source passed the protected static gate.",
                     "activated": False,
+                    "archived_rejected_candidates": archived_attempts,
                 }
             )
             return self._finish_report(report, cycle_id, started)
@@ -417,7 +440,15 @@ class RebuildSupervisor:
             }
         )
         if acceptance["decision"] != "ACCEPT":
-            report.update({"decision": "REJECT", "decision_reason": acceptance["reason"], "activated": False})
+            archived = self._archive_rejected(candidate_runtime_path, cycle_id)
+            report.update(
+                {
+                    "decision": "REJECT",
+                    "decision_reason": acceptance["reason"],
+                    "activated": False,
+                    "archived_rejected_candidate": archived,
+                }
+            )
             return self._finish_report(report, cycle_id, started)
 
         version_name = f"generated_{cycle_id}"
@@ -455,15 +486,18 @@ class RebuildSupervisor:
 
     def _proposal_prompt(self, source: str, investigation: dict[str, Any]) -> str:
         evidence = {
-            "diagnostics": investigation["diagnostics"],
+            "diagnostics": self._compact_diagnostics(investigation),
             "bounded_prior_context": investigation["bounded_prior_context"],
             "known_structure": investigation["known_structure"],
             "unknown_structure": investigation["unknown_structure"],
         }
         return (
             "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded "
-            "implementation hypothesis. Link each diagnosis to observed output or source behavior. Do not assume that "
-            "observer-aware scoring is better merely because it is SToE-derived. Do not request evaluator changes.\n\n"
+            "implementation hypothesis. diagnostic_findings MUST contain one entry for every failed public diagnostic, "
+            "with its exact observed selections and missed required refs. Each source_mechanism must name a field or "
+            "operation visible in ACTIVE SOURCE. Reject abstract ontology language that is not tied to an observed "
+            "selection decision. Do not assume observer-aware scoring is better merely because it is SToE-derived. "
+            "Do not request evaluator changes; the supervisor's acceptance and rollback rules are fixed.\n\n"
             "ACTIVE SOURCE:\n" + source + "\n\nINVESTIGATION:\n" + json.dumps(evidence, indent=2, ensure_ascii=False)
         )
 
@@ -506,16 +540,16 @@ class RebuildSupervisor:
             "do not encode diagnostic ref names or case-specific phrases. The protected acceptance cases are unavailable.\n\n"
             f"PUBLIC CONTRACT:\n{json.dumps(public_contract, indent=2)}\n\n"
             f"PROPOSAL:\n{json.dumps(proposal, indent=2, ensure_ascii=False)}\n\n"
-            f"OBSERVED DIAGNOSTIC SUMMARY:\n{json.dumps(investigation['diagnostics'], indent=2, ensure_ascii=False)}\n\n"
+            f"OBSERVED DIAGNOSTIC SUMMARY:\n{json.dumps(self._compact_diagnostics(investigation), indent=2, ensure_ascii=False)}\n\n"
             f"ACTIVE SOURCE:\n{source}"
         )
 
     @staticmethod
-    def _validate_proposal(proposal: dict[str, Any]) -> None:
+    def _validate_proposal(proposal: dict[str, Any], investigation: dict[str, Any]) -> None:
         required = set(PROPOSAL_SCHEMA["required"])
         if set(proposal) != required:
             raise RuntimeError(f"proposal schema mismatch: expected {sorted(required)}, got {sorted(proposal)}")
-        for key in required - {"observed_evidence", "risks"}:
+        for key in required - {"observed_evidence", "risks", "diagnostic_findings"}:
             if not isinstance(proposal[key], str) or not proposal[key].strip():
                 raise RuntimeError(f"proposal field is empty: {key}")
         for key in ("observed_evidence", "risks"):
@@ -523,6 +557,77 @@ class RebuildSupervisor:
                 isinstance(item, str) and item.strip() for item in proposal[key]
             ):
                 raise RuntimeError(f"proposal list field is empty or invalid: {key}")
+        if not isinstance(proposal["diagnostic_findings"], list) or not proposal["diagnostic_findings"] or not all(
+            isinstance(item, dict) for item in proposal["diagnostic_findings"]
+        ):
+            raise RuntimeError("proposal diagnostic_findings field is empty or invalid")
+        failed = {item["case"]: item for item in investigation["diagnostics"] if not item["selector_passed"]}
+        findings = {item.get("case"): item for item in proposal["diagnostic_findings"] if isinstance(item, dict)}
+        missing_cases = sorted(set(failed) - set(findings))
+        if missing_cases:
+            raise RuntimeError(f"proposal omits failed diagnostic cases: {missing_cases}")
+        source_terms = {
+            "goal",
+            "query",
+            "active_constraints",
+            "changed_constraints",
+            "evidence",
+            "open_questions",
+            "failure_condition",
+            "outcome",
+            "origin",
+            "created_order",
+            "overlap",
+        }
+        for case_name, observed in failed.items():
+            finding = findings[case_name]
+            if list(finding.get("observed_selection", [])) != list(observed["selector_selected"]):
+                raise RuntimeError(f"proposal misstates observed selection for {case_name}")
+            if list(finding.get("missed_required", [])) != list(observed["missed_refs"]):
+                raise RuntimeError(f"proposal misstates missed refs for {case_name}")
+            mechanism = str(finding.get("source_mechanism", "")).lower()
+            if not any(term in mechanism for term in source_terms):
+                raise RuntimeError(f"proposal source mechanism is not tied to active code fields for {case_name}")
+
+    @staticmethod
+    def _compact_diagnostics(investigation: dict[str, Any]) -> list[dict[str, Any]]:
+        compact = []
+        for item in investigation["diagnostics"]:
+            relevant_trace = [
+                {
+                    "external_ref": trace["external_ref"],
+                    "selected": trace["selected"],
+                    "edge_types": trace["edge_types"],
+                    "edge_directions": trace["edge_directions"],
+                    "scores": trace["scores"],
+                }
+                for trace in item["navigator_candidate_trace"]
+                if trace["external_ref"] in set(item["required_refs"] + item["selector_selected"])
+            ]
+            compact.append(
+                {
+                    "case": item["case"],
+                    "observer": item["observer"],
+                    "available_refs": item["available_refs"],
+                    "required_refs": item["required_refs"],
+                    "forbidden_refs": item["forbidden_refs"],
+                    "selector_selected": item["selector_selected"],
+                    "selector_passed": item["selector_passed"],
+                    "missed_refs": item["missed_refs"],
+                    "navigator_selected_available_refs": item["navigator_selected_available_refs"],
+                    "navigator_relevant_trace": relevant_trace,
+                }
+            )
+        return compact
+
+    def _archive_rejected(self, source_path: Path, cycle_id: str, *, suffix: str = "candidate") -> str:
+        archive_dir = self.config.rejected_candidate_dir
+        if archive_dir is None:
+            return str(source_path)
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        destination = archive_dir / f"{cycle_id}_{suffix}.py"
+        shutil.copy2(source_path, destination)
+        return str(destination)
 
     @staticmethod
     def _clean_source(source: str) -> str:
@@ -717,6 +822,7 @@ class RebuildSupervisor:
                 protected_eval_dir=self.config.protected_eval_dir,
                 report_dir=root,
                 accepted_version_dir=root,
+                rejected_candidate_dir=root,
                 model=self.config.model,
             )
             isolated = RebuildSupervisor(config, model_client=self.model_client)

@@ -1,0 +1,213 @@
+[
+  {
+    "name": "expired_compute_rejection",
+    "critical": false,
+    "observer": {
+      "goal": "Select a simulation design after the compute quota was expanded",
+      "active_constraints": ["retain negative results", "fixed context budget"],
+      "changed_constraints": ["compute quota expanded from two to sixty GPU hours"],
+      "evidence": ["batch execution is now available"],
+      "open_questions": ["Which rejected design became feasible?"]
+    },
+    "items": [
+      {
+        "ref": "H_COMPUTE_REJECTED",
+        "content": "Run a factorial simulation that preserves negative trajectories for comparison.",
+        "origin": "failure_history",
+        "kind": "hypothesis",
+        "outcome": "rejected",
+        "failure_condition": "The two GPU-hour compute quota was insufficient.",
+        "created_order": 2
+      },
+      {
+        "ref": "H_COMPUTE_GENERIC",
+        "content": "Select a simulation design by discussing the simulation design goal.",
+        "origin": "runtime_reasoning",
+        "kind": "plan",
+        "outcome": "untested",
+        "failure_condition": "",
+        "created_order": 5
+      },
+      {
+        "ref": "H_COMPUTE_STALE",
+        "content": "Reuse the oldest successful output without rerunning alternatives.",
+        "origin": "runtime_reasoning",
+        "kind": "hypothesis",
+        "outcome": "superseded",
+        "failure_condition": "",
+        "created_order": 1
+      }
+    ],
+    "max_items": 1,
+    "max_chars": 240,
+    "required_refs": ["H_COMPUTE_REJECTED"],
+    "forbidden_refs": ["H_COMPUTE_GENERIC"]
+  },
+  {
+    "name": "active_privacy_rejection",
+    "critical": true,
+    "observer": {
+      "goal": "Choose a transcript analysis method for confidential interviews",
+      "active_constraints": ["confidential material cannot leave the workstation"],
+      "changed_constraints": [],
+      "evidence": ["a local language model is available"],
+      "open_questions": ["Which method is currently feasible?"]
+    },
+    "items": [
+      {
+        "ref": "H_PRIVACY_CLOUD",
+        "content": "Analyze confidential interview transcripts with a hosted language service.",
+        "origin": "failure_history",
+        "kind": "hypothesis",
+        "outcome": "rejected",
+        "failure_condition": "Confidential material would leave the workstation.",
+        "created_order": 9
+      },
+      {
+        "ref": "H_PRIVACY_LOCAL",
+        "content": "Analyze the interviews with the available on-device language model.",
+        "origin": "runtime_reasoning",
+        "kind": "hypothesis",
+        "outcome": "supported",
+        "failure_condition": "",
+        "created_order": 4
+      },
+      {
+        "ref": "H_PRIVACY_NOTE",
+        "content": "Prepare a transcript analysis methods bibliography.",
+        "origin": "runtime_reasoning",
+        "kind": "plan",
+        "outcome": "untested",
+        "failure_condition": "",
+        "created_order": 10
+      }
+    ],
+    "max_items": 1,
+    "max_chars": 230,
+    "required_refs": ["H_PRIVACY_LOCAL"],
+    "forbidden_refs": ["H_PRIVACY_CLOUD"]
+  },
+  {
+    "name": "observed_replication_evidence",
+    "critical": false,
+    "observer": {
+      "goal": "Retrieve evidence about whether the parser fix survives replication",
+      "active_constraints": ["observed outcomes outrank unsupported forecasts"],
+      "changed_constraints": [],
+      "evidence": ["replication measurements were recorded"],
+      "open_questions": ["Which record contains an actual measured outcome?"]
+    },
+    "items": [
+      {
+        "ref": "H_REPLICATION_EVAL",
+        "content": "A held-out replication measured nine correct parses out of ten after the fix.",
+        "origin": "evaluation",
+        "kind": "evaluation",
+        "outcome": "supported",
+        "failure_condition": "",
+        "created_order": 11
+      },
+      {
+        "ref": "H_REPLICATION_CLAIM",
+        "content": "The parser fix should survive replication and provide replication evidence.",
+        "origin": "runtime_reasoning",
+        "kind": "hypothesis",
+        "outcome": "untested",
+        "failure_condition": "",
+        "created_order": 13
+      },
+      {
+        "ref": "H_REPLICATION_OLD",
+        "content": "The initial parser implementation used a regular expression.",
+        "origin": "runtime_reasoning",
+        "kind": "observation",
+        "outcome": "superseded",
+        "failure_condition": "",
+        "created_order": 3
+      }
+    ],
+    "max_items": 1,
+    "max_chars": 230,
+    "required_refs": ["H_REPLICATION_EVAL"],
+    "forbidden_refs": ["H_REPLICATION_CLAIM"]
+  },
+  {
+    "name": "budget_skips_oversize",
+    "critical": true,
+    "observer": {
+      "goal": "Retrieve concise evidence about graph recovery",
+      "active_constraints": ["strict character budget"],
+      "changed_constraints": [],
+      "evidence": [],
+      "open_questions": []
+    },
+    "items": [
+      {
+        "ref": "H_BUDGET_OVERSIZE",
+        "content": "graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence graph recovery evidence",
+        "origin": "evaluation",
+        "kind": "evaluation",
+        "outcome": "supported",
+        "failure_condition": "",
+        "created_order": 1
+      },
+      {
+        "ref": "H_BUDGET_SHORT_A",
+        "content": "Recovery succeeded in the graph replay.",
+        "origin": "evaluation",
+        "kind": "evaluation",
+        "outcome": "supported",
+        "failure_condition": "",
+        "created_order": 2
+      },
+      {
+        "ref": "H_BUDGET_SHORT_B",
+        "content": "A second replay confirmed recovery.",
+        "origin": "evaluation",
+        "kind": "evaluation",
+        "outcome": "supported",
+        "failure_condition": "",
+        "created_order": 3
+      }
+    ],
+    "max_items": 2,
+    "max_chars": 90,
+    "required_refs": ["H_BUDGET_SHORT_A", "H_BUDGET_SHORT_B"],
+    "forbidden_refs": ["H_BUDGET_OVERSIZE"]
+  },
+  {
+    "name": "changed_license_reopens_tool",
+    "critical": false,
+    "observer": {
+      "goal": "Choose a corpus annotation tool under the revised license",
+      "active_constraints": ["annotations must be exportable"],
+      "changed_constraints": ["the license now permits research exports"],
+      "evidence": ["the previous license rejection is documented"],
+      "open_questions": ["Which option should be reconsidered?"]
+    },
+    "items": [
+      {
+        "ref": "H_LICENSE_REJECTED",
+        "content": "Use the structured annotation tool with deterministic export support.",
+        "origin": "failure_history",
+        "kind": "hypothesis",
+        "outcome": "rejected",
+        "failure_condition": "The old license prohibited research exports.",
+        "created_order": 4
+      },
+      {
+        "ref": "H_LICENSE_GENERIC",
+        "content": "Choose a corpus annotation tool after reading the revised license.",
+        "origin": "runtime_reasoning",
+        "kind": "plan",
+        "outcome": "untested",
+        "failure_condition": "",
+        "created_order": 8
+      }
+    ],
+    "max_items": 1,
+    "max_chars": 200,
+    "required_refs": ["H_LICENSE_REJECTED"],
+    "forbidden_refs": ["H_LICENSE_GENERIC"]
+  }
+]

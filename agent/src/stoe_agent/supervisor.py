@@ -318,7 +318,7 @@ class RebuildSupervisor:
             ),
             prompt=proposal_prompt,
             schema=PROPOSAL_SCHEMA,
-            max_output_tokens=1400,
+            max_output_tokens=2400,
             seed=1701,
         )
         self._validate_proposal(proposal, investigation)
@@ -527,7 +527,8 @@ class RebuildSupervisor:
         }
         return (
             "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded "
-            "implementation hypothesis. diagnostic_findings MUST contain one entry for every failed public diagnostic, "
+            "concise implementation hypothesis. Keep every prose field to one or two sentences. diagnostic_findings "
+            "MUST contain one entry for every failed public diagnostic, "
             "with its exact observed selections and missed required refs. Each source_mechanism must name a field or "
             "operation visible in ACTIVE SOURCE. Reject abstract ontology language that is not tied to an observed "
             "selection decision. Do not assume observer-aware scoring is better merely because it is SToE-derived. "

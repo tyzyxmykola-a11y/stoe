@@ -1,0 +1,322 @@
+{
+  "activated": false,
+  "active_after": {
+    "activated_at": "2026-09-06T11:01:21.441077+00:00",
+    "previous_version": null,
+    "sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+    "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py",
+    "version": "v1"
+  },
+  "completed_at": "2026-09-06T11:59:15.716516+00:00",
+  "cycle_id": "20260906T115750Z_9b28bceb",
+  "decision": "ERROR_REJECT",
+  "decision_reason": "RuntimeError: Ollama returned malformed JSON: Unterminated string starting at: line 21 column 33 (char 5839)",
+  "duration_seconds": 85.413,
+  "failure_field_ref": "REBUILD_20260906T115750Z_9b28bceb_cycle_execution_failure_ab715c",
+  "persistent_field_status": {
+    "canonical_seed": {
+      "categories": {
+        "Catalyst": 5,
+        "Fertilizer": 3,
+        "Hidden Diamond": 3,
+        "Mirror": 3,
+        "Seed": 4,
+        "Star": 18
+      },
+      "core_ips": 36,
+      "expressions": 36,
+      "nonempty_descriptions": 32,
+      "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+      "typed_relations": 113
+    },
+    "database": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\research_field.sqlite3",
+    "edge_count": 274,
+    "fold_unfold_lossless": true,
+    "last_observer_state": {
+      "created_at": "2026-09-06T11:57:50.661989+00:00",
+      "ref": "STATE_cc6b2eef8e9c45d6",
+      "session_id": "stoe-self-rebuild-v1"
+    },
+    "node_count": 119,
+    "nodes_by_origin": {
+      "canonical_seed": 37,
+      "current_observer_state": 12,
+      "evaluation": 19,
+      "failure_history": 16,
+      "runtime_reasoning": 32,
+      "state_change": 3
+    },
+    "privacy": "local_only",
+    "recent": [
+      {
+        "content": "Rebuild cycle stopped safely after RuntimeError: Ollama returned malformed JSON: Unterminated string starting at: line 21 column 33 (char 5839)",
+        "created_order": -382,
+        "failure_condition": "The rebuild infrastructure or configured local provider raised an exception.",
+        "kind": "result",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "exception": "Ollama returned malformed JSON: Unterminated string starting at: line 21 column 33 (char 5839)",
+          "exception_type": "RuntimeError"
+        },
+        "origin": "failure_history",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_cycle_execution_failure_ab715c",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Observed investigation: active selector passed 0/3 public diagnostic cases.",
+        "created_order": -383,
+        "failure_condition": "One or more public diagnostic selection contracts were violated.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case_count": 3,
+          "diagnostic_pass_count": 0,
+          "provenance_type": "observed_behavior",
+          "synthesis_navigation_run_id": "RETRIEVAL_3aaa61ba92b34802"
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_investigation_summary_81e2d9",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"base claims on observed diagnostics and inspectable source\", \"preserve context budgets and deterministic output\", \"do not expose protected evaluation cases\", \"treat the change as an AI-generated research hypothesis\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T115750Z_9b28bceb_active_component_6647ee\", \"evidence\": [\"0/3 public diagnostics passed\", \"typed navigator traces record available, selected, and missed connections\"], \"goal\": \"Formulate a bounded improvement to the active research-context selector from observed behavior\", \"open_questions\": [\"Which source behavior explains each miss?\", \"Which observed pattern is general enough to justify a code change?\", \"Will held-out matched evaluation support the hypothesis?\"], \"question\": \"What implementation hypothesis best explains and addresses the observed misses?\", \"recent_refs\": [\"REBUILD_20260906T115750Z_9b28bceb_raised_storage_ceiling_missed_connection_c83b93\", \"REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_missed_connection_87a69f\", \"REBUILD_20260906T115750Z_9b28bceb_measured_evidence_missed_connection_2e8cfc\"]}",
+        "created_order": -384,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "base claims on observed diagnostics and inspectable source",
+            "preserve context budgets and deterministic output",
+            "do not expose protected evaluation cases",
+            "treat the change as an AI-generated research hypothesis"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T115750Z_9b28bceb_active_component_6647ee",
+          "evidence": [
+            "0/3 public diagnostics passed",
+            "typed navigator traces record available, selected, and missed connections"
+          ],
+          "goal": "Formulate a bounded improvement to the active research-context selector from observed behavior",
+          "open_questions": [
+            "Which source behavior explains each miss?",
+            "Which observed pattern is general enough to justify a code change?",
+            "Will held-out matched evaluation support the hypothesis?"
+          ],
+          "question": "What implementation hypothesis best explains and addresses the observed misses?",
+          "recent_refs": [
+            "REBUILD_20260906T115750Z_9b28bceb_raised_storage_ceiling_missed_connection_c83b93",
+            "REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_missed_connection_87a69f",
+            "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_missed_connection_2e8cfc"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_cc6b2eef8e9c45d6",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      },
+      {
+        "content": "In measured_evidence, the selector missed required IPs ['DIAG_EVIDENCE_EVAL'] and returned ['DIAG_EVIDENCE_IDEA']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "created_order": -385,
+        "failure_condition": "The active selector did not satisfy the public diagnostic relevance contract.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "measured_evidence",
+          "missed": [
+            "DIAG_EVIDENCE_EVAL"
+          ],
+          "selected": [
+            "DIAG_EVIDENCE_IDEA"
+          ]
+        },
+        "origin": "failure_history",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_missed_connection_2e8cfc",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Diagnostic measured_evidence: selector returned ['DIAG_EVIDENCE_IDEA']; required ['DIAG_EVIDENCE_EVAL'].",
+        "created_order": -386,
+        "failure_condition": "Observed selection violated the diagnostic relevance contract.",
+        "kind": "result",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "measured_evidence",
+          "passed": false,
+          "selected": [
+            "DIAG_EVIDENCE_IDEA"
+          ]
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_observed_result_2cd101",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"prefer observed matched-condition evidence over an untested proposal\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T115750Z_9b28bceb_active_component_6647ee\", \"evidence\": [\"evaluation results are available\"], \"goal\": \"Decide which retrieval strategy has measured recovery evidence\", \"open_questions\": [\"Which IP reports an observed comparison?\"], \"question\": \"Which prior reasoning IP should enter the bounded research context?\", \"recent_refs\": [\"REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_EVAL_725a20\", \"REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_IDEA_75f7e5\", \"REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_OLD_517b50\"]}",
+        "created_order": -387,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "prefer observed matched-condition evidence over an untested proposal"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T115750Z_9b28bceb_active_component_6647ee",
+          "evidence": [
+            "evaluation results are available"
+          ],
+          "goal": "Decide which retrieval strategy has measured recovery evidence",
+          "open_questions": [
+            "Which IP reports an observed comparison?"
+          ],
+          "question": "Which prior reasoning IP should enter the bounded research context?",
+          "recent_refs": [
+            "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_EVAL_725a20",
+            "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_IDEA_75f7e5",
+            "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_OLD_517b50"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_5a268128dc1a425d",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      },
+      {
+        "content": "An earlier design note discusses tokenization and caching.",
+        "created_order": -388,
+        "failure_condition": "",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_OLD"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "superseded",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_OLD_517b50",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "A retrieval strategy might provide measured recovery evidence in future work.",
+        "created_order": -389,
+        "failure_condition": "",
+        "kind": "hypothesis",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_IDEA"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_IDEA_75f7e5",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Matched-condition evaluation measured recovery on six constraint-change probes.",
+        "created_order": -390,
+        "failure_condition": "",
+        "kind": "evaluation",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_EVAL"
+        },
+        "origin": "evaluation",
+        "outcome": "supported",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_measured_evidence_DIAG_EVIDENCE_EVAL_725a20",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "In unchanged_offline_constraint, the selector missed required IPs ['DIAG_OFFLINE_LOCAL'] and returned ['DIAG_OFFLINE_GENERIC']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "created_order": -391,
+        "failure_condition": "The active selector did not satisfy the public diagnostic relevance contract.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "unchanged_offline_constraint",
+          "missed": [
+            "DIAG_OFFLINE_LOCAL"
+          ],
+          "selected": [
+            "DIAG_OFFLINE_GENERIC"
+          ]
+        },
+        "origin": "failure_history",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_missed_connection_87a69f",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Diagnostic unchanged_offline_constraint: selector returned ['DIAG_OFFLINE_GENERIC']; required ['DIAG_OFFLINE_LOCAL'].",
+        "created_order": -392,
+        "failure_condition": "Observed selection violated the diagnostic relevance contract.",
+        "kind": "result",
+        "metadata": {
+          "cycle_id": "20260906T115750Z_9b28bceb",
+          "diagnostic_case": "unchanged_offline_constraint",
+          "passed": false,
+          "selected": [
+            "DIAG_OFFLINE_GENERIC"
+          ]
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_observed_result_5b29ca",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"network access remains unavailable\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T115750Z_9b28bceb_active_component_6647ee\", \"evidence\": [\"local embedding inference is installed\"], \"goal\": \"Choose a semantic evidence index for the research project\", \"open_questions\": [\"Which currently feasible index should be used?\"], \"question\": \"Which prior reasoning IP should enter the bounded research context?\", \"recent_refs\": [\"REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_DIAG_OFFLINE_FAILED_4ac2a6\", \"REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_8f0f56\", \"REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_DIAG_OFFLINE_GENERIC_a41fc3\"]}",
+        "created_order": -393,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "network access remains unavailable"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T115750Z_9b28bceb_active_component_6647ee",
+          "evidence": [
+            "local embedding inference is installed"
+          ],
+          "goal": "Choose a semantic evidence index for the research project",
+          "open_questions": [
+            "Which currently feasible index should be used?"
+          ],
+          "question": "Which prior reasoning IP should enter the bounded research context?",
+          "recent_refs": [
+            "REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_DIAG_OFFLINE_FAILED_4ac2a6",
+            "REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_8f0f56",
+            "REBUILD_20260906T115750Z_9b28bceb_unchanged_offline_constraint_DIAG_OFFLINE_GENERIC_a41fc3"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_3a89195e279b4ea3",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      }
+    ],
+    "retrieval_run_count": 12,
+    "schema_version": 1
+  },
+  "protected_hashes": {
+    "cases.json": "76512fc8fda0c0ae31e47c9ba0d8fb6e2555c27f531b0700221673b506444138",
+    "evaluator.py": "6be6246238aedb0c37a72be6e2623772ba6ff1b67415fa46ab3ab4272e3fec06"
+  },
+  "started_at": "2026-09-06T11:57:50.304244+00:00",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\src\\stoe_agent\\ollama.py\", line 83, in generate_json\n    parsed = json.loads(response_text)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Bozuron\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\json\\__init__.py\", line 346, in loads\n    return _default_decoder.decode(s)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Bozuron\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\json\\decoder.py\", line 337, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Bozuron\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\json\\decoder.py\", line 353, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ^^^^^^^^^^^^^^^^^^^^^^\njson.decoder.JSONDecodeError: Unterminated string starting at: line 21 column 33 (char 5839)\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\src\\stoe_agent\\supervisor.py\", line 182, in run_cycle\n    return self._run_cycle(cycle_id=cycle_id, started=started, started_at=started_at)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\src\\stoe_agent\\supervisor.py\", line 313, in _run_cycle\n    proposal, proposal_trace = self.model_client.generate_json(\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\src\\stoe_agent\\ollama.py\", line 85, in generate_json\n    raise RuntimeError(f\"Ollama returned malformed JSON: {exc}\") from exc\nRuntimeError: Ollama returned malformed JSON: Unterminated string starting at: line 21 column 33 (char 5839)\n"
+}

@@ -7,7 +7,7 @@ import uuid
 from contextlib import contextmanager
 from pathlib import Path
 
-from stoe_agent.ollama import ModelIdentity
+from stoe_agent.ollama import ModelIdentity, OllamaClient
 from stoe_agent.selector_loader import load_selector
 from stoe_agent.static_gate import validate_candidate_source
 from stoe_agent.supervisor import RebuildSupervisor, SupervisorConfig
@@ -126,13 +126,21 @@ class FakeModelClient:
         return payload, {"request": {"seed": seed}, "response": {"done": True}}
 
 
+class RaisingModelClient:
+    def identity(self):
+        return ModelIdentity("broken-local-model", "e" * 64, "test")
+
+    def generate_json(self, **kwargs):
+        raise RuntimeError("deliberate provider failure")
+
+
 class RebuildTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.repo_root = Path(__file__).resolve().parents[2]
         cls.agent_root = cls.repo_root / "agent"
 
-    def make_supervisor(self, root: Path) -> RebuildSupervisor:
+    def make_supervisor(self, root: Path, model_client=None) -> RebuildSupervisor:
         component = self.agent_root / "owned_components" / "context_selector"
         config = SupervisorConfig(
             repo_root=self.repo_root,
@@ -144,7 +152,7 @@ class RebuildTests(unittest.TestCase):
             rejected_candidate_dir=root,
             model="fake-local-model",
         )
-        return RebuildSupervisor(config, model_client=FakeModelClient())
+        return RebuildSupervisor(config, model_client=model_client or FakeModelClient())
 
     @contextmanager
     def temporary_root(self, prefix: str):
@@ -166,6 +174,34 @@ class RebuildTests(unittest.TestCase):
 
     def test_static_gate_accepts_bounded_component(self):
         self.assertTrue(validate_candidate_source(IMPROVED_SOURCE).passed)
+
+    def test_ollama_uses_structured_thinking_when_response_is_empty(self):
+        client = OllamaClient(model="test-model")
+        client._json_request = lambda path, payload=None: {
+            "response": "",
+            "thinking": '{"ok": true}',
+            "context": [1, 2, 3],
+            "done": True,
+        }
+        parsed, trace = client.generate_json(
+            system="test",
+            prompt="test",
+            schema={"type": "object", "properties": {"ok": {"type": "boolean"}}},
+            max_output_tokens=32,
+            seed=1,
+        )
+        self.assertEqual({"ok": True}, parsed)
+        self.assertEqual("thinking", trace["parsed_response_channel"])
+        self.assertNotIn("context", trace["response"])
+
+    def test_provider_failure_is_conserved_as_safe_rejection(self):
+        with self.temporary_root("stoe_provider_failure_") as raw:
+            supervisor = self.make_supervisor(Path(raw), RaisingModelClient())
+            report = supervisor.run_cycle()
+            self.assertEqual("ERROR_REJECT", report["decision"])
+            self.assertFalse(report["activated"])
+            self.assertEqual("v1", report["active_after"]["version"])
+            self.assertTrue(report["failure_field_ref"].startswith("REBUILD_"))
 
     def test_real_cycle_with_fake_generator_uses_field_and_activates(self):
         with self.temporary_root("stoe_cycle_test_") as raw:

@@ -74,7 +74,11 @@ class OllamaClient:
             "keep_alive": "10m",
         }
         raw = self._json_request("/api/generate", payload)
-        response_text = str(raw.get("response", ""))
+        response_text = str(raw.get("response", "")).strip()
+        response_channel = "response"
+        if not response_text and str(raw.get("thinking", "")).strip():
+            response_text = str(raw["thinking"]).strip()
+            response_channel = "thinking"
         try:
             parsed = json.loads(response_text)
         except json.JSONDecodeError as exc:
@@ -83,6 +87,7 @@ class OllamaClient:
         trace = {
             "request": payload,
             "response": response_trace,
+            "parsed_response_channel": response_channel,
             "omitted_response_fields": ["context"] if "context" in raw else [],
         }
         return parsed, trace

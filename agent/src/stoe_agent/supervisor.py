@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import time
+import traceback
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -177,6 +178,39 @@ class RebuildSupervisor:
         started = time.perf_counter()
         started_at = datetime.now(timezone.utc).isoformat()
         cycle_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "_" + uuid.uuid4().hex[:8]
+        try:
+            return self._run_cycle(cycle_id=cycle_id, started=started, started_at=started_at)
+        except Exception as exc:
+            failure = self.journal.add_ip(
+                cycle_id=cycle_id,
+                label="cycle_execution_failure",
+                content=f"Rebuild cycle stopped safely after {type(exc).__name__}: {exc}",
+                kind="result",
+                origin="failure_history",
+                outcome="failed",
+                failure_condition="The rebuild infrastructure or configured local provider raised an exception.",
+                metadata={"exception_type": type(exc).__name__, "exception": str(exc)},
+            )
+            report = {
+                "cycle_id": cycle_id,
+                "started_at": started_at,
+                "decision": "ERROR_REJECT",
+                "decision_reason": f"{type(exc).__name__}: {exc}",
+                "activated": False,
+                "active_after": self.read_active_pointer(),
+                "protected_hashes": self.protected_hashes(),
+                "failure_field_ref": failure["ref"],
+                "traceback": traceback.format_exc(),
+            }
+            return self._finish_report(report, cycle_id, started)
+
+    def _run_cycle(
+        self,
+        *,
+        cycle_id: str,
+        started: float,
+        started_at: str,
+    ) -> dict[str, Any]:
         pointer_before = self.read_active_pointer()
         active_path = Path(pointer_before["source_path"])
         active_source = active_path.read_text(encoding="utf-8")

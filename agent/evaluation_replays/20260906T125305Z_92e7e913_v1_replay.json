@@ -1,0 +1,147 @@
+{
+  "classification": "replay_on_previously_used_public_and_protected_cases_not_a_new_blind_experiment",
+  "protected": {
+    "case_count": 5,
+    "critical_failures": [
+      "active_privacy_rejection"
+    ],
+    "pass_count": 1,
+    "passed_cases": [
+      "budget_skips_oversize"
+    ],
+    "results": [
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "expired_compute_rejection",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "H_COMPUTE_GENERIC"
+        ]
+      },
+      {
+        "critical": true,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "active_privacy_rejection",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "H_PRIVACY_NOTE"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "observed_replication_evidence",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "H_REPLICATION_CLAIM"
+        ]
+      },
+      {
+        "critical": true,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "budget_skips_oversize",
+        "passed": true,
+        "required_present": true,
+        "selected": [
+          "H_BUDGET_SHORT_A",
+          "H_BUDGET_SHORT_B"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "changed_license_reopens_tool",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "H_LICENSE_GENERIC"
+        ]
+      }
+    ],
+    "source": "agent/owned_components/context_selector/versions/v1.py"
+  },
+  "protected_hashes": {
+    "cases.json": "76512fc8fda0c0ae31e47c9ba0d8fb6e2555c27f531b0700221673b506444138",
+    "evaluator.py": "6be6246238aedb0c37a72be6e2623772ba6ff1b67415fa46ab3ab4272e3fec06"
+  },
+  "public": {
+    "candidate_stderr": {
+      "original_chars": 0,
+      "text": "",
+      "truncated": false
+    },
+    "candidate_stdout": {
+      "original_chars": 0,
+      "text": "",
+      "truncated": false
+    },
+    "case_count": 3,
+    "failure_kind": "",
+    "pass_count": 0,
+    "passed_cases": [],
+    "results": [
+      {
+        "case": "raised_storage_ceiling",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "passed": false,
+        "required_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "selected": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ]
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [
+          "DIAG_OFFLINE_FAILED"
+        ],
+        "passed": false,
+        "required_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "selected": [
+          "DIAG_OFFLINE_GENERIC"
+        ]
+      },
+      {
+        "case": "measured_evidence",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [],
+        "passed": false,
+        "required_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "selected": [
+          "DIAG_EVIDENCE_IDEA"
+        ]
+      }
+    ],
+    "status": "completed",
+    "subprocess_returncode": 0
+  },
+  "replayed_at": "2026-09-06T18:11:34.531181+00:00",
+  "source_path": "agent/owned_components/context_selector/versions/v1.py",
+  "source_sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c"
+}

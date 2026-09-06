@@ -197,6 +197,8 @@ def evaluate_public_selector(selector: Selector) -> dict[str, Any]:
             }
         )
     return {
+        "status": "completed",
+        "failure_kind": "",
         "case_count": len(results),
         "pass_count": sum(1 for item in results if item["passed"]),
         "passed_cases": [item["case"] for item in results if item["passed"]],
@@ -206,16 +208,14 @@ def evaluate_public_selector(selector: Selector) -> dict[str, Any]:
 
 def investigate_selector(
     *,
-    selector: Selector,
+    public_evaluation: dict[str, Any],
     journal: RebuildJournal,
     cycle_id: str,
     component_ref: str,
 ) -> dict[str, Any]:
     observations: list[dict[str, Any]] = []
     observed_failure_refs: list[str] = []
-    public_results = {
-        item["case"]: item for item in evaluate_public_selector(selector)["results"]
-    }
+    public_results = {item["case"]: item for item in public_evaluation.get("results", [])}
 
     for case in public_diagnostics():
         item_ips: dict[str, dict[str, Any]] = {}
@@ -264,7 +264,15 @@ def investigate_selector(
             session_id=SESSION_ID,
         )
 
-        public_result = public_results[case.name]
+        public_result = public_results.get(
+            case.name,
+            {
+                "selected": [],
+                "passed": False,
+                "deterministic": False,
+                "error": public_evaluation.get("error", "public diagnostic child returned no case result"),
+            },
+        )
         selected = list(public_result["selected"])
         passed = bool(public_result["passed"])
         result_ip = journal.add_ip(
@@ -426,4 +434,10 @@ def investigate_selector(
         "unknown_structure": (
             "The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable."
         ),
+        "execution": {
+            "status": public_evaluation.get("status", "unknown"),
+            "failure_kind": public_evaluation.get("failure_kind", ""),
+            "error": public_evaluation.get("error", ""),
+            "subprocess": True,
+        },
     }

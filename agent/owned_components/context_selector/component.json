@@ -4,6 +4,7 @@
   "editable_scope": "owned_components/context_selector/versions/*.py",
   "interface": "select_context(observer_state, items, max_items, max_chars) -> list[str]",
   "purpose": "Choose a bounded set of prior reasoning IP references for the current research state.",
+  "tracked_active_release": "active_release.json",
   "suspected_v1_limitation": "Source inspection suggests that v1 ranks only lexical overlap with the goal. The rebuild cycle must establish any practical limitation through observed diagnostic behavior before proposing a change.",
   "protected_outside_scope": [
     "src/stoe_agent/supervisor.py",

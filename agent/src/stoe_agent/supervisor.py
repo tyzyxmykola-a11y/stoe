@@ -15,9 +15,10 @@ from pathlib import Path
 from typing import Any
 
 from .field_journal import RebuildJournal, SESSION_ID
-from .investigation import evaluate_public_selector, investigate_selector
+from .investigation import public_diagnostics, investigate_selector
 from .ollama import OllamaClient
-from .selector_loader import load_selector, sha256_file
+from .research_state import ResearchStateStore
+from .selector_loader import sha256_file
 from .static_gate import validate_candidate_source
 
 
@@ -113,6 +114,10 @@ class SupervisorConfig:
     ollama_endpoint: str = "http://127.0.0.1:11434"
     evaluation_timeout_seconds: int = 25
     activation_timeout_seconds: int = 20
+    public_evaluation_timeout_seconds: float = 5.0
+    persist_active_manifest: bool = True
+    research_checkpoint_dir: Path | None = None
+    research_bootstrap_path: Path | None = None
 
     @classmethod
     def defaults(
@@ -132,6 +137,8 @@ class SupervisorConfig:
             accepted_version_dir=None,
             rejected_candidate_dir=(agent_root / "rejected_candidates").resolve(),
             model=model,
+            research_checkpoint_dir=(agent_root / "research_checkpoints").resolve(),
+            research_bootstrap_path=(agent_root / "research_state" / "bootstrap.json").resolve(),
         )
 
 
@@ -147,14 +154,38 @@ class RebuildSupervisor:
         )
         self.active_pointer = self.config.runtime_dir / "active_component.json"
         self._ensure_active_pointer()
+        self.research_state = ResearchStateStore(
+            runtime_dir=self.config.runtime_dir,
+            checkpoint_dir=(self.config.research_checkpoint_dir or self.config.runtime_dir / "research_checkpoints"),
+            bootstrap_path=self.config.research_bootstrap_path,
+            project_root=self.config.repo_root,
+        )
 
     @property
     def baseline_path(self) -> Path:
         return self.config.component_dir / "versions" / "v1.py"
 
+    @property
+    def active_release_manifest(self) -> Path:
+        return self.config.component_dir / "active_release.json"
+
     def _ensure_active_pointer(self) -> dict[str, Any]:
         if self.active_pointer.exists():
             return self.read_active_pointer()
+        if self.config.persist_active_manifest and self.active_release_manifest.exists():
+            release = json.loads(self.active_release_manifest.read_text(encoding="utf-8"))
+            source_path = self.config.component_dir / "versions" / str(release["source_file"])
+            pointer = {
+                "version": str(release["version"]),
+                "source_path": str(source_path.resolve()),
+                "sha256": str(release["sha256"]),
+                "activated_at": str(release["activated_at"]),
+                "previous_version": release.get("previous_version"),
+            }
+            if not source_path.exists() or sha256_file(source_path) != pointer["sha256"]:
+                raise RuntimeError("tracked active release source hash mismatch")
+            self._atomic_write_json(self.active_pointer, pointer)
+            return pointer
         pointer = {
             "version": "v1",
             "source_path": str(self.baseline_path.resolve()),
@@ -164,6 +195,24 @@ class RebuildSupervisor:
         }
         self._atomic_write_json(self.active_pointer, pointer)
         return pointer
+
+    def _persist_active_release(self, pointer: dict[str, Any]) -> None:
+        if not self.config.persist_active_manifest:
+            return
+        source_path = Path(pointer["source_path"]).resolve()
+        versions_dir = (self.config.component_dir / "versions").resolve()
+        if source_path.parent != versions_dir:
+            raise RuntimeError("active release source must be in the versioned component directory")
+        self._atomic_write_json(
+            self.active_release_manifest,
+            {
+                "version": pointer["version"],
+                "source_file": source_path.name,
+                "sha256": pointer["sha256"],
+                "activated_at": pointer["activated_at"],
+                "previous_version": pointer.get("previous_version"),
+            },
+        )
 
     def read_active_pointer(self) -> dict[str, Any]:
         pointer = json.loads(self.active_pointer.read_text(encoding="utf-8"))
@@ -199,12 +248,159 @@ class RebuildSupervisor:
             },
         }
 
-    def run_cycle(self) -> dict[str, Any]:
+    def checkpoint_research_state(self, reason: str) -> dict[str, Any]:
+        state = self.research_state.load()
+        pointer = self.read_active_pointer()
+        state["versions"]["active"] = {
+            "version": pointer["version"],
+            "sha256": pointer["sha256"],
+            "source_path": Path(pointer["source_path"]).resolve().relative_to(self.config.repo_root).as_posix(),
+        }
+        self.research_state.save(state)
+        return self.research_state.checkpoint(reason=reason)
+
+    def resume_research_context(
+        self, *, max_tokens: int, known_hashes: dict[str, str] | None = None
+    ) -> dict[str, Any]:
+        return self.research_state.build_resume_context(
+            max_tokens=max_tokens,
+            known_hashes=known_hashes,
+        )
+
+    def replay_selector(self, source_path: Path) -> dict[str, Any]:
+        source_path = source_path.resolve()
+        try:
+            recorded_source_path = source_path.relative_to(self.config.repo_root).as_posix()
+        except ValueError:
+            recorded_source_path = str(source_path)
+        protected_before = self.protected_hashes()
+        public = self._evaluate_public(source_path)
+        protected = self._evaluate(source_path)
+        if "source" in protected:
+            protected["source"] = recorded_source_path
+        protected_after = self.protected_hashes()
+        if protected_before != protected_after:
+            raise RuntimeError("protected evaluation files changed during replay")
+        return {
+            "classification": "replay_on_previously_used_public_and_protected_cases_not_a_new_blind_experiment",
+            "source_path": recorded_source_path,
+            "source_sha256": sha256_file(source_path),
+            "protected_hashes": protected_before,
+            "public": public,
+            "protected": protected,
+            "replayed_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def record_next_research_question(self, report_path: Path) -> dict[str, Any]:
+        report_path = report_path.resolve()
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        if report.get("decision") != "ACCEPT" or not report.get("activated"):
+            raise RuntimeError("next-question linkage requires an accepted, activated cycle report")
+        cycle_id = str(report["cycle_id"])
+        nodes = self.journal.find_cycle_nodes(cycle_id)
+        correction_text = (
+            "Evidence correction: the historical candidate_public_feasibility label records only an observed "
+            "public behavioral improvement. It does not establish that the model's proposed invalidation mechanism "
+            "caused the improvement; the accepted source used outcome/kind heuristics and changed-constraint "
+            "reactivation remained unsuccessful."
+        )
+        correction = self.journal.find_exact_content(correction_text)
+        if correction is None:
+            correction = self.journal.add_ip(
+                cycle_id="post_acceptance_correction",
+                label="public_evidence_label_correction",
+                content=correction_text,
+                kind="correction",
+                origin="runtime_reasoning",
+                outcome="supported",
+                metadata={
+                    "addresses_cycle": cycle_id,
+                    "source_report": str(report_path),
+                    "source_report_sha256": sha256_file(report_path),
+                },
+            )
+            for node in nodes:
+                if (
+                    "candidate_implementation" in node["ref"]
+                    or "candidate_public_" in node["ref"]
+                    or node["ref"] == report.get("evaluation_field_ref")
+                ):
+                    self.journal.relate(correction["ref"], node["ref"], "corrects_interpretation_of", "Post-acceptance evidence-label correction")
+
+        question_text = (
+            "Why did the proposed invalidation mechanism fail to materialize, and what evidence or interface "
+            "change would let the agent investigate that discrepancy using SToE?"
+        )
+        question = self.journal.find_exact_content(question_text)
+        if question is None:
+            question = self.journal.add_ip(
+                cycle_id="post_acceptance_question",
+                label="next_research_question",
+                content=question_text,
+                kind="question",
+                origin="runtime_reasoning",
+                outcome="untested",
+                metadata={
+                    "source_cycle": cycle_id,
+                    "source_report": str(report_path),
+                    "research_status": "pending_next_cycle",
+                },
+            )
+            for node in nodes:
+                relation = None
+                if "candidate_hypothesis" in node["ref"]:
+                    relation = "questions_proposal"
+                elif "candidate_implementation" in node["ref"]:
+                    relation = "questions_implementation"
+                elif "candidate_public_" in node["ref"] or node["ref"] == report.get("evaluation_field_ref"):
+                    relation = "constrained_by_evidence"
+                elif "successor_activation" in node["ref"]:
+                    relation = "follows_activation"
+                if relation:
+                    self.journal.relate(question["ref"], node["ref"], relation, "Next research question linked to accepted-cycle evidence")
+                if node["origin"] == "failure_history":
+                    self.journal.relate(question["ref"], node["ref"], "motivated_by_failure", "Observed failure remains unresolved")
+            self.journal.relate(question["ref"], correction["ref"], "constrained_by_correction", "Question preserves corrected evidence interpretation")
+        return {
+            "question_ref": question["ref"],
+            "correction_ref": correction["ref"],
+            "question": question_text,
+            "source_cycle": cycle_id,
+            "linked_cycle_node_count": len(nodes),
+        }
+
+    def run_cycle(self, *, action_id: str | None = None) -> dict[str, Any]:
         started = time.perf_counter()
         started_at = datetime.now(timezone.utc).isoformat()
         cycle_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "_" + uuid.uuid4().hex[:8]
+        action_id = action_id or f"model-cycle:{cycle_id}"
+        action = self.research_state.begin_action(
+            action_id=action_id,
+            description="Bounded SToE-guided proposal, implementation, evaluation, and activation cycle.",
+        )
+        if not action.get("started"):
+            return {
+                "decision": "SKIP_COMPLETED_ACTION" if action.get("duplicate_completed") else "RECONCILIATION_REQUIRED",
+                "activated": False,
+                "action_id": action_id,
+                "action": action["action"],
+                "reason": (
+                    "The stable action id is already completed; no model call was repeated."
+                    if action.get("duplicate_completed")
+                    else "The action is running or uncertain and must be reconciled before retry."
+                ),
+            }
+        pre_checkpoint = self.research_state.checkpoint(
+            reason=f"Before model action {action_id}; reserve continuity if the process is interrupted"
+        )
         try:
-            return self._run_cycle(cycle_id=cycle_id, started=started, started_at=started_at)
+            return self._run_cycle(
+                cycle_id=cycle_id,
+                started=started,
+                started_at=started_at,
+                action_id=action_id,
+                pre_checkpoint=pre_checkpoint,
+            )
         except Exception as exc:
             failure = self.journal.add_ip(
                 cycle_id=cycle_id,
@@ -218,6 +414,8 @@ class RebuildSupervisor:
             )
             report = {
                 "cycle_id": cycle_id,
+                "action_id": action_id,
+                "pre_action_checkpoint": pre_checkpoint,
                 "started_at": started_at,
                 "decision": "ERROR_REJECT",
                 "decision_reason": f"{type(exc).__name__}: {exc}",
@@ -235,6 +433,8 @@ class RebuildSupervisor:
         cycle_id: str,
         started: float,
         started_at: str,
+        action_id: str,
+        pre_checkpoint: dict[str, Any],
     ) -> dict[str, Any]:
         pointer_before = self.read_active_pointer()
         active_path = Path(pointer_before["source_path"])
@@ -301,9 +501,9 @@ class RebuildSupervisor:
             "The selector operationally maps observer state and candidate IPs to a bounded selected set",
         )
 
-        selector = load_selector(active_path)
+        active_public = self._evaluate_public(active_path)
         investigation = investigate_selector(
-            selector=selector,
+            public_evaluation=active_public,
             journal=self.journal,
             cycle_id=cycle_id,
             component_ref=component["ref"],
@@ -345,6 +545,15 @@ class RebuildSupervisor:
             schema=PROPOSAL_SCHEMA,
             max_output_tokens=2400,
             seed=1701,
+            context_sections={
+                "task_context": active_source,
+                "retrieved_material": json.dumps(
+                    investigation["bounded_prior_context"], ensure_ascii=False, sort_keys=True
+                ),
+                "tool_results": json.dumps(
+                    self._compact_diagnostics(investigation), ensure_ascii=False, sort_keys=True
+                ),
+            },
         )
         self._validate_proposal(proposal, investigation)
         proposal_ip = self.journal.add_ip(
@@ -385,6 +594,13 @@ class RebuildSupervisor:
                 schema=SOURCE_SCHEMA,
                 max_output_tokens=3200,
                 seed=2701 + attempt_index,
+                context_sections={
+                    "task_context": active_source + json.dumps(proposal, ensure_ascii=False, sort_keys=True),
+                    "retrieved_material": "",
+                    "tool_results": json.dumps(
+                        self._compact_diagnostics(investigation), ensure_ascii=False, sort_keys=True
+                    ),
+                },
             )
             source = self._clean_source(str(generated.get("source", "")))
             gate = validate_candidate_source(source)
@@ -422,6 +638,8 @@ class RebuildSupervisor:
 
         report: dict[str, Any] = {
             "cycle_id": cycle_id,
+            "action_id": action_id,
+            "pre_action_checkpoint": pre_checkpoint,
             "started_at": started_at,
             "infrastructure": self.inspect()["scope"],
             "active_before": pointer_before,
@@ -464,8 +682,8 @@ class RebuildSupervisor:
         )
         self.journal.relate(candidate_ip["ref"], proposal_ip["ref"], "implements", "Candidate implements preregistered hypothesis")
 
-        candidate_public = evaluate_public_selector(load_selector(candidate_runtime_path))
-        public_feasibility = self._public_feasibility_decision(investigation, candidate_public)
+        candidate_public = self._evaluate_public(candidate_runtime_path)
+        public_behavioral = self._public_behavioral_improvement_decision(investigation, candidate_public)
         report.update(
             {
                 "candidate": {
@@ -474,34 +692,37 @@ class RebuildSupervisor:
                     "implementation_note": accepted_note,
                     "field_ref": candidate_ip["ref"],
                 },
-                "public_feasibility": public_feasibility,
+                "public_behavioral_improvement": public_behavioral,
             }
         )
         public_evaluation_ip = self.journal.add_ip(
             cycle_id=cycle_id,
-            label="candidate_public_feasibility",
+            label="candidate_public_behavioral_improvement",
             content=(
-                f"Disclosed mechanism check: active {investigation['pass_count']}/{investigation['case_count']}; "
+                f"Disclosed behavioral improvement check: active {investigation['pass_count']}/{investigation['case_count']}; "
                 f"candidate {candidate_public['pass_count']}/{candidate_public['case_count']}; "
-                f"decision {public_feasibility['decision']}."
+                f"decision {public_behavioral['decision']}."
             ),
             kind="evaluation",
             origin="evaluation",
-            outcome="supported" if public_feasibility["decision"] == "PROCEED" else "rejected",
+            outcome="supported" if public_behavioral["decision"] == "PROCEED" else "rejected",
             failure_condition=(
                 "The generated implementation did not demonstrate its proposed mechanism on disclosed diagnostics."
-                if public_feasibility["decision"] != "PROCEED"
+                if public_behavioral["decision"] != "PROCEED"
                 else ""
             ),
-            metadata={"public_feasibility": public_feasibility},
+            metadata={
+                "public_behavioral_improvement": public_behavioral,
+                "causal_interpretation": "No mechanism-level causal claim; the check observes outputs only.",
+            },
         )
-        self.journal.relate(public_evaluation_ip["ref"], candidate_ip["ref"], "evaluates", "Disclosed mechanism feasibility check")
-        if public_feasibility["decision"] != "PROCEED":
+        self.journal.relate(public_evaluation_ip["ref"], candidate_ip["ref"], "evaluates", "Disclosed behavioral improvement check")
+        if public_behavioral["decision"] != "PROCEED":
             archived = self._archive_rejected(candidate_runtime_path, cycle_id)
             report.update(
                 {
                     "decision": "REJECT_PUBLIC_MECHANISM",
-                    "decision_reason": public_feasibility["reason"],
+                    "decision_reason": public_behavioral["reason"],
                     "activated": False,
                     "archived_rejected_candidate": archived,
                 }
@@ -702,7 +923,7 @@ class RebuildSupervisor:
                 raise RuntimeError(f"proposal source mechanism is not tied to active code fields for {case_name}")
 
     @staticmethod
-    def _public_feasibility_decision(
+    def _public_behavioral_improvement_decision(
         investigation: dict[str, Any], candidate_public: dict[str, Any]
     ) -> dict[str, Any]:
         active_passed = {
@@ -710,16 +931,22 @@ class RebuildSupervisor:
         }
         candidate_passed = set(candidate_public["passed_cases"])
         regressions = sorted(active_passed - candidate_passed)
-        improved = candidate_public["pass_count"] > investigation["pass_count"]
+        execution_completed = candidate_public.get("status") == "completed"
+        improved = execution_completed and candidate_public["pass_count"] > investigation["pass_count"]
         proceed = improved and not regressions
         reason_parts = []
+        if not execution_completed:
+            reason_parts.append(
+                "candidate public diagnostic subprocess failed: "
+                f"{candidate_public.get('failure_kind', 'unknown')}: {candidate_public.get('error', '')}"
+            )
         if not improved:
             reason_parts.append("candidate did not improve the disclosed diagnostic pass count")
         if regressions:
             reason_parts.append(f"candidate regressed disclosed cases: {regressions}")
         if proceed:
             reason_parts.append(
-                "candidate demonstrated the proposed mechanism on disclosed diagnostics; protected evaluation remains decisive"
+                "candidate showed disclosed behavioral improvement; this does not establish the proposed mechanism; protected evaluation remains decisive"
             )
         return {
             "decision": "PROCEED" if proceed else "REJECT",
@@ -728,7 +955,98 @@ class RebuildSupervisor:
             "candidate_pass_count": candidate_public["pass_count"],
             "regressions": regressions,
             "candidate_results": candidate_public["results"],
-            "role": "disclosed mechanism check only; never sufficient for activation",
+            "execution": {
+                "status": candidate_public.get("status"),
+                "failure_kind": candidate_public.get("failure_kind", ""),
+                "error": candidate_public.get("error", ""),
+            },
+            "role": "disclosed behavioral improvement check only; never sufficient for activation or a causal mechanism claim",
+        }
+
+    def _evaluate_public(self, source_path: Path) -> dict[str, Any]:
+        env = dict(os.environ)
+        source_root = str((self.config.repo_root / "agent" / "src").resolve())
+        env["PYTHONPATH"] = source_root + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
+        command = [sys.executable, "-m", "stoe_agent.public_worker", "--source", str(source_path)]
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=self.config.repo_root / "agent",
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=self.config.public_evaluation_timeout_seconds,
+                check=False,
+            )
+        except subprocess.TimeoutExpired as exc:
+            return self._public_execution_rejection(
+                "timeout", f"public diagnostic child exceeded {self.config.public_evaluation_timeout_seconds}s", exc
+            )
+        except OSError as exc:
+            return self._public_execution_rejection("launch_error", f"{type(exc).__name__}: {exc}")
+        if completed.returncode != 0 and not completed.stdout.strip():
+            return self._public_execution_rejection(
+                "crash",
+                completed.stderr or f"public diagnostic child exited {completed.returncode}",
+                stdout=completed.stdout,
+                stderr=completed.stderr,
+            )
+        try:
+            result = json.loads(completed.stdout)
+        except (json.JSONDecodeError, TypeError) as exc:
+            return self._public_execution_rejection(
+                "malformed_output",
+                f"{type(exc).__name__}: {exc}",
+                stdout=completed.stdout,
+                stderr=completed.stderr,
+            )
+        if completed.returncode != 0 or result.get("status") != "completed":
+            return self._public_execution_rejection(
+                "crash" if completed.returncode != 0 else str(result.get("failure_kind", "worker_rejection")),
+                str(result.get("error") or completed.stderr or f"child exited {completed.returncode}"),
+                stdout=completed.stdout,
+                stderr=completed.stderr,
+            )
+        expected_cases = {case.name for case in public_diagnostics()}
+        results = result.get("results")
+        if not isinstance(results, list) or {item.get("case") for item in results if isinstance(item, dict)} != expected_cases:
+            return self._public_execution_rejection("malformed_output", "child result did not contain every public diagnostic")
+        result["subprocess_returncode"] = completed.returncode
+        return result
+
+    @staticmethod
+    def _public_execution_rejection(
+        failure_kind: str,
+        error: str,
+        exc: Exception | None = None,
+        *,
+        stdout: str = "",
+        stderr: str = "",
+    ) -> dict[str, Any]:
+        results = [
+            {
+                "case": case.name,
+                "selected": [],
+                "required_refs": list(case.required_refs),
+                "forbidden_refs": list(case.forbidden_refs),
+                "deterministic": False,
+                "passed": False,
+                "error": error,
+            }
+            for case in public_diagnostics()
+        ]
+        return {
+            "status": "rejected",
+            "failure_kind": failure_kind,
+            "error": error,
+            "exception_type": type(exc).__name__ if exc is not None else "",
+            "stdout": stdout[-4000:],
+            "stderr": stderr[-4000:],
+            "output_truncated": len(stdout) > 4000 or len(stderr) > 4000,
+            "case_count": len(results),
+            "pass_count": 0,
+            "passed_cases": [],
+            "results": results,
         }
 
     @staticmethod
@@ -848,35 +1166,60 @@ class RebuildSupervisor:
             "activated_at": datetime.now(timezone.utc).isoformat(),
             "previous_version": old_pointer["version"],
         }
-        self._atomic_write_json(self.active_pointer, new_pointer)
-        health = self._fresh_process_health()
-        if not health["healthy"]:
-            self._atomic_write_json(self.active_pointer, old_pointer)
-            rollback_health = self._fresh_process_health()
-            failure_ip = self.journal.add_ip(
+        attempt_ip = self.journal.add_ip(
+            cycle_id=cycle_id,
+            label="activation_attempt",
+            content=f"Attempt activation of {version} from {old_pointer['version']}.",
+            kind="state_change",
+            origin="state_change",
+            outcome="untested",
+            metadata={"old_pointer": old_pointer, "attempted_pointer": new_pointer, "snapshot": snapshot},
+        )
+        self.journal.relate(attempt_ip["ref"], candidate_ref, "attempts_activation", "Controlled activation attempt")
+        try:
+            self._atomic_write_json(self.active_pointer, new_pointer)
+        except Exception as exc:
+            return self._record_activation_recovery(
                 cycle_id=cycle_id,
-                label="activation_failure",
-                content=f"Activation of {version} failed and pointer rolled back: {health['error']}",
-                kind="state_change",
-                origin="failure_history",
-                outcome="failed",
-                failure_condition="Fresh-process successor health check failed.",
-                metadata={
-                    "attempted_version": version,
-                    "restored_version": old_pointer["version"],
-                    "rollback_health": rollback_health,
-                    "snapshot": snapshot,
+                candidate_ref=candidate_ref,
+                attempt_ref=attempt_ip["ref"],
+                version=version,
+                old_pointer=old_pointer,
+                snapshot=snapshot,
+                health={
+                    "healthy": False,
+                    "failure_kind": "pointer_write_error",
+                    "error": f"{type(exc).__name__}: {exc}",
                 },
             )
-            self.journal.relate(failure_ip["ref"], candidate_ref, "rejected_by", "Activation gate rejected successor")
-            return {
-                "activated": False,
-                "error": health["error"],
-                "health": health,
-                "rollback_health": rollback_health,
-                "snapshot": snapshot,
-                "restored_pointer": old_pointer,
-            }
+        health = self._safe_fresh_process_health()
+        if not health["healthy"]:
+            return self._record_activation_recovery(
+                cycle_id=cycle_id,
+                candidate_ref=candidate_ref,
+                attempt_ref=attempt_ip["ref"],
+                version=version,
+                old_pointer=old_pointer,
+                snapshot=snapshot,
+                health=health,
+            )
+
+        try:
+            self._persist_active_release(new_pointer)
+        except Exception as exc:
+            return self._record_activation_recovery(
+                cycle_id=cycle_id,
+                candidate_ref=candidate_ref,
+                attempt_ref=attempt_ip["ref"],
+                version=version,
+                old_pointer=old_pointer,
+                snapshot=snapshot,
+                health={
+                    "healthy": False,
+                    "failure_kind": "release_manifest_error",
+                    "error": f"{type(exc).__name__}: {exc}",
+                },
+            )
 
         activation_ip = self.journal.add_ip(
             cycle_id=cycle_id,
@@ -887,8 +1230,112 @@ class RebuildSupervisor:
             outcome="active",
             metadata={"old_pointer": old_pointer, "new_pointer": new_pointer, "health": health, "snapshot": snapshot},
         )
+        self.journal.relate(activation_ip["ref"], attempt_ip["ref"], "completes", "Activation attempt completed successfully")
         self.journal.relate(activation_ip["ref"], candidate_ref, "activates", "Controlled successor activation")
-        return {"activated": True, "health": health, "snapshot": snapshot, "old_pointer": old_pointer}
+        return {
+            "activated": True,
+            "health": health,
+            "snapshot": snapshot,
+            "old_pointer": old_pointer,
+            "field_refs": {"attempt": attempt_ip["ref"], "activation": activation_ip["ref"]},
+        }
+
+    def _record_activation_recovery(
+        self,
+        *,
+        cycle_id: str,
+        candidate_ref: str,
+        attempt_ref: str,
+        version: str,
+        old_pointer: dict[str, Any],
+        snapshot: dict[str, Any],
+        health: dict[str, Any],
+    ) -> dict[str, Any]:
+        failure_ip = self.journal.add_ip(
+            cycle_id=cycle_id,
+            label="activation_failure",
+            content=f"Activation of {version} failed: {health.get('error', 'unknown health failure')}",
+            kind="result",
+            origin="failure_history",
+            outcome="failed",
+            failure_condition="Fresh-process activation or persistent release update did not complete successfully.",
+            metadata={"attempted_version": version, "health": health, "snapshot": snapshot},
+        )
+        self.journal.relate(failure_ip["ref"], attempt_ref, "evaluates", "Failure observed during activation attempt")
+        self.journal.relate(failure_ip["ref"], candidate_ref, "rejected_by", "Activation gate rejected successor")
+
+        restoration_succeeded = False
+        restoration_error = ""
+        try:
+            self._atomic_write_json(self.active_pointer, old_pointer)
+            restoration_succeeded = True
+        except Exception as exc:
+            restoration_error = f"{type(exc).__name__}: {exc}"
+        restoration_ip = self.journal.add_ip(
+            cycle_id=cycle_id,
+            label="activation_pointer_restoration",
+            content=(
+                f"Restored active pointer to {old_pointer['version']}."
+                if restoration_succeeded
+                else f"FAILED to restore active pointer to {old_pointer['version']}: {restoration_error}"
+            ),
+            kind="state_change",
+            origin="state_change" if restoration_succeeded else "failure_history",
+            outcome="supported" if restoration_succeeded else "failed",
+            failure_condition="" if restoration_succeeded else "Writing the previous active pointer failed.",
+            metadata={
+                "restored_version": old_pointer["version"],
+                "restoration_succeeded": restoration_succeeded,
+                "restoration_error": restoration_error,
+            },
+        )
+        self.journal.relate(restoration_ip["ref"], failure_ip["ref"], "responds_to", "Restoration follows activation failure")
+
+        recovery_health = (
+            self._safe_fresh_process_health()
+            if restoration_succeeded
+            else {
+                "healthy": False,
+                "failure_kind": "restoration_failed",
+                "error": restoration_error,
+            }
+        )
+        recovered = restoration_succeeded and bool(recovery_health.get("healthy"))
+        recovery_ip = self.journal.add_ip(
+            cycle_id=cycle_id,
+            label="activation_recovery_evaluation",
+            content=(
+                f"Fresh-process recovery of {old_pointer['version']} succeeded."
+                if recovered
+                else f"Fresh-process recovery of {old_pointer['version']} FAILED: {recovery_health.get('error', '')}"
+            ),
+            kind="evaluation",
+            origin="evaluation",
+            outcome="supported" if recovered else "failed",
+            failure_condition="" if recovered else "Previous-version recovery could not be verified in a fresh process.",
+            metadata={"recovery_health": recovery_health, "restoration_succeeded": restoration_succeeded},
+        )
+        self.journal.relate(recovery_ip["ref"], restoration_ip["ref"], "evaluates", "Fresh-process verification of restored version")
+        error = str(health.get("error", "activation failed"))
+        if not recovered:
+            error += f"; RECOVERY FAILED: {recovery_health.get('error', restoration_error)}"
+        return {
+            "activated": False,
+            "error": error,
+            "health": health,
+            "rollback_health": recovery_health,
+            "recovery_health": recovery_health,
+            "restoration_succeeded": restoration_succeeded,
+            "recovery_succeeded": recovered,
+            "snapshot": snapshot,
+            "restored_pointer": old_pointer if restoration_succeeded else None,
+            "field_refs": {
+                "attempt": attempt_ref,
+                "failure": failure_ip["ref"],
+                "restoration": restoration_ip["ref"],
+                "recovery_evaluation": recovery_ip["ref"],
+            },
+        }
 
     def _fresh_process_health(self) -> dict[str, Any]:
         env = dict(os.environ)
@@ -920,6 +1367,33 @@ class RebuildSupervisor:
             result.setdefault("error", f"health process exited {completed.returncode}")
         return result
 
+    def _safe_fresh_process_health(self) -> dict[str, Any]:
+        try:
+            result = self._fresh_process_health()
+            if not result.get("healthy"):
+                result.setdefault("failure_kind", "worker_unhealthy")
+                result.setdefault("error", "fresh-process worker reported unhealthy")
+            return result
+        except subprocess.TimeoutExpired as exc:
+            return {
+                "healthy": False,
+                "failure_kind": "timeout",
+                "error": f"TimeoutExpired: fresh-process health exceeded {self.config.activation_timeout_seconds}s",
+                "exception": str(exc),
+            }
+        except OSError as exc:
+            return {
+                "healthy": False,
+                "failure_kind": "launch_error",
+                "error": f"{type(exc).__name__}: {exc}",
+            }
+        except Exception as exc:
+            return {
+                "healthy": False,
+                "failure_kind": "health_exception",
+                "error": f"{type(exc).__name__}: {exc}",
+            }
+
     def rollback(self, version: str) -> dict[str, Any]:
         source_path = self.config.component_dir / "versions" / f"{version}.py"
         if not source_path.exists():
@@ -936,10 +1410,15 @@ class RebuildSupervisor:
                 "previous_version": prior["version"],
             },
         )
-        health = self._fresh_process_health()
+        health = self._safe_fresh_process_health()
         if not health["healthy"]:
             self._atomic_write_json(self.active_pointer, prior)
             raise RuntimeError(f"rollback target failed health check: {health}")
+        try:
+            self._persist_active_release(self.read_active_pointer())
+        except Exception:
+            self._atomic_write_json(self.active_pointer, prior)
+            raise
         change = self.journal.add_ip(
             cycle_id=cycle_id,
             label="manual_rollback",
@@ -966,6 +1445,7 @@ class RebuildSupervisor:
                 accepted_version_dir=root,
                 rejected_candidate_dir=root,
                 model=self.config.model,
+                persist_active_manifest=False,
             )
             isolated = RebuildSupervisor(config, model_client=self.model_client)
             failing = root / "deliberately_failed.py"
@@ -1004,13 +1484,59 @@ class RebuildSupervisor:
         report["completed_at"] = datetime.now(timezone.utc).isoformat()
         report["persistent_field_status"] = self.journal.status()
         report_path = self.config.report_dir / f"{cycle_id}.json"
-        self._atomic_write_json(report_path, report)
         report["report_path"] = str(report_path)
+        action_id = report.get("action_id")
+        if action_id:
+            try:
+                self._record_cycle_token_measurements(report)
+                status = "failed" if report.get("decision") == "ERROR_REJECT" else "completed"
+                self.research_state.set_action_status(
+                    action_id=str(action_id),
+                    status=status,
+                    result_refs=[str(report_path)],
+                )
+                report["continuity_checkpoint"] = self.research_state.checkpoint(
+                    reason=f"After model action {action_id}: {report.get('decision', 'unknown')}"
+                )
+            except Exception as exc:
+                report["continuity_checkpoint_error"] = f"{type(exc).__name__}: {exc}"
+        self._atomic_write_json(report_path, report)
         return report
+
+    def _record_cycle_token_measurements(self, report: dict[str, Any]) -> None:
+        traces: list[tuple[str, dict[str, Any]]] = []
+        if isinstance(report.get("proposal_trace"), dict):
+            traces.append(("proposal", report["proposal_trace"]))
+        for attempt in report.get("generation_attempts", []):
+            if isinstance(attempt.get("model_trace"), dict):
+                traces.append((f"generation_attempt_{attempt.get('attempt')}", attempt["model_trace"]))
+        if not traces:
+            return
+        state = self.research_state.load()
+        measurements = state.setdefault("measurements", {})
+        usage_rows = measurements.setdefault("provider_usage", [])
+        budget_rows = measurements.setdefault("budgets", [])
+        truncation_rows = measurements.setdefault("truncations", [])
+        action_id = str(report.get("action_id", ""))
+        for call_label, trace in traces:
+            call_id = f"{action_id}:{call_label}"
+            usage = trace.get("provider_token_usage")
+            if isinstance(usage, dict) and not any(row.get("call_id") == call_id for row in usage_rows):
+                usage_rows.append({"call_id": call_id, **usage})
+            budget = trace.get("token_budget")
+            if isinstance(budget, dict) and not any(row.get("call_id") == call_id for row in budget_rows):
+                budget_rows.append({"call_id": call_id, **budget})
+                for event in budget.get("truncation_events", []):
+                    truncation_rows.append({"call_id": call_id, **event})
+        self.research_state.save(state)
 
     @staticmethod
     def _atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_suffix(path.suffix + ".tmp")
-        temporary.write_text(json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+        temporary.write_text(
+            json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
         os.replace(temporary, path)

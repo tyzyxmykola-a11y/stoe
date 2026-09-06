@@ -2,10 +2,22 @@ cd agent
 $env:PYTHONPATH = (Resolve-Path ./src).Path
 python -m unittest discover -s tests -v
 python -m stoe_agent inspect
-python -m stoe_agent cycle --model qwen3-coder:latest
+python -m stoe_agent cycle --model qwen3-coder:latest --action-id model-cycle:NEW_UNIQUE_ID
 python -m stoe_agent status
 python -m stoe_agent failure-probe
+
+# Verify the already accepted source without generation. These are replays on used cases.
+python -m stoe_agent replay --source owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py
+
+# Persist and recover bounded research state.
+python -m stoe_agent checkpoint --reason "meaningful research boundary"
+python -m stoe_agent resume --max-tokens 1800
+
+# Stable action IDs prevent accidental repetition after resume.
+python -m stoe_agent action --id research-step-001 --status running --description "bounded investigation"
+python -m stoe_agent action --id research-step-001 --status completed --result-ref ARTIFACT_REF
 
 # The cycle uses only local Ollama at http://127.0.0.1:11434.
 # Running it creates a new investigation; it does not reproduce stochastic model text byte-for-byte.
 # Preserved completed traces are in rebuild_reports/. Runtime state is intentionally ignored by Git.
+# Do not rerun cycle merely to recreate the accepted result; use replay for verification.

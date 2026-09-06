@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import json
 import shutil
+import sqlite3
+import subprocess
 import unittest
 import uuid
 from contextlib import contextmanager
 from pathlib import Path
+from unittest.mock import patch
 
 from stoe_agent.ollama import ModelIdentity, OllamaClient
 from stoe_agent.selector_loader import load_selector
@@ -85,7 +88,9 @@ class FakeModelClient:
     def identity(self):
         return ModelIdentity("fake-local-model", "f" * 64, "test")
 
-    def generate_json(self, *, system, prompt, schema, max_output_tokens, seed):
+    def generate_json(
+        self, *, system, prompt, schema, max_output_tokens, seed, context_sections=None, truncation_events=None
+    ):
         self.calls += 1
         if "hypothesis" in schema.get("properties", {}):
             payload = {
@@ -158,7 +163,9 @@ class RebuildTests(unittest.TestCase):
         cls.repo_root = Path(__file__).resolve().parents[2]
         cls.agent_root = cls.repo_root / "agent"
 
-    def make_supervisor(self, root: Path, model_client=None) -> RebuildSupervisor:
+    def make_supervisor(
+        self, root: Path, model_client=None, *, public_timeout: float = 5.0
+    ) -> RebuildSupervisor:
         component = self.agent_root / "owned_components" / "context_selector"
         config = SupervisorConfig(
             repo_root=self.repo_root,
@@ -169,6 +176,8 @@ class RebuildTests(unittest.TestCase):
             accepted_version_dir=root,
             rejected_candidate_dir=root,
             model="fake-local-model",
+            public_evaluation_timeout_seconds=public_timeout,
+            persist_active_manifest=False,
         )
         return RebuildSupervisor(config, model_client=model_client or FakeModelClient())
 
@@ -199,6 +208,8 @@ class RebuildTests(unittest.TestCase):
             "response": "",
             "thinking": '{"ok": true}',
             "context": [1, 2, 3],
+            "prompt_eval_count": 17,
+            "eval_count": 4,
             "done": True,
         }
         parsed, trace = client.generate_json(
@@ -211,6 +222,9 @@ class RebuildTests(unittest.TestCase):
         self.assertEqual({"ok": True}, parsed)
         self.assertEqual("thinking", trace["parsed_response_channel"])
         self.assertNotIn("context", trace["response"])
+        self.assertEqual(17, trace["provider_token_usage"]["prompt_tokens"])
+        self.assertEqual(21, trace["provider_token_usage"]["total_tokens"])
+        self.assertTrue(trace["token_budget"]["fits"])
 
     def test_provider_failure_is_conserved_as_safe_rejection(self):
         with self.temporary_root("stoe_provider_failure_") as raw:
@@ -220,6 +234,23 @@ class RebuildTests(unittest.TestCase):
             self.assertFalse(report["activated"])
             self.assertEqual("v1", report["active_after"]["version"])
             self.assertTrue(report["failure_field_ref"].startswith("REBUILD_"))
+
+    def test_cycle_stable_action_id_prevents_duplicate_model_calls(self):
+        with self.temporary_root("stoe_duplicate_cycle_") as raw:
+            client = FakeModelClient()
+            supervisor = self.make_supervisor(Path(raw), client)
+            supervisor.research_state.begin_action(
+                action_id="model-cycle:already-done",
+                description="Synthetic prior model cycle.",
+            )
+            supervisor.research_state.set_action_status(
+                action_id="model-cycle:already-done",
+                status="completed",
+                result_refs=["prior-report"],
+            )
+            result = supervisor.run_cycle(action_id="model-cycle:already-done")
+            self.assertEqual("SKIP_COMPLETED_ACTION", result["decision"])
+            self.assertEqual(0, client.calls)
 
     def test_real_cycle_with_fake_generator_uses_field_and_activates(self):
         with self.temporary_root("stoe_cycle_test_") as raw:
@@ -293,7 +324,7 @@ class RebuildTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "unavailable selector inputs"):
             RebuildSupervisor._validate_proposal(proposal, investigation)
 
-    def test_public_mechanism_gate_rejects_behavioral_noop_before_protected_eval(self):
+    def test_public_behavioral_gate_rejects_noop_before_protected_eval(self):
         with self.temporary_root("stoe_public_noop_") as raw:
             baseline_source = (
                 self.agent_root / "owned_components" / "context_selector" / "versions" / "v1.py"
@@ -302,8 +333,140 @@ class RebuildTests(unittest.TestCase):
             report = supervisor.run_cycle()
             self.assertEqual("REJECT_PUBLIC_MECHANISM", report["decision"])
             self.assertFalse(report["activated"])
-            self.assertEqual(0, report["public_feasibility"]["candidate_pass_count"])
+            self.assertEqual(0, report["public_behavioral_improvement"]["candidate_pass_count"])
             self.assertNotIn("evaluation", report)
+
+    def test_public_diagnostic_nontermination_is_bounded(self):
+        with self.temporary_root("stoe_public_timeout_") as raw:
+            root = Path(raw)
+            source = root / "hang.py"
+            source.write_text(
+                "def select_context(observer_state, items, max_items, max_chars):\n"
+                "    while True:\n"
+                "        pass\n",
+                encoding="utf-8",
+            )
+            supervisor = self.make_supervisor(root, public_timeout=0.2)
+            result = supervisor._evaluate_public(source)
+            self.assertEqual("rejected", result["status"])
+            self.assertEqual("timeout", result["failure_kind"])
+            self.assertEqual("v1", supervisor.read_active_pointer()["version"])
+
+    def test_public_diagnostic_child_crash_is_a_recordable_rejection(self):
+        with self.temporary_root("stoe_public_crash_") as raw:
+            root = Path(raw)
+            source = root / "crash.py"
+            source.write_text(
+                "def select_context(observer_state, items, max_items, max_chars):\n"
+                "    raise SystemExit(9)\n",
+                encoding="utf-8",
+            )
+            supervisor = self.make_supervisor(root)
+            result = supervisor._evaluate_public(source)
+            self.assertEqual("rejected", result["status"])
+            self.assertEqual("crash", result["failure_kind"])
+            self.assertEqual("v1", supervisor.read_active_pointer()["version"])
+
+    def test_public_diagnostic_malformed_child_output_is_rejected(self):
+        with self.temporary_root("stoe_public_malformed_") as raw:
+            supervisor = self.make_supervisor(Path(raw))
+            completed = subprocess.CompletedProcess([], 0, stdout="not-json", stderr="")
+            with patch("stoe_agent.supervisor.subprocess.run", return_value=completed):
+                result = supervisor._evaluate_public(supervisor.baseline_path)
+            self.assertEqual("rejected", result["status"])
+            self.assertEqual("malformed_output", result["failure_kind"])
+
+    def test_public_diagnostic_invalid_selection_is_recorded_not_raised(self):
+        with self.temporary_root("stoe_public_invalid_") as raw:
+            root = Path(raw)
+            source = root / "invalid.py"
+            source.write_text(
+                "def select_context(observer_state, items, max_items, max_chars):\n"
+                "    return ['NOT_AVAILABLE']\n",
+                encoding="utf-8",
+            )
+            supervisor = self.make_supervisor(root)
+            result = supervisor._evaluate_public(source)
+            self.assertEqual("completed", result["status"])
+            self.assertEqual(0, result["pass_count"])
+            self.assertTrue(all("unknown refs" in item["error"] for item in result["results"]))
+
+    def _assert_exception_safe_activation(self, exc: Exception, expected_kind: str):
+        with self.temporary_root(f"stoe_activation_{expected_kind}_") as raw:
+            root = Path(raw)
+            supervisor = self.make_supervisor(root)
+            candidate = root / "candidate.py"
+            candidate.write_text(IMPROVED_SOURCE, encoding="utf-8")
+            candidate_ip = supervisor.journal.add_ip(
+                cycle_id=f"activation_{expected_kind}",
+                label="candidate",
+                content="Synthetic activation-recovery fixture.",
+                kind="implementation",
+            )
+            with patch.object(
+                supervisor,
+                "_fresh_process_health",
+                side_effect=[exc, {"healthy": True, "active_version": "v1"}],
+            ):
+                result = supervisor._activate(
+                    version="candidate",
+                    source_path=candidate,
+                    cycle_id=f"activation_{expected_kind}",
+                    candidate_ref=candidate_ip["ref"],
+                )
+            self.assertFalse(result["activated"])
+            self.assertTrue(result["restoration_succeeded"])
+            self.assertTrue(result["recovery_succeeded"])
+            self.assertEqual(expected_kind, result["health"]["failure_kind"])
+            self.assertEqual("v1", supervisor.read_active_pointer()["version"])
+            self.assertEqual(
+                {"attempt", "failure", "restoration", "recovery_evaluation"},
+                set(result["field_refs"]),
+            )
+            with sqlite3.connect(supervisor.journal.db_path) as connection:
+                connected = connection.execute(
+                    "SELECT COUNT(*) FROM edges WHERE source IN (?, ?, ?, ?)",
+                    tuple(result["field_refs"].values()),
+                ).fetchone()[0]
+            self.assertGreaterEqual(connected, 3)
+
+    def test_activation_timeout_restores_and_verifies_previous_version(self):
+        self._assert_exception_safe_activation(
+            subprocess.TimeoutExpired(cmd="worker", timeout=0.1), "timeout"
+        )
+
+    def test_activation_launch_error_restores_and_verifies_previous_version(self):
+        self._assert_exception_safe_activation(OSError("synthetic launch failure"), "launch_error")
+
+    def test_activation_reports_failed_recovery_explicitly(self):
+        with self.temporary_root("stoe_activation_recovery_failure_") as raw:
+            root = Path(raw)
+            supervisor = self.make_supervisor(root)
+            candidate = root / "candidate.py"
+            candidate.write_text(IMPROVED_SOURCE, encoding="utf-8")
+            candidate_ip = supervisor.journal.add_ip(
+                cycle_id="recovery_failure",
+                label="candidate",
+                content="Synthetic recovery-failure fixture.",
+                kind="implementation",
+            )
+            with patch.object(
+                supervisor,
+                "_fresh_process_health",
+                side_effect=[
+                    subprocess.TimeoutExpired(cmd="worker", timeout=0.1),
+                    {"healthy": False, "error": "synthetic restored worker failure"},
+                ],
+            ):
+                result = supervisor._activate(
+                    version="candidate",
+                    source_path=candidate,
+                    cycle_id="recovery_failure",
+                    candidate_ref=candidate_ip["ref"],
+                )
+            self.assertFalse(result["recovery_succeeded"])
+            self.assertIn("RECOVERY FAILED", result["error"])
+            self.assertEqual("v1", supervisor.read_active_pointer()["version"])
 
     def test_deliberate_activation_failure_rolls_back_in_isolation(self):
         with self.temporary_root("stoe_rollback_test_") as raw:
@@ -327,6 +490,25 @@ class RebuildTests(unittest.TestCase):
         second = selector(observer, items, 1, 80)
         self.assertEqual(["A"], first)
         self.assertEqual(first, second)
+
+    def test_tracked_release_bootstraps_a_fresh_runtime(self):
+        with self.temporary_root("stoe_release_bootstrap_") as raw:
+            config = SupervisorConfig(
+                repo_root=self.repo_root,
+                runtime_dir=Path(raw),
+                component_dir=self.agent_root / "owned_components" / "context_selector",
+                protected_eval_dir=self.agent_root / "protected_evals",
+                report_dir=Path(raw),
+                model="fake-local-model",
+                persist_active_manifest=True,
+            )
+            supervisor = RebuildSupervisor(config, model_client=FakeModelClient())
+            release = json.loads(
+                (config.component_dir / "active_release.json").read_text(encoding="utf-8")
+            )
+            pointer = supervisor.read_active_pointer()
+            self.assertEqual(release["version"], pointer["version"])
+            self.assertEqual(release["sha256"], pointer["sha256"])
 
 
 if __name__ == "__main__":

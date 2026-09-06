@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sqlite3
 import sys
 from pathlib import Path
 
 from .selector_loader import load_selector, sha256_file, validate_selection
+from .public_worker import BoundedTextSink
 
 
 def run_health_check(*, active_pointer: Path, field_db: Path) -> dict:
@@ -14,7 +16,6 @@ def run_health_check(*, active_pointer: Path, field_db: Path) -> dict:
     source_path = Path(pointer["source_path"]).resolve()
     if sha256_file(source_path) != pointer["sha256"]:
         raise RuntimeError("active source hash does not match activation pointer")
-    selector = load_selector(source_path)
     observer = {
         "goal": "Retrieve the measured evaluation for fresh-process continuation",
         "active_constraints": ["bounded context"],
@@ -43,7 +44,11 @@ def run_health_check(*, active_pointer: Path, field_db: Path) -> dict:
             "created_order": 1,
         },
     ]
-    selected = validate_selection(selector(observer, items, 1, 180), items, 1, 180)
+    captured_stdout = BoundedTextSink()
+    captured_stderr = BoundedTextSink()
+    with contextlib.redirect_stdout(captured_stdout), contextlib.redirect_stderr(captured_stderr):
+        selector = load_selector(source_path)
+        selected = validate_selection(selector(observer, items, 1, 180), items, 1, 180)
     if not selected:
         raise RuntimeError("active selector returned no context during health check")
 
@@ -65,6 +70,8 @@ def run_health_check(*, active_pointer: Path, field_db: Path) -> dict:
         "persistent_node_count": node_count,
         "latest_persistent_ip": list(latest) if latest else None,
         "canonical_seed_sha256": json.loads(seed_row[0]),
+        "candidate_stdout": captured_stdout.result(),
+        "candidate_stderr": captured_stderr.result(),
     }
 
 

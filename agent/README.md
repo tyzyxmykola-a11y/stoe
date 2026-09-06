@@ -28,6 +28,11 @@ versioned in the worktree. The SToE memory database conserves architecture,
 component, limitation, proposal, candidate, evaluation, activation, and rollback
 IPs with typed directed relations.
 
+Generated selectors are never executed in the supervisor process during public
+diagnostics. A bounded child process converts timeout, crash, malformed output,
+and invalid selection into recorded rejection. Activation exceptions restore the
+previous pointer and verify recovery in another fresh process.
+
 ## Run one bounded cycle
 
 From `agent/`:
@@ -36,7 +41,7 @@ From `agent/`:
 $env:PYTHONPATH = (Resolve-Path ./src).Path
 python -m unittest discover -s tests -v
 python -m stoe_agent inspect
-python -m stoe_agent cycle --model qwen3-coder:latest
+python -m stoe_agent cycle --model qwen3-coder:latest --action-id model-cycle:NEW_UNIQUE_ID
 python -m stoe_agent status
 ```
 
@@ -57,15 +62,26 @@ remain usable.
 
 ## Current evidence
 
-The completed local-Ollama investigations found a real limitation: the active
-goal-only selector passed 0/3 public diagnostics, while bounded SToE navigation
-reached the required missed IP in all three. No generated successor passed the
-fixed adoption rule. The final candidate tied the active selector at 1/5 protected
-cases and failed a critical privacy case, so it was rejected and `v1` remains
-active. See [SELF_REBUILD_MILESTONE_REPORT.md](SELF_REBUILD_MILESTONE_REPORT.md)
-and the immutable JSON traces under `rebuild_reports/`.
+The first completed local-Ollama investigations found a real limitation: the
+goal-only `v1` selector passed 0/3 public diagnostics, while bounded SToE
+navigation reached the required missed IP in all three. Several generated
+successors failed safely. After a contract-feasibility correction, one new bounded
+cycle produced a partial improvement: 0/3 to 1/3 on disclosed diagnostics and
+1/5 to 3/5 on protected cases. It cleared both critical cases, preserved the
+baseline pass, and passed fresh-process activation.
 
-The successful activation path is covered only by a controlled test fixture; it
-is not presented as evidence of successful self-improvement. The isolated
-failure probe demonstrates recovery of the previous pointer and fresh-process
-health after a deliberately failed activation.
+The active source is named by `owned_components/context_selector/active_release.json`
+so a clean checkout can reconstruct the current pointer. The successor still
+fails both changed-constraint reactivation cases, so this is evidence of a
+limited self-development step—not topology superiority or general intelligence.
+See [SELF_REBUILD_MILESTONE_REPORT.md](SELF_REBUILD_MILESTONE_REPORT.md) and the
+immutable JSON traces under `rebuild_reports/`.
+
+For compact cross-session state, artifact-backed summaries, token estimates,
+provider token counts, action reconciliation, and fresh-process resume, see the
+[post-acceptance checkpoint](POST_ACCEPTANCE_CHECKPOINT.md). A stopped process is
+not described as continuously active; continuity means the next bounded session
+can recover the recorded state.
+
+The isolated failure probe separately demonstrates recovery of the previous
+pointer and fresh-process health after a deliberately failed activation.

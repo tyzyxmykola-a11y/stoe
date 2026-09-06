@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
+  "current_task": "Post-acceptance safety and research-continuity checkpoint completed without new model generation.",
+  "active_hypothesis": {
+    "claim_type": "hypothesis",
+    "claim": "A versioned compact working state plus immutable full artifacts, hash-based deltas, bounded retrieval, and action reconciliation can preserve research continuity without repeatedly loading the complete history.",
+    "source_refs": [
+      "agent/SELF_REBUILD_MILESTONE_REPORT.md",
+      "author_checkpoint_request_2026-09-06"
+    ]
+  },
+  "evidence": [
+    {
+      "claim_type": "fact",
+      "kind": "evaluation",
+      "stance": "supports",
+      "claim": "The accepted selector replay record improved protected pass count from 1/5 to 3/5 with no regression or critical failure.",
+      "source_refs": ["accepted_cycle_json"]
+    },
+    {
+      "claim_type": "fact",
+      "kind": "failure",
+      "stance": "failure",
+      "claim": "The accepted selector still failed the expired-compute and changed-license cases that require changed-constraint reactivation.",
+      "source_refs": ["accepted_cycle_json"]
+    },
+    {
+      "claim_type": "interpretation",
+      "kind": "author_correction",
+      "stance": "correction",
+      "claim": "Observed public behavioral improvement does not establish that the model's proposed invalidation mechanism caused the gain.",
+      "source_refs": ["accepted_cycle_json", "accepted_cycle_report"]
+    }
+  ],
+  "author_definitions": [
+    {
+      "claim_type": "author_definition",
+      "claim": "Continuous workflow means successive bounded sessions can resume coherent work; it does not mean the agent remains active after its process stops.",
+      "source_refs": ["author_checkpoint_request_2026-09-06"]
+    },
+    {
+      "claim_type": "author_definition",
+      "claim": "The context window is the active region of the persistent SToE field; complete artifacts remain externally recoverable.",
+      "source_refs": ["author_checkpoint_request_2026-09-06"]
+    }
+  ],
+  "corrections": [
+    {
+      "claim_type": "correction",
+      "claim": "The historical public_feasibility label denotes a disclosed behavioral comparison only, not causal evidence that the proposed mechanism operated.",
+      "source_refs": ["accepted_cycle_json", "accepted_cycle_report"]
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Retain the accepted successor under the original fixed adoption rule.",
+      "reason": "It improved protected pass count, preserved the baseline pass, cleared critical failures, and passed the original fresh-process check.",
+      "source_refs": ["accepted_cycle_json"]
+    },
+    {
+      "decision": "Do not launch another model development cycle during this checkpoint.",
+      "reason": "The author requested infrastructure repair and continuity verification without recreating or tuning the accepted result.",
+      "source_refs": ["author_checkpoint_request_2026-09-06"]
+    }
+  ],
+  "unresolved_questions": [
+    {
+      "claim_type": "question",
+      "question": "Why did the proposed invalidation mechanism fail to materialize, and what evidence or interface change would let the agent investigate that discrepancy using SToE?",
+      "source_refs": ["accepted_cycle_json", "accepted_selector_source", "accepted_cycle_report"]
+    }
+  ],
+  "versions": {
+    "active": {
+      "version": "generated_20260906T125305Z_92e7e913",
+      "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+      "source_path": "agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py"
+    },
+    "candidate": null
+  },
+  "actions": [
+    {
+      "action_id": "model-cycle:20260906T125305Z_92e7e913",
+      "description": "One bounded local-Ollama proposal, implementation, evaluation, and activation cycle.",
+      "status": "completed",
+      "started_at": "2026-09-06T12:53:05+00:00",
+      "completed_at": "2026-09-06T12:53:30.785189+00:00",
+      "result_refs": ["accepted_cycle_json", "accepted_selector_source"]
+    },
+    {
+      "action_id": "checkpoint:post-acceptance-safety-continuity",
+      "description": "Repair exception safety, isolate diagnostics, correct evidence labels, and add token-budgeted checkpoint/resume.",
+      "status": "completed",
+      "started_at": "2026-09-06T13:00:00+00:00",
+      "completed_at": "2026-09-06T17:59:41.200935+00:00",
+      "result_refs": [
+        "post_acceptance_checkpoint",
+        "evidence_correction",
+        "accepted_selector_replay",
+        "v1_selector_replay"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "ref": "accepted_selector_source",
+      "path": "agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py",
+      "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+      "bytes": 1910,
+      "summary": "Exact generated selector source adopted by the accepted cycle; outcome/kind boosts improved privacy and evaluation selection but not changed-constraint reactivation.",
+      "summary_is_exact_source": false,
+      "kind": "source",
+      "provenance": "ai_generated_then_supervisor_accepted",
+      "source_refs": ["accepted_cycle_json"]
+    },
+    {
+      "ref": "accepted_cycle_json",
+      "path": "agent/rebuild_reports/20260906T125305Z_92e7e913.json",
+      "sha256": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1",
+      "bytes": 110114,
+      "summary": "Complete original local-Ollama cycle trace, prompts, responses, field navigation, evaluation, and activation evidence. Historical labels are preserved verbatim.",
+      "summary_is_exact_source": false,
+      "kind": "full_trace",
+      "provenance": "original_supervisor_report",
+      "source_refs": []
+    },
+    {
+      "ref": "accepted_cycle_report",
+      "path": "agent/rebuild_reports/20260906T125305Z_92e7e913.md",
+      "sha256": "bac3b8740ccaac78f78ae4af814caecec0acd12a9e53e1977b2860dd61d8c8a9",
+      "bytes": 3877,
+      "summary": "Concise interpretation of the accepted cycle, explicitly preserving its partial mechanism and remaining failures.",
+      "summary_is_exact_source": false,
+      "kind": "interpretation",
+      "provenance": "post_cycle_human_readable_report",
+      "source_refs": ["accepted_cycle_json", "accepted_selector_source"]
+    }
+  ],
+  "next_executable_step": "At the next authorized research cycle, reconcile action state and investigate the recorded invalidation-mechanism discrepancy from its linked proposal, implementation, failures, correction, and accepted evidence; do not repeat model-cycle:20260906T125305Z_92e7e913.",
+  "measurements": {
+    "provider_usage": [
+      {
+        "action_id": "model-cycle:20260906T125305Z_92e7e913",
+        "provider": "local_ollama",
+        "model": "qwen3-coder:latest",
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "proposal_prompt_tokens": 5622,
+        "proposal_output_tokens": 756,
+        "generation_prompt_tokens": 2747,
+        "generation_output_tokens": 633,
+        "source": "Ollama prompt_eval_count and eval_count in accepted_cycle_json"
+      }
+    ],
+    "budgets": [],
+    "truncations": [],
+    "checkpoint_events": []
+  },
+  "updated_at": "2026-09-06T13:00:00+00:00"
+}

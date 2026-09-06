@@ -1,0 +1,1755 @@
+{
+  "acceptance": {
+    "active_pass_count": 1,
+    "candidate_pass_count": 3,
+    "critical_failures": [],
+    "decision": "ACCEPT",
+    "reason": "strict improvement with no regression or critical failure",
+    "regressions": []
+  },
+  "acceptance_rule": "candidate pass_count > active pass_count; every active-passing case remains passing; no critical failure; protected hashes unchanged; activation health check succeeds",
+  "activated": true,
+  "activation": {
+    "activated": true,
+    "health": {
+      "active_sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+      "active_version": "generated_20260906T125305Z_92e7e913",
+      "canonical_seed_sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+      "healthy": true,
+      "latest_persistent_ip": [
+        "IP_a31647e3a4684fb4",
+        "evaluation",
+        "supported"
+      ],
+      "persistent_node_count": 207,
+      "selected": [
+        "HEALTH_EVAL"
+      ]
+    },
+    "old_pointer": {
+      "activated_at": "2026-09-06T11:01:21.441077+00:00",
+      "previous_version": null,
+      "sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+      "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py",
+      "version": "v1"
+    },
+    "snapshot": {
+      "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\snapshot_20260906T125305Z_92e7e913.sqlite3",
+      "sha256": "b28a31091583e611d9fee219d248f16855326e7c624c027f21e2bce7a0b2911b"
+    }
+  },
+  "active_after": {
+    "activated_at": "2026-09-06T12:53:30.785189+00:00",
+    "previous_version": "v1",
+    "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+    "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\generated_20260906T125305Z_92e7e913.py",
+    "version": "generated_20260906T125305Z_92e7e913"
+  },
+  "active_before": {
+    "activated_at": "2026-09-06T11:01:21.441077+00:00",
+    "previous_version": null,
+    "sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+    "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py",
+    "version": "v1"
+  },
+  "candidate": {
+    "field_ref": "REBUILD_20260906T125305Z_92e7e913_candidate_implementation_acf6b1",
+    "implementation_note": "This implementation modifies the lexical overlap scoring to incorporate item.outcome and item.kind fields, prioritizing invalidated items (e.g., 'failed', 'invalidated') and constraint-relevant kinds (e.g., 'local', 'evaluation', 'storage'). The score boost is applied before sorting to ensure these items are selected over distractors with higher lexical overlap but lower relevance.",
+    "runtime_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T125305Z_92e7e913_attempt_1.py",
+    "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1"
+  },
+  "completed_at": "2026-09-06T12:53:30.893538+00:00",
+  "cycle_id": "20260906T125305Z_92e7e913",
+  "decision": "ACCEPT",
+  "decision_reason": "strict improvement with no regression or critical failure",
+  "duration_seconds": 25.566,
+  "evaluation": {
+    "active": {
+      "case_count": 5,
+      "critical_failures": [
+        "active_privacy_rejection"
+      ],
+      "pass_count": 1,
+      "passed_cases": [
+        "budget_skips_oversize"
+      ],
+      "results": [
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "expired_compute_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_COMPUTE_GENERIC"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "active_privacy_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_PRIVACY_NOTE"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "observed_replication_evidence",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_REPLICATION_CLAIM"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "budget_skips_oversize",
+          "passed": true,
+          "required_present": true,
+          "selected": [
+            "H_BUDGET_SHORT_A",
+            "H_BUDGET_SHORT_B"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "changed_license_reopens_tool",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_LICENSE_GENERIC"
+          ]
+        }
+      ],
+      "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py"
+    },
+    "candidate": {
+      "case_count": 5,
+      "critical_failures": [],
+      "pass_count": 3,
+      "passed_cases": [
+        "active_privacy_rejection",
+        "observed_replication_evidence",
+        "budget_skips_oversize"
+      ],
+      "results": [
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "expired_compute_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_COMPUTE_GENERIC"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "active_privacy_rejection",
+          "passed": true,
+          "required_present": true,
+          "selected": [
+            "H_PRIVACY_LOCAL"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "observed_replication_evidence",
+          "passed": true,
+          "required_present": true,
+          "selected": [
+            "H_REPLICATION_EVAL"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "budget_skips_oversize",
+          "passed": true,
+          "required_present": true,
+          "selected": [
+            "H_BUDGET_SHORT_A",
+            "H_BUDGET_SHORT_B"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "changed_license_reopens_tool",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_LICENSE_GENERIC"
+          ]
+        }
+      ],
+      "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T125305Z_92e7e913_attempt_1.py"
+    }
+  },
+  "evaluation_field_ref": "IP_a31647e3a4684fb4",
+  "generation_attempts": [
+    {
+      "attempt": 1,
+      "implementation_note": "This implementation modifies the lexical overlap scoring to incorporate item.outcome and item.kind fields, prioritizing invalidated items (e.g., 'failed', 'invalidated') and constraint-relevant kinds (e.g., 'local', 'evaluation', 'storage'). The score boost is applied before sorting to ensure these items are selected over distractors with higher lexical overlap but lower relevance.",
+      "model_trace": {
+        "omitted_response_fields": [
+          "context"
+        ],
+        "parsed_response_channel": "response",
+        "request": {
+          "format": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_note": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "implementation_note"
+            ],
+            "type": "object"
+          },
+          "keep_alive": "10m",
+          "model": "qwen3-coder:latest",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 3200,
+            "seed": 2701,
+            "temperature": 0,
+            "top_k": 40,
+            "top_p": 0.9
+          },
+          "prompt": "Implement the preregistered proposal as a complete Python source file. Generalize from the investigation; do not encode diagnostic ref names or case-specific phrases. The protected acceptance cases are unavailable.\n\nPUBLIC CONTRACT:\n{\n  \"signature\": \"select_context(observer_state, items, max_items, max_chars) -> list[str]\",\n  \"item_fields\": [\n    \"ref\",\n    \"content\",\n    \"origin\",\n    \"kind\",\n    \"outcome\",\n    \"failure_condition\",\n    \"created_order\"\n  ],\n  \"observer_fields\": [\n    \"goal\",\n    \"active_constraints\",\n    \"changed_constraints\",\n    \"evidence\",\n    \"open_questions\"\n  ],\n  \"invariants\": [\n    \"deterministic\",\n    \"return only unique available refs\",\n    \"respect max_items and sum of selected content lengths <= max_chars\",\n    \"side-effect free\",\n    \"stdlib imports limited to re, math, collections, typing\",\n    \"do not reward every failure; relate failure conditions to active or changed constraints\",\n    \"do not assume origin alone proves relevance\",\n    \"navigator paths, edge types, relation labels, and scores are not selector inputs\",\n    \"failure_condition is natural-language rejection-basis text, never an edge-label container\"\n  ]\n}\n\nPROPOSAL:\n{\n  \"hypothesis\": \"The selector's lexical overlap scoring fails to prioritize items flagged as invalidated or containing state changes, causing it to miss required refs like DIAG_STORAGE_FAILED and DIAG_OFFLINE_LOCAL.\",\n  \"observed_evidence\": [\n    \"DIAG_STORAGE_FAILED was missed in raised_storage_ceiling case despite being selected by navigator\",\n    \"DIAG_OFFLINE_LOCAL was missed in unchanged_offline_constraint case despite being selected by navigator\",\n    \"DIAG_EVIDENCE_EVAL was missed in measured_evidence case despite being selected by navigator\"\n  ],\n  \"diagnostic_findings\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"observed_selection\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"missed_required\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"source_mechanism\": \"select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight invalidated items higher than distractors\",\n      \"relation_to_hypothesis\": \"The selector's lexical overlap score does not distinguish between invalidated and valid items, causing it to prefer lexical matches over structural relevance\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"observed_selection\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"missed_required\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"source_mechanism\": \"select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'local' content higher than generic\",\n      \"relation_to_hypothesis\": \"The selector's lexical overlap score does not distinguish between local and generic items, causing it to prefer lexical matches over constraint-relevant content\"\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"observed_selection\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"missed_required\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"source_mechanism\": \"select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'evaluation' content higher than ideas\",\n      \"relation_to_hypothesis\": \"The selector's lexical overlap score does not distinguish between evaluation and idea items, causing it to prefer lexical matches over evidence-relevant content\"\n    }\n  ],\n  \"source_diagnosis\": \"The select_context function in the active source does not use item.outcome or item.kind fields to weight relevance during lexical overlap scoring.\",\n  \"proposed_change\": \"Modify select_context to incorporate item.outcome and item.kind into the lexical overlap score calculation, prioritizing items with 'invalidated', 'supported', or constraint-relevant kinds.\",\n  \"implementation_inputs\": [\n    \"observer_state.goal\",\n    \"observer_state.active_constraints\",\n    \"observer_state.changed_constraints\",\n    \"observer_state.evidence\",\n    \"observer_state.open_questions\",\n    \"item.ref\",\n    \"item.content\",\n    \"item.origin\",\n    \"item.kind\",\n    \"item.outcome\",\n    \"item.failure_condition\",\n    \"item.created_order\",\n    \"max_items\",\n    \"max_chars\"\n  ],\n  \"input_feasibility\": \"All required fields are present in the public input schema and accessible from the active source.\",\n  \"expected_benefit\": \"The selector will prioritize items flagged as invalidated or containing state changes, improving selection accuracy for constraint-change cases.\",\n  \"risks\": [\n    \"Modifying lexical overlap scoring may reduce performance if not optimized\",\n    \"Adding outcome/kind checks may introduce new failure modes in edge cases\"\n  ]\n}\n\nOBSERVED DIAGNOSTIC SUMMARY:\n[\n  {\n    \"case\": \"raised_storage_ceiling\",\n    \"observer\": {\n      \"goal\": \"Choose the research-agent architecture now that the storage ceiling changed\",\n      \"active_constraints\": [\n        \"preserve rejected reasoning\",\n        \"keep active context bounded\"\n      ],\n      \"changed_constraints\": [\n        \"storage ceiling increased from one gigabyte to one hundred gigabytes\"\n      ],\n      \"evidence\": [\n        \"cold history can remain outside the active prompt\"\n      ],\n      \"open_questions\": [\n        \"Which formerly rejected design is newly feasible?\"\n      ]\n    },\n    \"available_refs\": [\n      \"DIAG_STORAGE_FAILED\",\n      \"DIAG_STORAGE_DISTRACTOR\",\n      \"DIAG_STORAGE_EVAL\"\n    ],\n    \"required_refs\": [\n      \"DIAG_STORAGE_FAILED\"\n    ],\n    \"forbidden_refs\": [\n      \"DIAG_STORAGE_DISTRACTOR\"\n    ],\n    \"selector_selected\": [\n      \"DIAG_STORAGE_DISTRACTOR\"\n    ],\n    \"selector_passed\": false,\n    \"missed_refs\": [\n      \"DIAG_STORAGE_FAILED\"\n    ],\n    \"navigator_selected_available_refs\": [\n      \"DIAG_STORAGE_FAILED\"\n    ],\n    \"navigator_relevant_trace\": [\n      {\n        \"external_ref\": \"DIAG_STORAGE_DISTRACTOR\",\n        \"selected\": false,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.26352313834736496,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.14016239222340351\n        }\n      },\n      {\n        \"external_ref\": \"DIAG_STORAGE_FAILED\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"contains_change\",\n          \"invalidates\",\n          \"rejected_by\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"scores\": {\n          \"structural\": 0.7055630454835736,\n          \"goal\": 0.26352313834736496,\n          \"state_change\": 1.0,\n          \"failure\": 1.0,\n          \"final\": 0.6909192321229981\n        }\n      }\n    ]\n  },\n  {\n    \"case\": \"unchanged_offline_constraint\",\n    \"observer\": {\n      \"goal\": \"Choose a semantic evidence index for the research project\",\n      \"active_constraints\": [\n        \"network access remains unavailable\"\n      ],\n      \"changed_constraints\": [],\n      \"evidence\": [\n        \"local embedding inference is installed\"\n      ],\n      \"open_questions\": [\n        \"Which currently feasible index should be used?\"\n      ]\n    },\n    \"available_refs\": [\n      \"DIAG_OFFLINE_FAILED\",\n      \"DIAG_OFFLINE_LOCAL\",\n      \"DIAG_OFFLINE_GENERIC\"\n    ],\n    \"required_refs\": [\n      \"DIAG_OFFLINE_LOCAL\"\n    ],\n    \"forbidden_refs\": [\n      \"DIAG_OFFLINE_FAILED\"\n    ],\n    \"selector_selected\": [\n      \"DIAG_OFFLINE_GENERIC\"\n    ],\n    \"selector_passed\": false,\n    \"missed_refs\": [\n      \"DIAG_OFFLINE_LOCAL\"\n    ],\n    \"navigator_selected_available_refs\": [\n      \"DIAG_OFFLINE_LOCAL\",\n      \"DIAG_OFFLINE_GENERIC\"\n    ],\n    \"navigator_relevant_trace\": []\n  },\n  {\n    \"case\": \"measured_evidence\",\n    \"observer\": {\n      \"goal\": \"Decide which retrieval strategy has measured recovery evidence\",\n      \"active_constraints\": [\n        \"prefer observed matched-condition evidence over an untested proposal\"\n      ],\n      \"changed_constraints\": [],\n      \"evidence\": [\n        \"evaluation results are available\"\n      ],\n      \"open_questions\": [\n        \"Which IP reports an observed comparison?\"\n      ]\n    },\n    \"available_refs\": [\n      \"DIAG_EVIDENCE_EVAL\",\n      \"DIAG_EVIDENCE_IDEA\",\n      \"DIAG_EVIDENCE_OLD\"\n    ],\n    \"required_refs\": [\n      \"DIAG_EVIDENCE_EVAL\"\n    ],\n    \"forbidden_refs\": [],\n    \"selector_selected\": [\n      \"DIAG_EVIDENCE_IDEA\"\n    ],\n    \"selector_passed\": false,\n    \"missed_refs\": [\n      \"DIAG_EVIDENCE_EVAL\"\n    ],\n    \"navigator_selected_available_refs\": [\n      \"DIAG_EVIDENCE_EVAL\",\n      \"DIAG_EVIDENCE_IDEA\"\n    ],\n    \"navigator_relevant_trace\": [\n      {\n        \"external_ref\": \"DIAG_EVIDENCE_EVAL\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.2839809171235324,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.1556107482516321\n        }\n      },\n      {\n        \"external_ref\": \"DIAG_EVIDENCE_IDEA\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.27076518053694115,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.13455913597873156\n        }\n      }\n    ]\n  }\n]\n\nACTIVE SOURCE:\n\"\"\"Initial lexical research-context selector.\n\nThis intentionally small implementation is the active version at the beginning\nof the first rebuild cycle. Its limitation is measured before a successor is\nrequested.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport re\n\n\ndef _tokens(text: str) -> set[str]:\n    return {token for token in re.findall(r\"[a-z0-9]+\", text.lower()) if len(token) > 2}\n\n\ndef select_context(\n    observer_state: dict,\n    items: list[dict],\n    max_items: int,\n    max_chars: int,\n) -> list[str]:\n    \"\"\"Return refs ranked by lexical overlap with the current goal.\"\"\"\n    query = _tokens(str(observer_state.get(\"goal\", \"\")))\n    ranked: list[tuple[float, int, str, dict]] = []\n    for item in items:\n        content_tokens = _tokens(str(item.get(\"content\", \"\")))\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\n        ranked.append((overlap, int(item.get(\"created_order\", 0)), str(item[\"ref\"]), item))\n\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\n    selected: list[str] = []\n    used_chars = 0\n    for _score, _order, ref, item in ranked:\n        size = len(str(item.get(\"content\", \"\")))\n        if len(selected) >= max_items:\n            break\n        if used_chars + size > max_chars:\n            continue\n        selected.append(ref)\n        used_chars += size\n    return selected\n",
+          "stream": false,
+          "system": "Generate one deterministic, side-effect-free Python component. Return JSON only. Do not access files, network, processes, environment, or protected evaluation."
+        },
+        "response": {
+          "created_at": "2026-09-06T12:53:30.5439821Z",
+          "done": true,
+          "done_reason": "stop",
+          "eval_count": 633,
+          "eval_duration": 7240898000,
+          "load_duration": 2072600,
+          "model": "qwen3-coder:latest",
+          "prompt_eval_cached_count": 3,
+          "prompt_eval_count": 2747,
+          "prompt_eval_duration": 998931000,
+          "response": "{\n  \"source\": \"import re\\n\\ndef _tokens(text: str) -> set[str]:\\n    return {token for token in re.findall(r\\\"[a-z0-9]+\\\", text.lower()) if len(token) > 2}\\n\\ndef select_context(\\n    observer_state: dict,\\n    items: list[dict],\\n    max_items: int,\\n    max_chars: int,\\n) -> list[str]:\\n    \\\"\\\"\\\"Return refs ranked by lexical overlap with the current goal, prioritizing invalidated or constraint-relevant items.\\\"\\\"\\\"\\n    query = _tokens(str(observer_state.get(\\\"goal\\\", \\\"\\\")))\\n    ranked: list[tuple[float, int, str, dict]] = []\\n    for item in items:\\n        content_tokens = _tokens(str(item.get(\\\"content\\\", \\\"\\\")))\\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\\n        \\n        # Boost score for invalidated or constraint-relevant items\\n        outcome = str(item.get(\\\"outcome\\\", \\\"\\\"))\\n        kind = str(item.get(\\\"kind\\\", \\\"\\\"))\\n        \\n        # Prioritize invalidated items (e.g., 'failed', 'invalidated')\\n        if 'failed' in outcome.lower() or 'invalidated' in outcome.lower():\\n            overlap += 0.3\\n        elif 'supported' in outcome.lower():\\n            overlap += 0.2\\n        \\n        # Prioritize items with constraint-relevant kinds\\n        if 'local' in kind.lower():\\n            overlap += 0.25\\n        elif 'evaluation' in kind.lower() or 'eval' in kind.lower():\\n            overlap += 0.25\\n        elif 'storage' in kind.lower() or 'memory' in kind.lower():\\n            overlap += 0.25\\n        \\n        ranked.append((overlap, int(item.get(\\\"created_order\\\", 0)), str(item[\\\"ref\\\"]), item))\\n\\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\\n    selected: list[str] = []\\n    used_chars = 0\\n    for _score, _order, ref, item in ranked:\\n        size = len(str(item.get(\\\"content\\\", \\\"\\\")))\\n        if len(selected) >= max_items:\\n            break\\n        if used_chars + size > max_chars:\\n            continue\\n        selected.append(ref)\\n        used_chars += size\\n    return selected\",\n  \"implementation_note\": \"This implementation modifies the lexical overlap scoring to incorporate item.outcome and item.kind fields, prioritizing invalidated items (e.g., 'failed', 'invalidated') and constraint-relevant kinds (e.g., 'local', 'evaluation', 'storage'). The score boost is applied before sorting to ensure these items are selected over distractors with higher lexical overlap but lower relevance.\"\n}",
+          "total_duration": 8345708500
+        }
+      },
+      "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T125305Z_92e7e913_attempt_1.py",
+      "source_sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+      "static_gate_errors": [],
+      "static_gate_passed": true
+    }
+  ],
+  "infrastructure": {
+    "agent_owned": [
+      "owned_components/context_selector/versions/*.py"
+    ],
+    "external_dependencies": [
+      "Python runtime",
+      "local Ollama service"
+    ],
+    "trusted_supervisor": [
+      "agent/src/stoe_agent/supervisor.py",
+      "agent/src/stoe_agent/static_gate.py",
+      "agent/protected_evals"
+    ],
+    "underlying_model": "External model weights are selected but not modified by this cycle."
+  },
+  "investigation": {
+    "bounded_prior_context": [
+      {
+        "content": "A one gigabyte storage ceiling made partitioned history infeasible.",
+        "kind": "constraint",
+        "origin": "runtime_reasoning",
+        "outcome": "invalidated",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_9aef078942494582",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_ac2c3233e7a34ddc",
+            "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "semantic": "find_later_state_evolved_from",
+            "to": "STATE_081b6b8f048d405b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_2c835cf73e4e484b",
+            "from": "STATE_081b6b8f048d405b",
+            "semantic": "contains_change",
+            "to": "CHANGE_06b46d69b4894f71",
+            "type": "contains_change",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_1f748049c1d94074",
+            "from": "CHANGE_06b46d69b4894f71",
+            "semantic": "invalidates",
+            "to": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_594a2f",
+            "type": "invalidates",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5333; goal=0.0401; change=0.5500; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.0000; stale=0.0000; final=0.3169",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_594a2f"
+      },
+      {
+        "content": "In measured_evidence, the selector missed required IPs ['DIAG_EVIDENCE_EVAL'] and returned ['DIAG_EVIDENCE_IDEA']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "kind": "observation",
+        "origin": "failure_history",
+        "outcome": "failed",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_09772d51f6824c13",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "depends_on",
+            "to": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06",
+            "type": "depends_on",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.7800; goal=0.2457; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.0680; stale=0.0000; final=0.2751",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06"
+      },
+      {
+        "content": "storage ceiling increased from one gigabyte to one hundred gigabytes",
+        "kind": "state_change",
+        "origin": "state_change",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_9aef078942494582",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_ac2c3233e7a34ddc",
+            "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "semantic": "find_later_state_evolved_from",
+            "to": "STATE_081b6b8f048d405b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_2c835cf73e4e484b",
+            "from": "STATE_081b6b8f048d405b",
+            "semantic": "contains_change",
+            "to": "CHANGE_06b46d69b4894f71",
+            "type": "contains_change",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5865; goal=0.0803; change=0.5500; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.4444; stale=0.0000; final=0.2542",
+        "ref": "CHANGE_06b46d69b4894f71"
+      },
+      {
+        "content": "Active research-context selector v1 at C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py; selects bounded prior IP refs for an observer state.",
+        "kind": "component",
+        "origin": "runtime_reasoning",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_9aef078942494582",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "type": "evolved_from",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.8800; goal=0.1341; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0379; stale=0.0000; final=0.2363",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec"
+      },
+      {
+        "content": "In raised_storage_ceiling, the selector missed required IPs ['DIAG_STORAGE_FAILED'] and returned ['DIAG_STORAGE_DISTRACTOR']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "kind": "observation",
+        "origin": "failure_history",
+        "outcome": "failed",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_1cf860b1e5564f52",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "depends_on",
+            "to": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0",
+            "type": "depends_on",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.7800; goal=0.2408; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.8165; stale=0.0000; final=0.1995",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0"
+      },
+      {
+        "content": "In unchanged_offline_constraint, the selector missed required IPs ['DIAG_OFFLINE_LOCAL'] and returned ['DIAG_OFFLINE_GENERIC']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "kind": "observation",
+        "origin": "failure_history",
+        "outcome": "failed",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_bbb43146200e41fa",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "depends_on",
+            "to": "REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047",
+            "type": "depends_on",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.7800; goal=0.2408; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.8165; stale=0.0000; final=0.1995",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047"
+      },
+      {
+        "content": "Information Function. Category: Catalyst. Description: Relation between IPs producing IPs; is itself an IP. Expression: F(IP₁...IPₙ) → IP*, F∈IP",
+        "kind": "stoe_core_ip",
+        "origin": "canonical_seed",
+        "outcome": "unknown",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_9aef078942494582",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_7188bf20dddc4496",
+            "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "semantic": "instantiates",
+            "to": "SEED_3300f93f95154bdf",
+            "type": "instantiates",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.6857; goal=0.0622; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0959; stale=0.0000; final=0.1587",
+        "ref": "SEED_3300f93f95154bdf"
+      },
+      {
+        "content": "Matched-condition evaluation measured recovery on six constraint-change probes.",
+        "kind": "evaluation",
+        "origin": "evaluation",
+        "outcome": "supported",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_9aef078942494582",
+            "from": "STATE_073621d7f9564240",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_ac7437e3fb4c4b1b",
+            "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+            "semantic": "reverse_available_to",
+            "to": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18",
+            "type": "available_to",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5021; goal=0.1523; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0645; stale=0.0000; final=0.1294",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18"
+      }
+    ],
+    "case_count": 3,
+    "diagnostics": [
+      {
+        "available_refs": [
+          "DIAG_STORAGE_FAILED",
+          "DIAG_STORAGE_DISTRACTOR",
+          "DIAG_STORAGE_EVAL"
+        ],
+        "case": "raised_storage_ceiling",
+        "forbidden_refs": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "missed_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_STORAGE_DISTRACTOR",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_ac2c3233e7a34ddc",
+                "from": "STATE_081b6b8f048d405b",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_a65feafc6854401f",
+                "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_DISTRACTOR_0c8a9a",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1238; stale=0.0000; final=0.1402",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.14016239222340351,
+              "goal": 0.26352313834736496,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_STORAGE_EVAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_ac2c3233e7a34ddc",
+                "from": "STATE_081b6b8f048d405b",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_c52739fe3fdf4b62",
+                "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_EVAL_575581",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.0456; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1925; stale=0.0000; final=0.1006",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.10061513367892928,
+              "goal": 0.04564354645876384,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "contains_change",
+              "invalidates",
+              "rejected_by"
+            ],
+            "external_ref": "DIAG_STORAGE_FAILED",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_2c835cf73e4e484b",
+                "from": "STATE_081b6b8f048d405b",
+                "semantic": "contains_change",
+                "to": "CHANGE_06b46d69b4894f71",
+                "type": "contains_change",
+                "weight": 1.0
+              },
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_1f748049c1d94074",
+                "from": "CHANGE_06b46d69b4894f71",
+                "semantic": "invalidates",
+                "to": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_594a2f",
+                "type": "invalidates",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_4ff1a6f4fba64736",
+                "from": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_594a2f",
+                "semantic": "find_hypotheses_rejected_because_of",
+                "to": "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_74198e",
+                "type": "rejected_by",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.7056; goal=0.2635; change=1.0000; provenance=1.0000; failure=1.0000; distance=0.5000; redundancy=0.0000; stale=0.0000; final=0.6909",
+            "scores": {
+              "failure": 1.0,
+              "final": 0.6909192321229981,
+              "goal": 0.26352313834736496,
+              "state_change": 1.0,
+              "structural": 0.7055630454835736
+            },
+            "selected": true
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_ea0b238fb3564457",
+        "navigator_selected_available_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "observer": {
+          "active_constraints": [
+            "preserve rejected reasoning",
+            "keep active context bounded"
+          ],
+          "changed_constraints": [
+            "storage ceiling increased from one gigabyte to one hundred gigabytes"
+          ],
+          "evidence": [
+            "cold history can remain outside the active prompt"
+          ],
+          "goal": "Choose the research-agent architecture now that the storage ceiling changed",
+          "open_questions": [
+            "Which formerly rejected design is newly feasible?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ]
+      },
+      {
+        "available_refs": [
+          "DIAG_OFFLINE_FAILED",
+          "DIAG_OFFLINE_LOCAL",
+          "DIAG_OFFLINE_GENERIC"
+        ],
+        "case": "unchanged_offline_constraint",
+        "forbidden_refs": [
+          "DIAG_OFFLINE_FAILED"
+        ],
+        "missed_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "navigator_candidate_trace": [],
+        "navigator_run_id": "RETRIEVAL_f7f0902a80414a4d",
+        "navigator_selected_available_refs": [
+          "DIAG_OFFLINE_LOCAL",
+          "DIAG_OFFLINE_GENERIC"
+        ],
+        "observer": {
+          "active_constraints": [
+            "network access remains unavailable"
+          ],
+          "changed_constraints": [],
+          "evidence": [
+            "local embedding inference is installed"
+          ],
+          "goal": "Choose a semantic evidence index for the research project",
+          "open_questions": [
+            "Which currently feasible index should be used?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_OFFLINE_GENERIC"
+        ]
+      },
+      {
+        "available_refs": [
+          "DIAG_EVIDENCE_EVAL",
+          "DIAG_EVIDENCE_IDEA",
+          "DIAG_EVIDENCE_OLD"
+        ],
+        "case": "measured_evidence",
+        "forbidden_refs": [],
+        "missed_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_EVAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_77cec4dfcdfd4659",
+                "from": "STATE_fab177678b2a4aa2",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ac7437e3fb4c4b1b",
+                "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2840; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1556",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.1556107482516321,
+              "goal": 0.2839809171235324,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_IDEA",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_77cec4dfcdfd4659",
+                "from": "STATE_fab177678b2a4aa2",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_6e471e5d6f1c40d3",
+                "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_IDEA_bfe398",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2708; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1907; stale=0.0000; final=0.1346",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.13455913597873156,
+              "goal": 0.27076518053694115,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_OLD",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_77cec4dfcdfd4659",
+                "from": "STATE_fab177678b2a4aa2",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_981d15893c2d408d",
+                "from": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_OLD_e685e7",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.0635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0913; stale=0.0000; final=0.1134",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.11340991091636375,
+              "goal": 0.06350006350009525,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_b677d02b4aef43bf",
+        "navigator_selected_available_refs": [
+          "DIAG_EVIDENCE_EVAL",
+          "DIAG_EVIDENCE_IDEA"
+        ],
+        "observer": {
+          "active_constraints": [
+            "prefer observed matched-condition evidence over an untested proposal"
+          ],
+          "changed_constraints": [],
+          "evidence": [
+            "evaluation results are available"
+          ],
+          "goal": "Decide which retrieval strategy has measured recovery evidence",
+          "open_questions": [
+            "Which IP reports an observed comparison?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_EVIDENCE_IDEA"
+        ]
+      }
+    ],
+    "known_structure": "The source, observer fields, available candidates, actual outputs, typed paths, and failure conditions are observed.",
+    "observed_failure_refs": [
+      "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0",
+      "REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047",
+      "REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06"
+    ],
+    "pass_count": 0,
+    "synthesis_navigation_run_id": "RETRIEVAL_ef7be622ae404836",
+    "synthesis_observer_state_ref": "STATE_073621d7f9564240",
+    "unknown_structure": "The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable."
+  },
+  "model": {
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "name": "qwen3-coder:latest",
+    "ollama_version": "0.33.3"
+  },
+  "persistent_field_status": {
+    "canonical_seed": {
+      "categories": {
+        "Catalyst": 5,
+        "Fertilizer": 3,
+        "Hidden Diamond": 3,
+        "Mirror": 3,
+        "Seed": 4,
+        "Star": 18
+      },
+      "core_ips": 36,
+      "expressions": 36,
+      "nonempty_descriptions": 32,
+      "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+      "typed_relations": 113
+    },
+    "database": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\research_field.sqlite3",
+    "edge_count": 447,
+    "fold_unfold_lossless": true,
+    "last_observer_state": {
+      "created_at": "2026-09-06T12:53:05.688688+00:00",
+      "ref": "STATE_073621d7f9564240",
+      "session_id": "stoe-self-rebuild-v1"
+    },
+    "node_count": 208,
+    "nodes_by_origin": {
+      "canonical_seed": 37,
+      "current_observer_state": 24,
+      "evaluation": 40,
+      "failure_history": 33,
+      "runtime_reasoning": 67,
+      "state_change": 7
+    },
+    "privacy": "local_only",
+    "recent": [
+      {
+        "content": "Activated generated_20260906T125305Z_92e7e913 after protected evaluation and fresh-process continuation check.",
+        "created_order": -293,
+        "failure_condition": "",
+        "kind": "state_change",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "health": {
+            "active_sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+            "active_version": "generated_20260906T125305Z_92e7e913",
+            "canonical_seed_sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+            "healthy": true,
+            "latest_persistent_ip": [
+              "IP_a31647e3a4684fb4",
+              "evaluation",
+              "supported"
+            ],
+            "persistent_node_count": 207,
+            "selected": [
+              "HEALTH_EVAL"
+            ]
+          },
+          "new_pointer": {
+            "activated_at": "2026-09-06T12:53:30.785189+00:00",
+            "previous_version": "v1",
+            "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+            "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\generated_20260906T125305Z_92e7e913.py",
+            "version": "generated_20260906T125305Z_92e7e913"
+          },
+          "old_pointer": {
+            "activated_at": "2026-09-06T11:01:21.441077+00:00",
+            "previous_version": null,
+            "sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+            "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py",
+            "version": "v1"
+          },
+          "snapshot": {
+            "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\snapshot_20260906T125305Z_92e7e913.sqlite3",
+            "sha256": "b28a31091583e611d9fee219d248f16855326e7c624c027f21e2bce7a0b2911b"
+          }
+        },
+        "origin": "state_change",
+        "outcome": "active",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_successor_activation_d697b4",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Protected matched evaluation: active 1/5; candidate 3/5; decision ACCEPT.",
+        "created_order": -294,
+        "failure_condition": "",
+        "kind": "evaluation",
+        "metadata": {
+          "acceptance": {
+            "active_pass_count": 1,
+            "candidate_pass_count": 3,
+            "critical_failures": [],
+            "decision": "ACCEPT",
+            "reason": "strict improvement with no regression or critical failure",
+            "regressions": []
+          },
+          "baseline": {
+            "case_count": 5,
+            "critical_failures": [
+              "active_privacy_rejection"
+            ],
+            "pass_count": 1,
+            "passed_cases": [
+              "budget_skips_oversize"
+            ],
+            "results": [
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "expired_compute_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_COMPUTE_GENERIC"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "active_privacy_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_PRIVACY_NOTE"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "observed_replication_evidence",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_REPLICATION_CLAIM"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "budget_skips_oversize",
+                "passed": true,
+                "required_present": true,
+                "selected": [
+                  "H_BUDGET_SHORT_A",
+                  "H_BUDGET_SHORT_B"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "changed_license_reopens_tool",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_LICENSE_GENERIC"
+                ]
+              }
+            ],
+            "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py"
+          },
+          "candidate": {
+            "case_count": 5,
+            "critical_failures": [],
+            "pass_count": 3,
+            "passed_cases": [
+              "active_privacy_rejection",
+              "observed_replication_evidence",
+              "budget_skips_oversize"
+            ],
+            "results": [
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "expired_compute_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_COMPUTE_GENERIC"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "active_privacy_rejection",
+                "passed": true,
+                "required_present": true,
+                "selected": [
+                  "H_PRIVACY_LOCAL"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "observed_replication_evidence",
+                "passed": true,
+                "required_present": true,
+                "selected": [
+                  "H_REPLICATION_EVAL"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "budget_skips_oversize",
+                "passed": true,
+                "required_present": true,
+                "selected": [
+                  "H_BUDGET_SHORT_A",
+                  "H_BUDGET_SHORT_B"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "changed_license_reopens_tool",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_LICENSE_GENERIC"
+                ]
+              }
+            ],
+            "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T125305Z_92e7e913_attempt_1.py"
+          },
+          "protected_hashes": {
+            "cases.json": "76512fc8fda0c0ae31e47c9ba0d8fb6e2555c27f531b0700221673b506444138",
+            "evaluator.py": "6be6246238aedb0c37a72be6e2623772ba6ff1b67415fa46ab3ab4272e3fec06"
+          }
+        },
+        "origin": "evaluation",
+        "outcome": "supported",
+        "ref": "IP_a31647e3a4684fb4",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Disclosed mechanism check: active 0/3; candidate 1/3; decision PROCEED.",
+        "created_order": -295,
+        "failure_condition": "",
+        "kind": "evaluation",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "public_feasibility": {
+            "active_pass_count": 0,
+            "candidate_pass_count": 1,
+            "candidate_results": [
+              {
+                "case": "raised_storage_ceiling",
+                "deterministic": true,
+                "error": "",
+                "forbidden_refs": [
+                  "DIAG_STORAGE_DISTRACTOR"
+                ],
+                "passed": false,
+                "required_refs": [
+                  "DIAG_STORAGE_FAILED"
+                ],
+                "selected": [
+                  "DIAG_STORAGE_EVAL"
+                ]
+              },
+              {
+                "case": "unchanged_offline_constraint",
+                "deterministic": true,
+                "error": "",
+                "forbidden_refs": [
+                  "DIAG_OFFLINE_FAILED"
+                ],
+                "passed": false,
+                "required_refs": [
+                  "DIAG_OFFLINE_LOCAL"
+                ],
+                "selected": [
+                  "DIAG_OFFLINE_GENERIC"
+                ]
+              },
+              {
+                "case": "measured_evidence",
+                "deterministic": true,
+                "error": "",
+                "forbidden_refs": [],
+                "passed": true,
+                "required_refs": [
+                  "DIAG_EVIDENCE_EVAL"
+                ],
+                "selected": [
+                  "DIAG_EVIDENCE_EVAL"
+                ]
+              }
+            ],
+            "decision": "PROCEED",
+            "reason": "candidate demonstrated the proposed mechanism on disclosed diagnostics; protected evaluation remains decisive",
+            "regressions": [],
+            "role": "disclosed mechanism check only; never sufficient for activation"
+          }
+        },
+        "origin": "evaluation",
+        "outcome": "supported",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_candidate_public_feasibility_10278f",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Generated selector candidate d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1: This implementation modifies the lexical overlap scoring to incorporate item.outcome and item.kind fields, prioritizing invalidated items (e.g., 'failed', 'invalidated') and constraint-relevant kinds (e.g., 'local', 'evaluation', 'storage'). The score boost is applied before sorting to ensure these items are selected over distractors with higher lexical overlap but lower relevance.",
+        "created_order": -296,
+        "failure_condition": "",
+        "kind": "implementation",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "provenance_type": "ai_generated_source",
+          "runtime_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T125305Z_92e7e913_attempt_1.py",
+          "source_sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_candidate_implementation_acf6b1",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "The selector's lexical overlap scoring fails to prioritize items flagged as invalidated or containing state changes, causing it to miss required refs like DIAG_STORAGE_FAILED and DIAG_OFFLINE_LOCAL.",
+        "created_order": -297,
+        "failure_condition": "",
+        "kind": "hypothesis",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "model": {
+            "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+            "name": "qwen3-coder:latest",
+            "ollama_version": "0.33.3"
+          },
+          "proposal": {
+            "diagnostic_findings": [
+              {
+                "case": "raised_storage_ceiling",
+                "missed_required": [
+                  "DIAG_STORAGE_FAILED"
+                ],
+                "observed_selection": [
+                  "DIAG_STORAGE_DISTRACTOR"
+                ],
+                "relation_to_hypothesis": "The selector's lexical overlap score does not distinguish between invalidated and valid items, causing it to prefer lexical matches over structural relevance",
+                "source_mechanism": "select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight invalidated items higher than distractors"
+              },
+              {
+                "case": "unchanged_offline_constraint",
+                "missed_required": [
+                  "DIAG_OFFLINE_LOCAL"
+                ],
+                "observed_selection": [
+                  "DIAG_OFFLINE_GENERIC"
+                ],
+                "relation_to_hypothesis": "The selector's lexical overlap score does not distinguish between local and generic items, causing it to prefer lexical matches over constraint-relevant content",
+                "source_mechanism": "select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'local' content higher than generic"
+              },
+              {
+                "case": "measured_evidence",
+                "missed_required": [
+                  "DIAG_EVIDENCE_EVAL"
+                ],
+                "observed_selection": [
+                  "DIAG_EVIDENCE_IDEA"
+                ],
+                "relation_to_hypothesis": "The selector's lexical overlap score does not distinguish between evaluation and idea items, causing it to prefer lexical matches over evidence-relevant content",
+                "source_mechanism": "select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'evaluation' content higher than ideas"
+              }
+            ],
+            "expected_benefit": "The selector will prioritize items flagged as invalidated or containing state changes, improving selection accuracy for constraint-change cases.",
+            "hypothesis": "The selector's lexical overlap scoring fails to prioritize items flagged as invalidated or containing state changes, causing it to miss required refs like DIAG_STORAGE_FAILED and DIAG_OFFLINE_LOCAL.",
+            "implementation_inputs": [
+              "observer_state.goal",
+              "observer_state.active_constraints",
+              "observer_state.changed_constraints",
+              "observer_state.evidence",
+              "observer_state.open_questions",
+              "item.ref",
+              "item.content",
+              "item.origin",
+              "item.kind",
+              "item.outcome",
+              "item.failure_condition",
+              "item.created_order",
+              "max_items",
+              "max_chars"
+            ],
+            "input_feasibility": "All required fields are present in the public input schema and accessible from the active source.",
+            "observed_evidence": [
+              "DIAG_STORAGE_FAILED was missed in raised_storage_ceiling case despite being selected by navigator",
+              "DIAG_OFFLINE_LOCAL was missed in unchanged_offline_constraint case despite being selected by navigator",
+              "DIAG_EVIDENCE_EVAL was missed in measured_evidence case despite being selected by navigator"
+            ],
+            "proposed_change": "Modify select_context to incorporate item.outcome and item.kind into the lexical overlap score calculation, prioritizing items with 'invalidated', 'supported', or constraint-relevant kinds.",
+            "risks": [
+              "Modifying lexical overlap scoring may reduce performance if not optimized",
+              "Adding outcome/kind checks may introduce new failure modes in edge cases"
+            ],
+            "source_diagnosis": "The select_context function in the active source does not use item.outcome or item.kind fields to weight relevance during lexical overlap scoring."
+          },
+          "provenance_type": "ai_generated_hypothesis",
+          "synthesis_navigation_run_id": "RETRIEVAL_ef7be622ae404836"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_candidate_hypothesis_6c9601",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Observed investigation: active selector passed 0/3 public diagnostic cases.",
+        "created_order": -298,
+        "failure_condition": "One or more public diagnostic selection contracts were violated.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "diagnostic_case_count": 3,
+          "diagnostic_pass_count": 0,
+          "provenance_type": "observed_behavior",
+          "synthesis_navigation_run_id": "RETRIEVAL_ef7be622ae404836"
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_investigation_summary_88ef64",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"base claims on observed diagnostics and inspectable source\", \"preserve context budgets and deterministic output\", \"do not expose protected evaluation cases\", \"treat the change as an AI-generated research hypothesis\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\", \"evidence\": [\"0/3 public diagnostics passed\", \"typed navigator traces record available, selected, and missed connections\"], \"goal\": \"Formulate a bounded improvement to the active research-context selector from observed behavior\", \"open_questions\": [\"Which source behavior explains each miss?\", \"Which observed pattern is general enough to justify a code change?\", \"Will held-out matched evaluation support the hypothesis?\"], \"question\": \"What implementation hypothesis best explains and addresses the observed misses?\", \"recent_refs\": [\"REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0\", \"REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047\", \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06\"]}",
+        "created_order": -299,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "base claims on observed diagnostics and inspectable source",
+            "preserve context budgets and deterministic output",
+            "do not expose protected evaluation cases",
+            "treat the change as an AI-generated research hypothesis"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+          "evidence": [
+            "0/3 public diagnostics passed",
+            "typed navigator traces record available, selected, and missed connections"
+          ],
+          "goal": "Formulate a bounded improvement to the active research-context selector from observed behavior",
+          "open_questions": [
+            "Which source behavior explains each miss?",
+            "Which observed pattern is general enough to justify a code change?",
+            "Will held-out matched evaluation support the hypothesis?"
+          ],
+          "question": "What implementation hypothesis best explains and addresses the observed misses?",
+          "recent_refs": [
+            "REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0",
+            "REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047",
+            "REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_073621d7f9564240",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      },
+      {
+        "content": "In measured_evidence, the selector missed required IPs ['DIAG_EVIDENCE_EVAL'] and returned ['DIAG_EVIDENCE_IDEA']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "created_order": -300,
+        "failure_condition": "The active selector did not satisfy the public diagnostic relevance contract.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "diagnostic_case": "measured_evidence",
+          "missed": [
+            "DIAG_EVIDENCE_EVAL"
+          ],
+          "selected": [
+            "DIAG_EVIDENCE_IDEA"
+          ]
+        },
+        "origin": "failure_history",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Diagnostic measured_evidence: selector returned ['DIAG_EVIDENCE_IDEA']; required ['DIAG_EVIDENCE_EVAL'].",
+        "created_order": -301,
+        "failure_condition": "Observed selection violated the diagnostic relevance contract.",
+        "kind": "result",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "diagnostic_case": "measured_evidence",
+          "passed": false,
+          "selected": [
+            "DIAG_EVIDENCE_IDEA"
+          ]
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_observed_result_15a55b",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"prefer observed matched-condition evidence over an untested proposal\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\", \"evidence\": [\"evaluation results are available\"], \"goal\": \"Decide which retrieval strategy has measured recovery evidence\", \"open_questions\": [\"Which IP reports an observed comparison?\"], \"question\": \"Which prior reasoning IP should enter the bounded research context?\", \"recent_refs\": [\"REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18\", \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_IDEA_bfe398\", \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_OLD_e685e7\"]}",
+        "created_order": -302,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "prefer observed matched-condition evidence over an untested proposal"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec",
+          "evidence": [
+            "evaluation results are available"
+          ],
+          "goal": "Decide which retrieval strategy has measured recovery evidence",
+          "open_questions": [
+            "Which IP reports an observed comparison?"
+          ],
+          "question": "Which prior reasoning IP should enter the bounded research context?",
+          "recent_refs": [
+            "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18",
+            "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_IDEA_bfe398",
+            "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_OLD_e685e7"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_fab177678b2a4aa2",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      },
+      {
+        "content": "An earlier design note discusses tokenization and caching.",
+        "created_order": -303,
+        "failure_condition": "",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_OLD"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "superseded",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_OLD_e685e7",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "A retrieval strategy might provide measured recovery evidence in future work.",
+        "created_order": -304,
+        "failure_condition": "",
+        "kind": "hypothesis",
+        "metadata": {
+          "cycle_id": "20260906T125305Z_92e7e913",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_IDEA"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_IDEA_bfe398",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      }
+    ],
+    "retrieval_run_count": 24,
+    "schema_version": 1
+  },
+  "proposal": {
+    "diagnostic_findings": [
+      {
+        "case": "raised_storage_ceiling",
+        "missed_required": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "observed_selection": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "relation_to_hypothesis": "The selector's lexical overlap score does not distinguish between invalidated and valid items, causing it to prefer lexical matches over structural relevance",
+        "source_mechanism": "select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight invalidated items higher than distractors"
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "missed_required": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "observed_selection": [
+          "DIAG_OFFLINE_GENERIC"
+        ],
+        "relation_to_hypothesis": "The selector's lexical overlap score does not distinguish between local and generic items, causing it to prefer lexical matches over constraint-relevant content",
+        "source_mechanism": "select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'local' content higher than generic"
+      },
+      {
+        "case": "measured_evidence",
+        "missed_required": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "observed_selection": [
+          "DIAG_EVIDENCE_IDEA"
+        ],
+        "relation_to_hypothesis": "The selector's lexical overlap score does not distinguish between evaluation and idea items, causing it to prefer lexical matches over evidence-relevant content",
+        "source_mechanism": "select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'evaluation' content higher than ideas"
+      }
+    ],
+    "expected_benefit": "The selector will prioritize items flagged as invalidated or containing state changes, improving selection accuracy for constraint-change cases.",
+    "hypothesis": "The selector's lexical overlap scoring fails to prioritize items flagged as invalidated or containing state changes, causing it to miss required refs like DIAG_STORAGE_FAILED and DIAG_OFFLINE_LOCAL.",
+    "implementation_inputs": [
+      "observer_state.goal",
+      "observer_state.active_constraints",
+      "observer_state.changed_constraints",
+      "observer_state.evidence",
+      "observer_state.open_questions",
+      "item.ref",
+      "item.content",
+      "item.origin",
+      "item.kind",
+      "item.outcome",
+      "item.failure_condition",
+      "item.created_order",
+      "max_items",
+      "max_chars"
+    ],
+    "input_feasibility": "All required fields are present in the public input schema and accessible from the active source.",
+    "observed_evidence": [
+      "DIAG_STORAGE_FAILED was missed in raised_storage_ceiling case despite being selected by navigator",
+      "DIAG_OFFLINE_LOCAL was missed in unchanged_offline_constraint case despite being selected by navigator",
+      "DIAG_EVIDENCE_EVAL was missed in measured_evidence case despite being selected by navigator"
+    ],
+    "proposed_change": "Modify select_context to incorporate item.outcome and item.kind into the lexical overlap score calculation, prioritizing items with 'invalidated', 'supported', or constraint-relevant kinds.",
+    "risks": [
+      "Modifying lexical overlap scoring may reduce performance if not optimized",
+      "Adding outcome/kind checks may introduce new failure modes in edge cases"
+    ],
+    "source_diagnosis": "The select_context function in the active source does not use item.outcome or item.kind fields to weight relevance during lexical overlap scoring."
+  },
+  "proposal_trace": {
+    "omitted_response_fields": [
+      "context"
+    ],
+    "parsed_response_channel": "response",
+    "request": {
+      "format": {
+        "additionalProperties": false,
+        "properties": {
+          "diagnostic_findings": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "case": {
+                  "type": "string"
+                },
+                "missed_required": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "observed_selection": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "relation_to_hypothesis": {
+                  "type": "string"
+                },
+                "source_mechanism": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "case",
+                "observed_selection",
+                "missed_required",
+                "source_mechanism",
+                "relation_to_hypothesis"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "expected_benefit": {
+            "type": "string"
+          },
+          "hypothesis": {
+            "type": "string"
+          },
+          "implementation_inputs": {
+            "items": {
+              "enum": [
+                "observer_state.goal",
+                "observer_state.active_constraints",
+                "observer_state.changed_constraints",
+                "observer_state.evidence",
+                "observer_state.open_questions",
+                "item.ref",
+                "item.content",
+                "item.origin",
+                "item.kind",
+                "item.outcome",
+                "item.failure_condition",
+                "item.created_order",
+                "max_items",
+                "max_chars"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "input_feasibility": {
+            "type": "string"
+          },
+          "observed_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "proposed_change": {
+            "type": "string"
+          },
+          "risks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "source_diagnosis": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hypothesis",
+          "observed_evidence",
+          "diagnostic_findings",
+          "source_diagnosis",
+          "proposed_change",
+          "implementation_inputs",
+          "input_feasibility",
+          "expected_benefit",
+          "risks"
+        ],
+        "type": "object"
+      },
+      "keep_alive": "10m",
+      "model": "qwen3-coder:latest",
+      "options": {
+        "num_ctx": 8192,
+        "num_predict": 2400,
+        "seed": 1701,
+        "temperature": 0,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "prompt": "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded concise implementation hypothesis. Keep every prose field to one or two sentences. diagnostic_findings MUST contain one entry for every failed public diagnostic, with its exact observed selections and missed required refs. Each source_mechanism must name a field or operation visible in ACTIVE SOURCE. Reject abstract ontology language that is not tied to an observed selection decision. Do not assume observer-aware scoring is better merely because it is SToE-derived. List every runtime value required by the proposed implementation in implementation_inputs, using only the exact PUBLIC INPUT FIELDS below. Navigator edge types, paths, relation labels, and scores are investigation evidence only: select_context does not receive them. Do not disguise an unavailable structural signal as failure_condition or another public field. Do not request evaluator changes; the supervisor's acceptance and rollback rules are fixed.\n\nPUBLIC INPUT FIELDS:\n[\n  \"observer_state.goal\",\n  \"observer_state.active_constraints\",\n  \"observer_state.changed_constraints\",\n  \"observer_state.evidence\",\n  \"observer_state.open_questions\",\n  \"item.ref\",\n  \"item.content\",\n  \"item.origin\",\n  \"item.kind\",\n  \"item.outcome\",\n  \"item.failure_condition\",\n  \"item.created_order\",\n  \"max_items\",\n  \"max_chars\"\n]\n\nACTIVE SOURCE:\n\"\"\"Initial lexical research-context selector.\n\nThis intentionally small implementation is the active version at the beginning\nof the first rebuild cycle. Its limitation is measured before a successor is\nrequested.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport re\n\n\ndef _tokens(text: str) -> set[str]:\n    return {token for token in re.findall(r\"[a-z0-9]+\", text.lower()) if len(token) > 2}\n\n\ndef select_context(\n    observer_state: dict,\n    items: list[dict],\n    max_items: int,\n    max_chars: int,\n) -> list[str]:\n    \"\"\"Return refs ranked by lexical overlap with the current goal.\"\"\"\n    query = _tokens(str(observer_state.get(\"goal\", \"\")))\n    ranked: list[tuple[float, int, str, dict]] = []\n    for item in items:\n        content_tokens = _tokens(str(item.get(\"content\", \"\")))\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\n        ranked.append((overlap, int(item.get(\"created_order\", 0)), str(item[\"ref\"]), item))\n\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\n    selected: list[str] = []\n    used_chars = 0\n    for _score, _order, ref, item in ranked:\n        size = len(str(item.get(\"content\", \"\")))\n        if len(selected) >= max_items:\n            break\n        if used_chars + size > max_chars:\n            continue\n        selected.append(ref)\n        used_chars += size\n    return selected\n\n\nINVESTIGATION:\n{\n  \"diagnostics\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"observer\": {\n        \"goal\": \"Choose the research-agent architecture now that the storage ceiling changed\",\n        \"active_constraints\": [\n          \"preserve rejected reasoning\",\n          \"keep active context bounded\"\n        ],\n        \"changed_constraints\": [\n          \"storage ceiling increased from one gigabyte to one hundred gigabytes\"\n        ],\n        \"evidence\": [\n          \"cold history can remain outside the active prompt\"\n        ],\n        \"open_questions\": [\n          \"Which formerly rejected design is newly feasible?\"\n        ]\n      },\n      \"available_refs\": [\n        \"DIAG_STORAGE_FAILED\",\n        \"DIAG_STORAGE_DISTRACTOR\",\n        \"DIAG_STORAGE_EVAL\"\n      ],\n      \"required_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"forbidden_refs\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"selector_selected\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"selector_passed\": false,\n      \"missed_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"navigator_selected_available_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"navigator_relevant_trace\": [\n        {\n          \"external_ref\": \"DIAG_STORAGE_DISTRACTOR\",\n          \"selected\": false,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.26352313834736496,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.14016239222340351\n          }\n        },\n        {\n          \"external_ref\": \"DIAG_STORAGE_FAILED\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"contains_change\",\n            \"invalidates\",\n            \"rejected_by\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"scores\": {\n            \"structural\": 0.7055630454835736,\n            \"goal\": 0.26352313834736496,\n            \"state_change\": 1.0,\n            \"failure\": 1.0,\n            \"final\": 0.6909192321229981\n          }\n        }\n      ]\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"observer\": {\n        \"goal\": \"Choose a semantic evidence index for the research project\",\n        \"active_constraints\": [\n          \"network access remains unavailable\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"local embedding inference is installed\"\n        ],\n        \"open_questions\": [\n          \"Which currently feasible index should be used?\"\n        ]\n      },\n      \"available_refs\": [\n        \"DIAG_OFFLINE_FAILED\",\n        \"DIAG_OFFLINE_LOCAL\",\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"required_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"forbidden_refs\": [\n        \"DIAG_OFFLINE_FAILED\"\n      ],\n      \"selector_selected\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"selector_passed\": false,\n      \"missed_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"navigator_selected_available_refs\": [\n        \"DIAG_OFFLINE_LOCAL\",\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"navigator_relevant_trace\": []\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"observer\": {\n        \"goal\": \"Decide which retrieval strategy has measured recovery evidence\",\n        \"active_constraints\": [\n          \"prefer observed matched-condition evidence over an untested proposal\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"evaluation results are available\"\n        ],\n        \"open_questions\": [\n          \"Which IP reports an observed comparison?\"\n        ]\n      },\n      \"available_refs\": [\n        \"DIAG_EVIDENCE_EVAL\",\n        \"DIAG_EVIDENCE_IDEA\",\n        \"DIAG_EVIDENCE_OLD\"\n      ],\n      \"required_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"forbidden_refs\": [],\n      \"selector_selected\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"selector_passed\": false,\n      \"missed_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"navigator_selected_available_refs\": [\n        \"DIAG_EVIDENCE_EVAL\",\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"navigator_relevant_trace\": [\n        {\n          \"external_ref\": \"DIAG_EVIDENCE_EVAL\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.2839809171235324,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.1556107482516321\n          }\n        },\n        {\n          \"external_ref\": \"DIAG_EVIDENCE_IDEA\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.27076518053694115,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.13455913597873156\n          }\n        }\n      ]\n    }\n  ],\n  \"bounded_prior_context\": [\n    {\n      \"ref\": \"REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_594a2f\",\n      \"origin\": \"runtime_reasoning\",\n      \"kind\": \"constraint\",\n      \"outcome\": \"invalidated\",\n      \"content\": \"A one gigabyte storage ceiling made partitioned history infeasible.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"edge_id\": \"EDGE_9aef078942494582\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"to\": \"STATE_081b6b8f048d405b\",\n          \"edge_id\": \"EDGE_ac2c3233e7a34ddc\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"find_later_state_evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"STATE_081b6b8f048d405b\",\n          \"to\": \"CHANGE_06b46d69b4894f71\",\n          \"edge_id\": \"EDGE_2c835cf73e4e484b\",\n          \"type\": \"contains_change\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"contains_change\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"CHANGE_06b46d69b4894f71\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_594a2f\",\n          \"edge_id\": \"EDGE_1f748049c1d94074\",\n          \"type\": \"invalidates\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"invalidates\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5333; goal=0.0401; change=0.5500; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.0000; stale=0.0000; final=0.3169\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06\",\n      \"origin\": \"failure_history\",\n      \"kind\": \"observation\",\n      \"outcome\": \"failed\",\n      \"content\": \"In measured_evidence, the selector missed required IPs ['DIAG_EVIDENCE_EVAL'] and returned ['DIAG_EVIDENCE_IDEA']. The exact implementation cause remains a hypothesis until related to source and traces.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_missed_connection_87df06\",\n          \"edge_id\": \"EDGE_09772d51f6824c13\",\n          \"type\": \"depends_on\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"depends_on\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.7800; goal=0.2457; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.0680; stale=0.0000; final=0.2751\"\n    },\n    {\n      \"ref\": \"CHANGE_06b46d69b4894f71\",\n      \"origin\": \"state_change\",\n      \"kind\": \"state_change\",\n      \"outcome\": \"active\",\n      \"content\": \"storage ceiling increased from one gigabyte to one hundred gigabytes\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"edge_id\": \"EDGE_9aef078942494582\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"to\": \"STATE_081b6b8f048d405b\",\n          \"edge_id\": \"EDGE_ac2c3233e7a34ddc\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"find_later_state_evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"STATE_081b6b8f048d405b\",\n          \"to\": \"CHANGE_06b46d69b4894f71\",\n          \"edge_id\": \"EDGE_2c835cf73e4e484b\",\n          \"type\": \"contains_change\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"contains_change\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5865; goal=0.0803; change=0.5500; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.4444; stale=0.0000; final=0.2542\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n      \"origin\": \"runtime_reasoning\",\n      \"kind\": \"component\",\n      \"outcome\": \"active\",\n      \"content\": \"Active research-context selector v1 at C:\\\\Users\\\\Bozuron\\\\Documents\\\\New project\\\\stoe-self-rebuild\\\\agent\\\\owned_components\\\\context_selector\\\\versions\\\\v1.py; selects bounded prior IP refs for an observer state.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"edge_id\": \"EDGE_9aef078942494582\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.8800; goal=0.1341; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0379; stale=0.0000; final=0.2363\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0\",\n      \"origin\": \"failure_history\",\n      \"kind\": \"observation\",\n      \"outcome\": \"failed\",\n      \"content\": \"In raised_storage_ceiling, the selector missed required IPs ['DIAG_STORAGE_FAILED'] and returned ['DIAG_STORAGE_DISTRACTOR']. The exact implementation cause remains a hypothesis until related to source and traces.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_raised_storage_ceiling_missed_connection_e211b0\",\n          \"edge_id\": \"EDGE_1cf860b1e5564f52\",\n          \"type\": \"depends_on\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"depends_on\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.7800; goal=0.2408; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.8165; stale=0.0000; final=0.1995\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047\",\n      \"origin\": \"failure_history\",\n      \"kind\": \"observation\",\n      \"outcome\": \"failed\",\n      \"content\": \"In unchanged_offline_constraint, the selector missed required IPs ['DIAG_OFFLINE_LOCAL'] and returned ['DIAG_OFFLINE_GENERIC']. The exact implementation cause remains a hypothesis until related to source and traces.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_unchanged_offline_constraint_missed_connection_c38047\",\n          \"edge_id\": \"EDGE_bbb43146200e41fa\",\n          \"type\": \"depends_on\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"depends_on\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.7800; goal=0.2408; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.8165; stale=0.0000; final=0.1995\"\n    },\n    {\n      \"ref\": \"SEED_3300f93f95154bdf\",\n      \"origin\": \"canonical_seed\",\n      \"kind\": \"stoe_core_ip\",\n      \"outcome\": \"unknown\",\n      \"content\": \"Information Function. Category: Catalyst. Description: Relation between IPs producing IPs; is itself an IP. Expression: F(IP₁...IPₙ) → IP*, F∈IP\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"edge_id\": \"EDGE_9aef078942494582\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"to\": \"SEED_3300f93f95154bdf\",\n          \"edge_id\": \"EDGE_7188bf20dddc4496\",\n          \"type\": \"instantiates\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"instantiates\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.6857; goal=0.0622; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0959; stale=0.0000; final=0.1587\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18\",\n      \"origin\": \"evaluation\",\n      \"kind\": \"evaluation\",\n      \"outcome\": \"supported\",\n      \"content\": \"Matched-condition evaluation measured recovery on six constraint-change probes.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_073621d7f9564240\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"edge_id\": \"EDGE_9aef078942494582\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T125305Z_92e7e913_active_component_fb75ec\",\n          \"to\": \"REBUILD_20260906T125305Z_92e7e913_measured_evidence_DIAG_EVIDENCE_EVAL_b22c18\",\n          \"edge_id\": \"EDGE_ac7437e3fb4c4b1b\",\n          \"type\": \"available_to\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"reverse_available_to\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5021; goal=0.1523; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0645; stale=0.0000; final=0.1294\"\n    }\n  ],\n  \"known_structure\": \"The source, observer fields, available candidates, actual outputs, typed paths, and failure conditions are observed.\",\n  \"unknown_structure\": \"The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable.\"\n}",
+      "stream": false,
+      "system": "You are the bounded research component of an SToE-guided self-developing agent. Infer only from supplied source, observed behavior, and bounded field retrieval. Treat changes as falsifiable engineering hypotheses, not proof of SToE."
+    },
+    "response": {
+      "created_at": "2026-09-06T12:53:22.1718297Z",
+      "done": true,
+      "done_reason": "stop",
+      "eval_count": 756,
+      "eval_duration": 9543985000,
+      "load_duration": 4773421300,
+      "model": "qwen3-coder:latest",
+      "prompt_eval_cached_count": 0,
+      "prompt_eval_count": 5622,
+      "prompt_eval_duration": 2069442000,
+      "response": "{\n  \"hypothesis\": \"The selector's lexical overlap scoring fails to prioritize items flagged as invalidated or containing state changes, causing it to miss required refs like DIAG_STORAGE_FAILED and DIAG_OFFLINE_LOCAL.\",\n  \"observed_evidence\": [\n    \"DIAG_STORAGE_FAILED was missed in raised_storage_ceiling case despite being selected by navigator\",\n    \"DIAG_OFFLINE_LOCAL was missed in unchanged_offline_constraint case despite being selected by navigator\",\n    \"DIAG_EVIDENCE_EVAL was missed in measured_evidence case despite being selected by navigator\"\n  ],\n  \"diagnostic_findings\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"observed_selection\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"missed_required\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"source_mechanism\": \"select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight invalidated items higher than distractors\",\n      \"relation_to_hypothesis\": \"The selector's lexical overlap score does not distinguish between invalidated and valid items, causing it to prefer lexical matches over structural relevance\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"observed_selection\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"missed_required\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"source_mechanism\": \"select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'local' content higher than generic\",\n      \"relation_to_hypothesis\": \"The selector's lexical overlap score does not distinguish between local and generic items, causing it to prefer lexical matches over constraint-relevant content\"\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"observed_selection\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"missed_required\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"source_mechanism\": \"select_context function's lexical overlap scoring does not incorporate item.outcome or item.kind fields to weight items with 'evaluation' content higher than ideas\",\n      \"relation_to_hypothesis\": \"The selector's lexical overlap score does not distinguish between evaluation and idea items, causing it to prefer lexical matches over evidence-relevant content\"\n    }\n  ],\n  \"source_diagnosis\": \"The select_context function in the active source does not use item.outcome or item.kind fields to weight relevance during lexical overlap scoring.\",\n  \"proposed_change\": \"Modify select_context to incorporate item.outcome and item.kind into the lexical overlap score calculation, prioritizing items with 'invalidated', 'supported', or constraint-relevant kinds.\",\n  \"implementation_inputs\": [\n    \"observer_state.goal\",\n    \"observer_state.active_constraints\",\n    \"observer_state.changed_constraints\",\n    \"observer_state.evidence\",\n    \"observer_state.open_questions\",\n    \"item.ref\",\n    \"item.content\",\n    \"item.origin\",\n    \"item.kind\",\n    \"item.outcome\",\n    \"item.failure_condition\",\n    \"item.created_order\",\n    \"max_items\",\n    \"max_chars\"\n  ],\n  \"input_feasibility\": \"All required fields are present in the public input schema and accessible from the active source.\",\n  \"expected_benefit\": \"The selector will prioritize items flagged as invalidated or containing state changes, improving selection accuracy for constraint-change cases.\",\n  \"risks\": [\n    \"Modifying lexical overlap scoring may reduce performance if not optimized\",\n    \"Adding outcome/kind checks may introduce new failure modes in edge cases\"\n  ]\n}",
+      "total_duration": 16400795300
+    }
+  },
+  "protected_hashes": {
+    "cases.json": "76512fc8fda0c0ae31e47c9ba0d8fb6e2555c27f531b0700221673b506444138",
+    "evaluator.py": "6be6246238aedb0c37a72be6e2623772ba6ff1b67415fa46ab3ab4272e3fec06"
+  },
+  "public_feasibility": {
+    "active_pass_count": 0,
+    "candidate_pass_count": 1,
+    "candidate_results": [
+      {
+        "case": "raised_storage_ceiling",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "passed": false,
+        "required_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "selected": [
+          "DIAG_STORAGE_EVAL"
+        ]
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [
+          "DIAG_OFFLINE_FAILED"
+        ],
+        "passed": false,
+        "required_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "selected": [
+          "DIAG_OFFLINE_GENERIC"
+        ]
+      },
+      {
+        "case": "measured_evidence",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [],
+        "passed": true,
+        "required_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "selected": [
+          "DIAG_EVIDENCE_EVAL"
+        ]
+      }
+    ],
+    "decision": "PROCEED",
+    "reason": "candidate demonstrated the proposed mechanism on disclosed diagnostics; protected evaluation remains decisive",
+    "regressions": [],
+    "role": "disclosed mechanism check only; never sufficient for activation"
+  },
+  "started_at": "2026-09-06T12:53:05.328151+00:00"
+}

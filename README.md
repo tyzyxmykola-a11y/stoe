@@ -70,10 +70,11 @@ companion [reasoning skill](skills/stoe-reasoning/SKILL.md) is packaged separate
 
 The [self-rebuild milestone report](agent/SELF_REBUILD_MILESTONE_REPORT.md)
 separates the supervisor infrastructure from the investigation actually performed,
-the model-generated candidate changes, and the protected adoption evidence. The
-preserved local-Ollama cycles did not produce an acceptable successor: the active
-selector remains `v1`. This negative result is intentional evidence that activation
-is conditional on evaluation, not on merely completing a rebuild procedure.
+the model-generated candidate changes, and the protected adoption evidence. After
+several safely rejected candidates, a later bounded local-Ollama cycle produced a
+partial improvement from 1/5 to 3/5 protected cases and passed fresh-process
+activation. The report preserves both the negative evidence and the successor's
+remaining failures.
 
 ## Run the earlier browser engine
 

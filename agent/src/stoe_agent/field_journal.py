@@ -127,6 +127,42 @@ class RebuildJournal:
         status["recent"] = self.store.list_recent(session_id=SESSION_ID, limit=12)["items"]
         return status
 
+    def find_cycle_nodes(self, cycle_id: str) -> list[dict[str, Any]]:
+        with sqlite3.connect(self.db_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(
+                "SELECT ref, content, origin, kind, outcome, failure_condition, metadata_json "
+                "FROM nodes WHERE metadata_json LIKE ? ORDER BY created_order ASC",
+                (f"%{cycle_id}%",),
+            ).fetchall()
+        items = []
+        for row in rows:
+            metadata = json.loads(row["metadata_json"])
+            if metadata.get("cycle_id") != cycle_id:
+                continue
+            items.append(
+                {
+                    **{key: row[key] for key in row.keys() if key != "metadata_json"},
+                    "metadata": metadata,
+                }
+            )
+        return items
+
+    def find_exact_content(self, content: str) -> dict[str, Any] | None:
+        with sqlite3.connect(self.db_path) as connection:
+            connection.row_factory = sqlite3.Row
+            row = connection.execute(
+                "SELECT ref, content, origin, kind, outcome, failure_condition, metadata_json "
+                "FROM nodes WHERE session_id = ? AND content = ? ORDER BY created_order DESC LIMIT 1",
+                (SESSION_ID, content),
+            ).fetchone()
+        if row is None:
+            return None
+        return {
+            **{key: row[key] for key in row.keys() if key != "metadata_json"},
+            "metadata": json.loads(row["metadata_json"]),
+        }
+
 
 def _sha256(path: Path) -> str:
     import hashlib

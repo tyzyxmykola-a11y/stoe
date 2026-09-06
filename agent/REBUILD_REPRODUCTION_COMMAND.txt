@@ -1,0 +1,11 @@
+cd agent
+$env:PYTHONPATH = (Resolve-Path ./src).Path
+python -m unittest discover -s tests -v
+python -m stoe_agent inspect
+python -m stoe_agent cycle --model qwen3-coder:latest
+python -m stoe_agent status
+python -m stoe_agent failure-probe
+
+# The cycle uses only local Ollama at http://127.0.0.1:11434.
+# Running it creates a new investigation; it does not reproduce stochastic model text byte-for-byte.
+# Preserved completed traces are in rebuild_reports/. Runtime state is intentionally ignored by Git.

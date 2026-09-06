@@ -15,6 +15,7 @@ to the graph engines and experiments.
 | [`experiments/stoe_v3`](experiments/stoe_v3) | Historical graph-aware engine, structural evaluator, benchmark suite, and Experiment 6 evidence |
 | [`plugins/stoe-memory`](plugins/stoe-memory) | Local persistent SQLite reasoning field exposed through MCP over stdio |
 | [`skills/stoe-reasoning`](skills/stoe-reasoning) | Reusable reasoning protocol, references, seed, and seed validator |
+| [`agent`](agent) | Supervised, bounded SToE research-agent rebuild lifecycle and preserved real-cycle evidence |
 | [`research/corpus`](research/corpus) | Original research PDFs, including the new *Memory Is Connection* article and the v9.1 manuscript |
 | [`research/texts`](research/texts) | Searchable paper text, including a page-delimited companion to the new article |
 | [`archive/snapshots`](archive/snapshots) | 78 deduplicated historical source snapshots, hashes, and a safe restore tool |
@@ -64,6 +65,15 @@ readable without restoration.
 See the [plugin README](plugins/stoe-memory/README.md) for dependencies and launch
 instructions. The plugin manifest and MCP configuration are included. The
 companion [reasoning skill](skills/stoe-reasoning/SKILL.md) is packaged separately.
+
+## Inspect the research-agent rebuild milestone
+
+The [self-rebuild milestone report](agent/SELF_REBUILD_MILESTONE_REPORT.md)
+separates the supervisor infrastructure from the investigation actually performed,
+the model-generated candidate changes, and the protected adoption evidence. The
+preserved local-Ollama cycles did not produce an acceptable successor: the active
+selector remains `v1`. This negative result is intentional evidence that activation
+is conditional on evaluation, not on merely completing a rebuild procedure.
 
 ## Run the earlier browser engine
 

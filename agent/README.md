@@ -54,3 +54,18 @@ python -m stoe_agent rollback --version v1
 `python -m stoe_agent failure-probe` runs a deliberately broken activation in an
 isolated temporary runtime and verifies that the previous component and field
 remain usable.
+
+## Current evidence
+
+The completed local-Ollama investigations found a real limitation: the active
+goal-only selector passed 0/3 public diagnostics, while bounded SToE navigation
+reached the required missed IP in all three. No generated successor passed the
+fixed adoption rule. The final candidate tied the active selector at 1/5 protected
+cases and failed a critical privacy case, so it was rejected and `v1` remains
+active. See [SELF_REBUILD_MILESTONE_REPORT.md](SELF_REBUILD_MILESTONE_REPORT.md)
+and the immutable JSON traces under `rebuild_reports/`.
+
+The successful activation path is covered only by a controlled test fixture; it
+is not presented as evidence of successful self-improvement. The isolated
+failure probe demonstrates recovery of the previous pointer and fresh-process
+health after a deliberately failed activation.

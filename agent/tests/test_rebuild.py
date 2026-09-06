@@ -78,8 +78,9 @@ def select_context(observer_state, items, max_items, max_chars):
 
 
 class FakeModelClient:
-    def __init__(self):
+    def __init__(self, source=IMPROVED_SOURCE):
         self.calls = 0
+        self.source = source
 
     def identity(self):
         return ModelIdentity("fake-local-model", "f" * 64, "test")
@@ -118,11 +119,28 @@ class FakeModelClient:
                 ],
                 "source_diagnosis": "The active source tokenizes only goal and content.",
                 "proposed_change": "Score all observer fields and condition failed-IP relevance on active versus changed constraints.",
+                "implementation_inputs": [
+                    "observer_state.goal",
+                    "observer_state.active_constraints",
+                    "observer_state.changed_constraints",
+                    "observer_state.evidence",
+                    "observer_state.open_questions",
+                    "item.ref",
+                    "item.content",
+                    "item.origin",
+                    "item.kind",
+                    "item.outcome",
+                    "item.failure_condition",
+                    "item.created_order",
+                    "max_items",
+                    "max_chars",
+                ],
+                "input_feasibility": "Every score uses a field supplied by the public selector contract.",
                 "expected_benefit": "More relevant research evidence under the same item and character budgets.",
                 "risks": ["Heuristic weights may not generalize."],
             }
         else:
-            payload = {"source": IMPROVED_SOURCE, "implementation_note": "Observer-aware deterministic scorer."}
+            payload = {"source": self.source, "implementation_note": "Observer-aware deterministic scorer."}
         return payload, {"request": {"seed": seed}, "response": {"done": True}}
 
 
@@ -233,6 +251,8 @@ class RebuildTests(unittest.TestCase):
             "diagnostic_findings": [],
             "source_diagnosis": "The field is evolving.",
             "proposed_change": "Strengthen validation.",
+            "implementation_inputs": ["item.content"],
+            "input_feasibility": "Uses the public content field.",
             "expected_benefit": "Improvement.",
             "risks": ["Complexity."],
         }
@@ -248,6 +268,42 @@ class RebuildTests(unittest.TestCase):
         }
         with self.assertRaisesRegex(RuntimeError, "diagnostic_findings"):
             RebuildSupervisor._validate_proposal(proposal, investigation)
+
+    def test_proposal_gate_rejects_unavailable_runtime_inputs(self):
+        client = FakeModelClient()
+        proposal, _trace = client.generate_json(
+            system="test",
+            prompt="test",
+            schema={"properties": {"hypothesis": {}}},
+            max_output_tokens=1,
+            seed=1,
+        )
+        proposal["implementation_inputs"] = ["navigator.edge_types"]
+        investigation = {
+            "diagnostics": [
+                {
+                    "case": finding["case"],
+                    "selector_passed": False,
+                    "selector_selected": finding["observed_selection"],
+                    "missed_refs": finding["missed_required"],
+                }
+                for finding in proposal["diagnostic_findings"]
+            ]
+        }
+        with self.assertRaisesRegex(RuntimeError, "unavailable selector inputs"):
+            RebuildSupervisor._validate_proposal(proposal, investigation)
+
+    def test_public_mechanism_gate_rejects_behavioral_noop_before_protected_eval(self):
+        with self.temporary_root("stoe_public_noop_") as raw:
+            baseline_source = (
+                self.agent_root / "owned_components" / "context_selector" / "versions" / "v1.py"
+            ).read_text(encoding="utf-8")
+            supervisor = self.make_supervisor(Path(raw), FakeModelClient(source=baseline_source))
+            report = supervisor.run_cycle()
+            self.assertEqual("REJECT_PUBLIC_MECHANISM", report["decision"])
+            self.assertFalse(report["activated"])
+            self.assertEqual(0, report["public_feasibility"]["candidate_pass_count"])
+            self.assertNotIn("evaluation", report)
 
     def test_deliberate_activation_failure_rolls_back_in_isolation(self):
         with self.temporary_root("stoe_rollback_test_") as raw:

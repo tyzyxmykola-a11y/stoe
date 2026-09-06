@@ -15,10 +15,28 @@ from pathlib import Path
 from typing import Any
 
 from .field_journal import RebuildJournal, SESSION_ID
-from .investigation import investigate_selector
+from .investigation import evaluate_public_selector, investigate_selector
 from .ollama import OllamaClient
 from .selector_loader import load_selector, sha256_file
 from .static_gate import validate_candidate_source
+
+
+PUBLIC_INPUT_FIELDS = (
+    "observer_state.goal",
+    "observer_state.active_constraints",
+    "observer_state.changed_constraints",
+    "observer_state.evidence",
+    "observer_state.open_questions",
+    "item.ref",
+    "item.content",
+    "item.origin",
+    "item.kind",
+    "item.outcome",
+    "item.failure_condition",
+    "item.created_order",
+    "max_items",
+    "max_chars",
+)
 
 
 PROPOSAL_SCHEMA = {
@@ -49,6 +67,11 @@ PROPOSAL_SCHEMA = {
         },
         "source_diagnosis": {"type": "string"},
         "proposed_change": {"type": "string"},
+        "implementation_inputs": {
+            "type": "array",
+            "items": {"type": "string", "enum": list(PUBLIC_INPUT_FIELDS)},
+        },
+        "input_feasibility": {"type": "string"},
         "expected_benefit": {"type": "string"},
         "risks": {"type": "array", "items": {"type": "string"}},
     },
@@ -58,6 +81,8 @@ PROPOSAL_SCHEMA = {
         "diagnostic_findings",
         "source_diagnosis",
         "proposed_change",
+        "implementation_inputs",
+        "input_feasibility",
         "expected_benefit",
         "risks",
     ],
@@ -439,6 +464,50 @@ class RebuildSupervisor:
         )
         self.journal.relate(candidate_ip["ref"], proposal_ip["ref"], "implements", "Candidate implements preregistered hypothesis")
 
+        candidate_public = evaluate_public_selector(load_selector(candidate_runtime_path))
+        public_feasibility = self._public_feasibility_decision(investigation, candidate_public)
+        report.update(
+            {
+                "candidate": {
+                    "runtime_path": str(candidate_runtime_path),
+                    "sha256": sha256_file(candidate_runtime_path),
+                    "implementation_note": accepted_note,
+                    "field_ref": candidate_ip["ref"],
+                },
+                "public_feasibility": public_feasibility,
+            }
+        )
+        public_evaluation_ip = self.journal.add_ip(
+            cycle_id=cycle_id,
+            label="candidate_public_feasibility",
+            content=(
+                f"Disclosed mechanism check: active {investigation['pass_count']}/{investigation['case_count']}; "
+                f"candidate {candidate_public['pass_count']}/{candidate_public['case_count']}; "
+                f"decision {public_feasibility['decision']}."
+            ),
+            kind="evaluation",
+            origin="evaluation",
+            outcome="supported" if public_feasibility["decision"] == "PROCEED" else "rejected",
+            failure_condition=(
+                "The generated implementation did not demonstrate its proposed mechanism on disclosed diagnostics."
+                if public_feasibility["decision"] != "PROCEED"
+                else ""
+            ),
+            metadata={"public_feasibility": public_feasibility},
+        )
+        self.journal.relate(public_evaluation_ip["ref"], candidate_ip["ref"], "evaluates", "Disclosed mechanism feasibility check")
+        if public_feasibility["decision"] != "PROCEED":
+            archived = self._archive_rejected(candidate_runtime_path, cycle_id)
+            report.update(
+                {
+                    "decision": "REJECT_PUBLIC_MECHANISM",
+                    "decision_reason": public_feasibility["reason"],
+                    "activated": False,
+                    "archived_rejected_candidate": archived,
+                }
+            )
+            return self._finish_report(report, cycle_id, started)
+
         baseline_eval = self._evaluate(active_path)
         candidate_eval = self._evaluate(candidate_runtime_path)
         protected_after = self.protected_hashes()
@@ -462,12 +531,6 @@ class RebuildSupervisor:
         )
         report.update(
             {
-                "candidate": {
-                    "runtime_path": str(candidate_runtime_path),
-                    "sha256": sha256_file(candidate_runtime_path),
-                    "implementation_note": accepted_note,
-                    "field_ref": candidate_ip["ref"],
-                },
                 "evaluation": {"active": baseline_eval, "candidate": candidate_eval},
                 "acceptance": acceptance,
                 "evaluation_field_ref": evaluation["evaluation"]["ref"],
@@ -532,7 +595,12 @@ class RebuildSupervisor:
             "with its exact observed selections and missed required refs. Each source_mechanism must name a field or "
             "operation visible in ACTIVE SOURCE. Reject abstract ontology language that is not tied to an observed "
             "selection decision. Do not assume observer-aware scoring is better merely because it is SToE-derived. "
+            "List every runtime value required by the proposed implementation in implementation_inputs, using only "
+            "the exact PUBLIC INPUT FIELDS below. Navigator edge types, paths, relation labels, and scores are "
+            "investigation evidence only: select_context does not receive them. Do not disguise an unavailable "
+            "structural signal as failure_condition or another public field. "
             "Do not request evaluator changes; the supervisor's acceptance and rollback rules are fixed.\n\n"
+            "PUBLIC INPUT FIELDS:\n" + json.dumps(PUBLIC_INPUT_FIELDS, indent=2) + "\n\n"
             "ACTIVE SOURCE:\n" + source + "\n\nINVESTIGATION:\n" + json.dumps(evidence, indent=2, ensure_ascii=False)
         )
 
@@ -568,6 +636,8 @@ class RebuildSupervisor:
                 "stdlib imports limited to re, math, collections, typing",
                 "do not reward every failure; relate failure conditions to active or changed constraints",
                 "do not assume origin alone proves relevance",
+                "navigator paths, edge types, relation labels, and scores are not selector inputs",
+                "failure_condition is natural-language rejection-basis text, never an edge-label container",
             ],
         }
         return (
@@ -584,7 +654,7 @@ class RebuildSupervisor:
         required = set(PROPOSAL_SCHEMA["required"])
         if set(proposal) != required:
             raise RuntimeError(f"proposal schema mismatch: expected {sorted(required)}, got {sorted(proposal)}")
-        for key in required - {"observed_evidence", "risks", "diagnostic_findings"}:
+        for key in required - {"observed_evidence", "risks", "diagnostic_findings", "implementation_inputs"}:
             if not isinstance(proposal[key], str) or not proposal[key].strip():
                 raise RuntimeError(f"proposal field is empty: {key}")
         for key in ("observed_evidence", "risks"):
@@ -592,6 +662,13 @@ class RebuildSupervisor:
                 isinstance(item, str) and item.strip() for item in proposal[key]
             ):
                 raise RuntimeError(f"proposal list field is empty or invalid: {key}")
+        implementation_inputs = proposal["implementation_inputs"]
+        if not isinstance(implementation_inputs, list) or not implementation_inputs or not all(
+            isinstance(item, str) and item in PUBLIC_INPUT_FIELDS for item in implementation_inputs
+        ):
+            raise RuntimeError("proposal implementation_inputs contains unavailable selector inputs")
+        if len(implementation_inputs) != len(set(implementation_inputs)):
+            raise RuntimeError("proposal implementation_inputs contains duplicates")
         if not isinstance(proposal["diagnostic_findings"], list) or not proposal["diagnostic_findings"] or not all(
             isinstance(item, dict) for item in proposal["diagnostic_findings"]
         ):
@@ -623,6 +700,36 @@ class RebuildSupervisor:
             mechanism = str(finding.get("source_mechanism", "")).lower()
             if not any(term in mechanism for term in source_terms):
                 raise RuntimeError(f"proposal source mechanism is not tied to active code fields for {case_name}")
+
+    @staticmethod
+    def _public_feasibility_decision(
+        investigation: dict[str, Any], candidate_public: dict[str, Any]
+    ) -> dict[str, Any]:
+        active_passed = {
+            item["case"] for item in investigation["diagnostics"] if item["selector_passed"]
+        }
+        candidate_passed = set(candidate_public["passed_cases"])
+        regressions = sorted(active_passed - candidate_passed)
+        improved = candidate_public["pass_count"] > investigation["pass_count"]
+        proceed = improved and not regressions
+        reason_parts = []
+        if not improved:
+            reason_parts.append("candidate did not improve the disclosed diagnostic pass count")
+        if regressions:
+            reason_parts.append(f"candidate regressed disclosed cases: {regressions}")
+        if proceed:
+            reason_parts.append(
+                "candidate demonstrated the proposed mechanism on disclosed diagnostics; protected evaluation remains decisive"
+            )
+        return {
+            "decision": "PROCEED" if proceed else "REJECT",
+            "reason": "; ".join(reason_parts),
+            "active_pass_count": investigation["pass_count"],
+            "candidate_pass_count": candidate_public["pass_count"],
+            "regressions": regressions,
+            "candidate_results": candidate_public["results"],
+            "role": "disclosed mechanism check only; never sufficient for activation",
+        }
 
     @staticmethod
     def _compact_diagnostics(investigation: dict[str, Any]) -> list[dict[str, Any]]:

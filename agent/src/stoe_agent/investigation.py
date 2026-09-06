@@ -156,6 +156,54 @@ def public_diagnostics() -> tuple[DiagnosticCase, ...]:
     )
 
 
+def evaluate_public_selector(selector: Selector) -> dict[str, Any]:
+    """Run the disclosed diagnostic contract without writing to the field."""
+    results: list[dict[str, Any]] = []
+    for case in public_diagnostics():
+        selected: list[str] = []
+        deterministic = False
+        error = ""
+        try:
+            first = validate_selection(
+                selector(case.observer, case.items, case.max_items, case.max_chars),
+                case.items,
+                case.max_items,
+                case.max_chars,
+            )
+            second = validate_selection(
+                selector(case.observer, case.items, case.max_items, case.max_chars),
+                case.items,
+                case.max_items,
+                case.max_chars,
+            )
+            selected = first
+            deterministic = first == second
+        except Exception as exc:
+            error = f"{type(exc).__name__}: {exc}"
+        passed = (
+            deterministic
+            and set(case.required_refs).issubset(selected)
+            and not set(case.forbidden_refs).intersection(selected)
+        )
+        results.append(
+            {
+                "case": case.name,
+                "selected": selected,
+                "required_refs": list(case.required_refs),
+                "forbidden_refs": list(case.forbidden_refs),
+                "deterministic": deterministic,
+                "passed": passed,
+                "error": error,
+            }
+        )
+    return {
+        "case_count": len(results),
+        "pass_count": sum(1 for item in results if item["passed"]),
+        "passed_cases": [item["case"] for item in results if item["passed"]],
+        "results": results,
+    }
+
+
 def investigate_selector(
     *,
     selector: Selector,
@@ -165,6 +213,9 @@ def investigate_selector(
 ) -> dict[str, Any]:
     observations: list[dict[str, Any]] = []
     observed_failure_refs: list[str] = []
+    public_results = {
+        item["case"]: item for item in evaluate_public_selector(selector)["results"]
+    }
 
     for case in public_diagnostics():
         item_ips: dict[str, dict[str, Any]] = {}
@@ -213,13 +264,9 @@ def investigate_selector(
             session_id=SESSION_ID,
         )
 
-        selected = validate_selection(
-            selector(case.observer, case.items, case.max_items, case.max_chars),
-            case.items,
-            case.max_items,
-            case.max_chars,
-        )
-        passed = set(case.required_refs).issubset(selected) and not set(case.forbidden_refs).intersection(selected)
+        public_result = public_results[case.name]
+        selected = list(public_result["selected"])
+        passed = bool(public_result["passed"])
         result_ip = journal.add_ip(
             cycle_id=cycle_id,
             label=f"{case.name}_observed_result",

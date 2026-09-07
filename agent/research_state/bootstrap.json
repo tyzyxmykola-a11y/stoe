@@ -36,14 +36,24 @@
       ],
       "started_at": "2026-09-07T17:23:54.714841+00:00",
       "status": "completed"
+    },
+    {
+      "action_id": "checkpoint:continuity-reconciliation-v1",
+      "completed_at": "2026-09-07T22:51:44.424773+00:00",
+      "description": "Reconcile runtime, tracked checkpoint/bootstrap, and active release by verified succession.",
+      "result_refs": [
+        "continuity_reconciliation_report"
+      ],
+      "started_at": "2026-09-07T22:51:44.297025+00:00",
+      "status": "completed"
     }
   ],
   "active_hypothesis": {
     "claim": "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve it on newly frozen cases without expanding candidate authority?",
     "claim_type": "hypothesis",
     "source_refs": [
-      "candidate_capability_boundary_report",
-      "accepted_cycle_json"
+      "continuity_reconciliation_report",
+      "candidate_capability_boundary_report"
     ]
   },
   "artifacts": [
@@ -188,6 +198,19 @@
       ],
       "summary": "Adversarial tests demonstrating non-execution and bounded policy interpretation.",
       "summary_is_exact_source": false
+    },
+    {
+      "bytes": 4339,
+      "kind": "checkpoint_report",
+      "path": "agent/CONTINUITY_RECONCILIATION_CHECKPOINT.md",
+      "provenance": "verified_continuity_reconciliation_checkpoint",
+      "ref": "continuity_reconciliation_report",
+      "sha256": "977c10960c3690a60b2fa027c298f8028e35593a39e82f0ddbc5fe696f5beabc",
+      "source_refs": [
+        "candidate_capability_boundary_report"
+      ],
+      "summary": "Observed stale-state precedence, lineage repair, verification, and remaining boundary.",
+      "summary_is_exact_source": false
     }
   ],
   "author_definitions": [
@@ -222,9 +245,16 @@
         "candidate_capability_boundary_report",
         "accepted_cycle_json"
       ]
+    },
+    {
+      "claim": "Continuity correction: storage alone did not conserve the current connected succession of states; the former resume claim omitted reconciliation across persisted copies.",
+      "claim_type": "correction",
+      "source_refs": [
+        "continuity_reconciliation_report"
+      ]
     }
   ],
-  "current_task": "Candidate capability-boundary checkpoint completed without provider generation.",
+  "current_task": "Continuity reconciliation checkpoint completed without provider generation.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -246,6 +276,13 @@
       "source_refs": [
         "selection_policy_format_v1",
         "candidate_capability_boundary_report"
+      ]
+    },
+    {
+      "decision": "Repair decision: compare content fingerprints and verified ancestry, fast-forward stale runtime, preserve only provably ahead runtime, and fail closed on divergent or cross-branch histories.",
+      "reason": "File timestamps or location cannot establish descent; bound ancestry can.",
+      "source_refs": [
+        "continuity_reconciliation_report"
       ]
     }
   ],
@@ -295,6 +332,15 @@
         "capability_boundary_adversarial_tests"
       ],
       "stance": "supports"
+    },
+    {
+      "claim": "Observed continuity failure: an ignored but stale runtime research_state.json was returned before the newer tracked checkpoint and restored an obsolete research question.",
+      "claim_type": "fact",
+      "kind": "failure",
+      "source_refs": [
+        "continuity_reconciliation_report"
+      ],
+      "stance": "failure"
     }
   ],
   "measurements": {
@@ -371,6 +417,12 @@
         "checkpoint_id": "20260907T175616Z_060055aa47",
         "created_at": "2026-09-07T17:56:16.592907+00:00",
         "reason": "Final adversarial policy validation and non-finite scalar coverage"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260907T225144Z_5ae3c23669",
+        "created_at": "2026-09-07T22:51:44.474813+00:00",
+        "reason": "Completed continuity reconciliation v1 without provider generation"
       }
     ],
     "provider_usage": [
@@ -388,7 +440,7 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Freeze new cases before outcomes, then test whether a bounded structural input improves changed-constraint invalidation through the declarative policy interface; do not repeat prior model actions or treat infrastructure tests as scientific evidence.",
+  "next_executable_step": "Freeze new cases before outcomes, then investigate whether bounded structural input improves changed-constraint invalidation; do not run generation until this continuity checkpoint is independently reviewed.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
@@ -396,11 +448,11 @@
       "claim_type": "question",
       "question": "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve it on newly frozen cases without expanding candidate authority?",
       "source_refs": [
-        "candidate_capability_boundary_report"
+        "continuity_reconciliation_report"
       ]
     }
   ],
-  "updated_at": "2026-09-07T17:56:16.587908+00:00",
+  "updated_at": "2026-09-07T22:51:44.454314+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

@@ -10,6 +10,7 @@ import uuid
 from pathlib import Path
 
 from stoe_agent.research_state import ResearchStateStore
+from stoe_agent.continuity import ContinuityDivergenceError
 from stoe_agent.token_budget import ContextBudgetExceeded, TokenBudgetManager, TokenEstimator
 
 
@@ -30,11 +31,20 @@ class ContinuityTests(unittest.TestCase):
             raise RuntimeError("refusing to remove continuity fixture outside agent root")
         shutil.rmtree(root, ignore_errors=True)
 
-    def make_store(self, root: Path, runtime_name: str = "runtime") -> ResearchStateStore:
+    def make_store(
+        self,
+        root: Path,
+        runtime_name: str = "runtime",
+        *,
+        bootstrap: bool = False,
+        branch_id: str = "test-branch",
+    ) -> ResearchStateStore:
         return ResearchStateStore(
             runtime_dir=root / runtime_name,
             checkpoint_dir=root / "checkpoints",
+            bootstrap_path=root / "published" / "bootstrap.json" if bootstrap else None,
             project_root=root,
+            branch_id=branch_id,
         )
 
     def populated_state(self) -> dict:
@@ -215,6 +225,91 @@ class ContinuityTests(unittest.TestCase):
         published = json.loads(bootstrap.read_text(encoding="utf-8"))
         self.assertEqual("Continue a synthetic SToE research project.", published["objective"])
         self.assertEqual("completed:model-call", published["actions"][0]["action_id"])
+
+    def test_stale_runtime_fast_forwards_to_verified_checkpoint(self):
+        root = self.make_root("stale")
+        store = self.make_store(root, bootstrap=True)
+        first = self.populated_state()
+        first["current_task"] = "older tracked state"
+        store.save(first)
+        first_checkpoint = store.checkpoint(reason="older")
+        old_state = json.loads(Path(first_checkpoint["path"]).read_text(encoding="utf-8"))["state"]
+
+        current = store.load()
+        current["current_task"] = "newer tracked state"
+        store.save(current)
+        store.checkpoint(reason="newer")
+
+        store._atomic_json(store.state_path, old_state)
+        store.runtime_lineage_path.unlink()
+        reconciled = store.load()
+        self.assertEqual("newer tracked state", reconciled["current_task"])
+        self.assertEqual(
+            store._state_fingerprint(json.loads(store.bootstrap_path.read_text(encoding="utf-8"))),
+            store._state_fingerprint(reconciled),
+        )
+
+    def test_runtime_provably_ahead_is_preserved(self):
+        root = self.make_root("ahead")
+        store = self.make_store(root, bootstrap=True)
+        state = self.populated_state()
+        state["current_task"] = "tracked checkpoint"
+        store.save(state)
+        store.checkpoint(reason="tracked")
+
+        ahead = store.load()
+        ahead["current_task"] = "runtime-only successor"
+        store.save(ahead)
+        runtime_bytes = store.state_path.read_bytes()
+        self.assertEqual("runtime-only successor", store.load()["current_task"])
+        self.assertEqual(runtime_bytes, store.state_path.read_bytes())
+
+    def test_divergent_runtime_fails_explicitly(self):
+        root = self.make_root("divergent")
+        tracked = self.make_store(root, bootstrap=True)
+        tracked.save(self.populated_state())
+        tracked.checkpoint(reason="tracked")
+
+        other_root = self.make_root("other_stream")
+        other = self.make_store(other_root)
+        state = self.populated_state()
+        state["current_task"] = "unrelated history"
+        other.save(state)
+        tracked.state_path.write_bytes(other.state_path.read_bytes())
+        tracked.runtime_lineage_path.write_bytes(other.runtime_lineage_path.read_bytes())
+
+        with self.assertRaisesRegex(ContinuityDivergenceError, "cannot reconcile"):
+            tracked.load()
+
+    def test_cross_branch_runtime_fails_instead_of_overwriting(self):
+        root = self.make_root("cross_branch")
+        store = self.make_store(root, bootstrap=True, branch_id="branch-a")
+        store.save(self.populated_state())
+        store.checkpoint(reason="branch a checkpoint")
+        ahead = store.load()
+        ahead["current_task"] = "branch b runtime"
+        store.save(ahead)
+        lineage = json.loads(store.runtime_lineage_path.read_text(encoding="utf-8"))
+        lineage["branch_id"] = "branch-b"
+        store._atomic_json(store.runtime_lineage_path, lineage)
+
+        with self.assertRaisesRegex(ContinuityDivergenceError, "cross-branch"):
+            store.load()
+
+    def test_clean_checkout_uses_tracked_state_without_runtime(self):
+        root = self.make_root("clean_checkout")
+        first = self.make_store(root, "runtime_one", bootstrap=True)
+        state = self.populated_state()
+        state["current_task"] = "tracked clean-checkout state"
+        first.save(state)
+        first.checkpoint(reason="publish")
+
+        clean = self.make_store(root, "runtime_clean", bootstrap=True)
+        self.assertFalse(clean.state_path.exists())
+        loaded = clean.load()
+        self.assertEqual("tracked clean-checkout state", loaded["current_task"])
+        self.assertTrue(clean.runtime_lineage_path.exists())
+
 
 
 if __name__ == "__main__":

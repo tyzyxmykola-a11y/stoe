@@ -1,0 +1,229 @@
+{
+  "checkpoints": [
+    {
+      "ancestor_state_fingerprints": [],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260906T175941Z_d51e97767b",
+      "file": "20260906T175941Z_d51e97767b.json",
+      "parent_state_fingerprint": null,
+      "sha256": "aa551d74fed889835f7632f8db739f49cba5d070878ecbf1b157069a23a8fe97",
+      "state_fingerprint": "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260906T180400Z_1d570548ac",
+      "file": "20260906T180400Z_1d570548ac.json",
+      "parent_state_fingerprint": "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+      "sha256": "f7cf5d26ff1a80c33aa083549e613535ffda64512cbc8b8cdffd674bd28dbf01",
+      "state_fingerprint": "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260906T180447Z_bd6a6dd3da",
+      "file": "20260906T180447Z_bd6a6dd3da.json",
+      "parent_state_fingerprint": "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+      "sha256": "7c9b8277e69e4c2882352d284be69f3ecfc8b4917eb7d151ac47c5479f6d745b",
+      "state_fingerprint": "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260906T180932Z_5a5e62a2df",
+      "file": "20260906T180932Z_5a5e62a2df.json",
+      "parent_state_fingerprint": "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+      "sha256": "500790b93f3a48aa4bd64a0588d3ec18526df75cb2e449fe1e753e8701bd3469",
+      "state_fingerprint": "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260906T181012Z_500d7003cf",
+      "file": "20260906T181012Z_500d7003cf.json",
+      "parent_state_fingerprint": "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+      "sha256": "a2ae117eec08289febef0f00278abca852b51f6f398a8f8b3e6ccee9bde40115",
+      "state_fingerprint": "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260906T181135Z_6667cfd760",
+      "file": "20260906T181135Z_6667cfd760.json",
+      "parent_state_fingerprint": "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+      "sha256": "3f2b388c315ee823cecaf761e3fb40deaa62c67e9120c1908b24f468c2fcd4e1",
+      "state_fingerprint": "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T172354Z_a814b1fd75",
+      "file": "20260907T172354Z_a814b1fd75.json",
+      "parent_state_fingerprint": "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+      "sha256": "95854d3014b8e6f8f760c963116e8e974658d5a455f07d3344b10c0d53c2b4ab",
+      "state_fingerprint": "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+        "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T175013Z_179394ac96",
+      "file": "20260907T175013Z_179394ac96.json",
+      "parent_state_fingerprint": "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+      "sha256": "8b89d37700deb67b931e337b4e5bf0648bc7e9b0d05c0fcc096f27289a9731fd",
+      "state_fingerprint": "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+        "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+        "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T175158Z_98063743e8",
+      "file": "20260907T175158Z_98063743e8.json",
+      "parent_state_fingerprint": "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179",
+      "sha256": "568b65be6aa6bce7a604d0b5db1e6853ab34e7c208be434b348bee3678cf6080",
+      "state_fingerprint": "98063743e892184aecd5daf3e2aedb24a91b692b01d54c5562cb58fcbfb66db9",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+        "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+        "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179",
+        "98063743e892184aecd5daf3e2aedb24a91b692b01d54c5562cb58fcbfb66db9"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T175318Z_582ef17bdb",
+      "file": "20260907T175318Z_582ef17bdb.json",
+      "parent_state_fingerprint": "98063743e892184aecd5daf3e2aedb24a91b692b01d54c5562cb58fcbfb66db9",
+      "sha256": "91a29c10650cf194a5100b7684789589f2959497c7207c84170d65de3ee22f92",
+      "state_fingerprint": "582ef17bdbab7abc8b4cdd120979c23664500374eb6286bfa167d64ea1f2483d",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+        "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+        "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179",
+        "98063743e892184aecd5daf3e2aedb24a91b692b01d54c5562cb58fcbfb66db9",
+        "582ef17bdbab7abc8b4cdd120979c23664500374eb6286bfa167d64ea1f2483d"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T175408Z_04cea776ab",
+      "file": "20260907T175408Z_04cea776ab.json",
+      "parent_state_fingerprint": "582ef17bdbab7abc8b4cdd120979c23664500374eb6286bfa167d64ea1f2483d",
+      "sha256": "df9626f88278c8cd25bfcdb25f10e7d17de4cd57b2f927c4a055881c1b26701c",
+      "state_fingerprint": "04cea776ab96f5d06deaa1a34ecd8406224fbfe7ccacc7c135739f9eeea712b0",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+        "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+        "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179",
+        "98063743e892184aecd5daf3e2aedb24a91b692b01d54c5562cb58fcbfb66db9",
+        "582ef17bdbab7abc8b4cdd120979c23664500374eb6286bfa167d64ea1f2483d",
+        "04cea776ab96f5d06deaa1a34ecd8406224fbfe7ccacc7c135739f9eeea712b0"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T175616Z_060055aa47",
+      "file": "20260907T175616Z_060055aa47.json",
+      "parent_state_fingerprint": "04cea776ab96f5d06deaa1a34ecd8406224fbfe7ccacc7c135739f9eeea712b0",
+      "sha256": "595e0f97c0bc64ae37e1caaa53e269d3daf793f08b7d4caf806206b5e4c92d38",
+      "state_fingerprint": "060055aa47cfad8e8e525c3d6b61f1202f04e0fa6c261a5083df21b9e3a138c9",
+      "stream_id": "research-state:d51e97767b2f7594"
+    },
+    {
+      "ancestor_state_fingerprints": [
+        "d51e97767b2f75941d9349baa1d404c3d06593da9d8f3223b8e5666963295d24",
+        "1d570548acc76fa901dc03ae27b4298ed33825b77e45a694312ea6b3498f7934",
+        "bd6a6dd3da6a8b2b030ea87409c0fb5332416892d6abd661b35866b008fee841",
+        "5a5e62a2df83253408df3f000d04a32e71d7726aedd891a4b8a3734080432de2",
+        "500d7003cf10c030c41bb23604dd732baea319d059bfe0093e8d9b78c8f63bbd",
+        "6667cfd760c5f49c906b094b2e063468d8e5624fc4f027d37d1b4c4d0bdd715f",
+        "a814b1fd758c6c98ae2d2c8a0eb97cdafcf28cdd58c67d1494a718370006152f",
+        "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179",
+        "98063743e892184aecd5daf3e2aedb24a91b692b01d54c5562cb58fcbfb66db9",
+        "582ef17bdbab7abc8b4cdd120979c23664500374eb6286bfa167d64ea1f2483d",
+        "04cea776ab96f5d06deaa1a34ecd8406224fbfe7ccacc7c135739f9eeea712b0",
+        "060055aa47cfad8e8e525c3d6b61f1202f04e0fa6c261a5083df21b9e3a138c9",
+        "cd9f1fce3b183018fdd53ff3e023f7a89230b01dad97435d6107f67b6c8fa9f0",
+        "d1efe32b7c906bd9826d1798b2b7cc617fa0d396118fd5204ffea16f66499e14",
+        "fb49ee98a5fb20570539b06a81d870159b35cbc04e14794391e28038bd664162"
+      ],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "checkpoint_id": "20260907T225144Z_5ae3c23669",
+      "file": "20260907T225144Z_5ae3c23669.json",
+      "parent_state_fingerprint": "fb49ee98a5fb20570539b06a81d870159b35cbc04e14794391e28038bd664162",
+      "sha256": "58ac83caa51f4780e375e0e074e2ce3e665cd5bc65b36fff44a4717ad0c615a7",
+      "state_fingerprint": "5ae3c236697080579c8b63e3f752008ad1985ee99c2d47d32d4de57bceb0a3a7",
+      "stream_id": "research-state:d51e97767b2f7594"
+    }
+  ],
+  "kind": "research_state_lineage",
+  "schema_version": 1
+}

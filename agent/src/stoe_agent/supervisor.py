@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .continuity import ContinuityDivergenceError, Lineage, advance_lineage, compare_lineage
 from .field_journal import RebuildJournal, SESSION_ID
 from .investigation import public_diagnostics, investigate_selector
 from .ollama import OllamaClient
@@ -118,6 +119,7 @@ class SupervisorConfig:
     persist_active_manifest: bool = True
     research_checkpoint_dir: Path | None = None
     research_bootstrap_path: Path | None = None
+    continuity_branch: str | None = None
 
     @classmethod
     def defaults(
@@ -152,6 +154,7 @@ class RebuildSupervisor:
             endpoint=config.ollama_endpoint,
             model=config.model,
         )
+        self.continuity_branch = self.config.continuity_branch or self._detect_git_branch()
         self.active_pointer = self.config.runtime_dir / "active_component.json"
         self._ensure_active_pointer()
         self.research_state = ResearchStateStore(
@@ -159,6 +162,7 @@ class RebuildSupervisor:
             checkpoint_dir=(self.config.research_checkpoint_dir or self.config.runtime_dir / "research_checkpoints"),
             bootstrap_path=self.config.research_bootstrap_path,
             project_root=self.config.repo_root,
+            branch_id=self.continuity_branch,
         )
 
     @property
@@ -170,23 +174,31 @@ class RebuildSupervisor:
         return self.config.component_dir / "active_release.json"
 
     def _ensure_active_pointer(self) -> dict[str, Any]:
-        if self.active_pointer.exists():
-            return self.read_active_pointer()
+        runtime = self._read_pointer_file(self.active_pointer) if self.active_pointer.exists() else None
+        tracked = None
         if self.config.persist_active_manifest and self.active_release_manifest.exists():
-            release = json.loads(self.active_release_manifest.read_text(encoding="utf-8"))
-            source_path = self.config.component_dir / "versions" / str(release["source_file"])
-            pointer = {
-                "version": str(release["version"]),
-                "source_path": str(source_path.resolve()),
-                "sha256": str(release["sha256"]),
-                "artifact_type": str(release.get("artifact_type") or infer_artifact_type(source_path)),
-                "activated_at": str(release["activated_at"]),
-                "previous_version": release.get("previous_version"),
-            }
-            if not source_path.exists() or sha256_file(source_path) != pointer["sha256"]:
-                raise RuntimeError("tracked active release source hash mismatch")
-            self._atomic_write_json(self.active_pointer, pointer)
-            return pointer
+            tracked = self._pointer_from_release_manifest()
+        if runtime is not None and tracked is not None:
+            runtime_lineage = self._release_lineage(runtime, tracked=tracked)
+            tracked_lineage = self._release_lineage(tracked)
+            try:
+                relation = compare_lineage(runtime_lineage, tracked_lineage)
+            except ContinuityDivergenceError as exc:
+                raise ContinuityDivergenceError(
+                    f"cannot reconcile runtime active pointer with active_release.json: {exc}"
+                ) from exc
+            if relation == "behind":
+                self._atomic_write_json(self.active_pointer, tracked)
+                return tracked
+            if relation == "equal" and runtime.get("_lineage") is None:
+                self._atomic_write_json(self.active_pointer, tracked)
+                return tracked
+            return runtime
+        if runtime is not None:
+            return runtime
+        if tracked is not None:
+            self._atomic_write_json(self.active_pointer, tracked)
+            return tracked
         pointer = {
             "version": "v1",
             "source_path": str(self.baseline_path.resolve()),
@@ -195,6 +207,9 @@ class RebuildSupervisor:
             "activated_at": datetime.now(timezone.utc).isoformat(),
             "previous_version": None,
         }
+        pointer["_lineage"] = self._new_release_lineage(pointer).to_json(
+            identity_field="release_id"
+        )
         self._atomic_write_json(self.active_pointer, pointer)
         return pointer
 
@@ -214,15 +229,164 @@ class RebuildSupervisor:
                 "artifact_type": pointer.get("artifact_type") or infer_artifact_type(source_path),
                 "activated_at": pointer["activated_at"],
                 "previous_version": pointer.get("previous_version"),
+                "_lineage": pointer["_lineage"],
             },
         )
 
     def read_active_pointer(self) -> dict[str, Any]:
-        pointer = json.loads(self.active_pointer.read_text(encoding="utf-8"))
+        pointer = self._read_pointer_file(self.active_pointer)
+        return pointer
+
+    def _read_pointer_file(self, path: Path) -> dict[str, Any]:
+        pointer = json.loads(path.read_text(encoding="utf-8"))
         if sha256_file(pointer["source_path"]) != pointer["sha256"]:
             raise RuntimeError("active pointer source hash mismatch")
         pointer.setdefault("artifact_type", infer_artifact_type(pointer["source_path"]))
         return pointer
+
+    def _pointer_from_release_manifest(self) -> dict[str, Any]:
+        release = json.loads(self.active_release_manifest.read_text(encoding="utf-8"))
+        source_path = self.config.component_dir / "versions" / str(release["source_file"])
+        pointer = {
+            "version": str(release["version"]),
+            "source_path": str(source_path.resolve()),
+            "sha256": str(release["sha256"]),
+            "artifact_type": str(release.get("artifact_type") or infer_artifact_type(source_path)),
+            "activated_at": str(release["activated_at"]),
+            "previous_version": release.get("previous_version"),
+        }
+        if release.get("_lineage") is not None:
+            pointer["_lineage"] = release["_lineage"]
+        if not source_path.exists() or sha256_file(source_path) != pointer["sha256"]:
+            raise RuntimeError("tracked active release source hash mismatch")
+        if pointer.get("_lineage") is None:
+            pointer["_lineage"] = self._legacy_release_lineage(pointer).to_json(
+                identity_field="release_id"
+            )
+        return pointer
+
+    @staticmethod
+    def _release_id(pointer: dict[str, Any]) -> str:
+        encoded = json.dumps(
+            {
+                "artifact_type": pointer.get("artifact_type"),
+                "sha256": pointer["sha256"],
+                "version": pointer["version"],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        return hashlib.sha256(encoded).hexdigest()
+
+    def _new_release_lineage(self, pointer: dict[str, Any]) -> Lineage:
+        return Lineage(
+            kind="active_release",
+            stream_id="context-selector-release:v1",
+            branch_id=self.continuity_branch,
+            identity=self._release_id(pointer),
+            parent_identity=None,
+            ancestor_identities=(),
+        )
+
+    def _legacy_release_lineage(self, pointer: dict[str, Any]) -> Lineage:
+        current = self._new_release_lineage(pointer)
+        if pointer["version"] == "v1":
+            return current
+        if pointer.get("previous_version") != "v1":
+            raise ContinuityDivergenceError(
+                f"legacy active release {pointer['version']!r} has no provable ancestry"
+            )
+        baseline = {
+            "version": "v1",
+            "sha256": sha256_file(self.baseline_path),
+            "artifact_type": "legacy_python",
+        }
+        return Lineage(
+            kind=current.kind,
+            stream_id=current.stream_id,
+            branch_id=current.branch_id,
+            identity=current.identity,
+            parent_identity=self._release_id(baseline),
+            ancestor_identities=(self._release_id(baseline),),
+        )
+
+    def _release_lineage(
+        self, pointer: dict[str, Any], *, tracked: dict[str, Any] | None = None
+    ) -> Lineage:
+        value = pointer.get("_lineage")
+        artifact_fingerprint = self._release_id(pointer)
+        if value is None:
+            if pointer["version"] == "v1":
+                return self._legacy_release_lineage(pointer)
+            if tracked is not None:
+                tracked_lineage = self._release_lineage(tracked)
+                tracked_fingerprint = tracked.get("_lineage", {}).get(
+                    "artifact_fingerprint", self._release_id(tracked)
+                )
+                if artifact_fingerprint == tracked_fingerprint:
+                    return tracked_lineage
+                if artifact_fingerprint in tracked_lineage.ancestor_identities:
+                    return Lineage(
+                        kind=tracked_lineage.kind,
+                        stream_id=tracked_lineage.stream_id,
+                        branch_id=tracked_lineage.branch_id,
+                        identity=artifact_fingerprint,
+                        parent_identity=None,
+                        ancestor_identities=(),
+                    )
+            raise ContinuityDivergenceError(
+                f"unanchored active release {pointer['version']!r} has no ancestry proof"
+            )
+        identity = str(value.get("release_id"))
+        if value.get("artifact_fingerprint", artifact_fingerprint) != artifact_fingerprint:
+            raise ContinuityDivergenceError("active release lineage fingerprint mismatch")
+        if "artifact_fingerprint" not in value and identity != artifact_fingerprint:
+            raise ContinuityDivergenceError("legacy active release id is not content-addressed")
+        if not identity:
+            raise ContinuityDivergenceError("active release lineage has no release id")
+        return Lineage(
+            kind=str(value.get("kind")),
+            stream_id=str(value.get("stream_id")),
+            branch_id=str(value.get("branch_id")),
+            identity=identity,
+            parent_identity=value.get("parent_release_id"),
+            ancestor_identities=tuple(value.get("ancestor_release_ids", [])),
+        )
+
+    def _successor_pointer(
+        self, *, pointer: dict[str, Any], predecessor: dict[str, Any]
+    ) -> dict[str, Any]:
+        predecessor_lineage = self._release_lineage(predecessor)
+        artifact_fingerprint = self._release_id(pointer)
+        event_id = hashlib.sha256(
+            json.dumps(
+                {
+                    "activated_at": pointer["activated_at"],
+                    "artifact_fingerprint": artifact_fingerprint,
+                    "parent_release_id": predecessor_lineage.identity,
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        lineage = advance_lineage(predecessor_lineage, event_id)
+        pointer["_lineage"] = lineage.to_json(identity_field="release_id")
+        pointer["_lineage"]["artifact_fingerprint"] = artifact_fingerprint
+        return pointer
+
+    def _detect_git_branch(self) -> str:
+        try:
+            result = subprocess.run(
+                ["git", "-C", str(self.config.repo_root), "branch", "--show-current"],
+                capture_output=True,
+                text=True,
+                timeout=3,
+                check=False,
+            )
+            branch = result.stdout.strip()
+            return branch or "detached"
+        except (OSError, subprocess.SubprocessError):
+            return "unscoped"
 
     def protected_hashes(self) -> dict[str, str]:
         return {
@@ -622,6 +786,184 @@ class RebuildSupervisor:
             "action_id": action_id,
             "model_calls": 0,
             "field_refs": {key: value["ref"] for key, value in nodes.items()} | {"remaining_question": question["ref"]},
+            "question": question_text,
+            "checkpoint": checkpoint,
+        }
+
+    def record_continuity_reconciliation_checkpoint(self, report_path: Path) -> dict[str, Any]:
+        action_id = "checkpoint:continuity-reconciliation-v1"
+        question_text = (
+            "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve "
+            "it on newly frozen cases without expanding candidate authority?"
+        )
+        report_path = report_path.resolve()
+        if not report_path.is_file():
+            raise FileNotFoundError(report_path)
+        state = self.research_state.load()
+        existing = next((item for item in state["actions"] if item["action_id"] == action_id), None)
+        if existing and existing["status"] == "completed":
+            return {"decision": "SKIP_COMPLETED_ACTION", "action": existing, "model_calls": 0}
+        if existing is None:
+            self.research_state.begin_action(
+                action_id=action_id,
+                description="Reconcile runtime, tracked checkpoint/bootstrap, and active release by verified succession.",
+            )
+
+        cycle_id = "continuity_reconciliation_v1"
+        definitions = [
+            (
+                "intended_state_succession",
+                "Intended continuity boundary: resume must select the provable descendant across runtime, tracked checkpoint, and bootstrap rather than prefer a storage location.",
+                "constraint",
+                "supported",
+                "runtime_reasoning",
+            ),
+            (
+                "stale_runtime_precedence_failure",
+                "Observed continuity failure: an ignored but stale runtime research_state.json was returned before the newer tracked checkpoint and restored an obsolete research question.",
+                "observation",
+                "failed",
+                "failure_history",
+            ),
+            (
+                "continuity_claim_correction",
+                "Continuity correction: storage alone did not conserve the current connected succession of states; the former resume claim omitted reconciliation across persisted copies.",
+                "correction",
+                "supported",
+                "runtime_reasoning",
+            ),
+            (
+                "lineage_repair_decision",
+                "Repair decision: compare content fingerprints and verified ancestry, fast-forward stale runtime, preserve only provably ahead runtime, and fail closed on divergent or cross-branch histories.",
+                "decision",
+                "supported",
+                "state_change",
+            ),
+            (
+                "lineage_repair_implementation",
+                "Implementation: hash-anchored checkpoint lineage plus fingerprint-bound runtime/bootstrap and active-release ancestry now governs both research state and active component reconciliation.",
+                "implementation",
+                "supported",
+                "state_change",
+            ),
+            (
+                "lineage_adversarial_tests",
+                "Evaluation: deterministic tests cover stale, ahead, divergent, clean-checkout, and cross-branch research states plus stale, ahead, and divergent active pointers.",
+                "evaluation",
+                "supported",
+                "evaluation",
+            ),
+            (
+                "continuity_remaining_limit",
+                "Remaining limitation: local lineage metadata protects against accidental stale or divergent continuity, not a malicious host able to rewrite the repository and runtime together.",
+                "constraint",
+                "active",
+                "runtime_reasoning",
+            ),
+        ]
+        nodes: dict[str, dict[str, Any]] = {}
+        for label, content, kind, outcome, origin in definitions:
+            node = self.journal.find_exact_content(content)
+            if node is None:
+                node = self.journal.add_ip(
+                    cycle_id=cycle_id,
+                    label=label,
+                    content=content,
+                    kind=kind,
+                    origin=origin,
+                    outcome=outcome,
+                    failure_condition=(
+                        "Runtime file precedence ignored the tracked successor."
+                        if label == "stale_runtime_precedence_failure"
+                        else ""
+                    ),
+                    metadata={
+                        "action_id": action_id,
+                        "report": report_path.relative_to(self.config.repo_root).as_posix(),
+                        "report_sha256": sha256_file(report_path),
+                        "provider_generation_calls": 0,
+                    },
+                )
+            nodes[label] = node
+        for source, target, relation in [
+            ("stale_runtime_precedence_failure", "intended_state_succession", "contradicts"),
+            ("continuity_claim_correction", "stale_runtime_precedence_failure", "conserves_interpretation_of"),
+            ("lineage_repair_decision", "stale_runtime_precedence_failure", "responds_to"),
+            ("lineage_repair_implementation", "lineage_repair_decision", "implements"),
+            ("lineage_adversarial_tests", "lineage_repair_implementation", "evaluates"),
+            ("continuity_remaining_limit", "lineage_repair_implementation", "constrains"),
+        ]:
+            self.journal.relate(nodes[source]["ref"], nodes[target]["ref"], relation, "Continuity reconciliation trace")
+
+        report_artifact = self.research_state.register_artifact(
+            ref="continuity_reconciliation_report",
+            path=report_path,
+            summary="Observed stale-state precedence, lineage repair, verification, and remaining boundary.",
+            kind="checkpoint_report",
+            provenance="verified_continuity_reconciliation_checkpoint",
+            source_refs=["candidate_capability_boundary_report"],
+        )
+        state = self.research_state.load()
+        state["current_task"] = "Continuity reconciliation checkpoint completed without provider generation."
+        failure_claim = definitions[1][1]
+        correction_claim = definitions[2][1]
+        decision_claim = definitions[3][1]
+        if not any(item.get("claim") == failure_claim for item in state["evidence"]):
+            state["evidence"].append(
+                {
+                    "claim_type": "fact",
+                    "kind": "failure",
+                    "stance": "failure",
+                    "claim": failure_claim,
+                    "source_refs": ["continuity_reconciliation_report"],
+                }
+            )
+        if not any(item.get("claim") == correction_claim for item in state["corrections"]):
+            state["corrections"].append(
+                {
+                    "claim_type": "correction",
+                    "claim": correction_claim,
+                    "source_refs": ["continuity_reconciliation_report"],
+                }
+            )
+        if not any(item.get("decision") == decision_claim for item in state["decisions"]):
+            state["decisions"].append(
+                {
+                    "decision": decision_claim,
+                    "reason": "File timestamps or location cannot establish descent; bound ancestry can.",
+                    "source_refs": ["continuity_reconciliation_report"],
+                }
+            )
+        state["active_hypothesis"] = {
+            "claim_type": "hypothesis",
+            "claim": question_text,
+            "source_refs": ["continuity_reconciliation_report", "candidate_capability_boundary_report"],
+        }
+        state["unresolved_questions"] = [
+            {
+                "claim_type": "question",
+                "question": question_text,
+                "source_refs": ["continuity_reconciliation_report"],
+            }
+        ]
+        state["next_executable_step"] = (
+            "Freeze new cases before outcomes, then investigate whether bounded structural input improves changed-constraint invalidation; "
+            "do not run generation until this continuity checkpoint is independently reviewed."
+        )
+        self.research_state.save(state)
+        self.research_state.set_action_status(
+            action_id=action_id,
+            status="completed",
+            result_refs=[report_artifact["ref"]],
+        )
+        checkpoint = self.checkpoint_research_state(
+            "Completed continuity reconciliation v1 without provider generation"
+        )
+        return {
+            "decision": "COMPLETED",
+            "action_id": action_id,
+            "model_calls": 0,
+            "field_refs": {key: value["ref"] for key, value in nodes.items()},
             "question": question_text,
             "checkpoint": checkpoint,
         }
@@ -1520,6 +1862,7 @@ class RebuildSupervisor:
             "activated_at": datetime.now(timezone.utc).isoformat(),
             "previous_version": old_pointer["version"],
         }
+        new_pointer = self._successor_pointer(pointer=new_pointer, predecessor=old_pointer)
         attempt_ip = self.journal.add_ip(
             cycle_id=cycle_id,
             label="activation_attempt",
@@ -1757,9 +2100,8 @@ class RebuildSupervisor:
         artifact_type = infer_artifact_type(source_path)
         cycle_id = "rollback_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         prior = self.read_active_pointer()
-        self._atomic_write_json(
-            self.active_pointer,
-            {
+        next_pointer = self._successor_pointer(
+            pointer={
                 "version": version,
                 "source_path": str(source_path.resolve()),
                 "sha256": sha256_file(source_path),
@@ -1767,7 +2109,9 @@ class RebuildSupervisor:
                 "activated_at": datetime.now(timezone.utc).isoformat(),
                 "previous_version": prior["version"],
             },
+            predecessor=prior,
         )
+        self._atomic_write_json(self.active_pointer, next_pointer)
         health = self._safe_fresh_process_health()
         if not health["healthy"]:
             self._atomic_write_json(self.active_pointer, prior)

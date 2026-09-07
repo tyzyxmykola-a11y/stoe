@@ -91,5 +91,13 @@ provider token counts, action reconciliation, and fresh-process resume, see the
 not described as continuously active; continuity means the next bounded session
 can recover the recorded state.
 
+Runtime continuity is reconciled rather than selected by file precedence. The
+loader compares the ignored runtime state, the tracked latest checkpoint, and the
+tracked bootstrap through content fingerprints plus verified parent ancestry. It
+fast-forwards stale state, retains only provably ahead state, and fails explicitly
+on divergent or cross-branch histories. The runtime component pointer is
+reconciled with `active_release.json` by the same rule. See
+[the continuity reconciliation checkpoint](CONTINUITY_RECONCILIATION_CHECKPOINT.md).
+
 The isolated failure probe separately demonstrates recovery of the previous
 pointer and fresh-process health after a deliberately failed activation.

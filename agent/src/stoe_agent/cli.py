@@ -47,6 +47,8 @@ def main(argv=None) -> int:
     question.add_argument("--report", required=True, type=Path)
     capability = subparsers.add_parser("record-capability-checkpoint")
     capability.add_argument("--report", required=True, type=Path)
+    continuity = subparsers.add_parser("record-continuity-checkpoint")
+    continuity.add_argument("--report", required=True, type=Path)
     state_update = subparsers.add_parser("state-update")
     state_update.add_argument("--current-task")
     state_update.add_argument("--next-step")
@@ -102,6 +104,8 @@ def main(argv=None) -> int:
         result = supervisor.record_next_research_question(args.report)
     elif args.command == "record-capability-checkpoint":
         result = supervisor.record_capability_boundary_checkpoint(args.report)
+    elif args.command == "record-continuity-checkpoint":
+        result = supervisor.record_continuity_reconciliation_checkpoint(args.report)
     elif args.command == "state-update":
         state = supervisor.research_state.load()
         if args.current_task is not None:

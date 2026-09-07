@@ -1,4 +1,15 @@
 {
+  "_lineage": {
+    "ancestor_release_ids": [
+      "5e536b8d4f822421a8eb1fbc45cc8edc50ad6b5c3bca72e116ab7e9f8df52fea"
+    ],
+    "branch_id": "feature/self-rebuild-cycle-v1",
+    "kind": "active_release",
+    "parent_release_id": "5e536b8d4f822421a8eb1fbc45cc8edc50ad6b5c3bca72e116ab7e9f8df52fea",
+    "release_id": "e38801b4dcf80eec515c6539f0c18c77bbbcc5229713d9ce988fb32131bbbc61",
+    "schema_version": 1,
+    "stream_id": "context-selector-release:v1"
+  },
   "version": "generated_20260906T125305Z_92e7e913",
   "source_file": "generated_20260906T125305Z_92e7e913.py",
   "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

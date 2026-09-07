@@ -11,7 +11,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from stoe_agent.ollama import ModelIdentity, OllamaClient
-from stoe_agent.selector_loader import load_selector
+from stoe_agent.continuity import ContinuityDivergenceError
+from stoe_agent.selector_loader import load_selector, sha256_file
 from stoe_agent.selection_policy import execute_policy, validate_policy
 from stoe_agent.static_gate import validate_candidate_source
 from stoe_agent.supervisor import RebuildSupervisor, SupervisorConfig
@@ -585,6 +586,99 @@ class RebuildTests(unittest.TestCase):
             self.assertEqual(release["version"], pointer["version"])
             self.assertEqual(release["sha256"], pointer["sha256"])
             self.assertEqual("legacy_python", pointer["artifact_type"])
+
+    def test_stale_runtime_active_pointer_fast_forwards_to_tracked_release(self):
+        with self.temporary_root("stoe_release_stale_") as raw:
+            runtime = Path(raw)
+            v1 = self.agent_root / "owned_components" / "context_selector" / "versions" / "v1.py"
+            (runtime / "active_component.json").write_text(
+                json.dumps(
+                    {
+                        "version": "v1",
+                        "source_path": str(v1.resolve()),
+                        "sha256": sha256_file(v1),
+                        "artifact_type": "legacy_python",
+                        "activated_at": "2026-01-01T00:00:00+00:00",
+                        "previous_version": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            config = SupervisorConfig(
+                repo_root=self.repo_root,
+                runtime_dir=runtime,
+                component_dir=self.agent_root / "owned_components" / "context_selector",
+                protected_eval_dir=self.agent_root / "protected_evals",
+                report_dir=runtime,
+                persist_active_manifest=True,
+                continuity_branch="feature/self-rebuild-cycle-v1",
+            )
+            supervisor = RebuildSupervisor(config, model_client=FakeModelClient())
+            release = json.loads(supervisor.active_release_manifest.read_text(encoding="utf-8"))
+            self.assertEqual(release["version"], supervisor.read_active_pointer()["version"])
+
+    def _isolated_release_supervisor(self, root: Path) -> tuple[RebuildSupervisor, SupervisorConfig]:
+        component = root / "component"
+        shutil.copytree(self.agent_root / "owned_components" / "context_selector", component)
+        config = SupervisorConfig(
+            repo_root=self.repo_root,
+            runtime_dir=root / "runtime",
+            component_dir=component,
+            protected_eval_dir=self.agent_root / "protected_evals",
+            report_dir=root / "reports",
+            persist_active_manifest=True,
+            continuity_branch="branch-a",
+        )
+        return RebuildSupervisor(config, model_client=FakeModelClient()), config
+
+    def test_provably_ahead_runtime_active_pointer_is_preserved(self):
+        with self.temporary_root("stoe_release_ahead_") as raw:
+            supervisor, config = self._isolated_release_supervisor(Path(raw))
+            prior = supervisor.read_active_pointer()
+            policy = config.component_dir / "versions" / "future.policy.json"
+            policy.write_text(json.dumps(IMPROVED_POLICY), encoding="utf-8")
+            future = supervisor._successor_pointer(
+                pointer={
+                    "version": "future",
+                    "source_path": str(policy.resolve()),
+                    "sha256": sha256_file(policy),
+                    "artifact_type": "selection_policy",
+                    "activated_at": "2026-09-08T00:00:00+00:00",
+                    "previous_version": prior["version"],
+                },
+                predecessor=prior,
+            )
+            supervisor._atomic_write_json(supervisor.active_pointer, future)
+
+            resumed = RebuildSupervisor(config, model_client=FakeModelClient())
+            self.assertEqual("future", resumed.read_active_pointer()["version"])
+
+    def test_divergent_runtime_active_pointer_fails_explicitly(self):
+        with self.temporary_root("stoe_release_divergent_") as raw:
+            supervisor, config = self._isolated_release_supervisor(Path(raw))
+            policy = config.component_dir / "versions" / "unrelated.policy.json"
+            policy.write_text(json.dumps(IMPROVED_POLICY), encoding="utf-8")
+            pointer = {
+                "version": "unrelated",
+                "source_path": str(policy.resolve()),
+                "sha256": sha256_file(policy),
+                "artifact_type": "selection_policy",
+                "activated_at": "2026-09-08T00:00:00+00:00",
+                "previous_version": None,
+            }
+            pointer["_lineage"] = {
+                "schema_version": 1,
+                "kind": "active_release",
+                "stream_id": "unrelated-stream",
+                "branch_id": "branch-a",
+                "release_id": supervisor._release_id(pointer),
+                "parent_release_id": None,
+                "ancestor_release_ids": [],
+            }
+            supervisor._atomic_write_json(supervisor.active_pointer, pointer)
+
+            with self.assertRaisesRegex(ContinuityDivergenceError, "cannot reconcile"):
+                RebuildSupervisor(config, model_client=FakeModelClient())
 
 
 if __name__ == "__main__":

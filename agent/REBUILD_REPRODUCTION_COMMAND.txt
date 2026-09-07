@@ -13,6 +13,9 @@ python -m stoe_agent replay --source owned_components/context_selector/versions/
 python -m stoe_agent checkpoint --reason "meaningful research boundary"
 python -m stoe_agent resume --max-tokens 1800
 
+# Future model cycles emit inert .policy.json artifacts. Python candidate source is rejected.
+# The accepted Python selector is replayable only through the immutable legacy adapter.
+
 # Stable action IDs prevent accidental repetition after resume.
 python -m stoe_agent action --id research-step-001 --status running --description "bounded investigation"
 python -m stoe_agent action --id research-step-001 --status completed --result-ref ARTIFACT_REF

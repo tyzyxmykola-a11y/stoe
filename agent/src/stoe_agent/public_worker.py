@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 from .investigation import evaluate_public_selector
-from .selector_loader import load_selector
+from .selector_loader import ARTIFACT_TYPES, load_selector_artifact
 
 
 class BoundedTextSink:
@@ -37,13 +37,14 @@ class BoundedTextSink:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", required=True, type=Path)
+    parser.add_argument("--artifact", required=True, type=Path)
+    parser.add_argument("--artifact-type", required=True, choices=sorted(ARTIFACT_TYPES))
     args = parser.parse_args(argv)
     captured_stdout = BoundedTextSink()
     captured_stderr = BoundedTextSink()
     try:
         with contextlib.redirect_stdout(captured_stdout), contextlib.redirect_stderr(captured_stderr):
-            selector = load_selector(args.source.resolve())
+            selector = load_selector_artifact(args.artifact.resolve(), args.artifact_type)
             result = evaluate_public_selector(selector)
         result["candidate_stdout"] = captured_stdout.result()
         result["candidate_stderr"] = captured_stderr.result()

@@ -7,7 +7,7 @@ import sqlite3
 import sys
 from pathlib import Path
 
-from .selector_loader import load_selector, sha256_file, validate_selection
+from .selector_loader import infer_artifact_type, load_selector_artifact, sha256_file, validate_selection
 from .public_worker import BoundedTextSink
 
 
@@ -47,7 +47,8 @@ def run_health_check(*, active_pointer: Path, field_db: Path) -> dict:
     captured_stdout = BoundedTextSink()
     captured_stderr = BoundedTextSink()
     with contextlib.redirect_stdout(captured_stdout), contextlib.redirect_stderr(captured_stderr):
-        selector = load_selector(source_path)
+        artifact_type = str(pointer.get("artifact_type") or infer_artifact_type(source_path))
+        selector = load_selector_artifact(source_path, artifact_type)
         selected = validate_selection(selector(observer, items, 1, 180), items, 1, 180)
     if not selected:
         raise RuntimeError("active selector returned no context during health check")
@@ -66,6 +67,7 @@ def run_health_check(*, active_pointer: Path, field_db: Path) -> dict:
         "healthy": True,
         "active_version": pointer["version"],
         "active_sha256": pointer["sha256"],
+        "active_artifact_type": artifact_type,
         "selected": selected,
         "persistent_node_count": node_count,
         "latest_persistent_ip": list(latest) if latest else None,

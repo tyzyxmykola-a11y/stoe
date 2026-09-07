@@ -2,25 +2,31 @@
 
 This directory adds one bounded self-rebuild capability to the existing SToE
 repository. It does not alter model weights or provider infrastructure. It can
-inspect, revise, test, activate, and roll back agent-owned Python components.
+inspect, revise, test, activate, and roll back an agent-owned selection policy.
 
 The first owned component is the research-context selector in
 `owned_components/context_selector/versions`. The trusted supervisor, protected
 evaluation cases, activation checks, and rollback rules are outside that
-component's editable boundary. A local Ollama model receives the active source,
+component's editable boundary. A local Ollama model receives the active artifact,
 its public contract, and an observed limitation; it does not receive protected
 cases or expected answers. Model output is data, not a shell command.
 
 ## Trust boundary
 
-The model can propose a JSON change specification and one Python source file.
-The supervisor writes only inside a candidate directory, rejects unsafe syntax
-and imports, executes evaluation in a time-bounded subprocess, checks protected
-file hashes, and activates only after a fixed acceptance rule. The model cannot
-change the evaluator, acceptance threshold, active pointer, or rollback logic
-through the generation interface. This is a software boundary, not an OS-level
-security sandbox; the human-controlled repository and process permissions remain
-the ultimate authority.
+The earlier implementation intended generated Python to lack filesystem and
+evaluator authority, but its AST blacklist did not enforce that boundary. A
+candidate could bypass it through `__builtins__` and would then execute with the
+worker process's filesystem, environment, process, and network authority. A
+subprocess timeout contained hangs only. This implementation defect is recorded
+without rewriting the historical evaluation evidence.
+
+Future candidates are inert, versioned `stoe.selection_policy` JSON data. Trusted
+code permits only bounded scoring, comparison, filtering, deterministic sorting,
+and output-budget operations. It projects only the documented observer and item
+fields; the policy has no expression language or way to name files, environment
+variables, processes, network resources, evaluator state, active pointers, or
+protected cases. Public and protected execution remains time bounded and
+exception safe. See [SELECTION_POLICY_FORMAT.md](SELECTION_POLICY_FORMAT.md).
 
 Runtime databases, snapshots, traces, and active pointers live under
 `agent/runtime/` and are excluded from Git. Accepted source and cycle reports are
@@ -28,10 +34,12 @@ versioned in the worktree. The SToE memory database conserves architecture,
 component, limitation, proposal, candidate, evaluation, activation, and rollback
 IPs with typed directed relations.
 
-Generated selectors are never executed in the supervisor process during public
-diagnostics. A bounded child process converts timeout, crash, malformed output,
-and invalid selection into recorded rejection. Activation exceptions restore the
-previous pointer and verify recovery in another fresh process.
+The accepted Python selector remains an immutable legacy release. A trusted
+adapter loads only the two historical Python releases by exact filename, location,
+and SHA-256; arbitrary Python is rejected before import. No migration or
+reactivation occurs during the capability-boundary checkpoint. Activation
+exceptions still restore the previous pointer and verify recovery in another
+fresh process.
 
 ## Run one bounded cycle
 
@@ -45,9 +53,9 @@ python -m stoe_agent cycle --model qwen3-coder:latest --action-id model-cycle:NE
 python -m stoe_agent status
 ```
 
-The cycle makes two local Ollama calls: a preregistered proposal and a source
+The cycle makes two local Ollama calls: a preregistered proposal and a policy
 generation call. It performs no cloud or paid API request. It does not iterate on
-held-out evaluation failures. A syntax/static-gate repair may be attempted once,
+held-out evaluation failures. A declarative validation repair may be attempted once,
 and both attempts remain in the trace.
 
 Rollback is explicit:

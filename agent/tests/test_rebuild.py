@@ -12,6 +12,7 @@ from unittest.mock import patch
 
 from stoe_agent.ollama import ModelIdentity, OllamaClient
 from stoe_agent.selector_loader import load_selector
+from stoe_agent.selection_policy import execute_policy, validate_policy
 from stoe_agent.static_gate import validate_candidate_source
 from stoe_agent.supervisor import RebuildSupervisor, SupervisorConfig
 
@@ -79,11 +80,66 @@ def select_context(observer_state, items, max_items, max_chars):
     return selected
 '''
 
+IMPROVED_POLICY = {
+    "format": "stoe.selection_policy",
+    "version": 1,
+    "filters": [],
+    "score_rules": [
+        {
+            "op": "token_similarity",
+            "left_fields": [
+                "observer_state.goal",
+                "observer_state.active_constraints",
+                "observer_state.changed_constraints",
+                "observer_state.evidence",
+                "observer_state.open_questions",
+            ],
+            "right_field": "item.content",
+            "weight": 1.0,
+        },
+        {
+            "op": "conditional_similarity",
+            "conditions": [{"field": "item.origin", "op": "eq", "value": "failure_history"}],
+            "left_fields": ["observer_state.changed_constraints"],
+            "right_field": "item.failure_condition",
+            "weight": 1.25,
+            "bias": 0.35,
+        },
+        {
+            "op": "conditional_similarity",
+            "conditions": [{"field": "item.outcome", "op": "in", "values": ["failed", "failure", "rejected"]}],
+            "left_fields": ["observer_state.changed_constraints"],
+            "right_field": "item.failure_condition",
+            "weight": 1.25,
+            "bias": 0.35,
+        },
+        {
+            "op": "constant_if",
+            "conditions": [
+                {"field": "item.origin", "op": "eq", "value": "evaluation"},
+                {"field": "item.outcome", "op": "eq", "value": "supported"},
+            ],
+            "weight": 0.7,
+        },
+        {
+            "op": "constant_if",
+            "conditions": [{"field": "item.outcome", "op": "eq", "value": "superseded"}],
+            "weight": -0.25,
+        },
+    ],
+    "sort": [
+        {"key": "score", "direction": "desc"},
+        {"key": "item.created_order", "direction": "desc"},
+        {"key": "item.ref", "direction": "asc"},
+    ],
+    "budget": {"strategy": "greedy_skip_oversize"},
+}
+
 
 class FakeModelClient:
-    def __init__(self, source=IMPROVED_SOURCE):
+    def __init__(self, policy=IMPROVED_POLICY):
         self.calls = 0
-        self.source = source
+        self.policy = policy
 
     def identity(self):
         return ModelIdentity("fake-local-model", "f" * 64, "test")
@@ -145,7 +201,7 @@ class FakeModelClient:
                 "risks": ["Heuristic weights may not generalize."],
             }
         else:
-            payload = {"source": self.source, "implementation_note": "Observer-aware deterministic scorer."}
+            payload = {"policy": self.policy, "implementation_note": "Observer-aware deterministic scorer."}
         return payload, {"request": {"seed": seed}, "response": {"done": True}}
 
 
@@ -197,10 +253,11 @@ class RebuildTests(unittest.TestCase):
         unsafe = "import os\ndef select_context(observer_state, items, max_items, max_chars):\n    return []\n"
         result = validate_candidate_source(unsafe)
         self.assertFalse(result.passed)
-        self.assertTrue(any("allowlist" in error or "boundary" in error for error in result.errors))
+        self.assertTrue(any("unsupported" in error for error in result.errors))
 
-    def test_static_gate_accepts_bounded_component(self):
-        self.assertTrue(validate_candidate_source(IMPROVED_SOURCE).passed)
+    def test_executable_candidate_source_is_never_accepted(self):
+        self.assertFalse(validate_candidate_source(IMPROVED_SOURCE).passed)
+        self.assertTrue(validate_policy(IMPROVED_POLICY).passed)
 
     def test_ollama_uses_structured_thinking_when_response_is_empty(self):
         client = OllamaClient(model="test-model")
@@ -255,7 +312,24 @@ class RebuildTests(unittest.TestCase):
     def test_real_cycle_with_fake_generator_uses_field_and_activates(self):
         with self.temporary_root("stoe_cycle_test_") as raw:
             supervisor = self.make_supervisor(Path(raw))
-            report = supervisor.run_cycle()
+            baseline_eval = {
+                "status": "completed",
+                "pass_count": 1,
+                "case_count": 2,
+                "passed_cases": ["baseline_pass"],
+                "critical_failures": [],
+                "results": [],
+            }
+            candidate_eval = {
+                "status": "completed",
+                "pass_count": 2,
+                "case_count": 2,
+                "passed_cases": ["baseline_pass", "new_pass"],
+                "critical_failures": [],
+                "results": [],
+            }
+            with patch.object(supervisor, "_evaluate", side_effect=[baseline_eval, candidate_eval]):
+                report = supervisor.run_cycle()
             self.assertEqual("ACCEPT", report["decision"])
             self.assertTrue(report["activated"])
             self.assertLess(
@@ -326,10 +400,16 @@ class RebuildTests(unittest.TestCase):
 
     def test_public_behavioral_gate_rejects_noop_before_protected_eval(self):
         with self.temporary_root("stoe_public_noop_") as raw:
-            baseline_source = (
-                self.agent_root / "owned_components" / "context_selector" / "versions" / "v1.py"
-            ).read_text(encoding="utf-8")
-            supervisor = self.make_supervisor(Path(raw), FakeModelClient(source=baseline_source))
+            noop_policy = dict(IMPROVED_POLICY)
+            noop_policy["score_rules"] = [
+                {
+                    "op": "token_similarity",
+                    "left_fields": ["observer_state.goal"],
+                    "right_field": "item.content",
+                    "weight": 1.0,
+                }
+            ]
+            supervisor = self.make_supervisor(Path(raw), FakeModelClient(policy=noop_policy))
             report = supervisor.run_cycle()
             self.assertEqual("REJECT_PUBLIC_MECHANISM", report["decision"])
             self.assertFalse(report["activated"])
@@ -339,15 +419,14 @@ class RebuildTests(unittest.TestCase):
     def test_public_diagnostic_nontermination_is_bounded(self):
         with self.temporary_root("stoe_public_timeout_") as raw:
             root = Path(raw)
-            source = root / "hang.py"
-            source.write_text(
-                "def select_context(observer_state, items, max_items, max_chars):\n"
-                "    while True:\n"
-                "        pass\n",
-                encoding="utf-8",
-            )
+            source = root / "candidate.policy.json"
+            source.write_text(json.dumps(IMPROVED_POLICY), encoding="utf-8")
             supervisor = self.make_supervisor(root, public_timeout=0.2)
-            result = supervisor._evaluate_public(source)
+            with patch(
+                "stoe_agent.supervisor.subprocess.run",
+                side_effect=subprocess.TimeoutExpired(cmd="worker", timeout=0.2),
+            ):
+                result = supervisor._evaluate_public(source, artifact_type="declarative_policy")
             self.assertEqual("rejected", result["status"])
             self.assertEqual("timeout", result["failure_kind"])
             self.assertEqual("v1", supervisor.read_active_pointer()["version"])
@@ -376,20 +455,16 @@ class RebuildTests(unittest.TestCase):
             self.assertEqual("rejected", result["status"])
             self.assertEqual("malformed_output", result["failure_kind"])
 
-    def test_public_diagnostic_invalid_selection_is_recorded_not_raised(self):
+    def test_public_diagnostic_malformed_policy_is_recorded_not_raised(self):
         with self.temporary_root("stoe_public_invalid_") as raw:
             root = Path(raw)
-            source = root / "invalid.py"
-            source.write_text(
-                "def select_context(observer_state, items, max_items, max_chars):\n"
-                "    return ['NOT_AVAILABLE']\n",
-                encoding="utf-8",
-            )
+            source = root / "invalid.policy.json"
+            source.write_text('{"format": "wrong"}', encoding="utf-8")
             supervisor = self.make_supervisor(root)
-            result = supervisor._evaluate_public(source)
-            self.assertEqual("completed", result["status"])
+            result = supervisor._evaluate_public(source, artifact_type="declarative_policy")
+            self.assertEqual("rejected", result["status"])
             self.assertEqual(0, result["pass_count"])
-            self.assertTrue(all("unknown refs" in item["error"] for item in result["results"]))
+            self.assertIn(result["failure_kind"], {"crash", "worker_exception"})
 
     def _assert_exception_safe_activation(self, exc: Exception, expected_kind: str):
         with self.temporary_root(f"stoe_activation_{expected_kind}_") as raw:
@@ -509,6 +584,7 @@ class RebuildTests(unittest.TestCase):
             pointer = supervisor.read_active_pointer()
             self.assertEqual(release["version"], pointer["version"])
             self.assertEqual(release["sha256"], pointer["sha256"])
+            self.assertEqual("legacy_python", pointer["artifact_type"])
 
 
 if __name__ == "__main__":

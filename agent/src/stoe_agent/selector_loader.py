@@ -6,8 +6,18 @@ import sys
 from pathlib import Path
 from typing import Callable
 
+from .selection_policy import load_policy, policy_selector
+
 
 Selector = Callable[[dict, list[dict], int, int], list[str]]
+
+# These are immutable compatibility releases, not a general Python plugin API.
+# Any future generated artifact must be a declarative selection policy.
+LEGACY_RELEASES = {
+    "v1.py": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+    "generated_20260906T125305Z_92e7e913.py": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+}
+ARTIFACT_TYPES = {"legacy_python", "declarative_policy"}
 
 
 def sha256_file(path: str | Path) -> str:
@@ -19,7 +29,24 @@ def sha256_file(path: str | Path) -> str:
 
 
 def load_selector(path: str | Path) -> Selector:
+    """Load an immutable legacy release only.
+
+    This compatibility function intentionally rejects arbitrary Python, even if
+    it would have passed the former AST gate.
+    """
+    return load_legacy_selector(path)
+
+
+def load_legacy_selector(path: str | Path) -> Selector:
     source_path = Path(path).resolve()
+    expected = LEGACY_RELEASES.get(source_path.name)
+    if (
+        expected is None
+        or source_path.parent.name != "versions"
+        or source_path.parent.parent.name != "context_selector"
+        or sha256_file(source_path) != expected
+    ):
+        raise PermissionError("Python selector is not an immutable allowlisted legacy release")
     module_name = f"stoe_selector_{sha256_file(source_path)[:16]}"
     spec = importlib.util.spec_from_file_location(module_name, source_path)
     if spec is None or spec.loader is None:
@@ -31,6 +58,19 @@ def load_selector(path: str | Path) -> Selector:
     if not callable(selector):
         raise TypeError("candidate must define callable select_context")
     return selector
+
+
+def load_selector_artifact(path: str | Path, artifact_type: str) -> Selector:
+    if artifact_type not in ARTIFACT_TYPES:
+        raise ValueError(f"unsupported selector artifact type: {artifact_type}")
+    if artifact_type == "legacy_python":
+        return load_legacy_selector(path)
+    return policy_selector(load_policy(path))
+
+
+def infer_artifact_type(path: str | Path) -> str:
+    source_path = Path(path)
+    return "declarative_policy" if source_path.name.endswith(".policy.json") else "legacy_python"
 
 
 def validate_selection(

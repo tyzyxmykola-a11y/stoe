@@ -137,6 +137,8 @@ class ResearchStateStore:
         }
         self._atomic_json(self.latest_path, pointer)
         self.save(state)
+        if self.bootstrap_path is not None:
+            self._atomic_json(self.bootstrap_path, state)
         return {**pointer, "path": str(path), "created": True}
 
     def begin_action(self, *, action_id: str, description: str) -> dict[str, Any]:
@@ -269,7 +271,12 @@ class ResearchStateStore:
         known_hashes = known_hashes or {}
         expand = set(expand_refs or [])
         essential_evidence = [
-            item
+            {
+                "claim": item.get("claim", ""),
+                "kind": item.get("kind", ""),
+                "stance": item.get("stance", ""),
+                "source_refs": item.get("source_refs", []),
+            }
             for item in state["evidence"]
             if item.get("stance") in {"contradicts", "failure", "correction"}
             or item.get("kind") in {"failure", "author_correction"}
@@ -280,12 +287,27 @@ class ResearchStateStore:
             "current_task": state["current_task"],
             "active_hypothesis": state["active_hypothesis"],
             "essential_evidence": essential_evidence,
-            "author_definitions": state["author_definitions"],
-            "corrections": state["corrections"],
-            "decisions": state["decisions"][-8:],
+            "author_definitions": [
+                {"claim": item.get("claim", ""), "source_refs": item.get("source_refs", [])}
+                for item in state["author_definitions"]
+            ],
+            "corrections": [
+                {"claim": item.get("claim", ""), "source_refs": item.get("source_refs", [])}
+                for item in state["corrections"]
+            ],
+            "decisions": [
+                {"decision": item.get("decision", ""), "source_refs": item.get("source_refs", [])}
+                for item in state["decisions"][-8:]
+            ],
             "unresolved_questions": state["unresolved_questions"],
             "versions": state["versions"],
-            "actions": state["actions"],
+            "actions": [
+                {
+                    "action_id": action["action_id"],
+                    "status": action["status"],
+                }
+                for action in state["actions"][-8:]
+            ],
             "next_executable_step": state["next_executable_step"],
             "artifacts": [],
         }

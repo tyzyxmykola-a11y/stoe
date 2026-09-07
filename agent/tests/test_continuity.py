@@ -201,6 +201,21 @@ class ContinuityTests(unittest.TestCase):
         self.assertTrue(uncertain["requires_reconciliation"])
         self.assertFalse(uncertain["started"])
 
+    def test_checkpoint_publishes_compact_bootstrap_state(self):
+        root = self.make_root("bootstrap")
+        bootstrap = root / "published" / "bootstrap.json"
+        store = ResearchStateStore(
+            runtime_dir=root / "runtime",
+            checkpoint_dir=root / "checkpoints",
+            bootstrap_path=bootstrap,
+            project_root=root,
+        )
+        store.save(self.populated_state())
+        store.checkpoint(reason="publish compact state")
+        published = json.loads(bootstrap.read_text(encoding="utf-8"))
+        self.assertEqual("Continue a synthetic SToE research project.", published["objective"])
+        self.assertEqual("completed:model-call", published["actions"][0]["action_id"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -74,7 +74,10 @@ the model-generated candidate changes, and the protected adoption evidence. Afte
 several safely rejected candidates, a later bounded local-Ollama cycle produced a
 partial improvement from 1/5 to 3/5 protected cases and passed fresh-process
 activation. The report preserves both the negative evidence and the successor's
-remaining failures.
+remaining failures. A later infrastructure audit found that the Python-candidate
+AST gate did not enforce its intended authority boundary. Future candidates are
+now inert declarative policies; the accepted Python selector remains an immutable
+legacy release. This safety repair is not additional scientific evidence.
 
 ## Run the earlier browser engine
 

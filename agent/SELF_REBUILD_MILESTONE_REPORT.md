@@ -99,6 +99,14 @@ without changing protected cases or the acceptance rule. All attempts are kept
 under `rebuild_reports/`; rejected executable candidates are kept under
 `rejected_candidates/`.
 
+Post-milestone authority-boundary correction: the historical AST static gate was
+not a security sandbox. Independent review demonstrated that indirect access via
+`__builtins__` could pass validation and would execute with the evaluator child
+process's ambient authority. The original attempts and evidence above are not
+rewritten. Future generated artifacts are instead inert declarative selection
+policies interpreted by trusted, bounded code. This is an infrastructure repair,
+not evidence that any research hypothesis or SToE mechanism performs better.
+
 ## 4. Evidence supporting adoption or rejection
 
 That final initial-milestone candidate and active selector were evaluated on the same five protected

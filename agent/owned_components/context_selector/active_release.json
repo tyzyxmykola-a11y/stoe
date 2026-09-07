@@ -2,6 +2,7 @@
   "version": "generated_20260906T125305Z_92e7e913",
   "source_file": "generated_20260906T125305Z_92e7e913.py",
   "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+  "artifact_type": "legacy_python",
   "activated_at": "2026-09-06T12:53:30.785189+00:00",
   "previous_version": "v1"
 }

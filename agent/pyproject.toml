@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "stoe-research-agent"
-version = "0.2.0"
+version = "0.3.0"
 description = "A supervised, persistent self-rebuild cycle for the SToE research collaborator"
 requires-python = ">=3.11"
 dependencies = []

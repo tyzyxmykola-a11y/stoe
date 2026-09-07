@@ -31,6 +31,15 @@ nonterminating selector is killed at the boundary. Child crash, launch error,
 malformed output, invalid selection, and captured-output truncation become
 structured rejection evidence; none can change the active pointer.
 
+Correction recorded 2026-09-07: this timeout and restoration behavior was valid,
+but the intended claim that a generated Python candidate lacked filesystem or
+evaluator authority was not enforced. The AST blacklist was bypassable, and the
+child inherited ordinary host authority. Future candidates have since been
+replaced by inert declarative policies; see
+[SELECTION_POLICY_FORMAT.md](SELECTION_POLICY_FORMAT.md) and
+[CANDIDATE_CAPABILITY_BOUNDARY_CHECKPOINT.md](CANDIDATE_CAPABILITY_BOUNDARY_CHECKPOINT.md).
+Historical reports, scores, and classifications remain unchanged.
+
 Future code and field labels use “public behavioral improvement check.” The
 separate [evidence correction](EVIDENCE_CORRECTION_20260906.md) preserves the
 accepted source's real limitation and leaves historical reports unchanged.

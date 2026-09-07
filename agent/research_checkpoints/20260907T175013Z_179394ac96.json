@@ -1,0 +1,404 @@
+{
+  "checkpoint_id": "20260907T175013Z_179394ac96",
+  "created_at": "2026-09-07T17:50:13.063274+00:00",
+  "reason": "Completed candidate capability-boundary v1 repair without provider generation",
+  "schema_version": 1,
+  "state": {
+    "actions": [
+      {
+        "action_id": "model-cycle:20260906T125305Z_92e7e913",
+        "completed_at": "2026-09-06T12:53:30.785189+00:00",
+        "description": "One bounded local-Ollama proposal, implementation, evaluation, and activation cycle.",
+        "result_refs": [
+          "accepted_cycle_json",
+          "accepted_selector_source"
+        ],
+        "started_at": "2026-09-06T12:53:05+00:00",
+        "status": "completed"
+      },
+      {
+        "action_id": "checkpoint:post-acceptance-safety-continuity",
+        "completed_at": "2026-09-06T17:59:41.200935+00:00",
+        "description": "Repair exception safety, isolate diagnostics, correct evidence labels, and add token-budgeted checkpoint/resume.",
+        "result_refs": [
+          "post_acceptance_checkpoint",
+          "evidence_correction",
+          "accepted_selector_replay",
+          "v1_selector_replay"
+        ],
+        "started_at": "2026-09-06T13:00:00+00:00",
+        "status": "completed"
+      },
+      {
+        "action_id": "checkpoint:candidate-capability-boundary-v1",
+        "completed_at": "2026-09-07T17:50:13.050331+00:00",
+        "description": "Replace executable future selector candidates with bounded inert declarative policies and conserve the authority-boundary correction.",
+        "result_refs": [
+          "candidate_capability_boundary_report",
+          "selection_policy_format_v1",
+          "capability_boundary_adversarial_tests",
+          "capability_boundary_accepted_replay"
+        ],
+        "started_at": "2026-09-07T17:23:54.714841+00:00",
+        "status": "completed"
+      }
+    ],
+    "active_hypothesis": {
+      "claim": "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve it on newly frozen cases without expanding candidate authority?",
+      "claim_type": "hypothesis",
+      "source_refs": [
+        "candidate_capability_boundary_report",
+        "accepted_cycle_json"
+      ]
+    },
+    "artifacts": [
+      {
+        "bytes": 1910,
+        "kind": "source",
+        "path": "agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py",
+        "provenance": "ai_generated_then_supervisor_accepted",
+        "ref": "accepted_selector_source",
+        "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Exact generated selector source adopted by the accepted cycle; outcome/kind boosts improved privacy and evaluation selection but not changed-constraint reactivation.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 110114,
+        "kind": "full_trace",
+        "path": "agent/rebuild_reports/20260906T125305Z_92e7e913.json",
+        "provenance": "original_supervisor_report",
+        "ref": "accepted_cycle_json",
+        "sha256": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1",
+        "source_refs": [],
+        "summary": "Complete original local-Ollama cycle trace, prompts, responses, field navigation, evaluation, and activation evidence. Historical labels are preserved verbatim.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 3877,
+        "kind": "interpretation",
+        "path": "agent/rebuild_reports/20260906T125305Z_92e7e913.md",
+        "provenance": "post_cycle_human_readable_report",
+        "ref": "accepted_cycle_report",
+        "sha256": "bac3b8740ccaac78f78ae4af814caecec0acd12a9e53e1977b2860dd61d8c8a9",
+        "source_refs": [
+          "accepted_cycle_json",
+          "accepted_selector_source"
+        ],
+        "summary": "Concise interpretation of the accepted cycle, explicitly preserving its partial mechanism and remaining failures.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 1729,
+        "kind": "correction",
+        "path": "agent/EVIDENCE_CORRECTION_20260906.md",
+        "provenance": "post_acceptance_interpretation",
+        "ref": "evidence_correction",
+        "sha256": "53ea7c5ac192e6136434db9461ce9ab5d75328264f02d6238d2443bee172d719",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Post-acceptance correction separating observed behavior, proposed explanation, and implemented mechanism.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 5868,
+        "kind": "checkpoint_report",
+        "path": "agent/POST_ACCEPTANCE_CHECKPOINT.md",
+        "provenance": "verified_infrastructure_checkpoint",
+        "ref": "post_acceptance_checkpoint",
+        "sha256": "7502234f6bf3e767257f66c7223408a6e4ebeb54a67442a815d53065c76e9031",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Safety and token-management checkpoint with verification results and recovery commands.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 3832,
+        "kind": "evaluation_replay",
+        "path": "agent/evaluation_replays/20260906T125305Z_92e7e913_accepted_replay.json",
+        "provenance": "deterministic_replay",
+        "ref": "accepted_selector_replay",
+        "sha256": "b390a03289a9725ba10abff15a0c7a28291d7a16a900b72e19b2c2fd42b94fe7",
+        "source_refs": [
+          "accepted_selector_source"
+        ],
+        "summary": "Replay of accepted selector on previously used public and protected cases; not a blind experiment.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 3710,
+        "kind": "evaluation_replay",
+        "path": "agent/evaluation_replays/20260906T125305Z_92e7e913_v1_replay.json",
+        "provenance": "deterministic_replay",
+        "ref": "v1_selector_replay",
+        "sha256": "7087b2e73148cb31b4eb4209a4e56c91b8172e206763ba2a7fba930c362f4d8e",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Replay of v1 comparator on previously used public and protected cases; not a blind experiment.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 5414,
+        "kind": "checkpoint_report",
+        "path": "agent/CANDIDATE_CAPABILITY_BOUNDARY_CHECKPOINT.md",
+        "provenance": "verified_capability_boundary_checkpoint",
+        "ref": "candidate_capability_boundary_report",
+        "sha256": "7d19e4d9b833bb8da155427bbaca4b6bb0217fdc566a4afabd17ff7f0ed3621a",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Capability-boundary correction, implementation, verification, and limitations.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 2595,
+        "kind": "specification",
+        "path": "agent/SELECTION_POLICY_FORMAT.md",
+        "provenance": "verified_capability_boundary_checkpoint",
+        "ref": "selection_policy_format_v1",
+        "sha256": "ab59046e84ec2716c8d091e535f75a0121ee6ff579b4a6cb00c3290efb45f5f2",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Versioned inert policy grammar and resource bounds.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 12369,
+        "kind": "test_source",
+        "path": "agent/tests/test_capability_boundary.py",
+        "provenance": "verified_capability_boundary_checkpoint",
+        "ref": "capability_boundary_adversarial_tests",
+        "sha256": "ae5f491a126218df34d3c6523ad33d86d7a72ac5439b13a064cc52a72c5c98b5",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Adversarial tests demonstrating non-execution and bounded policy interpretation.",
+        "summary_is_exact_source": false
+      },
+      {
+        "bytes": 3967,
+        "kind": "evaluation_replay",
+        "path": "agent/evaluation_replays/20260907_capability_checkpoint_accepted_replay.json",
+        "provenance": "verified_capability_boundary_checkpoint",
+        "ref": "capability_boundary_accepted_replay",
+        "sha256": "12758da3757a7ea83166ccbef07500bd07a2865fd77e05cb5918b6431ce84e4b",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "summary": "Compatibility replay of the immutable accepted legacy selector on previously observed cases.",
+        "summary_is_exact_source": false
+      }
+    ],
+    "author_definitions": [
+      {
+        "claim": "Continuous workflow means successive bounded sessions can resume coherent work; it does not mean the agent remains active after its process stops.",
+        "claim_type": "author_definition",
+        "source_refs": [
+          "author_checkpoint_request_2026-09-06"
+        ]
+      },
+      {
+        "claim": "The context window is the active region of the persistent SToE field; complete artifacts remain externally recoverable.",
+        "claim_type": "author_definition",
+        "source_refs": [
+          "author_checkpoint_request_2026-09-06"
+        ]
+      }
+    ],
+    "corrections": [
+      {
+        "claim": "The historical public_feasibility label denotes a disclosed behavioral comparison only, not causal evidence that the proposed mechanism operated.",
+        "claim_type": "correction",
+        "source_refs": [
+          "accepted_cycle_json",
+          "accepted_cycle_report"
+        ]
+      },
+      {
+        "claim": "Evidence correction: timeout containment and rollback were real, but the claim that generated Python had no filesystem or evaluator authority was not enforced; historical behavioral scores remain unchanged.",
+        "claim_type": "correction",
+        "source_refs": [
+          "candidate_capability_boundary_report",
+          "accepted_cycle_json"
+        ]
+      }
+    ],
+    "current_task": "Candidate capability-boundary checkpoint completed without provider generation.",
+    "decisions": [
+      {
+        "decision": "Retain the accepted successor under the original fixed adoption rule.",
+        "reason": "It improved protected pass count, preserved the baseline pass, cleared critical failures, and passed the original fresh-process check.",
+        "source_refs": [
+          "accepted_cycle_json"
+        ]
+      },
+      {
+        "decision": "Do not launch another model development cycle during this checkpoint.",
+        "reason": "The author requested infrastructure repair and continuity verification without recreating or tuning the accepted result.",
+        "source_refs": [
+          "author_checkpoint_request_2026-09-06"
+        ]
+      },
+      {
+        "decision": "Repair decision: future generated selectors are inert stoe.selection_policy version 1 JSON interpreted only by trusted bounded operations; arbitrary Python is never a candidate artifact.",
+        "reason": "The former AST blacklist admitted executable authority; an inert grammar removes candidate-supplied execution.",
+        "source_refs": [
+          "selection_policy_format_v1",
+          "candidate_capability_boundary_report"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "claim": "The accepted selector replay record improved protected pass count from 1/5 to 3/5 with no regression or critical failure.",
+        "claim_type": "fact",
+        "kind": "evaluation",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "stance": "supports"
+      },
+      {
+        "claim": "The accepted selector still failed the expired-compute and changed-license cases that require changed-constraint reactivation.",
+        "claim_type": "fact",
+        "kind": "failure",
+        "source_refs": [
+          "accepted_cycle_json"
+        ],
+        "stance": "failure"
+      },
+      {
+        "claim": "Observed public behavioral improvement does not establish that the model's proposed invalidation mechanism caused the gain.",
+        "claim_type": "interpretation",
+        "kind": "author_correction",
+        "source_refs": [
+          "accepted_cycle_json",
+          "accepted_cycle_report"
+        ],
+        "stance": "correction"
+      },
+      {
+        "claim": "Observed bypass: __builtins__['open'] passed the former validate_candidate_source AST gate, so executing that candidate could use the evaluator child's filesystem authority and read cases.json from its working directory.",
+        "claim_type": "fact",
+        "kind": "failure",
+        "source_refs": [
+          "candidate_capability_boundary_report"
+        ],
+        "stance": "failure"
+      },
+      {
+        "claim": "Adversarial evaluation: Python attacks were rejected before import, policy strings invoked no patched authority APIs, malformed and over-complex policies failed closed, and runtime/output/allocation bounds were enforced.",
+        "claim_type": "fact",
+        "kind": "evaluation",
+        "source_refs": [
+          "capability_boundary_adversarial_tests"
+        ],
+        "stance": "supports"
+      }
+    ],
+    "measurements": {
+      "budgets": [],
+      "checkpoint_events": [
+        {
+          "budget": {},
+          "checkpoint_id": "20260906T175941Z_d51e97767b",
+          "created_at": "2026-09-06T17:59:41.378716+00:00",
+          "reason": "Post-acceptance safety and token-management checkpoint verified"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260906T180400Z_1d570548ac",
+          "created_at": "2026-09-06T18:04:00.591985+00:00",
+          "reason": "Final verified post-acceptance checkpoint before Git commit"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260906T180447Z_bd6a6dd3da",
+          "created_at": "2026-09-06T18:04:47.801346+00:00",
+          "reason": "Portable-path final checkpoint before Git commit"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260906T180932Z_5a5e62a2df",
+          "created_at": "2026-09-06T18:09:32.650571+00:00",
+          "reason": "All final tests passed; checkpoint ready for Git commit and push"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260906T181012Z_500d7003cf",
+          "created_at": "2026-09-06T18:10:12.047166+00:00",
+          "reason": "Portable replay artifacts verified before Git commit"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260906T181135Z_6667cfd760",
+          "created_at": "2026-09-06T18:11:35.059269+00:00",
+          "reason": "Portable LF replay artifacts verified before Git commit"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260907T172354Z_a814b1fd75",
+          "created_at": "2026-09-07T17:23:54.887344+00:00",
+          "reason": "Before candidate capability-boundary repair; no provider generation authorized"
+        },
+        {
+          "budget": {},
+          "checkpoint_id": "20260907T175013Z_179394ac96",
+          "created_at": "2026-09-07T17:50:13.063274+00:00",
+          "reason": "Completed candidate capability-boundary v1 repair without provider generation"
+        }
+      ],
+      "provider_usage": [
+        {
+          "action_id": "model-cycle:20260906T125305Z_92e7e913",
+          "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+          "generation_output_tokens": 633,
+          "generation_prompt_tokens": 2747,
+          "model": "qwen3-coder:latest",
+          "proposal_output_tokens": 756,
+          "proposal_prompt_tokens": 5622,
+          "provider": "local_ollama",
+          "source": "Ollama prompt_eval_count and eval_count in accepted_cycle_json"
+        }
+      ],
+      "truncations": []
+    },
+    "next_executable_step": "Freeze new cases before outcomes, then test whether a bounded structural input improves changed-constraint invalidation through the declarative policy interface; do not repeat prior model actions or treat infrastructure tests as scientific evidence.",
+    "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
+    "schema_version": 1,
+    "unresolved_questions": [
+      {
+        "claim_type": "question",
+        "question": "Why did the proposed invalidation mechanism fail to materialize, and what evidence or interface change would let the agent investigate that discrepancy using SToE?",
+        "source_refs": [
+          "accepted_cycle_json",
+          "accepted_selector_source",
+          "accepted_cycle_report"
+        ]
+      },
+      {
+        "claim_type": "question",
+        "question": "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve it on newly frozen cases without expanding candidate authority?",
+        "source_refs": [
+          "candidate_capability_boundary_report"
+        ]
+      }
+    ],
+    "updated_at": "2026-09-07T17:50:13.055332+00:00",
+    "versions": {
+      "active": {
+        "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+        "source_path": "agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py",
+        "version": "generated_20260906T125305Z_92e7e913"
+      },
+      "candidate": null
+    }
+  },
+  "state_fingerprint": "179394ac964661b736c7d723b3c8cdc93d38b23a1b360c621c2d0446e1ff9179"
+}

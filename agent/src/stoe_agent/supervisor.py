@@ -18,8 +18,8 @@ from .field_journal import RebuildJournal, SESSION_ID
 from .investigation import public_diagnostics, investigate_selector
 from .ollama import OllamaClient
 from .research_state import ResearchStateStore
-from .selector_loader import sha256_file
-from .static_gate import validate_candidate_source
+from .selection_policy import POLICY_FORMAT, POLICY_VERSION, validate_policy
+from .selector_loader import infer_artifact_type, sha256_file
 
 
 PUBLIC_INPUT_FIELDS = (
@@ -90,13 +90,13 @@ PROPOSAL_SCHEMA = {
     "additionalProperties": False,
 }
 
-SOURCE_SCHEMA = {
+CANDIDATE_POLICY_SCHEMA = {
     "type": "object",
     "properties": {
-        "source": {"type": "string"},
+        "policy": {"type": "object"},
         "implementation_note": {"type": "string"},
     },
-    "required": ["source", "implementation_note"],
+    "required": ["policy", "implementation_note"],
     "additionalProperties": False,
 }
 
@@ -179,6 +179,7 @@ class RebuildSupervisor:
                 "version": str(release["version"]),
                 "source_path": str(source_path.resolve()),
                 "sha256": str(release["sha256"]),
+                "artifact_type": str(release.get("artifact_type") or infer_artifact_type(source_path)),
                 "activated_at": str(release["activated_at"]),
                 "previous_version": release.get("previous_version"),
             }
@@ -190,6 +191,7 @@ class RebuildSupervisor:
             "version": "v1",
             "source_path": str(self.baseline_path.resolve()),
             "sha256": sha256_file(self.baseline_path),
+            "artifact_type": "legacy_python",
             "activated_at": datetime.now(timezone.utc).isoformat(),
             "previous_version": None,
         }
@@ -209,6 +211,7 @@ class RebuildSupervisor:
                 "version": pointer["version"],
                 "source_file": source_path.name,
                 "sha256": pointer["sha256"],
+                "artifact_type": pointer.get("artifact_type") or infer_artifact_type(source_path),
                 "activated_at": pointer["activated_at"],
                 "previous_version": pointer.get("previous_version"),
             },
@@ -218,6 +221,7 @@ class RebuildSupervisor:
         pointer = json.loads(self.active_pointer.read_text(encoding="utf-8"))
         if sha256_file(pointer["source_path"]) != pointer["sha256"]:
             raise RuntimeError("active pointer source hash mismatch")
+        pointer.setdefault("artifact_type", infer_artifact_type(pointer["source_path"]))
         return pointer
 
     def protected_hashes(self) -> dict[str, str]:
@@ -240,7 +244,10 @@ class RebuildSupervisor:
                 "agent_owned": [component_map["editable_scope"]],
                 "trusted_supervisor": [
                     "agent/src/stoe_agent/supervisor.py",
-                    "agent/src/stoe_agent/static_gate.py",
+                    "agent/src/stoe_agent/selection_policy.py",
+                    "agent/src/stoe_agent/selector_loader.py",
+                    "agent/src/stoe_agent/public_worker.py",
+                    "agent/src/stoe_agent/protected_worker.py",
                     "agent/protected_evals",
                 ],
                 "external_dependencies": ["Python runtime", "local Ollama service"],
@@ -278,6 +285,8 @@ class RebuildSupervisor:
         protected = self._evaluate(source_path)
         if "source" in protected:
             protected["source"] = recorded_source_path
+        if "artifact" in protected:
+            protected["artifact"] = recorded_source_path
         protected_after = self.protected_hashes()
         if protected_before != protected_after:
             raise RuntimeError("protected evaluation files changed during replay")
@@ -285,6 +294,7 @@ class RebuildSupervisor:
             "classification": "replay_on_previously_used_public_and_protected_cases_not_a_new_blind_experiment",
             "source_path": recorded_source_path,
             "source_sha256": sha256_file(source_path),
+            "artifact_type": infer_artifact_type(source_path),
             "protected_hashes": protected_before,
             "public": public,
             "protected": protected,
@@ -367,6 +377,253 @@ class RebuildSupervisor:
             "question": question_text,
             "source_cycle": cycle_id,
             "linked_cycle_node_count": len(nodes),
+        }
+
+    def record_capability_boundary_checkpoint(self, report_path: Path) -> dict[str, Any]:
+        action_id = "checkpoint:candidate-capability-boundary-v1"
+        question_text = (
+            "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve "
+            "it on newly frozen cases without expanding candidate authority?"
+        )
+        report_path = report_path.resolve()
+        if not report_path.is_file():
+            raise FileNotFoundError(report_path)
+        state = self.research_state.load()
+        action = next((item for item in state["actions"] if item["action_id"] == action_id), None)
+        if action is None:
+            self.research_state.begin_action(
+                action_id=action_id,
+                description="Replace executable future selector candidates with bounded inert declarative policies.",
+            )
+        elif action["status"] == "completed":
+            expected_questions = [
+                {
+                    "claim_type": "question",
+                    "question": question_text,
+                    "source_refs": ["candidate_capability_boundary_report"],
+                }
+            ]
+            if state["unresolved_questions"] != expected_questions:
+                state["unresolved_questions"] = expected_questions
+                self.research_state.save(state)
+                self.checkpoint_research_state("Compact superseded question after capability-boundary checkpoint")
+            return {"decision": "SKIP_COMPLETED_ACTION", "action": action, "model_calls": 0}
+        elif action["status"] not in {"running", "uncertain"}:
+            self.research_state.begin_action(
+                action_id=action_id,
+                description="Replace executable future selector candidates with bounded inert declarative policies.",
+            )
+
+        cycle_id = "candidate_capability_boundary_v1"
+        definitions = [
+            (
+                "intended_authority_boundary",
+                "Intended boundary: generated selector candidates may receive only observer_state, items, max_items, and max_chars, with no ambient evaluator or host authority.",
+                "constraint",
+                "superseded",
+                "The prior Python-source implementation did not enforce this intended boundary.",
+            ),
+            (
+                "bypass_reproduction",
+                "Observed bypass: __builtins__['open'] passed the former validate_candidate_source AST gate, so executing that candidate could use the evaluator child's filesystem authority and read cases.json from its working directory.",
+                "observation",
+                "failed",
+                "Executable candidate Python inherited the child process's filesystem, environment, process, network, and memory authority.",
+            ),
+            (
+                "affected_evaluation_claim",
+                "Evidence correction: timeout containment and rollback were real, but the claim that generated Python had no filesystem or evaluator authority was not enforced; historical behavioral scores remain unchanged.",
+                "correction",
+                "supported",
+                "",
+            ),
+            (
+                "repair_decision",
+                "Repair decision: future generated selectors are inert stoe.selection_policy version 1 JSON interpreted only by trusted bounded operations; arbitrary Python is never a candidate artifact.",
+                "decision",
+                "supported",
+                "",
+            ),
+            (
+                "repair_implementation",
+                "Implementation: trusted policy validation and interpretation, fixed field projection, immutable hash-allowlisted legacy adapter, and separate time-bounded public/protected workers.",
+                "implementation",
+                "supported",
+                "",
+            ),
+            (
+                "adversarial_tests",
+                "Adversarial evaluation: Python attacks were rejected before import, policy strings invoked no patched authority APIs, malformed and over-complex policies failed closed, and runtime/output/allocation bounds were enforced.",
+                "evaluation",
+                "supported",
+                "",
+            ),
+            (
+                "remaining_limitations",
+                "Remaining limitation: the policy interpreter and supervisor are trusted Python with host authority; the narrow inert grammar removes candidate code execution but is not a general OS sandbox, and its scientific usefulness remains untested on new frozen cases.",
+                "constraint",
+                "active",
+                "",
+            ),
+        ]
+        nodes: dict[str, dict[str, Any]] = {}
+        for label, content, kind, outcome, failure_condition in definitions:
+            node = self.journal.find_exact_content(content)
+            if node is None:
+                node = self.journal.add_ip(
+                    cycle_id=cycle_id,
+                    label=label,
+                    content=content,
+                    kind=kind,
+                    origin="failure_history" if label == "bypass_reproduction" else (
+                        "evaluation" if label == "adversarial_tests" else (
+                            "state_change" if label == "repair_decision" else "runtime_reasoning"
+                        )
+                    ),
+                    outcome=outcome,
+                    failure_condition=failure_condition,
+                    metadata={
+                        "action_id": action_id,
+                        "report": report_path.relative_to(self.config.repo_root).as_posix(),
+                        "report_sha256": sha256_file(report_path),
+                        "provider_generation_calls": 0,
+                    },
+                )
+            nodes[label] = node
+
+        relation_plan = [
+            ("bypass_reproduction", "intended_authority_boundary", "contradicts"),
+            ("affected_evaluation_claim", "intended_authority_boundary", "corrects_interpretation_of"),
+            ("repair_decision", "bypass_reproduction", "responds_to"),
+            ("repair_implementation", "repair_decision", "implements"),
+            ("adversarial_tests", "repair_implementation", "evaluates"),
+            ("remaining_limitations", "repair_implementation", "constrains"),
+        ]
+        for source, target, relation in relation_plan:
+            self.journal.relate(nodes[source]["ref"], nodes[target]["ref"], relation, "Capability-boundary checkpoint trace")
+
+        question = self.journal.find_exact_content(question_text)
+        if question is None:
+            question = self.journal.add_ip(
+                cycle_id=cycle_id,
+                label="remaining_research_question",
+                content=question_text,
+                kind="question",
+                origin="runtime_reasoning",
+                outcome="untested",
+                metadata={"action_id": action_id, "research_status": "pending_next_scientific_cycle"},
+            )
+            self.journal.relate(question["ref"], nodes["bypass_reproduction"]["ref"], "constrained_by_safety_finding", "Next research question preserves the repaired authority boundary")
+            self.journal.relate(question["ref"], nodes["adversarial_tests"]["ref"], "follows_evaluation", "Infrastructure checkpoint precedes new scientific evaluation")
+            self.journal.relate(question["ref"], nodes["remaining_limitations"]["ref"], "constrained_by", "New cases and narrow policy grammar remain required")
+
+        artifact_specs = [
+            (
+                "candidate_capability_boundary_report",
+                report_path,
+                "Capability-boundary correction, implementation, verification, and limitations.",
+                "checkpoint_report",
+            ),
+            (
+                "selection_policy_format_v1",
+                self.config.repo_root / "agent" / "SELECTION_POLICY_FORMAT.md",
+                "Versioned inert policy grammar and resource bounds.",
+                "specification",
+            ),
+            (
+                "capability_boundary_adversarial_tests",
+                self.config.repo_root / "agent" / "tests" / "test_capability_boundary.py",
+                "Adversarial tests demonstrating non-execution and bounded policy interpretation.",
+                "test_source",
+            ),
+            (
+                "capability_boundary_accepted_replay",
+                self.config.repo_root / "agent" / "evaluation_replays" / "20260907_capability_checkpoint_accepted_replay.json",
+                "Compatibility replay of the immutable accepted legacy selector on previously observed cases.",
+                "evaluation_replay",
+            ),
+        ]
+        for ref, path, summary, kind in artifact_specs:
+            self.research_state.register_artifact(
+                ref=ref,
+                path=path,
+                summary=summary,
+                kind=kind,
+                provenance="verified_capability_boundary_checkpoint",
+                source_refs=["accepted_cycle_json"],
+            )
+
+        state = self.research_state.load()
+        state["current_task"] = "Candidate capability-boundary checkpoint completed without provider generation."
+        state["active_hypothesis"] = {
+            "claim_type": "hypothesis",
+            "claim": question_text,
+            "source_refs": ["candidate_capability_boundary_report", "accepted_cycle_json"],
+        }
+        additions = {
+            "evidence": [
+                {
+                    "claim_type": "fact",
+                    "kind": "failure",
+                    "stance": "failure",
+                    "claim": definitions[1][1],
+                    "source_refs": ["candidate_capability_boundary_report"],
+                },
+                {
+                    "claim_type": "fact",
+                    "kind": "evaluation",
+                    "stance": "supports",
+                    "claim": definitions[5][1],
+                    "source_refs": ["capability_boundary_adversarial_tests"],
+                },
+            ],
+            "corrections": [
+                {
+                    "claim_type": "correction",
+                    "claim": definitions[2][1],
+                    "source_refs": ["candidate_capability_boundary_report", "accepted_cycle_json"],
+                }
+            ],
+            "decisions": [
+                {
+                    "decision": definitions[3][1],
+                    "reason": "The former AST blacklist admitted executable authority; an inert grammar removes candidate-supplied execution.",
+                    "source_refs": ["selection_policy_format_v1", "candidate_capability_boundary_report"],
+                }
+            ],
+        }
+        for key, entries in additions.items():
+            for entry in entries:
+                identity = entry.get("claim") or entry.get("decision") or entry.get("question")
+                if not any((item.get("claim") or item.get("decision") or item.get("question")) == identity for item in state[key]):
+                    state[key].append(entry)
+        state["unresolved_questions"] = [
+            {
+                "claim_type": "question",
+                "question": question_text,
+                "source_refs": ["candidate_capability_boundary_report"],
+            }
+        ]
+        state["next_executable_step"] = (
+            "Freeze new cases before outcomes, then test whether a bounded structural input improves changed-constraint "
+            "invalidation through the declarative policy interface; do not repeat prior model actions or treat infrastructure tests as scientific evidence."
+        )
+        self.research_state.save(state)
+        self.research_state.set_action_status(
+            action_id=action_id,
+            status="completed",
+            result_refs=[ref for ref, _path, _summary, _kind in artifact_specs],
+        )
+        checkpoint = self.checkpoint_research_state(
+            "Completed candidate capability-boundary v1 repair without provider generation"
+        )
+        return {
+            "decision": "COMPLETED",
+            "action_id": action_id,
+            "model_calls": 0,
+            "field_refs": {key: value["ref"] for key, value in nodes.items()} | {"remaining_question": question["ref"]},
+            "question": question_text,
+            "checkpoint": checkpoint,
         }
 
     def run_cycle(self, *, action_id: str | None = None) -> dict[str, Any]:
@@ -574,24 +831,24 @@ class RebuildSupervisor:
 
         generation_prompt = self._generation_prompt(active_source, investigation, proposal)
         attempts: list[dict[str, Any]] = []
-        accepted_source: str | None = None
+        accepted_policy: dict[str, Any] | None = None
         accepted_note = ""
         repair_errors: list[str] = []
         for attempt_index in range(2):
             prompt = generation_prompt
             if repair_errors:
                 prompt += (
-                    "\n\nThe first source failed only the static safety/interface gate. Repair these errors "
+                    "\n\nThe first policy failed only the declarative schema/complexity gate. Repair these errors "
                     "without changing the hypothesis and without seeing evaluation outcomes:\n- "
                     + "\n- ".join(repair_errors)
                 )
             generated, trace = self.model_client.generate_json(
                 system=(
-                    "Generate one deterministic, side-effect-free Python component. Return JSON only. "
-                    "Do not access files, network, processes, environment, or protected evaluation."
+                    "Generate one deterministic declarative selection policy as JSON data. Return JSON only. "
+                    "Do not emit Python, expressions, templates, executable strings, paths, or external resource names."
                 ),
                 prompt=prompt,
-                schema=SOURCE_SCHEMA,
+                schema=CANDIDATE_POLICY_SCHEMA,
                 max_output_tokens=3200,
                 seed=2701 + attempt_index,
                 context_sections={
@@ -602,33 +859,38 @@ class RebuildSupervisor:
                     ),
                 },
             )
-            source = self._clean_source(str(generated.get("source", "")))
-            gate = validate_candidate_source(source)
-            attempt_path = self.config.runtime_dir / f"candidate_{cycle_id}_attempt_{attempt_index + 1}.py"
-            attempt_path.write_text(source, encoding="utf-8", newline="\n")
+            policy = generated.get("policy")
+            gate = validate_policy(policy)
+            attempt_path = self.config.runtime_dir / f"candidate_{cycle_id}_attempt_{attempt_index + 1}.policy.json"
+            if isinstance(policy, dict):
+                self._atomic_write_json(attempt_path, policy)
+            else:
+                self._atomic_write_json(attempt_path, {"invalid_policy_value": repr(policy)[:1000]})
             attempt = {
                 "attempt": attempt_index + 1,
                 "source_path": str(attempt_path),
                 "source_sha256": sha256_file(attempt_path),
                 "implementation_note": generated.get("implementation_note", ""),
-                "static_gate_passed": gate.passed,
-                "static_gate_errors": list(gate.errors),
+                "artifact_type": "declarative_policy",
+                "policy_validation_passed": gate.passed,
+                "policy_validation_errors": list(gate.errors),
+                "estimated_policy_operations_at_max_items": gate.estimated_operations,
                 "model_trace": trace,
             }
             attempts.append(attempt)
             if gate.passed:
-                accepted_source = source
+                accepted_policy = policy
                 accepted_note = str(generated.get("implementation_note", ""))
                 break
             repair_errors = list(gate.errors)
             failed_attempt_ip = self.journal.add_ip(
                 cycle_id=cycle_id,
-                label=f"static_gate_failure_{attempt_index + 1}",
-                content=f"Generated source failed static gate: {list(gate.errors)}",
+                label=f"policy_gate_failure_{attempt_index + 1}",
+                content=f"Generated declarative policy failed schema/complexity gate: {list(gate.errors)}",
                 kind="implementation",
                 origin="failure_history",
                 outcome="rejected",
-                failure_condition="Protected static safety/interface gate rejected the generated source.",
+                failure_condition="Trusted declarative policy validator rejected malformed, unavailable, or over-complex data.",
                 metadata={"source_sha256": attempt["source_sha256"], "attempt": attempt_index + 1},
             )
             self.journal.relate(failed_attempt_ip["ref"], proposal_ip["ref"], "implements", "Rejected generation attempt")
@@ -655,12 +917,12 @@ class RebuildSupervisor:
             ),
         }
 
-        if accepted_source is None:
+        if accepted_policy is None:
             archived_attempts = [self._archive_rejected(Path(item["source_path"]), cycle_id, suffix=f"attempt_{item['attempt']}") for item in attempts]
             report.update(
                 {
                     "decision": "REJECT",
-                    "decision_reason": "No generated source passed the protected static gate.",
+                    "decision_reason": "No generated declarative policy passed the trusted schema/complexity gate.",
                     "activated": False,
                     "archived_rejected_candidates": archived_attempts,
                 }
@@ -671,24 +933,26 @@ class RebuildSupervisor:
         candidate_ip = self.journal.add_ip(
             cycle_id=cycle_id,
             label="candidate_implementation",
-            content=f"Generated selector candidate {sha256_file(candidate_runtime_path)}: {accepted_note}",
+            content=f"Generated inert selection-policy candidate {sha256_file(candidate_runtime_path)}: {accepted_note}",
             kind="implementation",
             outcome="untested",
             metadata={
-                "provenance_type": "ai_generated_source",
+                "provenance_type": "ai_generated_inert_policy",
+                "artifact_type": "declarative_policy",
                 "source_sha256": sha256_file(candidate_runtime_path),
                 "runtime_path": str(candidate_runtime_path),
             },
         )
         self.journal.relate(candidate_ip["ref"], proposal_ip["ref"], "implements", "Candidate implements preregistered hypothesis")
 
-        candidate_public = self._evaluate_public(candidate_runtime_path)
+        candidate_public = self._evaluate_public(candidate_runtime_path, artifact_type="declarative_policy")
         public_behavioral = self._public_behavioral_improvement_decision(investigation, candidate_public)
         report.update(
             {
                 "candidate": {
                     "runtime_path": str(candidate_runtime_path),
                     "sha256": sha256_file(candidate_runtime_path),
+                    "artifact_type": "declarative_policy",
                     "implementation_note": accepted_note,
                     "field_ref": candidate_ip["ref"],
                 },
@@ -730,7 +994,7 @@ class RebuildSupervisor:
             return self._finish_report(report, cycle_id, started)
 
         baseline_eval = self._evaluate(active_path)
-        candidate_eval = self._evaluate(candidate_runtime_path)
+        candidate_eval = self._evaluate(candidate_runtime_path, artifact_type="declarative_policy")
         protected_after = self.protected_hashes()
         if protected_after != protected_before:
             raise RuntimeError("protected evaluation files changed during evaluation")
@@ -772,13 +1036,14 @@ class RebuildSupervisor:
         version_name = f"generated_{cycle_id}"
         version_dir = self.config.accepted_version_dir or (self.config.component_dir / "versions")
         version_dir.mkdir(parents=True, exist_ok=True)
-        version_path = version_dir / f"{version_name}.py"
+        version_path = version_dir / f"{version_name}.policy.json"
         shutil.copy2(candidate_runtime_path, version_path)
         activation = self._activate(
             version=version_name,
             source_path=version_path,
             cycle_id=cycle_id,
             candidate_ref=candidate_ip["ref"],
+            artifact_type="declarative_policy",
         )
         if activation["activated"]:
             report.update(
@@ -832,7 +1097,23 @@ class RebuildSupervisor:
         proposal: dict[str, Any],
     ) -> str:
         public_contract = {
-            "signature": "select_context(observer_state, items, max_items, max_chars) -> list[str]",
+            "representation": "inert JSON data interpreted by trusted stoe_agent.selection_policy code",
+            "format": POLICY_FORMAT,
+            "version": POLICY_VERSION,
+            "required_policy_fields": ["format", "version", "filters", "score_rules", "sort", "budget"],
+            "rule_shapes": {
+                "token_similarity": ["op", "left_fields", "right_field", "weight"],
+                "constant_if": ["op", "conditions", "weight"],
+                "conditional_similarity": [
+                    "op",
+                    "conditions",
+                    "left_fields",
+                    "right_field",
+                    "weight",
+                    "bias",
+                ],
+                "condition": ["field", "op", "value_or_values"],
+            },
             "item_fields": [
                 "ref",
                 "content",
@@ -851,10 +1132,12 @@ class RebuildSupervisor:
             ],
             "invariants": [
                 "deterministic",
-                "return only unique available refs",
-                "respect max_items and sum of selected content lengths <= max_chars",
-                "side-effect free",
-                "stdlib imports limited to re, math, collections, typing",
+                "no Python, imports, expressions, templates, callbacks, paths, or resource names",
+                "score_rules use only token_similarity, constant_if, or conditional_similarity",
+                "conditions use only eq, not_eq, in, not_in, contains_token, or nonempty",
+                "filters may only exclude_if",
+                "sort is fixed to score descending, created_order descending, ref ascending",
+                "budget strategy is greedy_skip_oversize",
                 "do not reward every failure; relate failure conditions to active or changed constraints",
                 "do not assume origin alone proves relevance",
                 "navigator paths, edge types, relation labels, and scores are not selector inputs",
@@ -862,8 +1145,9 @@ class RebuildSupervisor:
             ],
         }
         return (
-            "Implement the preregistered proposal as a complete Python source file. Generalize from the investigation; "
-            "do not encode diagnostic ref names or case-specific phrases. The protected acceptance cases are unavailable.\n\n"
+            "Implement the preregistered proposal as one inert declarative selection-policy JSON object. Generalize from "
+            "the investigation; do not encode diagnostic ref names or case-specific phrases. The protected acceptance "
+            "cases are unavailable. Do not emit executable text or name external resources.\n\n"
             f"PUBLIC CONTRACT:\n{json.dumps(public_contract, indent=2)}\n\n"
             f"PROPOSAL:\n{json.dumps(proposal, indent=2, ensure_ascii=False)}\n\n"
             f"OBSERVED DIAGNOSTIC SUMMARY:\n{json.dumps(self._compact_diagnostics(investigation), indent=2, ensure_ascii=False)}\n\n"
@@ -963,11 +1247,22 @@ class RebuildSupervisor:
             "role": "disclosed behavioral improvement check only; never sufficient for activation or a causal mechanism claim",
         }
 
-    def _evaluate_public(self, source_path: Path) -> dict[str, Any]:
+    def _evaluate_public(
+        self, source_path: Path, *, artifact_type: str | None = None
+    ) -> dict[str, Any]:
+        artifact_type = artifact_type or infer_artifact_type(source_path)
         env = dict(os.environ)
         source_root = str((self.config.repo_root / "agent" / "src").resolve())
         env["PYTHONPATH"] = source_root + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
-        command = [sys.executable, "-m", "stoe_agent.public_worker", "--source", str(source_path)]
+        command = [
+            sys.executable,
+            "-m",
+            "stoe_agent.public_worker",
+            "--artifact",
+            str(source_path),
+            "--artifact-type",
+            artifact_type,
+        ]
         try:
             completed = subprocess.run(
                 command,
@@ -1085,7 +1380,8 @@ class RebuildSupervisor:
         if archive_dir is None:
             return str(source_path)
         archive_dir.mkdir(parents=True, exist_ok=True)
-        destination = archive_dir / f"{cycle_id}_{suffix}.py"
+        extension = "".join(source_path.suffixes) or ".artifact"
+        destination = archive_dir / f"{cycle_id}_{suffix}{extension}"
         shutil.copy2(source_path, destination)
         return str(destination)
 
@@ -1100,28 +1396,79 @@ class RebuildSupervisor:
             cleaned = "\n".join(lines)
         return cleaned.rstrip() + "\n"
 
-    def _evaluate(self, source_path: Path) -> dict[str, Any]:
+    def _evaluate(
+        self, source_path: Path, *, artifact_type: str | None = None
+    ) -> dict[str, Any]:
+        artifact_type = artifact_type or infer_artifact_type(source_path)
+        env = dict(os.environ)
+        source_root = str((self.config.repo_root / "agent" / "src").resolve())
+        env["PYTHONPATH"] = source_root + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")
         command = [
             sys.executable,
-            str(self.config.protected_eval_dir / "evaluator.py"),
-            "--source",
+            "-m",
+            "stoe_agent.protected_worker",
+            "--artifact",
             str(source_path),
+            "--artifact-type",
+            artifact_type,
             "--cases",
             str(self.config.protected_eval_dir / "cases.json"),
         ]
-        completed = subprocess.run(
-            command,
-            cwd=self.config.protected_eval_dir,
-            capture_output=True,
-            text=True,
-            timeout=self.config.evaluation_timeout_seconds,
-            check=False,
-        )
-        if completed.returncode != 0:
-            raise RuntimeError(
-                f"protected evaluator failed with code {completed.returncode}: {completed.stdout} {completed.stderr}"
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=self.config.repo_root / "agent",
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=self.config.evaluation_timeout_seconds,
+                check=False,
             )
-        return json.loads(completed.stdout)
+        except subprocess.TimeoutExpired as exc:
+            return self._protected_execution_rejection(
+                "timeout", f"protected evaluation exceeded {self.config.evaluation_timeout_seconds}s", exc
+            )
+        except OSError as exc:
+            return self._protected_execution_rejection("launch_error", f"{type(exc).__name__}: {exc}")
+        try:
+            result = json.loads(completed.stdout)
+        except (json.JSONDecodeError, TypeError) as exc:
+            return self._protected_execution_rejection(
+                "malformed_output", f"{type(exc).__name__}: {exc}", stdout=completed.stdout, stderr=completed.stderr
+            )
+        if completed.returncode != 0 or result.get("status") != "completed":
+            return self._protected_execution_rejection(
+                "crash" if completed.returncode != 0 else str(result.get("failure_kind", "worker_rejection")),
+                str(result.get("error") or completed.stderr or f"child exited {completed.returncode}"),
+                stdout=completed.stdout,
+                stderr=completed.stderr,
+            )
+        result["subprocess_returncode"] = completed.returncode
+        return result
+
+    @staticmethod
+    def _protected_execution_rejection(
+        failure_kind: str,
+        error: str,
+        exc: Exception | None = None,
+        *,
+        stdout: str = "",
+        stderr: str = "",
+    ) -> dict[str, Any]:
+        return {
+            "status": "rejected",
+            "failure_kind": failure_kind,
+            "error": error,
+            "exception_type": type(exc).__name__ if exc is not None else "",
+            "stdout": stdout[-4000:],
+            "stderr": stderr[-4000:],
+            "output_truncated": len(stdout) > 4000 or len(stderr) > 4000,
+            "pass_count": 0,
+            "case_count": 0,
+            "critical_failures": [],
+            "passed_cases": [],
+            "results": [],
+        }
 
     @staticmethod
     def _acceptance_decision(active: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
@@ -1129,9 +1476,12 @@ class RebuildSupervisor:
         candidate_passes = set(candidate.get("passed_cases", []))
         regressions = sorted(active_passes - candidate_passes)
         critical = list(candidate.get("critical_failures", []))
-        improved = int(candidate.get("pass_count", 0)) > int(active.get("pass_count", 0))
-        accepted = improved and not regressions and not critical
+        execution_completed = active.get("status", "completed") == "completed" and candidate.get("status") == "completed"
+        improved = execution_completed and int(candidate.get("pass_count", 0)) > int(active.get("pass_count", 0))
+        accepted = execution_completed and improved and not regressions and not critical
         reasons = []
+        if not execution_completed:
+            reasons.append("active or candidate protected evaluation did not complete")
         if not improved:
             reasons.append("candidate did not strictly improve protected pass count")
         if regressions:
@@ -1147,6 +1497,7 @@ class RebuildSupervisor:
             "candidate_pass_count": candidate.get("pass_count"),
             "regressions": regressions,
             "critical_failures": critical,
+            "execution_completed": execution_completed,
         }
 
     def _activate(
@@ -1156,13 +1507,16 @@ class RebuildSupervisor:
         source_path: Path,
         cycle_id: str,
         candidate_ref: str,
+        artifact_type: str | None = None,
     ) -> dict[str, Any]:
         old_pointer = self.read_active_pointer()
         snapshot = self.journal.snapshot(cycle_id=cycle_id)
+        artifact_type = artifact_type or infer_artifact_type(source_path)
         new_pointer = {
             "version": version,
             "source_path": str(source_path.resolve()),
             "sha256": sha256_file(source_path),
+            "artifact_type": artifact_type,
             "activated_at": datetime.now(timezone.utc).isoformat(),
             "previous_version": old_pointer["version"],
         }
@@ -1395,9 +1749,12 @@ class RebuildSupervisor:
             }
 
     def rollback(self, version: str) -> dict[str, Any]:
-        source_path = self.config.component_dir / "versions" / f"{version}.py"
-        if not source_path.exists():
-            raise FileNotFoundError(source_path)
+        versions_dir = self.config.component_dir / "versions"
+        candidates = [versions_dir / f"{version}.policy.json", versions_dir / f"{version}.py"]
+        source_path = next((path for path in candidates if path.exists()), None)
+        if source_path is None:
+            raise FileNotFoundError(candidates[0])
+        artifact_type = infer_artifact_type(source_path)
         cycle_id = "rollback_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         prior = self.read_active_pointer()
         self._atomic_write_json(
@@ -1406,6 +1763,7 @@ class RebuildSupervisor:
                 "version": version,
                 "source_path": str(source_path.resolve()),
                 "sha256": sha256_file(source_path),
+                "artifact_type": artifact_type,
                 "activated_at": datetime.now(timezone.utc).isoformat(),
                 "previous_version": prior["version"],
             },

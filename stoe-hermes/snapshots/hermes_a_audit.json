@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "captured_read_only": true,
+  "head": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+  "branch": "main",
+  "upstream": "origin/main",
+  "upstream_head": "520e63661c8eaa2135ebd60a07192f0d8aa45e6e",
+  "merge_base": null,
+  "merge_base_exit_code": 1,
+  "classification": "genuinely_divergent_unrelated_histories",
+  "ahead_count": 1,
+  "behind_count": 1,
+  "tracked_modifications": [
+    {
+      "path": "contributors/emails/agent@Agents-Mac-mini.local",
+      "state": "modified_unstaged",
+      "classification": "dependency/environment artifact",
+      "cause": "The pinned commit contains two upstream paths differing only by case: agent@Agents-Mac-mini.local and agent@agents-Mac-mini.local. The case-insensitive Windows checkout cannot represent both, so one upstream blob overwrites the other and status reports a modification.",
+      "sha256": "2554de3d3dd9605a9924dc8175fb0d3ba6a92cf5a5a27edb4958409c4bbb1c96"
+    }
+  ],
+  "staged_modifications": [],
+  "untracked_non_secret_files": [],
+  "submodules": [],
+  "ignored_categories": {
+    "generated_runtime_state": [".hermes/", "logs/", "tmp/", "data/", "sessions outside checkout"],
+    "profile_configuration": ["external HERMES_HOME/config.yaml", "external HERMES_HOME/SOUL.md"],
+    "dependency_environment_artifact": ["venv/", ".venv/", "node_modules/", "*.egg-info/"],
+    "credential_bearing": ["external HERMES_HOME/.env present", "external HERMES_HOME/auth.json present"],
+    "upstream_source": ["origin/main at 520e63661c8eaa2135ebd60a07192f0d8aa45e6e"],
+    "unknown": []
+  },
+  "tracked_diff": {
+    "path": "stoe-hermes/snapshots/hermes_a_tracked.patch",
+    "sha256": "841f54537c5f7db3c597ae0a173323b8222a2c190c8a4724c84adc165c8b8f6d"
+  },
+  "active_configuration_sha256": "1cd7a8c9c38812b6cfe47b2085dd796ceb4e93f65ac2a2b8339ac33831200b80",
+  "active_soul_sha256": "2765a846e1bb371d78d3b93b403dfb0f8d1ba1a9895edb5f608367abfe81194d",
+  "environment_fingerprint": "7e69ccd855ad7d815a7b62d9ae9b31bb0d53033781b3af516370547ad4c065fd",
+  "secrets": "contents_not_read_or_copied"
+}

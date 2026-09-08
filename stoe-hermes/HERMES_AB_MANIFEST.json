@@ -1,0 +1,51 @@
+{
+  "action_id": "self-code-cycle:hermes-ab-v1:deduplicate-context",
+  "status": "model_candidate_rejected_no_activation",
+  "active_hermes": {
+    "version": "0.20.3 (2026.8.16.2)",
+    "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+    "working_tree": "dirty",
+    "upstream_relation": "divergent",
+    "configuration_sha256": "1cd7a8c9c38812b6cfe47b2085dd796ceb4e93f65ac2a2b8339ac33831200b80",
+    "soul_sha256": "2765a846e1bb371d78d3b93b403dfb0f8d1ba1a9895edb5f608367abfe81194d",
+    "license_sha256": "821556e6336796450ab852d375117b48a4887e71d255794fd6318d99982a5ab6"
+  },
+  "model_attempt": {
+    "ollama_version": "0.33.3",
+    "model": "gemma4:26b",
+    "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+    "call_count": 1,
+    "raw_response_sha256": "a8acfba748b8cbbf6faa417a2bbc956168ad46debf2181d17cc877a54eafde74",
+    "raw_response_bytes": 173964,
+    "candidate_sha256": null,
+    "failure_ref": "IP_1f723d4454b64d93"
+  },
+  "qualification": {
+    "stoe_hermes": "12/12",
+    "agent": "77/77",
+    "v9_1": "50/50",
+    "v3": "21/21",
+    "stoe_memory": "9/9",
+    "fresh_resume_tokens": 367,
+    "fresh_resume_reserve": 1433
+  },
+  "files": {
+    "HERMES_AB_RESUME.json": "96343bc2b8489e2b15ee9d9fdbfed9e72707aff286c2d021d9e48c3016a2affb",
+    "HERMES_AB_SUCCESSION_V1.md": "54acb3ec89f82ffdcfbc8b92b232421e95330b93c64398054179239a171e9aad",
+    "THIRD_PARTY_NOTICES.md": "53b951466b92b515322d47d1ac8e63ec4e1167b41909a32e24fdfc6bae29cfb5",
+    "hermes_plugin/__init__.py": "e9fb48e7bf63108ee5a8a3cd5c4b4a6cf1d3b3e231e9cb85bab725258ad27abb",
+    "hermes_plugin/plugin.yaml": "e67eb445dad2b619c62fca709bb16d829c01ca9e1ddf53dcb4a5a39c62060ede",
+    "releases/active_release.json": "b6a1e4f89ea85a845eda7a8aa821135fa152cbbb126f3c294a6dc0a10e7c82c3",
+    "src/stoe_hermes/context_renderer.py": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+    "src/stoe_hermes/plugin.py": "4eb1abfb7ac2807c74e5c967b1a441405984b8dbe33d987fc8677cc604e59870",
+    "src/stoe_hermes/succession.py": "acaba45820df76c06d11d9df998b008a06dc5271d7226762d442b4cbf22b1268",
+    "tests/test_hermes_ab.py": "4b3874ae173b716be343176a81da24466267b638ec15c71af619849777bd6879",
+    "tools/run_hermes_ab_cycle.py": "229d974496af48a141dab50546c9b924a28cfcbf320799ad2c2c6a6a7b43915f",
+    "tools/verify_resume.py": "1005bd59e2e52aee9ca41c3ab4f4105a3adc0ef211b064512a36238eb49426b3"
+  },
+  "historical_hash_conservation": {
+    "accepted_report": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1",
+    "accepted_selector": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+    "changed": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "budget": {"limit_tokens": 1800, "estimator": "conservative_utf8_bytes_div_3"},
+  "canonical_field": "C:\\Users\\Bozuron\\AppData\\Local\\SToE\\field.sqlite3",
+  "observer_state_ref": "STATE_7ffbaf1895d6425a",
+  "active_release": {"release_id": "hermes-a-bb924730743c", "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2", "rollback_target": "hermes-a-bb924730743c", "state_ref": "IP_906d9a7961df4591"},
+  "candidate": {"status": "rejected_unmaterialized", "candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff", "failure_ref": "IP_15f488b9926a479f"},
+  "diagnosis_ref": "IP_83a2caf23edb43a5",
+  "decision_ref": "IP_2545cbef7d584210",
+  "next_action_ref": "IP_d8e05dd4b1704c56",
+  "successor_state_ref": "IP_6b7689bcdbfa4eb1",
+  "closed_action_id": "self-code-cycle:hermes-ab-v2-1:split-model-deduplicate-context",
+  "completed_calls": {"gemma_plan": 1, "format_repair": 0, "qwen_code": 1, "gemma_review": 0},
+  "activation_status": "unchanged",
+  "instruction": "Resolve refs from SToE Memory. Never retry v2.1. Await approval for a protected diff-aware validator correction."
+}

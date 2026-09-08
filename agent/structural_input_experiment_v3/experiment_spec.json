@@ -1,0 +1,64 @@
+{
+  "experiment_id": "stoe_structural_input_v3",
+  "status": "FROZEN_NOT_RUN",
+  "action_id": "model-cycle:structural-input-v3",
+  "independent_variable": "Presence versus absence of the frozen bounded typed/directed relational overlay while source, exposed diagnostics, unstructured memory, model, response grammar, budgets, seed, and acceptance rule remain fixed.",
+  "benchmark": {
+    "file": "cases.json",
+    "sha256": "f14d953c890e296c392918ce9ac6f821b8ce2020f853f7ea2e8aa9964bd18b65",
+    "case_count": 12,
+    "independent_case_count": 12,
+    "targeted_changed_constraint_count": 8,
+    "control_count": 4
+  },
+  "input_bundle": {
+    "file": "../structural_input_experiment/FROZEN_INPUT_BUNDLE.json",
+    "sha256": "45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49"
+  },
+  "qualified_harness": {
+    "manifest": "agent/public_response_rehearsal/FROZEN_HARNESS_MANIFEST.json",
+    "sha256": "832630ea5ec95bc7ecf7271dd54be879c4e0ed10d636437cf1bcef6ab4b8d3ee"
+  },
+  "condition_order": ["ORDINARY_OBSERVABLE", "BOUNDED_TYPED_STOE"],
+  "model": {
+    "provider": "local_ollama_only",
+    "name": "qwen3-coder:latest",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  },
+  "active_baseline": {
+    "version": "generated_20260906T125305Z_92e7e913",
+    "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+    "artifact_type": "legacy_python"
+  },
+  "generation": {
+    "calls_per_condition": 2,
+    "total_call_budget": 4,
+    "retry_count": 0,
+    "proposal_seed": 7701,
+    "policy_seed": 8701,
+    "proposal_max_output_tokens": 1400,
+    "policy_max_output_tokens": 2000,
+    "temperature": 0,
+    "top_p": 0.9,
+    "top_k": 40,
+    "context_limit_tokens": 8192,
+    "checkpoint_reserve_tokens": 512,
+    "minimum_additional_remaining_tokens": 1024,
+    "policy_language": "stoe.selection_policy version 1 inert JSON compiled from operator-specific fixed tables"
+  },
+  "gates": {
+    "proposal": "Dynamic exact keys for every exposed failed diagnostic, exact observed selections and misses, bounded enumerated mechanism IDs, and no additional fields.",
+    "policy": "Operator-specific bounded fixed tables compile through trusted code to an inert validated selection policy.",
+    "public": "Strict disclosed-diagnostic improvement with no regression.",
+    "hidden": "Strict total improvement over active, preserve every active pass, no critical failure, completed evaluation.",
+    "activation": "Unique eligible leader by targeted then total passes; tie means no activation and no SToE preference."
+  },
+  "analysis": {
+    "primary_metric": "BOUNDED_TYPED_STOE minus ORDINARY_OBSERVABLE targeted passes",
+    "minimum_targeted_advantage_cases": 2,
+    "success_criterion": "At least +2/8 targeted with no control loss",
+    "unevaluated": "null counts and evaluable=false",
+    "claim_limit": "One paired pipeline run on twelve independent unseen cases is preliminary mechanism evidence only."
+  },
+  "freeze_manifest": "FROZEN_MANIFEST.json"
+}

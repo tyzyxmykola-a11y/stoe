@@ -1,0 +1,17 @@
+{
+  "status": "FROZEN_NOT_RUN",
+  "freeze_order": "The response harness was real-model qualified and frozen before these unseen cases were authored.",
+  "critical_file_sha256": {
+    "agent/src/stoe_agent/v3_experiment.py": "04c87830c16c45cec3b002a3d824a5dbd1e87608c3f9631fc8bbcc6635574cd9",
+    "agent/src/stoe_agent/response_rehearsal.py": "0b0832779cd4c0296eb73d40a6e2c8f6331addde8910daa80ce578d23619f314",
+    "agent/src/stoe_agent/selection_policy.py": "eef574eefb8f700784b2d0ae124f6a5c102628bc32d9f78dd83757d24b3cc3e6",
+    "agent/src/stoe_agent/structural_experiment.py": "efcad31ae5220b36ab93e28a49d4e6b66ac88823d1f568677b7b9d112bfdaae5",
+    "agent/src/stoe_agent/ollama.py": "274dede0edb992c1d745e9be14a4862088ccb8b08327316b4af1fa6c2ee8747d",
+    "agent/src/stoe_agent/cli.py": "fca641b2bc136e01441f2f22b36fa493cd662da082ece5ec38d3cfae306567e7",
+    "agent/tests/test_v3_experiment.py": "700875896241d5b1d3c5b942939d72e10bc7193ebbef25f1dfecaf9c522cce47"
+  },
+  "benchmark_sha256": "f14d953c890e296c392918ce9ac6f821b8ce2020f853f7ea2e8aa9964bd18b65",
+  "qualified_harness_manifest_sha256": "832630ea5ec95bc7ecf7271dd54be879c4e0ed10d636437cf1bcef6ab4b8d3ee",
+  "model_digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+  "results_seen": false
+}

@@ -1,0 +1,110 @@
+[
+  {
+    "name":"digitized_register_reopens_linkage","family":"record_legibility_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a method to reconstruct household succession after the damaged registers were digitized","active_constraints":["retain page-level provenance","resolve household continuity"],"changed_constraints":["multispectral digitization recovered the previously illegible register pages"],"evidence":["archivists verified the recovered names against duplicate entries"],"open_questions":["Which legibility-blocked method is now usable?"]},
+    "items":[
+      {"ref":"V3T01","content":"Link household succession directly from the recovered register entries with page provenance.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"Water damage made the relevant register pages illegible.","created_order":2},
+      {"ref":"V3T02","content":"Infer household succession only from aggregate tax totals.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V3T03","content":"Prepare a general catalogue of the archive shelves.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":9}
+    ],"max_items":1,"max_chars":190,"required_refs":["V3T01"],"forbidden_refs":["V3T02"]
+  },
+  {
+    "name":"washout_completion_reopens_crossover","family":"participant_eligibility_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Select the trial design after every participant completed washout","active_constraints":["estimate within-person effect","avoid treatment carryover"],"changed_constraints":["the monitored washout interval is complete for all enrolled participants"],"evidence":["screening found no residual treatment marker"],"open_questions":["Which carryover-blocked design can proceed?"]},
+    "items":[
+      {"ref":"V3T04","content":"Run the within-person crossover comparison now that washout is complete.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"Residual treatment during the washout interval would confound crossover estimates.","created_order":1},
+      {"ref":"V3T05","content":"Use the lower-power parallel comparison adopted during washout.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":6},
+      {"ref":"V3T06","content":"Summarize recruitment demographics before choosing a design.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":8}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3T04"],"forbidden_refs":["V3T05"]
+  },
+  {
+    "name":"supplier_certification_reopens_component","family":"supplier_qualification_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose the production component after the supplier audit closed","active_constraints":["use traceable lots","meet sterile-production certification"],"changed_constraints":["the component supplier passed the independent sterile-production audit"],"evidence":["the certification registry lists the audited facility and lot controls"],"open_questions":["Which qualification rejection has expired?"]},
+    "items":[
+      {"ref":"V3T07","content":"Use the high-yield component from the now-certified supplier with lot tracing.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"The supplier lacked sterile-production certification.","created_order":3},
+      {"ref":"V3T08","content":"Retain the low-yield component from the incumbent supplier.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V3T09","content":"Collect generic vendor brochures for the procurement archive.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":10}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3T07"],"forbidden_refs":["V3T08"]
+  },
+  {
+    "name":"interference_removed_reopens_acoustic_count","family":"interference_source_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a colony counting method after the turbine shutdown","active_constraints":["distinguish individual calls","preserve nightly time series"],"changed_constraints":["the nearby turbine causing broadband interference was permanently removed"],"evidence":["a week of reference recordings is below the detector noise threshold"],"open_questions":["Which noise-blocked method should be restored?"]},
+    "items":[
+      {"ref":"V3T10","content":"Count the colony from calibrated acoustic call detections across the nightly series.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"Broadband turbine noise masked individual colony calls.","created_order":2},
+      {"ref":"V3T11","content":"Continue one manual daylight count that misses nocturnal activity.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":8},
+      {"ref":"V3T12","content":"Write a site history describing the former turbine.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":9}
+    ],"max_items":1,"max_chars":190,"required_refs":["V3T10"],"forbidden_refs":["V3T11"]
+  },
+  {
+    "name":"interface_consensus_reopens_federation","family":"protocol_alignment_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose the repository integration after partners ratified one interface","active_constraints":["retain local ownership","support cross-repository queries"],"changed_constraints":["all partner repositories ratified the same exchange interface version"],"evidence":["conformance tests passed at every partner endpoint"],"open_questions":["Which incompatibility-blocked design is viable?"]},
+    "items":[
+      {"ref":"V3T13","content":"Federate cross-repository queries through the ratified exchange interface.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"Partner repositories implemented mutually incompatible interfaces.","created_order":1},
+      {"ref":"V3T14","content":"Maintain isolated exports that cannot answer cross-repository queries.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":6},
+      {"ref":"V3T15","content":"Survey unrelated repository software products.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":9}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3T13"],"forbidden_refs":["V3T14"]
+  },
+  {
+    "name":"reference_material_reopens_quantitation","family":"calibration_reference_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Select the assay interpretation after certified reference material arrived","active_constraints":["report absolute concentration","include calibration uncertainty"],"changed_constraints":["certified reference material spanning the target range is now available"],"evidence":["the certificate includes traceability and uncertainty values"],"open_questions":["Which calibration-blocked interpretation can now be used?"]},
+    "items":[
+      {"ref":"V3T16","content":"Report absolute concentrations using the certified reference calibration curve.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"No certified reference material covered the target concentration range.","created_order":2},
+      {"ref":"V3T17","content":"Continue reporting only uncalibrated relative signal intensity.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V3T18","content":"Archive the assay plate photographs without quantitation.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":10}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3T16"],"forbidden_refs":["V3T17"]
+  },
+  {
+    "name":"backlog_clearance_reopens_dual_review","family":"queue_load_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose the annotation review process after the backlog cleared","active_constraints":["measure reviewer disagreement","publish adjudication provenance"],"changed_constraints":["the annotation queue is empty and both reviewers have reserved capacity"],"evidence":["the staffing board confirms capacity through the release date"],"open_questions":["Which workload-blocked review can resume?"]},
+    "items":[
+      {"ref":"V3T19","content":"Restore independent dual review with adjudication and disagreement logging.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"The annotation backlog left capacity for only one reviewer.","created_order":3},
+      {"ref":"V3T20","content":"Keep single-review annotation without disagreement measurement.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":8},
+      {"ref":"V3T21","content":"Prepare a chart of historical queue lengths.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":9}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3T19"],"forbidden_refs":["V3T20"]
+  },
+  {
+    "name":"translation_expertise_reopens_interviews","family":"team_competence_transition","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose an interview analysis after certified translators joined","active_constraints":["preserve idiomatic meaning","audit every translated excerpt"],"changed_constraints":["two certified translators fluent in the interview language joined the team"],"evidence":["both passed blinded translation and audit exercises"],"open_questions":["Which expertise-blocked analysis is now defensible?"]},
+    "items":[
+      {"ref":"V3T22","content":"Analyze the original-language interviews with dual translation and excerpt audits.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"The team had no qualified translator for the interview language.","created_order":1},
+      {"ref":"V3T23","content":"Analyze only the small subset originally conducted in English.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":6},
+      {"ref":"V3T24","content":"Count interview file sizes before selecting an analysis.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":10}
+    ],"max_items":1,"max_chars":190,"required_refs":["V3T22"],"forbidden_refs":["V3T23"]
+  },
+  {
+    "name":"allergy_constraint_remains_active","family":"persistent_patient_contraindication","targeted_changed_constraint":false,"critical":true,
+    "observer":{"goal":"Choose a contrast method for the patient","active_constraints":["the documented iodine allergy remains active","obtain diagnostic vascular contrast"],"changed_constraints":[],"evidence":["a non-iodinated contrast protocol is available"],"open_questions":["Which method remains safe?"]},
+    "items":[
+      {"ref":"V3C01","content":"Use the iodinated contrast agent that previously caused an allergic reaction.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"The patient has a documented iodine allergy.","created_order":9},
+      {"ref":"V3C02","content":"Use the validated non-iodinated vascular contrast protocol.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":4},
+      {"ref":"V3C03","content":"Review general imaging literature before scheduling.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":10}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3C02"],"forbidden_refs":["V3C01"]
+  },
+  {
+    "name":"custody_gap_remains_unresolved","family":"persistent_evidence_integrity","targeted_changed_constraint":false,"critical":true,
+    "observer":{"goal":"Choose evidence for the provenance audit","active_constraints":["the specimen custody gap remains unresolved","use verifiable provenance"],"changed_constraints":[],"evidence":["a continuously logged comparison specimen is available"],"open_questions":["Which evidence has defensible custody?"]},
+    "items":[
+      {"ref":"V3C04","content":"Use the specimen whose transfer interval has no custody record.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"Its chain of custody contains an unresolved transfer gap.","created_order":8},
+      {"ref":"V3C05","content":"Use the comparison specimen with continuous signed custody logs.","origin":"runtime_reasoning","kind":"hypothesis","outcome":"supported","failure_condition":"","created_order":3},
+      {"ref":"V3C06","content":"List every storage cabinet in the facility.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":9}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3C05"],"forbidden_refs":["V3C04"]
+  },
+  {
+    "name":"replicated_measurement_outranks_conjecture","family":"replication_evidence_control","targeted_changed_constraint":false,"critical":false,
+    "observer":{"goal":"Choose the claim supported by replicated measurements","active_constraints":["prefer replicated observation over conjecture"],"changed_constraints":[],"evidence":["three independent laboratories completed the same protocol"],"open_questions":["Which information point reports the replicated result?"]},
+    "items":[
+      {"ref":"V3C07","content":"Three laboratories independently measured the same directional effect.","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":4},
+      {"ref":"V3C08","content":"A mechanism might produce a directional effect in future tests.","origin":"runtime_reasoning","kind":"hypothesis","outcome":"untested","failure_condition":"","created_order":7},
+      {"ref":"V3C09","content":"An old notebook mentions unrelated instrument maintenance.","origin":"runtime_reasoning","kind":"observation","outcome":"superseded","failure_condition":"","created_order":2}
+    ],"max_items":1,"max_chars":180,"required_refs":["V3C07"],"forbidden_refs":[]
+  },
+  {
+    "name":"oversize_transcript_does_not_block_notes","family":"selection_budget_control_v3","targeted_changed_constraint":false,"critical":false,
+    "observer":{"goal":"Retrieve both concise interview findings","active_constraints":["keep selected text within one hundred characters"],"changed_constraints":[],"evidence":["two concise findings are sufficient"],"open_questions":["Which notes fit together?"]},
+    "items":[
+      {"ref":"V3C10","content":"This deliberately oversized transcript excerpt repeats contextual background and cannot fit within the active selection character budget at all.","origin":"runtime_reasoning","kind":"observation","outcome":"supported","failure_condition":"","created_order":9},
+      {"ref":"V3C11","content":"Participants preferred the shorter intake form.","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":2},
+      {"ref":"V3C12","content":"Reviewers confirmed the preference independently.","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":3}
+    ],"max_items":2,"max_chars":100,"required_refs":["V3C11","V3C12"],"forbidden_refs":["V3C10"]
+  }
+]

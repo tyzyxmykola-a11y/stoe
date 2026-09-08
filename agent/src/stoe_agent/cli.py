@@ -8,6 +8,7 @@ from .supervisor import RebuildSupervisor, SupervisorConfig
 from .structural_experiment import StructuralInputExperiment
 from .qualified_experiment import QualifiedStructuralExperiment
 from .response_rehearsal import run_public_rehearsal
+from .v3_experiment import FrozenV3StructuralExperiment
 
 
 def _repo_root() -> Path:
@@ -76,6 +77,10 @@ def main(argv=None) -> int:
     rehearsal.add_argument("--bundle", required=True, type=Path)
     rehearsal.add_argument("--output", required=True, type=Path)
     rehearsal.add_argument("--model", default="qwen3-coder:latest")
+    structural_v3 = subparsers.add_parser("structural-experiment-v3")
+    structural_v3.add_argument("--spec", required=True, type=Path)
+    structural_v3.add_argument("--allow-generation", action="store_true")
+    structural_v3.add_argument("--model", default="qwen3-coder:latest")
     args = parser.parse_args(argv)
 
     supervisor = _supervisor(args)
@@ -156,6 +161,10 @@ def main(argv=None) -> int:
         )
     elif args.command == "public-response-rehearsal":
         result = run_public_rehearsal(supervisor, args.bundle.resolve(), args.output.resolve())
+    elif args.command == "structural-experiment-v3":
+        result = FrozenV3StructuralExperiment(supervisor, args.spec).run(
+            allow_generation=args.allow_generation
+        )
     else:
         parser.error(f"unknown command: {args.command}")
     # ASCII escaping keeps structured output printable on Windows hosts whose

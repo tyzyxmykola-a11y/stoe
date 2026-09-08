@@ -150,12 +150,13 @@ class ResponseRehearsalTests(unittest.TestCase):
                         self.active_source, self.bundle,
                     )
 
-    def test_condition_table_semantics_are_not_ambiguous(self):
+    def test_condition_operator_reads_only_its_fixed_table_column(self):
         response = largest_valid_policy_response()
         row = response["constant_if_rules"][0]["conditions"][0]
-        row["op"] = "nonempty"
-        with self.assertRaisesRegex(RuntimeError, "nonempty requires"):
-            compile_policy_tables(response)
+        row.update({"op": "in", "value": "ignored bounded cell", "values": ["supported"]})
+        policy = compile_policy_tables(response)
+        compiled = policy["score_rules"][3]["conditions"][0]
+        self.assertEqual({"field": "item.failure_condition", "op": "in", "values": ["supported"]}, compiled)
 
     def test_schema_validator_rejects_nonfinite_or_wrong_numbers(self):
         response = largest_valid_policy_response()

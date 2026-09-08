@@ -47,3 +47,19 @@ an acceptance criterion and are not evidence about unseen performance.
 If any of the six pipelines fails, the failure is preserved and no v3 holdout is
 created. If all six succeed, the exact harness and model digest are frozen before
 any new unseen v3 cases are authored.
+
+## Development attempt 1
+
+Artifact: `attempt_001.json`
+
+Result: `0/6` complete pipelines. All six exact-key proposals and all six policy
+JSON objects were schema-valid. Every failure occurred in the compiler because
+Qwen populated both fixed payload columns for an `in` row while the compiler
+required the unused scalar column to be empty. That convention was not an
+authority or policy-grammar boundary; it was an avoidable serialization trap.
+
+Development revision 2 therefore gives fixed-table columns explicit projection
+semantics: `in`/`not_in` read `values`, scalar operators read `value`, and
+`nonempty` reads neither. Unused bounded cells are ignored. Supported operators,
+fields, table sizes, output bounds, trusted compilation, evaluation scope, and
+the no-activation rule are unchanged.

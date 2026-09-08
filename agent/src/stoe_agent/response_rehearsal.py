@@ -27,7 +27,7 @@ MIN_REMAINING_TOKENS = 1024
 REPETITIONS = 3
 PROPOSAL_SEEDS = (7701, 7702, 7703)
 POLICY_SEEDS = (8701, 8702, 8703)
-HARNESS_VERSION = "public-response-grammar-v3-dev1"
+HARNESS_VERSION = "public-response-grammar-v3-dev2"
 
 
 def _string(max_length: int, *, allow_empty: bool = False) -> dict[str, Any]:
@@ -224,15 +224,13 @@ def validate_proposal(proposal: dict[str, Any], investigation: dict[str, Any]) -
 def _compile_condition(row: dict[str, Any], path: str) -> dict[str, Any]:
     op = row["op"]
     if op == "nonempty":
-        if row["value"] or row["values"]:
-            raise RuntimeError(f"{path}: nonempty requires empty value and values")
         return {"field": row["field"], "op": op}
     if op in {"in", "not_in"}:
-        if row["value"] or not row["values"]:
-            raise RuntimeError(f"{path}: {op} requires values and an empty value")
+        if not row["values"]:
+            raise RuntimeError(f"{path}: {op} requires at least one values entry")
         return {"field": row["field"], "op": op, "values": row["values"]}
-    if not row["value"] or row["values"]:
-        raise RuntimeError(f"{path}: {op} requires value and empty values")
+    if not row["value"]:
+        raise RuntimeError(f"{path}: {op} requires a value")
     return {"field": row["field"], "op": op, "value": row["value"]}
 
 
@@ -338,7 +336,7 @@ def policy_prompt(active_source: str, bundle: dict[str, Any], proposal: dict[str
     payload = {
         "instructions": [
             "Provide all fixed tables, using [] when a table is unused.",
-            "For nonempty use empty value and values; for in/not_in use values only; otherwise use value only.",
+            "Each row is fixed width: nonempty ignores value/values; in/not_in read values; other operators read value.",
             "At least one scoring-rule table must be nonempty.",
             "Generalize from mechanism fields; do not encode case names or item refs.",
         ],

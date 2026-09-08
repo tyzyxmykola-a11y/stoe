@@ -1,0 +1,19 @@
+{
+  "component": "research_context_selector",
+  "owner": "agent",
+  "editable_scope": "owned_components/context_selector/versions/*.policy.json",
+  "interface": "select_context(observer_state, items, max_items, max_chars) -> list[str]",
+  "candidate_representation": "stoe.selection_policy version 1 inert JSON interpreted by trusted code",
+  "legacy_release_boundary": "The two pre-policy Python releases remain immutable and are loadable only by exact filename, location, and SHA-256.",
+  "purpose": "Choose a bounded set of prior reasoning IP references for the current research state.",
+  "tracked_active_release": "active_release.json",
+  "suspected_v1_limitation": "Source inspection suggests that v1 ranks only lexical overlap with the goal. The rebuild cycle must establish any practical limitation through observed diagnostic behavior before proposing a change.",
+  "protected_outside_scope": [
+    "src/stoe_agent/supervisor.py",
+    "src/stoe_agent/selection_policy.py",
+    "src/stoe_agent/selector_loader.py",
+    "protected_evals/evaluator.py",
+    "protected_evals/cases.json"
+  ],
+  "underlying_model_boundary": "The component can change agent behavior but cannot change Ollama model weights or provider infrastructure."
+}

@@ -1,0 +1,39 @@
+{
+  "action_id": "self-code-cycle:v2:deduplicate-development-context",
+  "activation": "UNCHANGED_NO_CANDIDATE",
+  "artifacts": [
+    {
+      "path": "agent/SUPERVISED_SELF_CODE_MODIFICATION_V2.md",
+      "sha256": "92d1b10368b2ed74804df51c22c4973180c053cf6a71e84e82a71236b4f0ab2d"
+    },
+    {
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/preflight.json",
+      "sha256": "b8e766c411484412c5cd62d07300428d9588ce7db9f4c46621a4c0c382a152df"
+    },
+    {
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/qualification.json",
+      "sha256": "a91216220638f7302b474f3ff83acd2f7e957f6300e2bc251368162c8fd2d790"
+    },
+    {
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/qualification_postmortem.json",
+      "sha256": "665673543dd79ef6aab7f8d7c2337d684e166aaf120960729c49eb22707f5610"
+    },
+    {
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/raw/self-code-cycle_v2_format-qualification-1.ndjson",
+      "sha256": "b21d45d5eb913bd475bd83c8798f555f50382d78dcfe115a353da81a2a0c244f"
+    },
+    {
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/raw/self-code-cycle_v2_format-qualification-2.ndjson",
+      "sha256": "1512af925030006660c501c8436701f5953498166c1e52f5082b195582536f33"
+    },
+    {
+      "path": "agent/self_code_v2/continuity_snapshot.json",
+      "sha256": "cbd1b166c54d67301c23c11477b2ee7349957f39ba27c29368db7ee352294760"
+    }
+  ],
+  "candidate_sha256": null,
+  "main_generation_calls": 0,
+  "model_digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+  "parent_sha256": "cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7",
+  "status": "FORMAT_QUALIFICATION_FAILED_NO_REAL_ATTEMPT"
+}

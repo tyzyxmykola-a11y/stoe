@@ -1,0 +1,21 @@
+{
+  "experiment_id":"stoe_structural_input_v2",
+  "status":"FROZEN_NOT_RUN",
+  "critical_file_sha256":{
+    "agent/structural_input_experiment_v2/cases.json":"d5c84df8d1c6d0268c556b8ded363cfc8ad9bb26a16ddfc7625365489cdd10cc",
+    "agent/structural_input_experiment_v2/experiment_spec.json":"3aa14110e909f65178e90e949d54ec1ca209a5b1ab4db66bb9d747f4875e7ca2",
+    "agent/structural_input_experiment_v2/PRE_REGISTRATION.md":"b15094822f7a3ba484130c3df21c0e922f5f35bc1f1a25ecaa00c343ad70ed3e",
+    "agent/structural_input_experiment/FROZEN_INPUT_BUNDLE.json":"45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49",
+    "agent/src/stoe_agent/qualified_harness.py":"689541f99855f5cf9fb2956e6917d5cefeee6e1ade99c5de91ddbb7b986ae8b0",
+    "agent/src/stoe_agent/qualified_experiment.py":"25c87c39d4bc1069e6663d8d5f409ec429eaba9370d04a7dec3865a598c2f497",
+    "agent/src/stoe_agent/structural_experiment.py":"efcad31ae5220b36ab93e28a49d4e6b66ac88823d1f568677b7b9d112bfdaae5",
+    "agent/src/stoe_agent/supervisor.py":"0f6e8a621a35c928397ee154e4d5992f5d9fc9a4177daaea976df009e38111ab",
+    "agent/src/stoe_agent/selection_policy.py":"eef574eefb8f700784b2d0ae124f6a5c102628bc32d9f78dd83757d24b3cc3e6",
+    "agent/src/stoe_agent/ollama.py":"274dede0edb992c1d745e9be14a4862088ccb8b08327316b4af1fa6c2ee8747d",
+    "agent/src/stoe_agent/protected_worker.py":"135c3b84bffb2cb51cf4bb1b6aa03bbafd12752be878e96460be9577f090e39a",
+    "agent/src/stoe_agent/public_worker.py":"935942ba74a30b80005064c300a69a836ff55181f984a82dccd835437e93199d",
+    "agent/src/stoe_agent/cli.py":"613a660d5f84a08f8e59e5be34fe251036dd8b833ef9da69e6afb62163ec29f1",
+    "agent/tests/test_qualified_harness.py":"1e92920edf05e14047b16a0c29d532fc785656221572dfbe47ae60c5c6be0ddd"
+  },
+  "preserved_v1_result_sha256":"68c2e5c2ec0de85e6930b099333362e4e0aa06c2ec88d9bc8af653a67f94410e"
+}

@@ -1,0 +1,28 @@
+{
+  "observer_state_ref": "STATE_7a275e2914914a94",
+  "state_change_ref": "CHANGE_204cb92554ab448c",
+  "resume_retrieval_run_id": "RETRIEVAL_81092e46f67f4499",
+  "session_id": "stoe-agent-self-code-v2",
+  "selected_refs": [
+    "CHANGE_204cb92554ab448c",
+    "IP_dc939f9e5f1d4e6f",
+    "CHANGE_773493dcab96467a",
+    "IP_d67d43bdd7564539",
+    "IP_8339fea665f14d8a",
+    "IP_f58a2d8c03324ce4",
+    "IP_36221ae7d7d84e1e",
+    "IP_8af0fd8a93c140f5"
+  ],
+  "serialization": {
+    "actual_content_chars": 1612,
+    "per_item_char_cap": 500,
+    "selected_count": 8,
+    "selection_serialization_match": true,
+    "total_char_cap": 3500
+  },
+  "exact_next_action_ref": "IP_dc939f9e5f1d4e6f",
+  "failed_attempt_ref": "IP_f58a2d8c03324ce4",
+  "decision_ref": "IP_74fe235d9aa642c4",
+  "successor_state_ref": "IP_4b9f7f3760e042fc",
+  "note": "This is a compact Git-tracked reference map. Canonical content remains in SToE Memory or hash-addressed artifacts and is not duplicated here."
+}

@@ -1,0 +1,84 @@
+{
+  "experiment_id": "stoe_structural_input_v1",
+  "status": "FROZEN_NOT_RUN",
+  "action_id": "model-cycle:structural-input-v1",
+  "scientific_question": "Does a bounded typed and directed relational overlay improve the agent's generated selector policy on unseen changed-constraint cases beyond content-matched ordinary memory?",
+  "independent_variable": "Presence versus absence of the typed, directed SToE relational overlay. Active source, observable diagnostics, bounded node content, model, prompts before the appended overlay, policy language, generation budgets, seeds, public gate, hidden evaluation, and acceptance rule are otherwise identical.",
+  "benchmark": {
+    "file": "cases.json",
+    "sha256": "10c9e3685bc3634715d65418fb694203309698dfc5d9ec73b257aa9857e9186b",
+    "case_count": 12,
+    "independent_case_count": 12,
+    "targeted_changed_constraint_count": 8,
+    "control_count": 4,
+    "case_visibility": "Cases are frozen before generation and never included in either model prompt. They are evaluated only after both candidates have been generated."
+  },
+  "input_bundle": {
+    "file": "FROZEN_INPUT_BUNDLE.json",
+    "sha256": "45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49",
+    "content": "Snapshot-derived public investigation, byte-identical unstructured memory, and typed relational overlay used by both generation arms."
+  },
+  "conditions": {
+    "ORDINARY_OBSERVABLE": "Active source, full observable public diagnostics, and the same bounded unstructured field-node records; no typed relation paths.",
+    "BOUNDED_TYPED_STOE": "Exactly the ordinary condition plus a bounded typed and directed relational overlay referencing the same field-node record IDs."
+  },
+  "condition_order": [
+    "ORDINARY_OBSERVABLE",
+    "BOUNDED_TYPED_STOE"
+  ],
+  "model": {
+    "provider": "local_ollama_only",
+    "endpoint": "http://127.0.0.1:11434",
+    "name": "qwen3-coder:latest",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "ollama_version_observed_before_freeze": "0.33.3"
+  },
+  "generation": {
+    "calls_per_condition": 2,
+    "total_call_budget": 4,
+    "retry_count": 0,
+    "proposal_seed": 3701,
+    "policy_seed": 4701,
+    "proposal_max_output_tokens": 1400,
+    "policy_max_output_tokens": 1800,
+    "temperature": 0,
+    "top_p": 0.9,
+    "top_k": 40,
+    "context_limit_tokens": 8192,
+    "checkpoint_reserve_tokens": 512,
+    "keep_alive": "10m",
+    "policy_language": "stoe.selection_policy version 1 inert JSON",
+    "failure_handling": "No model retry. A malformed proposal, malformed policy, provider error, or budget failure rejects that condition. Both generation attempts complete before unseen evaluation starts."
+  },
+  "structural_budget": {
+    "max_records": 8,
+    "max_combined_serialized_characters_for_common_memory_and_overlay": 4000,
+    "content_matching": "The ordinary and structural arms receive a byte-identical bounded unstructured memory object. The overlay may contain only record IDs, typed/directed paths, navigator selection flags, and numeric scores."
+  },
+  "active_baseline": {
+    "version": "generated_20260906T125305Z_92e7e913",
+    "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+    "artifact_type": "legacy_python"
+  },
+  "gates": {
+    "public_behavioral_gate": "Candidate must strictly improve the disclosed public diagnostic pass count and regress no active-passing public case.",
+    "hidden_acceptance": "Candidate must strictly improve total hidden pass count over the frozen active baseline, preserve every active-passing hidden case, fail no critical hidden case, and complete evaluation.",
+    "activation": "Apply both gates independently. If one candidate is eligible, activate it. If both are eligible, choose the unique candidate ranked first by targeted pass count then total pass count. A tie causes no activation. The SToE arm receives no tie preference."
+  },
+  "analysis": {
+    "primary_metric": "Targeted changed-constraint pass-count difference: BOUNDED_TYPED_STOE minus ORDINARY_OBSERVABLE.",
+    "minimum_targeted_advantage_cases": 2,
+    "success_criterion": "The structural arm passes at least two more of eight targeted cases and no fewer of four controls than the ordinary arm.",
+    "secondary_metrics": [
+      "total pass count",
+      "control pass count",
+      "case-level disagreements",
+      "public diagnostic pass count",
+      "active-baseline comparison",
+      "input and output tokens",
+      "latency"
+    ],
+    "sample_limit": "One paired generation pipeline and twelve independent task instances provide preliminary mechanism evidence only; no population-level superiority claim is licensed."
+  },
+  "freeze_manifest": "FROZEN_MANIFEST.json"
+}

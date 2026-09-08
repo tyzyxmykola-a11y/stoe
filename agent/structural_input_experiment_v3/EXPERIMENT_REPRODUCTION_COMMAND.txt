@@ -1,0 +1,2 @@
+cd agent
+PYTHONPATH=src python -c "from stoe_agent.cli import main; raise SystemExit(main())" structural-experiment-v3 --spec structural_input_experiment_v3/experiment_spec.json --allow-generation --model qwen3-coder:latest

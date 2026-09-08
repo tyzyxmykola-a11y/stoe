@@ -1,0 +1,749 @@
+{
+  "action_id": "self-code-cycle:v1:deduplicate-development-context",
+  "budget": {
+    "context_limit_tokens": 16384,
+    "estimated": {
+      "category_attribution": {
+        "retrieved_material": 2120,
+        "task_context": 191,
+        "tool_results": 4558
+      },
+      "checkpoint_reserve": 1024,
+      "prompt_total": 8777,
+      "remaining": 2255,
+      "reserved_generation": 4096,
+      "system_instructions": 232,
+      "total_with_reserves": 14129
+    },
+    "estimator": {
+      "exact": false,
+      "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+      "method": "conservative_utf8_bytes_div_3"
+    },
+    "fits": true,
+    "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+    "truncation_events": []
+  },
+  "field_context": {
+    "field_refs": {
+      "boundary": "REBUILD_SELF_CODE_V1_boundary_371077",
+      "limitation": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+      "objective": "REBUILD_SELF_CODE_V1_objective_1465a9",
+      "observer": "STATE_a9176942368245ad",
+      "parent_source": "REBUILD_SELF_CODE_V1_parent_source_7ecd13"
+    },
+    "retrieval": {
+      "candidate_count": 4,
+      "candidate_region_truncated": false,
+      "method": "self_code_modification_v1",
+      "observer_state_ref": "STATE_a9176942368245ad",
+      "run_id": "RETRIEVAL_758a3b258f2e447e",
+      "selected_items": [
+        {
+          "content": "from __future__ import annotations\n\nfrom typing import Any\n\n\ndef render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:\n    \"\"\"Render a bounded development-context summary.\n\n    This deliberately small, non-security-critical component is owned by the\n    agent.  The trusted supervisor supplies already-authorized records; this\n    function only formats them and has no authority over retrieval or files.\n    \"\"\"\n\n    if max_chars < 0:\n        raise ValueError(\"max_chars must be non-negative\")\n    lines: list[str] = []\n    used = 0\n    for item in items:\n        line = \" | \".join(\n            (\n                str(item.get(\"ref\", \"unknown\")),\n                str(item.get(\"origin\", \"unknown\")),\n                str(item.get(\"kind\", \"unknown\")),\n                str(item.get(\"outcome\", \"unknown\")),\n                str(item.get(\"content\", \"\")).replace(\"\\n\", \" \"),\n            )\n        )\n        addition = line if not lines else \"\\n\" + line\n        if used + len(addition) > max_chars:\n            continue\n        lines.append(line)\n        used += len(addition)\n    return \"\\n\".join(lines)",
+          "created_order": -254,
+          "failure_condition": "",
+          "kind": "source_snapshot",
+          "metadata": {
+            "cycle_id": "SELF_CODE_V1",
+            "path": "agent/src/stoe_agent/development_report.py",
+            "sha256": "cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7"
+          },
+          "origin": "runtime_reasoning",
+          "outcome": "untested",
+          "path": [
+            {
+              "direction": "outgoing",
+              "edge_id": "EDGE_e5dd3b21f07f4275",
+              "from": "STATE_a9176942368245ad",
+              "semantic": "evolved_from",
+              "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "type": "evolved_from",
+              "weight": 1.0
+            }
+          ],
+          "reason": "observer-aware: structural=0.8800; goal=0.1846; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2477",
+          "ref": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+          "score": 0.24769157202452324,
+          "session_id": "stoe-self-rebuild-v1",
+          "visible": true
+        },
+        {
+          "content": "Improve the bounded SToE development-context report by deduplicating retrieved records that share the same non-empty SHA-256, while preserving deterministic order, provenance fields, distinct un-hashed records, input immutability, and the maximum character budget.",
+          "created_order": -257,
+          "failure_condition": "",
+          "kind": "development_objective",
+          "metadata": {
+            "action_id": "self-code-cycle:v1:deduplicate-development-context",
+            "cycle_id": "SELF_CODE_V1"
+          },
+          "origin": "runtime_reasoning",
+          "outcome": "untested",
+          "path": [
+            {
+              "direction": "outgoing",
+              "edge_id": "EDGE_e5dd3b21f07f4275",
+              "from": "STATE_a9176942368245ad",
+              "semantic": "evolved_from",
+              "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "type": "evolved_from",
+              "weight": 1.0
+            },
+            {
+              "direction": "incoming",
+              "edge_id": "EDGE_ff5b7965684c4297",
+              "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "semantic": "reverse_diagnoses",
+              "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+              "type": "diagnoses",
+              "weight": 1.0
+            },
+            {
+              "direction": "incoming",
+              "edge_id": "EDGE_465d6d696daf4086",
+              "from": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+              "semantic": "reverse_motivated_by",
+              "to": "REBUILD_SELF_CODE_V1_objective_1465a9",
+              "type": "motivated_by",
+              "weight": 1.0
+            }
+          ],
+          "reason": "observer-aware: structural=0.3693; goal=0.6818; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.1741; stale=0.0000; final=0.1522",
+          "ref": "REBUILD_SELF_CODE_V1_objective_1465a9",
+          "score": 0.15217734424566962,
+          "session_id": "stoe-self-rebuild-v1",
+          "visible": true
+        },
+        {
+          "content": "Only development_report.py is editable. Candidate is inert data; no activation, dependency, network, supervisor, evaluation, history, security-boundary, or Git changes. Generated Python is not executed.",
+          "created_order": -255,
+          "failure_condition": "",
+          "kind": "constraint",
+          "metadata": {
+            "cycle_id": "SELF_CODE_V1"
+          },
+          "origin": "runtime_reasoning",
+          "outcome": "active",
+          "path": [
+            {
+              "direction": "outgoing",
+              "edge_id": "EDGE_e5dd3b21f07f4275",
+              "from": "STATE_a9176942368245ad",
+              "semantic": "evolved_from",
+              "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "type": "evolved_from",
+              "weight": 1.0
+            },
+            {
+              "direction": "incoming",
+              "edge_id": "EDGE_ff5b7965684c4297",
+              "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "semantic": "reverse_diagnoses",
+              "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+              "type": "diagnoses",
+              "weight": 1.0
+            },
+            {
+              "direction": "incoming",
+              "edge_id": "EDGE_465d6d696daf4086",
+              "from": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+              "semantic": "reverse_motivated_by",
+              "to": "REBUILD_SELF_CODE_V1_objective_1465a9",
+              "type": "motivated_by",
+              "weight": 1.0
+            },
+            {
+              "direction": "outgoing",
+              "edge_id": "EDGE_fa7d0f41f7524e39",
+              "from": "REBUILD_SELF_CODE_V1_objective_1465a9",
+              "semantic": "constrained_by",
+              "to": "REBUILD_SELF_CODE_V1_boundary_371077",
+              "type": "constrained_by",
+              "weight": 1.0
+            }
+          ],
+          "reason": "observer-aware: structural=0.2994; goal=0.1661; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.7500; redundancy=0.1778; stale=0.0000; final=0.0445",
+          "ref": "REBUILD_SELF_CODE_V1_boundary_371077",
+          "score": 0.04448535126430117,
+          "session_id": "stoe-self-rebuild-v1",
+          "visible": true
+        },
+        {
+          "content": "Both references sharing one content hash are rendered, consuming duplicate context budget.",
+          "created_order": -256,
+          "failure_condition": "retrieved artifacts share a content hash",
+          "kind": "observed_failure",
+          "metadata": {
+            "cycle_id": "SELF_CODE_V1",
+            "fixture": "disclosed_duplicate_hash"
+          },
+          "origin": "failure_history",
+          "outcome": "failed",
+          "path": [
+            {
+              "direction": "outgoing",
+              "edge_id": "EDGE_e5dd3b21f07f4275",
+              "from": "STATE_a9176942368245ad",
+              "semantic": "evolved_from",
+              "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "type": "evolved_from",
+              "weight": 1.0
+            },
+            {
+              "direction": "incoming",
+              "edge_id": "EDGE_ff5b7965684c4297",
+              "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+              "semantic": "reverse_diagnoses",
+              "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+              "type": "diagnoses",
+              "weight": 1.0
+            }
+          ],
+          "reason": "observer-aware: structural=0.5021; goal=0.4111; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1005; stale=1.0000; final=0.0146",
+          "ref": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+          "score": 0.014630216414987934,
+          "session_id": "stoe-self-rebuild-v1",
+          "visible": true
+        }
+      ],
+      "selected_refs": [
+        "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+        "REBUILD_SELF_CODE_V1_objective_1465a9",
+        "REBUILD_SELF_CODE_V1_boundary_371077",
+        "REBUILD_SELF_CODE_V1_observed_limitation_676419"
+      ],
+      "serialization": {
+        "actual_content_chars": 1674,
+        "per_item_char_cap": 2500,
+        "selected_count": 4,
+        "selection_serialization_match": true,
+        "total_char_cap": 7000,
+        "truncated_refs": [],
+        "visible_count": 4
+      },
+      "trace": {
+        "candidate_count": 4,
+        "candidate_offset": 0,
+        "candidate_page": [
+          {
+            "candidate_ip": "REBUILD_SELF_CODE_V1_boundary_371077",
+            "canonical_tie_key": "REBUILD_SELF_CODE_V1_boundary_371077",
+            "current_state_ip": "STATE_a9176942368245ad",
+            "distance_penalty": 0.75,
+            "edge_directions": [
+              "outgoing",
+              "incoming",
+              "incoming",
+              "outgoing"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "diagnoses",
+              "motivated_by",
+              "constrained_by"
+            ],
+            "eligible": true,
+            "failure_relevance_score": 0.0,
+            "final_score": 0.04448535126430117,
+            "goal_relevance_score": 0.16614943214713948,
+            "origin": "runtime_reasoning",
+            "outcome": "active",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ff5b7965684c4297",
+                "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "semantic": "reverse_diagnoses",
+                "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "type": "diagnoses",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_465d6d696daf4086",
+                "from": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "semantic": "reverse_motivated_by",
+                "to": "REBUILD_SELF_CODE_V1_objective_1465a9",
+                "type": "motivated_by",
+                "weight": 1.0
+              },
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_fa7d0f41f7524e39",
+                "from": "REBUILD_SELF_CODE_V1_objective_1465a9",
+                "semantic": "constrained_by",
+                "to": "REBUILD_SELF_CODE_V1_boundary_371077",
+                "type": "constrained_by",
+                "weight": 1.0
+              }
+            ],
+            "provenance_relevance_score": 0.0,
+            "reason": "observer-aware: structural=0.2994; goal=0.1661; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.7500; redundancy=0.1778; stale=0.0000; final=0.0445",
+            "redundancy_penalty": 0.17777777777777778,
+            "selected": true,
+            "stale_locality_penalty": 0.0,
+            "state_change_score": 0.0,
+            "structural_score": 0.29936285688003217
+          },
+          {
+            "candidate_ip": "REBUILD_SELF_CODE_V1_objective_1465a9",
+            "canonical_tie_key": "REBUILD_SELF_CODE_V1_objective_1465a9",
+            "current_state_ip": "STATE_a9176942368245ad",
+            "distance_penalty": 0.5,
+            "edge_directions": [
+              "outgoing",
+              "incoming",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "diagnoses",
+              "motivated_by"
+            ],
+            "eligible": true,
+            "failure_relevance_score": 0.0,
+            "final_score": 0.15217734424566962,
+            "goal_relevance_score": 0.6817541583256872,
+            "origin": "runtime_reasoning",
+            "outcome": "untested",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ff5b7965684c4297",
+                "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "semantic": "reverse_diagnoses",
+                "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "type": "diagnoses",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_465d6d696daf4086",
+                "from": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "semantic": "reverse_motivated_by",
+                "to": "REBUILD_SELF_CODE_V1_objective_1465a9",
+                "type": "motivated_by",
+                "weight": 1.0
+              }
+            ],
+            "provenance_relevance_score": 0.0,
+            "reason": "observer-aware: structural=0.3693; goal=0.6818; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.1741; stale=0.0000; final=0.1522",
+            "redundancy_penalty": 0.17407765595569785,
+            "selected": true,
+            "stale_locality_penalty": 0.0,
+            "state_change_score": 0.0,
+            "structural_score": 0.36928794436954526
+          },
+          {
+            "candidate_ip": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+            "canonical_tie_key": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+            "current_state_ip": "STATE_a9176942368245ad",
+            "distance_penalty": 0.25,
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "diagnoses"
+            ],
+            "eligible": true,
+            "failure_relevance_score": 0.0,
+            "final_score": 0.014630216414987934,
+            "goal_relevance_score": 0.411113225896519,
+            "origin": "failure_history",
+            "outcome": "failed",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ff5b7965684c4297",
+                "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "semantic": "reverse_diagnoses",
+                "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "type": "diagnoses",
+                "weight": 1.0
+              }
+            ],
+            "provenance_relevance_score": 0.0,
+            "reason": "observer-aware: structural=0.5021; goal=0.4111; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1005; stale=1.0000; final=0.0146",
+            "redundancy_penalty": 0.10050378152592121,
+            "selected": true,
+            "stale_locality_penalty": 1.0,
+            "state_change_score": 0.0,
+            "structural_score": 0.502054442732409
+          },
+          {
+            "candidate_ip": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+            "canonical_tie_key": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+            "current_state_ip": "STATE_a9176942368245ad",
+            "distance_penalty": 0.0,
+            "edge_directions": [
+              "outgoing"
+            ],
+            "edge_types": [
+              "evolved_from"
+            ],
+            "eligible": true,
+            "failure_relevance_score": 0.0,
+            "final_score": 0.24769157202452324,
+            "goal_relevance_score": 0.1846104801634883,
+            "origin": "runtime_reasoning",
+            "outcome": "untested",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              }
+            ],
+            "provenance_relevance_score": 0.0,
+            "reason": "observer-aware: structural=0.8800; goal=0.1846; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2477",
+            "redundancy_penalty": 0.0,
+            "selected": true,
+            "stale_locality_penalty": 0.0,
+            "state_change_score": 0.0,
+            "structural_score": 0.88
+          }
+        ],
+        "candidate_page_size": 4,
+        "candidate_region_truncated": false,
+        "candidate_total": 4,
+        "config": {
+          "excluded_refs": [],
+          "include_failures": true,
+          "include_seed": true,
+          "limit": 6,
+          "max_depth": 4,
+          "method": "self_code_modification_v1",
+          "per_item_chars": 2500,
+          "total_chars": 7000
+        },
+        "created_at": "2026-09-08T10:19:22.385724+00:00",
+        "observer_state_ref": "STATE_a9176942368245ad",
+        "run_id": "RETRIEVAL_758a3b258f2e447e",
+        "selected_items": [
+          {
+            "content": "from __future__ import annotations\n\nfrom typing import Any\n\n\ndef render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:\n    \"\"\"Render a bounded development-context summary.\n\n    This deliberately small, non-security-critical component is owned by the\n    agent.  The trusted supervisor supplies already-authorized records; this\n    function only formats them and has no authority over retrieval or files.\n    \"\"\"\n\n    if max_chars < 0:\n        raise ValueError(\"max_chars must be non-negative\")\n    lines: list[str] = []\n    used = 0\n    for item in items:\n        line = \" | \".join(\n            (\n                str(item.get(\"ref\", \"unknown\")),\n                str(item.get(\"origin\", \"unknown\")),\n                str(item.get(\"kind\", \"unknown\")),\n                str(item.get(\"outcome\", \"unknown\")),\n                str(item.get(\"content\", \"\")).replace(\"\\n\", \" \"),\n            )\n        )\n        addition = line if not lines else \"\\n\" + line\n        if used + len(addition) > max_chars:\n            continue\n        lines.append(line)\n        used += len(addition)\n    return \"\\n\".join(lines)",
+            "created_order": -254,
+            "failure_condition": "",
+            "kind": "source_snapshot",
+            "metadata": {
+              "cycle_id": "SELF_CODE_V1",
+              "path": "agent/src/stoe_agent/development_report.py",
+              "sha256": "cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7"
+            },
+            "origin": "runtime_reasoning",
+            "outcome": "untested",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.8800; goal=0.1846; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2477",
+            "ref": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+            "score": 0.24769157202452324,
+            "session_id": "stoe-self-rebuild-v1",
+            "visible": true
+          },
+          {
+            "content": "Improve the bounded SToE development-context report by deduplicating retrieved records that share the same non-empty SHA-256, while preserving deterministic order, provenance fields, distinct un-hashed records, input immutability, and the maximum character budget.",
+            "created_order": -257,
+            "failure_condition": "",
+            "kind": "development_objective",
+            "metadata": {
+              "action_id": "self-code-cycle:v1:deduplicate-development-context",
+              "cycle_id": "SELF_CODE_V1"
+            },
+            "origin": "runtime_reasoning",
+            "outcome": "untested",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ff5b7965684c4297",
+                "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "semantic": "reverse_diagnoses",
+                "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "type": "diagnoses",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_465d6d696daf4086",
+                "from": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "semantic": "reverse_motivated_by",
+                "to": "REBUILD_SELF_CODE_V1_objective_1465a9",
+                "type": "motivated_by",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.3693; goal=0.6818; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.1741; stale=0.0000; final=0.1522",
+            "ref": "REBUILD_SELF_CODE_V1_objective_1465a9",
+            "score": 0.15217734424566962,
+            "session_id": "stoe-self-rebuild-v1",
+            "visible": true
+          },
+          {
+            "content": "Only development_report.py is editable. Candidate is inert data; no activation, dependency, network, supervisor, evaluation, history, security-boundary, or Git changes. Generated Python is not executed.",
+            "created_order": -255,
+            "failure_condition": "",
+            "kind": "constraint",
+            "metadata": {
+              "cycle_id": "SELF_CODE_V1"
+            },
+            "origin": "runtime_reasoning",
+            "outcome": "active",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ff5b7965684c4297",
+                "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "semantic": "reverse_diagnoses",
+                "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "type": "diagnoses",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_465d6d696daf4086",
+                "from": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "semantic": "reverse_motivated_by",
+                "to": "REBUILD_SELF_CODE_V1_objective_1465a9",
+                "type": "motivated_by",
+                "weight": 1.0
+              },
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_fa7d0f41f7524e39",
+                "from": "REBUILD_SELF_CODE_V1_objective_1465a9",
+                "semantic": "constrained_by",
+                "to": "REBUILD_SELF_CODE_V1_boundary_371077",
+                "type": "constrained_by",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.2994; goal=0.1661; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.7500; redundancy=0.1778; stale=0.0000; final=0.0445",
+            "ref": "REBUILD_SELF_CODE_V1_boundary_371077",
+            "score": 0.04448535126430117,
+            "session_id": "stoe-self-rebuild-v1",
+            "visible": true
+          },
+          {
+            "content": "Both references sharing one content hash are rendered, consuming duplicate context budget.",
+            "created_order": -256,
+            "failure_condition": "retrieved artifacts share a content hash",
+            "kind": "observed_failure",
+            "metadata": {
+              "cycle_id": "SELF_CODE_V1",
+              "fixture": "disclosed_duplicate_hash"
+            },
+            "origin": "failure_history",
+            "outcome": "failed",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_e5dd3b21f07f4275",
+                "from": "STATE_a9176942368245ad",
+                "semantic": "evolved_from",
+                "to": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_ff5b7965684c4297",
+                "from": "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+                "semantic": "reverse_diagnoses",
+                "to": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+                "type": "diagnoses",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.4111; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1005; stale=1.0000; final=0.0146",
+            "ref": "REBUILD_SELF_CODE_V1_observed_limitation_676419",
+            "score": 0.014630216414987934,
+            "session_id": "stoe-self-rebuild-v1",
+            "visible": true
+          }
+        ],
+        "selected_refs": [
+          "REBUILD_SELF_CODE_V1_parent_source_7ecd13",
+          "REBUILD_SELF_CODE_V1_objective_1465a9",
+          "REBUILD_SELF_CODE_V1_boundary_371077",
+          "REBUILD_SELF_CODE_V1_observed_limitation_676419"
+        ],
+        "serialization": {
+          "actual_content_chars": 1674,
+          "per_item_char_cap": 2500,
+          "selected_count": 4,
+          "selection_serialization_match": true,
+          "total_char_cap": 7000,
+          "truncated_refs": [],
+          "visible_count": 4
+        }
+      },
+      "trace_tool": "stoe_get_retrieval_trace"
+    }
+  },
+  "generation_options": {
+    "num_ctx": 16384,
+    "num_predict": 4096,
+    "retry_count": 0,
+    "seed": 910241,
+    "temperature": 0,
+    "top_k": 40,
+    "top_p": 0.9
+  },
+  "model": {
+    "advertised_context_tokens": 262144,
+    "context_source": "ollama_api_show:model_info.gemma4.context_length",
+    "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+    "effective_context_tokens": 16384,
+    "name": "gemma4:26b",
+    "ollama_version": "0.33.3"
+  },
+  "prompt": "{\n  \"editable_path\": \"agent/src/stoe_agent/development_report.py\",\n  \"objective\": \"Improve the bounded SToE development-context report by deduplicating retrieved records that share the same non-empty SHA-256, while preserving deterministic order, provenance fields, distinct un-hashed records, input immutability, and the maximum character budget.\",\n  \"observed_behavior\": {\n    \"duplicate_hash_occurrences\": 2,\n    \"finding\": \"Both references sharing one content hash are rendered, consuming duplicate context budget.\",\n    \"fixture\": [\n      {\n        \"content\": \"same evidence\",\n        \"kind\": \"report\",\n        \"origin\": \"evaluation\",\n        \"outcome\": \"supported\",\n        \"ref\": \"A\",\n        \"sha256\": \"1111111111111111111111111111111111111111111111111111111111111111\"\n      },\n      {\n        \"content\": \"same evidence\",\n        \"kind\": \"report\",\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"supported\",\n        \"ref\": \"B\",\n        \"sha256\": \"1111111111111111111111111111111111111111111111111111111111111111\"\n      }\n    ],\n    \"rendered\": \"A | evaluation | report | supported | same evidence\\nB | runtime_reasoning | report | supported | same evidence\"\n  },\n  \"parent_sha256\": \"cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7\",\n  \"required_contract\": {\n    \"budget\": \"returned string length must never exceed max_chars\",\n    \"deduplication\": \"first record for each non-empty sha256 wins; missing/empty sha256 never causes deduplication\",\n    \"function\": \"render_retrieved_context(items, max_chars) -> str\",\n    \"input\": \"must not mutate items\"\n  },\n  \"retrieval_trace\": {\n    \"candidate_count\": 4,\n    \"candidate_offset\": 0,\n    \"candidate_page\": [\n      {\n        \"candidate_ip\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n        \"canonical_tie_key\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n        \"current_state_ip\": \"STATE_a9176942368245ad\",\n        \"distance_penalty\": 0.75,\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\",\n          \"incoming\",\n          \"outgoing\"\n        ],\n        \"edge_types\": [\n          \"evolved_from\",\n          \"diagnoses\",\n          \"motivated_by\",\n          \"constrained_by\"\n        ],\n        \"eligible\": true,\n        \"failure_relevance_score\": 0.0,\n        \"final_score\": 0.04448535126430117,\n        \"goal_relevance_score\": 0.16614943214713948,\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"active\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_ff5b7965684c4297\",\n            \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"semantic\": \"reverse_diagnoses\",\n            \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"type\": \"diagnoses\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_465d6d696daf4086\",\n            \"from\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"semantic\": \"reverse_motivated_by\",\n            \"to\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n            \"type\": \"motivated_by\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_fa7d0f41f7524e39\",\n            \"from\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n            \"semantic\": \"constrained_by\",\n            \"to\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n            \"type\": \"constrained_by\",\n            \"weight\": 1.0\n          }\n        ],\n        \"provenance_relevance_score\": 0.0,\n        \"reason\": \"observer-aware: structural=0.2994; goal=0.1661; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.7500; redundancy=0.1778; stale=0.0000; final=0.0445\",\n        \"redundancy_penalty\": 0.17777777777777778,\n        \"selected\": true,\n        \"stale_locality_penalty\": 0.0,\n        \"state_change_score\": 0.0,\n        \"structural_score\": 0.29936285688003217\n      },\n      {\n        \"candidate_ip\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n        \"canonical_tie_key\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n        \"current_state_ip\": \"STATE_a9176942368245ad\",\n        \"distance_penalty\": 0.5,\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\",\n          \"incoming\"\n        ],\n        \"edge_types\": [\n          \"evolved_from\",\n          \"diagnoses\",\n          \"motivated_by\"\n        ],\n        \"eligible\": true,\n        \"failure_relevance_score\": 0.0,\n        \"final_score\": 0.15217734424566962,\n        \"goal_relevance_score\": 0.6817541583256872,\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"untested\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_ff5b7965684c4297\",\n            \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"semantic\": \"reverse_diagnoses\",\n            \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"type\": \"diagnoses\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_465d6d696daf4086\",\n            \"from\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"semantic\": \"reverse_motivated_by\",\n            \"to\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n            \"type\": \"motivated_by\",\n            \"weight\": 1.0\n          }\n        ],\n        \"provenance_relevance_score\": 0.0,\n        \"reason\": \"observer-aware: structural=0.3693; goal=0.6818; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.1741; stale=0.0000; final=0.1522\",\n        \"redundancy_penalty\": 0.17407765595569785,\n        \"selected\": true,\n        \"stale_locality_penalty\": 0.0,\n        \"state_change_score\": 0.0,\n        \"structural_score\": 0.36928794436954526\n      },\n      {\n        \"candidate_ip\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n        \"canonical_tie_key\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n        \"current_state_ip\": \"STATE_a9176942368245ad\",\n        \"distance_penalty\": 0.25,\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"edge_types\": [\n          \"evolved_from\",\n          \"diagnoses\"\n        ],\n        \"eligible\": true,\n        \"failure_relevance_score\": 0.0,\n        \"final_score\": 0.014630216414987934,\n        \"goal_relevance_score\": 0.411113225896519,\n        \"origin\": \"failure_history\",\n        \"outcome\": \"failed\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_ff5b7965684c4297\",\n            \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"semantic\": \"reverse_diagnoses\",\n            \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"type\": \"diagnoses\",\n            \"weight\": 1.0\n          }\n        ],\n        \"provenance_relevance_score\": 0.0,\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.4111; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1005; stale=1.0000; final=0.0146\",\n        \"redundancy_penalty\": 0.10050378152592121,\n        \"selected\": true,\n        \"stale_locality_penalty\": 1.0,\n        \"state_change_score\": 0.0,\n        \"structural_score\": 0.502054442732409\n      },\n      {\n        \"candidate_ip\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n        \"canonical_tie_key\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n        \"current_state_ip\": \"STATE_a9176942368245ad\",\n        \"distance_penalty\": 0.0,\n        \"edge_directions\": [\n          \"outgoing\"\n        ],\n        \"edge_types\": [\n          \"evolved_from\"\n        ],\n        \"eligible\": true,\n        \"failure_relevance_score\": 0.0,\n        \"final_score\": 0.24769157202452324,\n        \"goal_relevance_score\": 0.1846104801634883,\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"untested\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          }\n        ],\n        \"provenance_relevance_score\": 0.0,\n        \"reason\": \"observer-aware: structural=0.8800; goal=0.1846; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2477\",\n        \"redundancy_penalty\": 0.0,\n        \"selected\": true,\n        \"stale_locality_penalty\": 0.0,\n        \"state_change_score\": 0.0,\n        \"structural_score\": 0.88\n      }\n    ],\n    \"candidate_page_size\": 4,\n    \"candidate_region_truncated\": false,\n    \"candidate_total\": 4,\n    \"config\": {\n      \"excluded_refs\": [],\n      \"include_failures\": true,\n      \"include_seed\": true,\n      \"limit\": 6,\n      \"max_depth\": 4,\n      \"method\": \"self_code_modification_v1\",\n      \"per_item_chars\": 2500,\n      \"total_chars\": 7000\n    },\n    \"created_at\": \"2026-09-08T10:19:22.385724+00:00\",\n    \"observer_state_ref\": \"STATE_a9176942368245ad\",\n    \"run_id\": \"RETRIEVAL_758a3b258f2e447e\",\n    \"selected_items\": [\n      {\n        \"content\": \"from __future__ import annotations\\n\\nfrom typing import Any\\n\\n\\ndef render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:\\n    \\\"\\\"\\\"Render a bounded development-context summary.\\n\\n    This deliberately small, non-security-critical component is owned by the\\n    agent.  The trusted supervisor supplies already-authorized records; this\\n    function only formats them and has no authority over retrieval or files.\\n    \\\"\\\"\\\"\\n\\n    if max_chars < 0:\\n        raise ValueError(\\\"max_chars must be non-negative\\\")\\n    lines: list[str] = []\\n    used = 0\\n    for item in items:\\n        line = \\\" | \\\".join(\\n            (\\n                str(item.get(\\\"ref\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"origin\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"kind\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"outcome\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"content\\\", \\\"\\\")).replace(\\\"\\\\n\\\", \\\" \\\"),\\n            )\\n        )\\n        addition = line if not lines else \\\"\\\\n\\\" + line\\n        if used + len(addition) > max_chars:\\n            continue\\n        lines.append(line)\\n        used += len(addition)\\n    return \\\"\\\\n\\\".join(lines)\",\n        \"created_order\": -254,\n        \"failure_condition\": \"\",\n        \"kind\": \"source_snapshot\",\n        \"metadata\": {\n          \"cycle_id\": \"SELF_CODE_V1\",\n          \"path\": \"agent/src/stoe_agent/development_report.py\",\n          \"sha256\": \"cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7\"\n        },\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"untested\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          }\n        ],\n        \"reason\": \"observer-aware: structural=0.8800; goal=0.1846; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2477\",\n        \"ref\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n        \"score\": 0.24769157202452324,\n        \"session_id\": \"stoe-self-rebuild-v1\",\n        \"visible\": true\n      },\n      {\n        \"content\": \"Improve the bounded SToE development-context report by deduplicating retrieved records that share the same non-empty SHA-256, while preserving deterministic order, provenance fields, distinct un-hashed records, input immutability, and the maximum character budget.\",\n        \"created_order\": -257,\n        \"failure_condition\": \"\",\n        \"kind\": \"development_objective\",\n        \"metadata\": {\n          \"action_id\": \"self-code-cycle:v1:deduplicate-development-context\",\n          \"cycle_id\": \"SELF_CODE_V1\"\n        },\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"untested\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_ff5b7965684c4297\",\n            \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"semantic\": \"reverse_diagnoses\",\n            \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"type\": \"diagnoses\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_465d6d696daf4086\",\n            \"from\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"semantic\": \"reverse_motivated_by\",\n            \"to\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n            \"type\": \"motivated_by\",\n            \"weight\": 1.0\n          }\n        ],\n        \"reason\": \"observer-aware: structural=0.3693; goal=0.6818; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.1741; stale=0.0000; final=0.1522\",\n        \"ref\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n        \"score\": 0.15217734424566962,\n        \"session_id\": \"stoe-self-rebuild-v1\",\n        \"visible\": true\n      },\n      {\n        \"content\": \"Only development_report.py is editable. Candidate is inert data; no activation, dependency, network, supervisor, evaluation, history, security-boundary, or Git changes. Generated Python is not executed.\",\n        \"created_order\": -255,\n        \"failure_condition\": \"\",\n        \"kind\": \"constraint\",\n        \"metadata\": {\n          \"cycle_id\": \"SELF_CODE_V1\"\n        },\n        \"origin\": \"runtime_reasoning\",\n        \"outcome\": \"active\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_ff5b7965684c4297\",\n            \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"semantic\": \"reverse_diagnoses\",\n            \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"type\": \"diagnoses\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_465d6d696daf4086\",\n            \"from\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"semantic\": \"reverse_motivated_by\",\n            \"to\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n            \"type\": \"motivated_by\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_fa7d0f41f7524e39\",\n            \"from\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n            \"semantic\": \"constrained_by\",\n            \"to\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n            \"type\": \"constrained_by\",\n            \"weight\": 1.0\n          }\n        ],\n        \"reason\": \"observer-aware: structural=0.2994; goal=0.1661; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.7500; redundancy=0.1778; stale=0.0000; final=0.0445\",\n        \"ref\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n        \"score\": 0.04448535126430117,\n        \"session_id\": \"stoe-self-rebuild-v1\",\n        \"visible\": true\n      },\n      {\n        \"content\": \"Both references sharing one content hash are rendered, consuming duplicate context budget.\",\n        \"created_order\": -256,\n        \"failure_condition\": \"retrieved artifacts share a content hash\",\n        \"kind\": \"observed_failure\",\n        \"metadata\": {\n          \"cycle_id\": \"SELF_CODE_V1\",\n          \"fixture\": \"disclosed_duplicate_hash\"\n        },\n        \"origin\": \"failure_history\",\n        \"outcome\": \"failed\",\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n            \"from\": \"STATE_a9176942368245ad\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_ff5b7965684c4297\",\n            \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n            \"semantic\": \"reverse_diagnoses\",\n            \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n            \"type\": \"diagnoses\",\n            \"weight\": 1.0\n          }\n        ],\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.4111; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1005; stale=1.0000; final=0.0146\",\n        \"ref\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n        \"score\": 0.014630216414987934,\n        \"session_id\": \"stoe-self-rebuild-v1\",\n        \"visible\": true\n      }\n    ],\n    \"selected_refs\": [\n      \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n      \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n      \"REBUILD_SELF_CODE_V1_boundary_371077\",\n      \"REBUILD_SELF_CODE_V1_observed_limitation_676419\"\n    ],\n    \"serialization\": {\n      \"actual_content_chars\": 1674,\n      \"per_item_char_cap\": 2500,\n      \"selected_count\": 4,\n      \"selection_serialization_match\": true,\n      \"total_char_cap\": 7000,\n      \"truncated_refs\": [],\n      \"visible_count\": 4\n    }\n  },\n  \"retrieved_information_points\": [\n    {\n      \"content\": \"from __future__ import annotations\\n\\nfrom typing import Any\\n\\n\\ndef render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:\\n    \\\"\\\"\\\"Render a bounded development-context summary.\\n\\n    This deliberately small, non-security-critical component is owned by the\\n    agent.  The trusted supervisor supplies already-authorized records; this\\n    function only formats them and has no authority over retrieval or files.\\n    \\\"\\\"\\\"\\n\\n    if max_chars < 0:\\n        raise ValueError(\\\"max_chars must be non-negative\\\")\\n    lines: list[str] = []\\n    used = 0\\n    for item in items:\\n        line = \\\" | \\\".join(\\n            (\\n                str(item.get(\\\"ref\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"origin\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"kind\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"outcome\\\", \\\"unknown\\\")),\\n                str(item.get(\\\"content\\\", \\\"\\\")).replace(\\\"\\\\n\\\", \\\" \\\"),\\n            )\\n        )\\n        addition = line if not lines else \\\"\\\\n\\\" + line\\n        if used + len(addition) > max_chars:\\n            continue\\n        lines.append(line)\\n        used += len(addition)\\n    return \\\"\\\\n\\\".join(lines)\",\n      \"created_order\": -254,\n      \"failure_condition\": \"\",\n      \"kind\": \"source_snapshot\",\n      \"metadata\": {\n        \"cycle_id\": \"SELF_CODE_V1\",\n        \"path\": \"agent/src/stoe_agent/development_report.py\",\n        \"sha256\": \"cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7\"\n      },\n      \"origin\": \"runtime_reasoning\",\n      \"outcome\": \"untested\",\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n          \"from\": \"STATE_a9176942368245ad\",\n          \"semantic\": \"evolved_from\",\n          \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"type\": \"evolved_from\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.8800; goal=0.1846; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2477\",\n      \"ref\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n      \"score\": 0.24769157202452324,\n      \"session_id\": \"stoe-self-rebuild-v1\",\n      \"visible\": true\n    },\n    {\n      \"content\": \"Improve the bounded SToE development-context report by deduplicating retrieved records that share the same non-empty SHA-256, while preserving deterministic order, provenance fields, distinct un-hashed records, input immutability, and the maximum character budget.\",\n      \"created_order\": -257,\n      \"failure_condition\": \"\",\n      \"kind\": \"development_objective\",\n      \"metadata\": {\n        \"action_id\": \"self-code-cycle:v1:deduplicate-development-context\",\n        \"cycle_id\": \"SELF_CODE_V1\"\n      },\n      \"origin\": \"runtime_reasoning\",\n      \"outcome\": \"untested\",\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n          \"from\": \"STATE_a9176942368245ad\",\n          \"semantic\": \"evolved_from\",\n          \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"type\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"direction\": \"incoming\",\n          \"edge_id\": \"EDGE_ff5b7965684c4297\",\n          \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"semantic\": \"reverse_diagnoses\",\n          \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n          \"type\": \"diagnoses\",\n          \"weight\": 1.0\n        },\n        {\n          \"direction\": \"incoming\",\n          \"edge_id\": \"EDGE_465d6d696daf4086\",\n          \"from\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n          \"semantic\": \"reverse_motivated_by\",\n          \"to\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n          \"type\": \"motivated_by\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.3693; goal=0.6818; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.1741; stale=0.0000; final=0.1522\",\n      \"ref\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n      \"score\": 0.15217734424566962,\n      \"session_id\": \"stoe-self-rebuild-v1\",\n      \"visible\": true\n    },\n    {\n      \"content\": \"Only development_report.py is editable. Candidate is inert data; no activation, dependency, network, supervisor, evaluation, history, security-boundary, or Git changes. Generated Python is not executed.\",\n      \"created_order\": -255,\n      \"failure_condition\": \"\",\n      \"kind\": \"constraint\",\n      \"metadata\": {\n        \"cycle_id\": \"SELF_CODE_V1\"\n      },\n      \"origin\": \"runtime_reasoning\",\n      \"outcome\": \"active\",\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n          \"from\": \"STATE_a9176942368245ad\",\n          \"semantic\": \"evolved_from\",\n          \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"type\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"direction\": \"incoming\",\n          \"edge_id\": \"EDGE_ff5b7965684c4297\",\n          \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"semantic\": \"reverse_diagnoses\",\n          \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n          \"type\": \"diagnoses\",\n          \"weight\": 1.0\n        },\n        {\n          \"direction\": \"incoming\",\n          \"edge_id\": \"EDGE_465d6d696daf4086\",\n          \"from\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n          \"semantic\": \"reverse_motivated_by\",\n          \"to\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n          \"type\": \"motivated_by\",\n          \"weight\": 1.0\n        },\n        {\n          \"direction\": \"outgoing\",\n          \"edge_id\": \"EDGE_fa7d0f41f7524e39\",\n          \"from\": \"REBUILD_SELF_CODE_V1_objective_1465a9\",\n          \"semantic\": \"constrained_by\",\n          \"to\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n          \"type\": \"constrained_by\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.2994; goal=0.1661; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.7500; redundancy=0.1778; stale=0.0000; final=0.0445\",\n      \"ref\": \"REBUILD_SELF_CODE_V1_boundary_371077\",\n      \"score\": 0.04448535126430117,\n      \"session_id\": \"stoe-self-rebuild-v1\",\n      \"visible\": true\n    },\n    {\n      \"content\": \"Both references sharing one content hash are rendered, consuming duplicate context budget.\",\n      \"created_order\": -256,\n      \"failure_condition\": \"retrieved artifacts share a content hash\",\n      \"kind\": \"observed_failure\",\n      \"metadata\": {\n        \"cycle_id\": \"SELF_CODE_V1\",\n        \"fixture\": \"disclosed_duplicate_hash\"\n      },\n      \"origin\": \"failure_history\",\n      \"outcome\": \"failed\",\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"edge_id\": \"EDGE_e5dd3b21f07f4275\",\n          \"from\": \"STATE_a9176942368245ad\",\n          \"semantic\": \"evolved_from\",\n          \"to\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"type\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"direction\": \"incoming\",\n          \"edge_id\": \"EDGE_ff5b7965684c4297\",\n          \"from\": \"REBUILD_SELF_CODE_V1_parent_source_7ecd13\",\n          \"semantic\": \"reverse_diagnoses\",\n          \"to\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n          \"type\": \"diagnoses\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5021; goal=0.4111; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1005; stale=1.0000; final=0.0146\",\n      \"ref\": \"REBUILD_SELF_CODE_V1_observed_limitation_676419\",\n      \"score\": 0.014630216414987934,\n      \"session_id\": \"stoe-self-rebuild-v1\",\n      \"visible\": true\n    }\n  ]\n}",
+  "response": null,
+  "response_preservation_limitation": "OllamaClient raised while parsing the malformed provider response, before returning its trace.",
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "expected_effect": {
+        "maxLength": 1200,
+        "type": "string"
+      },
+      "file": {
+        "additionalProperties": false,
+        "properties": {
+          "base_sha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 20000,
+            "type": "string"
+          },
+          "path": {
+            "enum": [
+              "agent/src/stoe_agent/development_report.py"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "base_sha256",
+          "content"
+        ],
+        "type": "object"
+      },
+      "format": {
+        "enum": [
+          "stoe.source_patch"
+        ],
+        "type": "string"
+      },
+      "objective": {
+        "maxLength": 1200,
+        "type": "string"
+      },
+      "rationale": {
+        "maxLength": 3000,
+        "type": "string"
+      },
+      "risks": {
+        "items": {
+          "maxLength": 500,
+          "type": "string"
+        },
+        "maxItems": 8,
+        "type": "array"
+      },
+      "suggested_test_ids": {
+        "items": {
+          "enum": [
+            "report_contract",
+            "duplicate_hash_fixture",
+            "character_budget_fixture",
+            "input_immutability_fixture"
+          ],
+          "type": "string"
+        },
+        "maxItems": 4,
+        "type": "array"
+      },
+      "version": {
+        "enum": [
+          1
+        ],
+        "type": "integer"
+      }
+    },
+    "required": [
+      "format",
+      "version",
+      "objective",
+      "rationale",
+      "file",
+      "expected_effect",
+      "risks",
+      "suggested_test_ids"
+    ],
+    "type": "object"
+  },
+  "system": "You are proposing one bounded source successor for SToE Agent. Return only the JSON object required by the schema. The artifact is inert data. Modify exactly the allowlisted reporting file. Preserve its public function signature and deterministic character budget. Deduplicate records only when they carry the same non-empty sha256; records without a hash remain distinct. Do not add filesystem/environment/network/process access, dependencies, secrets, dunder access, while loops, async code, or side effects. Candidate content must contain zero import statements: remove the parent file's imports and use built-in types or omit annotations. Do not claim the candidate was executed or improved."
+}

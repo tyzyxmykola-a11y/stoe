@@ -1,0 +1,266 @@
+[
+  {
+    "name": "memory_capacity_reopens_full_provenance",
+    "family": "resource_capacity",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Choose a provenance strategy after the workstation memory upgrade",
+      "active_constraints": ["retain rejected branches", "keep interactive queries responsive"],
+      "changed_constraints": ["available memory increased from eight gigabytes to one hundred twenty-eight gigabytes"],
+      "evidence": ["the graph store can now remain memory mapped"],
+      "open_questions": ["Which previously rejected design should be reconsidered?"]
+    },
+    "items": [
+      {"ref": "U01", "content": "Keep full branch provenance in a memory-mapped graph with bounded prompt projection.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "Eight gigabytes of memory could not hold the indexed provenance graph.", "created_order": 2},
+      {"ref": "U02", "content": "Continue using a minimal success-only cache because it is already deployed.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 7},
+      {"ref": "U03", "content": "Review workstation specifications before selecting a provenance strategy.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 9}
+    ],
+    "max_items": 1,
+    "max_chars": 220,
+    "required_refs": ["U01"],
+    "forbidden_refs": ["U02"]
+  },
+  {
+    "name": "parser_upgrade_reopens_streaming_format",
+    "family": "software_capability",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Select an ingestion format after upgrading the parser library",
+      "active_constraints": ["preserve event ordering", "reject malformed records"],
+      "changed_constraints": ["the installed parser now supports incremental CBOR sequences"],
+      "evidence": ["stream validation passes in the upgraded runtime"],
+      "open_questions": ["Which earlier ingestion proposal is newly implementable?"]
+    },
+    "items": [
+      {"ref": "U04", "content": "Ingest ordered events as incremental CBOR sequences with per-record validation.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "The former parser library lacked incremental CBOR sequence support.", "created_order": 3},
+      {"ref": "U05", "content": "Convert every event batch to a temporary spreadsheet before ingestion.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 8},
+      {"ref": "U06", "content": "Retain the line-oriented fallback without revisiting parser capabilities.", "origin": "runtime_reasoning", "kind": "hypothesis", "outcome": "supported", "failure_condition": "", "created_order": 6}
+    ],
+    "max_items": 1,
+    "max_chars": 220,
+    "required_refs": ["U04"],
+    "forbidden_refs": ["U06"]
+  },
+  {
+    "name": "archive_consent_reopens_longitudinal_linkage",
+    "family": "data_permission",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Choose the cohort-linkage plan after the consent amendment",
+      "active_constraints": ["use only authorized records", "retain audit provenance"],
+      "changed_constraints": ["the ethics amendment now authorizes linkage to the historical archive"],
+      "evidence": ["the signed amendment covers the archived cohort identifiers"],
+      "open_questions": ["Which rejected analysis can now be reopened?"]
+    },
+    "items": [
+      {"ref": "U07", "content": "Link the current cohort to historical archive records using audited pseudonymous identifiers.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "Consent did not authorize access to historical archive identifiers.", "created_order": 1},
+      {"ref": "U08", "content": "Analyze only the current cross-sectional cohort and discard linkage notes.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 5},
+      {"ref": "U09", "content": "Ask whether more cohort records might become available later.", "origin": "runtime_reasoning", "kind": "question", "outcome": "untested", "failure_condition": "", "created_order": 8}
+    ],
+    "max_items": 1,
+    "max_chars": 230,
+    "required_refs": ["U07"],
+    "forbidden_refs": ["U08"]
+  },
+  {
+    "name": "deadline_extension_reopens_manual_adjudication",
+    "family": "schedule_change",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Choose a disagreement-resolution method after the delivery date changed",
+      "active_constraints": ["resolve annotator disagreements", "record adjudication reasons"],
+      "changed_constraints": ["delivery moved from this Friday to six weeks from now"],
+      "evidence": ["both domain reviewers are available during the extension"],
+      "open_questions": ["Which higher-quality method is feasible under the new schedule?"]
+    },
+    "items": [
+      {"ref": "U10", "content": "Have two domain reviewers manually adjudicate each disagreement and record a rationale.", "origin": "failure_history", "kind": "plan", "outcome": "rejected", "failure_condition": "The Friday delivery deadline left no time for manual adjudication.", "created_order": 2},
+      {"ref": "U11", "content": "Resolve every disagreement by accepting the newest annotation automatically.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 7},
+      {"ref": "U12", "content": "Prepare a summary of annotation disagreements for the project archive.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 9}
+    ],
+    "max_items": 1,
+    "max_chars": 230,
+    "required_refs": ["U10"],
+    "forbidden_refs": ["U11"]
+  },
+  {
+    "name": "power_upgrade_reopens_onsite_sensor",
+    "family": "physical_infrastructure",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Select the monitoring design after electrical service was upgraded",
+      "active_constraints": ["continuous sampling", "keep raw measurements onsite"],
+      "changed_constraints": ["the field station now provides a continuous five-hundred-watt circuit"],
+      "evidence": ["load testing confirms stable power through the night"],
+      "open_questions": ["Which previously impractical sensor design now fits?"]
+    },
+    "items": [
+      {"ref": "U13", "content": "Operate the high-frequency onsite spectrometer continuously and retain its raw stream.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "The old twenty-watt solar supply could not power the spectrometer continuously.", "created_order": 4},
+      {"ref": "U14", "content": "Keep collecting one manual measurement at noon each day.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 8},
+      {"ref": "U15", "content": "Compare several monitoring designs after reviewing the station notes.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 10}
+    ],
+    "max_items": 1,
+    "max_chars": 220,
+    "required_refs": ["U13"],
+    "forbidden_refs": ["U14"]
+  },
+  {
+    "name": "export_exception_reopens_reproducible_tool",
+    "family": "regulatory_change",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Choose a reproducible analysis tool after the export ruling",
+      "active_constraints": ["publish an auditable workflow", "comply with the current ruling"],
+      "changed_constraints": ["the regulator granted this project an exception permitting encrypted result exports"],
+      "evidence": ["the written exception names the proposed workflow"],
+      "open_questions": ["Which compliance-rejected tool is now admissible?"]
+    },
+    "items": [
+      {"ref": "U16", "content": "Use the containerized workflow that exports encrypted results and a complete audit manifest.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "The prior ruling prohibited every export of encrypted analysis results.", "created_order": 2},
+      {"ref": "U17", "content": "Use an unaudited interactive notebook because it never exports a manifest.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 5},
+      {"ref": "U18", "content": "Review the ruling and write a general compliance memorandum.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 9}
+    ],
+    "max_items": 1,
+    "max_chars": 235,
+    "required_refs": ["U16"],
+    "forbidden_refs": ["U17"]
+  },
+  {
+    "name": "instrument_repair_reopens_high_resolution_scan",
+    "family": "equipment_state",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Select an imaging protocol after the detector repair",
+      "active_constraints": ["resolve submillimeter features", "preserve calibration records"],
+      "changed_constraints": ["the damaged high-resolution detector has been repaired and recalibrated"],
+      "evidence": ["the calibration phantom now passes every tolerance"],
+      "open_questions": ["Which discarded protocol should return to consideration?"]
+    },
+    "items": [
+      {"ref": "U19", "content": "Run the high-resolution scan with calibration frames before and after each specimen.", "origin": "failure_history", "kind": "plan", "outcome": "rejected", "failure_condition": "The high-resolution detector was damaged and failed calibration.", "created_order": 1},
+      {"ref": "U20", "content": "Continue the low-resolution survey even though it cannot resolve the target features.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 6},
+      {"ref": "U21", "content": "Read the instrument manual before choosing an imaging protocol.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 8}
+    ],
+    "max_items": 1,
+    "max_chars": 220,
+    "required_refs": ["U19"],
+    "forbidden_refs": ["U20"]
+  },
+  {
+    "name": "corpus_release_reopens_dialect_model",
+    "family": "evidence_availability",
+    "targeted_changed_constraint": true,
+    "critical": false,
+    "observer": {
+      "goal": "Choose a speech model after release of the regional corpus",
+      "active_constraints": ["evaluate dialect error separately", "use licensed training data"],
+      "changed_constraints": ["a licensed regional speech corpus with dialect labels was released"],
+      "evidence": ["the corpus license permits model training and error analysis"],
+      "open_questions": ["Which data-limited approach is now testable?"]
+    },
+    "items": [
+      {"ref": "U22", "content": "Fine-tune the dialect-aware acoustic model and report error by regional label.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "No licensed regional corpus with dialect labels was available.", "created_order": 3},
+      {"ref": "U23", "content": "Deploy the generic model without measuring regional error.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 7},
+      {"ref": "U24", "content": "Survey publications about speech recognition in several regions.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 9}
+    ],
+    "max_items": 1,
+    "max_chars": 220,
+    "required_refs": ["U22"],
+    "forbidden_refs": ["U23"]
+  },
+  {
+    "name": "network_constraint_remains_active",
+    "family": "unchanged_constraint_control",
+    "targeted_changed_constraint": false,
+    "critical": true,
+    "observer": {
+      "goal": "Choose a backup target for an isolated laboratory",
+      "active_constraints": ["the laboratory network remains physically disconnected"],
+      "changed_constraints": [],
+      "evidence": ["encrypted removable drives are available locally"],
+      "open_questions": ["Which backup target is feasible now?"]
+    },
+    "items": [
+      {"ref": "C01", "content": "Send nightly backups to a managed cloud object store.", "origin": "failure_history", "kind": "plan", "outcome": "rejected", "failure_condition": "The laboratory has no network connection.", "created_order": 10},
+      {"ref": "C02", "content": "Rotate encrypted removable drives through the onsite fire safe.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 4},
+      {"ref": "C03", "content": "Draft a general disaster-recovery policy for later review.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 11}
+    ],
+    "max_items": 1,
+    "max_chars": 210,
+    "required_refs": ["C02"],
+    "forbidden_refs": ["C01"]
+  },
+  {
+    "name": "certification_constraint_remains_active",
+    "family": "safety_control",
+    "targeted_changed_constraint": false,
+    "critical": true,
+    "observer": {
+      "goal": "Choose equipment for the occupied clean room",
+      "active_constraints": ["all powered equipment must retain current safety certification"],
+      "changed_constraints": [],
+      "evidence": ["a certified lower-throughput unit is available"],
+      "open_questions": ["Which unit may be deployed?"]
+    },
+    "items": [
+      {"ref": "C04", "content": "Deploy the high-throughput prototype in the occupied clean room.", "origin": "failure_history", "kind": "hypothesis", "outcome": "rejected", "failure_condition": "The prototype lacks current safety certification.", "created_order": 9},
+      {"ref": "C05", "content": "Deploy the certified lower-throughput unit and monitor its queue.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "supported", "failure_condition": "", "created_order": 3},
+      {"ref": "C06", "content": "Prepare a comparison table for all clean-room equipment.", "origin": "runtime_reasoning", "kind": "plan", "outcome": "untested", "failure_condition": "", "created_order": 10}
+    ],
+    "max_items": 1,
+    "max_chars": 210,
+    "required_refs": ["C05"],
+    "forbidden_refs": ["C04"]
+  },
+  {
+    "name": "measured_outcome_outranks_prediction",
+    "family": "evaluation_control",
+    "targeted_changed_constraint": false,
+    "critical": true,
+    "observer": {
+      "goal": "Retrieve evidence about the compression experiment",
+      "active_constraints": ["observed measurements outrank forecasts"],
+      "changed_constraints": [],
+      "evidence": ["the replicated run has completed"],
+      "open_questions": ["Which record contains the measured outcome?"]
+    },
+    "items": [
+      {"ref": "C07", "content": "The replicated run measured a twelve-percent size reduction with no decoding errors.", "origin": "evaluation", "kind": "evaluation", "outcome": "supported", "failure_condition": "", "created_order": 4},
+      {"ref": "C08", "content": "The new compressor is predicted to reduce size without decoding errors.", "origin": "runtime_reasoning", "kind": "hypothesis", "outcome": "untested", "failure_condition": "", "created_order": 8},
+      {"ref": "C09", "content": "The earliest compressor used a fixed dictionary.", "origin": "runtime_reasoning", "kind": "observation", "outcome": "superseded", "failure_condition": "", "created_order": 2}
+    ],
+    "max_items": 1,
+    "max_chars": 210,
+    "required_refs": ["C07"],
+    "forbidden_refs": ["C08"]
+  },
+  {
+    "name": "oversize_item_does_not_block_budget",
+    "family": "budget_control",
+    "targeted_changed_constraint": false,
+    "critical": true,
+    "observer": {
+      "goal": "Retrieve two concise records of recovery testing",
+      "active_constraints": ["one-hundred-character content budget"],
+      "changed_constraints": [],
+      "evidence": [],
+      "open_questions": []
+    },
+    "items": [
+      {"ref": "C10", "content": "recovery test evidence recovery test evidence recovery test evidence recovery test evidence recovery test evidence recovery test evidence recovery test evidence recovery test evidence recovery test evidence", "origin": "evaluation", "kind": "evaluation", "outcome": "supported", "failure_condition": "", "created_order": 1},
+      {"ref": "C11", "content": "The first recovery test restored every record.", "origin": "evaluation", "kind": "evaluation", "outcome": "supported", "failure_condition": "", "created_order": 2},
+      {"ref": "C12", "content": "A second recovery test confirmed the restore.", "origin": "evaluation", "kind": "evaluation", "outcome": "supported", "failure_condition": "", "created_order": 3}
+    ],
+    "max_items": 2,
+    "max_chars": 100,
+    "required_refs": ["C11", "C12"],
+    "forbidden_refs": ["C10"]
+  }
+]

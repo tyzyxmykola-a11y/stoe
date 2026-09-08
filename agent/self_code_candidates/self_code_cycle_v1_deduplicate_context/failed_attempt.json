@@ -1,0 +1,52 @@
+{
+  "action_id": "self-code-cycle:v1:deduplicate-development-context",
+  "active_source_changed": false,
+  "budget": {
+    "context_limit_tokens": 16384,
+    "estimated": {
+      "category_attribution": {
+        "retrieved_material": 2120,
+        "task_context": 191,
+        "tool_results": 4558
+      },
+      "checkpoint_reserve": 1024,
+      "prompt_total": 8777,
+      "remaining": 2255,
+      "reserved_generation": 4096,
+      "system_instructions": 232,
+      "total_with_reserves": 14129
+    },
+    "estimator": {
+      "exact": false,
+      "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+      "method": "conservative_utf8_bytes_div_3"
+    },
+    "fits": true,
+    "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+    "truncation_events": []
+  },
+  "candidate_source_created": false,
+  "created_at": "2026-09-08T10:21:47.657596+00:00",
+  "decision": "FAILED_GENERATION_NO_VALID_PATCH",
+  "error": "Ollama returned malformed JSON: Unterminated string starting at line 4 column 14 (char 340)",
+  "field_refs": {
+    "attempt": "REBUILD_SELF_CODE_V1_FAILED_generation_attempt_725f15",
+    "decision": "REBUILD_SELF_CODE_V1_FAILED_decision_b9e03c",
+    "evaluation": "REBUILD_SELF_CODE_V1_FAILED_failure_evaluation_c0403d"
+  },
+  "model": {
+    "advertised_context_tokens": 262144,
+    "context_source": "ollama_api_show:model_info.gemma4.context_length",
+    "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+    "effective_context_tokens": 16384,
+    "name": "gemma4:26b",
+    "ollama_version": "0.33.3"
+  },
+  "model_calls": 1,
+  "objective": "Improve the bounded SToE development-context report by deduplicating retrieved records that share the same non-empty SHA-256, while preserving deterministic order, provenance fields, distinct un-hashed records, input immutability, and the maximum character budget.",
+  "proposal_received": false,
+  "raw_response_limitation": "The frozen OllamaClient parsed before returning its trace and raised on malformed JSON; the provider body was therefore not returned to this cycle.",
+  "raw_response_preserved": false,
+  "retry_permitted_for_action_id": false,
+  "rollback": "No rollback action is necessary because no candidate was applied or activated."
+}

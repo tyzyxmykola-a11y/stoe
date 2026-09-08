@@ -1,0 +1,76 @@
+{
+  "session_id": "stoe-agent-self-code-v2",
+  "observer_state_ref": "STATE_fb700af6df5d4ad8",
+  "state_change_ref": "CHANGE_773493dcab96467a",
+  "retrieval_run_id": "RETRIEVAL_e9545d17775f4a8f",
+  "retrieval_budget": {
+    "limit": 8,
+    "max_depth": 4,
+    "include_seed": false,
+    "total_chars": 6000,
+    "actual_content_chars": 1727
+  },
+  "selected": [
+    {
+      "ref": "CHANGE_773493dcab96467a",
+      "kind": "state_change",
+      "origin": "state_change",
+      "content": "Persist raw Ollama bytes before parsing; simplify the patch envelope; deduplicate payload bytes by SHA while retaining semantic edges."
+    },
+    {
+      "ref": "IP_155b8facb6b9477d",
+      "kind": "diagnosis",
+      "origin": "failure_history",
+      "content": "v1 discarded its malformed provider body because JSON parsing occurred before trace return.",
+      "artifact_path": "agent/self_code_candidates/self_code_cycle_v1_deduplicate_context/attempt_manifest.json",
+      "artifact_sha256": "f3be8a9fb6e4d02b4ac564163e3805215c3aa9ec03d924f9e5839a724407249c"
+    },
+    {
+      "ref": "IP_827838d2c91c4e8c",
+      "kind": "candidate_generation",
+      "origin": "failure_history",
+      "content": "v1 made exactly one gemma4:26b call; an unterminated JSON string yielded no candidate and no activation.",
+      "artifact_path": "agent/self_code_candidates/self_code_cycle_v1_deduplicate_context/failed_attempt.json",
+      "artifact_sha256": "f13d74d3e81b4673462bf2448e8dca4371252c9e3e8a0517a6b8992db968bbfb"
+    },
+    {
+      "ref": "IP_8339fea665f14d8a",
+      "kind": "development_objective",
+      "origin": "runtime_reasoning",
+      "content": "Build a persistent SToE Agent that safely develops agent-owned code alongside Mykola; do not resume memory-comparison experiments."
+    },
+    {
+      "ref": "IP_b4d72aa809fe42bc",
+      "kind": "correction",
+      "origin": "runtime_reasoning",
+      "content": "A subprocess/worktree is not a security sandbox; AST checks are defense in depth; activation or storage is not proof of improvement."
+    },
+    {
+      "ref": "IP_36221ae7d7d84e1e",
+      "kind": "next_action",
+      "origin": "runtime_reasoning",
+      "content": "Qualify lossless raw capture and a simpler inert envelope, then make one new gemma4:26b attempt without reopening v1."
+    },
+    {
+      "ref": "IP_d67d43bdd7564539",
+      "kind": "constraint",
+      "origin": "runtime_reasoning",
+      "content": "Only agent/src/stoe_agent/development_report.py is editable; all trusted boundaries, evidence, dependencies, Git and activation are protected."
+    },
+    {
+      "ref": "IP_186ce51ec96840be",
+      "kind": "constraint",
+      "origin": "runtime_reasoning",
+      "content": "Target 4k–6k prompt input, SHA-canonicalize payloads, preserve edges separately, derive output reserve from file size, and resume within 1,800 tokens."
+    }
+  ],
+  "typed_paths": [
+    ["STATE_fb700af6df5d4ad8", "contains_change:outgoing", "CHANGE_773493dcab96467a"],
+    ["CHANGE_773493dcab96467a", "invalidates:outgoing", "IP_155b8facb6b9477d"],
+    ["IP_155b8facb6b9477d", "diagnoses:outgoing", "IP_827838d2c91c4e8c"],
+    ["STATE_fb700af6df5d4ad8", "evolved_from:outgoing", "IP_36221ae7d7d84e1e"],
+    ["IP_36221ae7d7d84e1e", "constrained_by:outgoing", "IP_d67d43bdd7564539"],
+    ["IP_36221ae7d7d84e1e", "constrained_by:outgoing", "IP_186ce51ec96840be"]
+  ],
+  "canonicalization_rule": "Content is stored once per SHA-256; distinct refs and typed paths remain separate connection records."
+}

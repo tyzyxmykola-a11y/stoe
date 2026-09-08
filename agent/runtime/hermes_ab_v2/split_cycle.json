@@ -1,0 +1,76 @@
+{
+  "action_id": "self-code-cycle:hermes-ab-v2:split-model-deduplicate-context",
+  "calls": {
+    "qualification_gemma_plan": {
+      "budget": {
+        "context_limit_tokens": 16384,
+        "estimated": {
+          "category_attribution": {
+            "retrieved_material": 0,
+            "task_context": 49,
+            "tool_results": 0
+          },
+          "checkpoint_reserve": 1024,
+          "prompt_total": 49,
+          "remaining": 14576,
+          "reserved_generation": 700,
+          "system_instructions": 35,
+          "total_with_reserves": 1808
+        },
+        "estimator": {
+          "exact": false,
+          "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+          "method": "conservative_utf8_bytes_div_3"
+        },
+        "fits": true,
+        "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+        "truncation_events": []
+      },
+      "result": {
+        "diagnosis": "OUTPUT_TRUNCATION",
+        "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+        "done_reason": "length",
+        "event_count": 701,
+        "model": "gemma4:26b",
+        "output_limit_tokens": 700,
+        "output_tokens": 700,
+        "parsed": null,
+        "parser_error": "JSONDecodeError: Unterminated string starting at: line 7 column 19 (char 1522)",
+        "prompt_tokens": 80,
+        "provider_generation_duration_ns": 7145228000,
+        "provider_load_duration_ns": 17723418000,
+        "provider_prompt_duration_ns": 496864000,
+        "provider_total_duration_ns": 25368854900,
+        "raw_bytes": 72184,
+        "raw_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\hermes_ab_v2\\raw\\qualification_gemma_plan.ndjson",
+        "raw_sha256": "6c2ca9bbc7e3d2f44b05e9e054dbf3a2ef55664eaa753aadbad4508d72f6c18f",
+        "response_channel": "response",
+        "response_chars": 1559,
+        "response_text": "{\"format\": \"stoe.development_plan\",\n\n \"version\": 1,\n\n \"observed_limitation\": \"The user requested a plan for a-two-line change to a specific file path, reporting a-count. reporting a-count is a vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-v vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vag\",\n \"target_behavior\": \"Implement a counter variable and an increment logic in the context_renderer.py file to track and report a count. Since the exact logic for what is being counted-is-is-is-is-is-vague-vague-vague-target-is-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vage-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vage-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vague-vag\",\n \"editable_file\": \"stoe-hermes/src/stoe_hermes/context_",
+        "stream_complete": true,
+        "stream_errors": [],
+        "termination_reason": "length",
+        "total_tokens": 780,
+        "transport_error": null,
+        "wall_seconds": 25.39
+      },
+      "status": "failed"
+    }
+  },
+  "failure": "SuccessionError: qualification_gemma_plan: OUTPUT_TRUNCATION",
+  "models": {
+    "coder": {
+      "advertised_context": 262144,
+      "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "effective_context": 16384,
+      "name": "qwen3-coder:latest"
+    },
+    "planner_reviewer": {
+      "advertised_context": 262144,
+      "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+      "effective_context": 16384,
+      "name": "gemma4:26b"
+    }
+  },
+  "status": "qualification_failed"
+}

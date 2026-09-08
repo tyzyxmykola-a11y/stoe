@@ -76,14 +76,23 @@
       ],
       "started_at": "2026-09-08T03:53:06.727396+00:00",
       "status": "completed"
+    },
+    {
+      "action_id": "model-cycle:structural-input-v3",
+      "completed_at": "2026-09-08T05:31:07.763253+00:00",
+      "description": "One frozen paired ordinary-versus-bounded-typed-structure development cycle.",
+      "result_refs": [
+        "agent/structural_input_experiment_v3/results/20260908T053018Z_structural_v1.json"
+      ],
+      "started_at": "2026-09-08T05:30:18.790788+00:00",
+      "status": "completed"
     }
   ],
   "active_hypothesis": {
-    "claim": "Can complete response schemas force exactly one finding per observed failure and the full inert policy grammar under adversarial as well as maximum-valid mocks?",
+    "claim": "Why did typed input induce outcome-to-change scoring and impossible public-specific conjunctions, and can a separately qualified representation express changed_constraints-to-failure_condition without leakage, overfit, or budget changes?",
     "claim_type": "hypothesis",
     "source_refs": [
-      "structural_input_experiment_v2_results",
-      "structural_input_experiment_v2_postmortem"
+      "structural_input_experiment_v3_results"
     ]
   },
   "artifacts": [
@@ -295,16 +304,42 @@
       "summary_is_exact_source": false
     },
     {
-      "bytes": 71671,
+      "bytes": 236790,
       "kind": "experiment_result",
-      "path": "agent/structural_input_experiment/results/20260908T032120Z_structural_v1.json",
+      "path": "agent/structural_input_experiment_v3/results/20260908T053018Z_structural_v1.json",
       "provenance": "frozen_paired_local_ollama_experiment",
       "ref": "structural_input_experiment_v1_results",
-      "sha256": "68c2e5c2ec0de85e6930b099333362e4e0aa06c2ec88d9bc8af653a67f94410e",
+      "sha256": "ff7de9b79d146c83d39c09445f974cfee76fce4f7f705b6347dc8c4f5bdaf7df",
       "source_refs": [
         "continuity_reconciliation_report"
       ],
-      "summary": "Complete frozen v1 execution-failure traces; no candidate comparison occurred.",
+      "summary": "Complete paired ordinary-versus-bounded-typed-structure prompts, traces, policies, unseen-case evaluations, and activation decision.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 236790,
+      "kind": "experiment_result",
+      "path": "agent/structural_input_experiment_v3/results/20260908T053018Z_structural_v1.json",
+      "provenance": "frozen_paired_local_ollama_v3",
+      "ref": "structural_input_experiment_v3_results",
+      "sha256": "ff7de9b79d146c83d39c09445f974cfee76fce4f7f705b6347dc8c4f5bdaf7df",
+      "source_refs": [
+        "public_response_rehearsal_attempt_003"
+      ],
+      "summary": "Frozen v3 paired result: ordinary 3/8 targets and 3/4 controls; typed structural 0/8 and 1/4; both public gates rejected; no activation.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 5727,
+      "kind": "experiment_report",
+      "path": "agent/structural_input_experiment_v3/RESULTS.md",
+      "provenance": "postrun_analysis",
+      "ref": "structural_input_experiment_v3_report",
+      "sha256": "5b50a12fe3ce58f44fda91134bc9f839076ad3329f6ccdda0ceac14a43fe65a2",
+      "source_refs": [
+        "structural_input_experiment_v3_results"
+      ],
+      "summary": "Adversarial interpretation of the frozen v3 loss and exact remaining research question.",
       "summary_is_exact_source": false
     }
   ],
@@ -349,7 +384,7 @@
       ]
     }
   ],
-  "current_task": "Structural-input v2 preserved as not evaluable; context qualification held, but output schemas did not force complete proposals and inert-policy grammar.",
+  "current_task": "Frozen v3 completed once: typed 0/8 targets versus ordinary 3/8; no activation.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -390,6 +425,12 @@
       "decision": "Do not reuse v2 cases or rerun v2; qualify complete output schemas with adversarial mocks before authoring another holdout.",
       "source_refs": [
         "structural_input_experiment_v2_postmortem"
+      ]
+    },
+    {
+      "decision": "Do not tune or rerun v3; investigate the failed structural-to-operation mapping only on exposed development cases and qualify a new instrument before any new holdout.",
+      "source_refs": [
+        "structural_input_experiment_v3_report"
       ]
     }
   ],
@@ -464,6 +505,15 @@
       "source_refs": [
         "structural_input_experiment_v2_results",
         "structural_input_experiment_v2_postmortem"
+      ],
+      "stance": "failure"
+    },
+    {
+      "claim": "Frozen v3: ordinary generated policy passed 3/8 changed-constraint targets and 3/4 controls; typed structural passed 0/8 and 1/4 because its valid policy used a mismatched outcome-to-change similarity and unsatisfied conjunctions.",
+      "kind": "failure",
+      "source_refs": [
+        "structural_input_experiment_v3_results",
+        "structural_input_experiment_v3_report"
       ],
       "stance": "failure"
     }
@@ -626,6 +676,42 @@
         "checkpoint_id": "20260908T035620Z_913b6686ff",
         "created_at": "2026-09-08T03:56:20.076015+00:00",
         "reason": "Aligned research question with v2 schema-completeness failure"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T053018Z_69bbee8647",
+        "created_at": "2026-09-08T05:30:18.833642+00:00",
+        "reason": "Before frozen paired model action model-cycle:structural-input-v3"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T053107Z_3551b78d76",
+        "created_at": "2026-09-08T05:31:07.841848+00:00",
+        "reason": "After frozen paired structural-input experiment model-cycle:structural-input-v3"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T053107Z_4f6b60a8c7",
+        "created_at": "2026-09-08T05:31:07.999078+00:00",
+        "reason": "Registered immutable structural-input experiment result artifact"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T084041Z_dfe86e7eb8",
+        "created_at": "2026-09-08T08:40:41.790875+00:00",
+        "reason": "Conserve frozen v3 negative result, degenerate structural-policy mechanism, and next public-only research question"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T084154Z_12bd569d7e",
+        "created_at": "2026-09-08T08:41:54.129454+00:00",
+        "reason": "Advance research succession to the frozen v3 negative result and exact structural-to-operation mapping question"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T084234Z_a732e6e8b2",
+        "created_at": "2026-09-08T08:42:34.833387+00:00",
+        "reason": "Compact frozen v3 state while preserving full evidence by hash"
       }
     ],
     "provider_usage": [
@@ -643,20 +729,19 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Before any further cases or model calls, qualify exact diagnostic cardinality and a complete declarative-policy response schema against maximum valid and adversarial malformed mocked outputs.",
+  "next_executable_step": "Investigate the failed typed-to-policy mapping on exposed cases only; qualify any successor before a new holdout.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
     {
       "claim_type": "question",
-      "question": "Can complete response schemas force exactly one finding per observed failure and the full inert policy grammar under adversarial as well as maximum-valid mocks?",
+      "question": "Why did typed input induce outcome-to-change scoring and impossible public-specific conjunctions, and can a separately qualified representation express changed_constraints-to-failure_condition without leakage, overfit, or budget changes?",
       "source_refs": [
-        "structural_input_experiment_v2_results",
-        "structural_input_experiment_v2_postmortem"
+        "structural_input_experiment_v3_report"
       ]
     }
   ],
-  "updated_at": "2026-09-08T03:56:20.039251+00:00",
+  "updated_at": "2026-09-08T08:42:34.790397+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

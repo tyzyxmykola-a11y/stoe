@@ -1,0 +1,9 @@
+manifest_version: 1
+name: stoe-hermes
+version: "0.1.0"
+description: "SToE Memory adapter for bounded session retrieval, explicit conservation, and typed succession."
+author: "Mykola Voronin / SToE integration"
+hooks:
+  - on_session_start
+  - pre_llm_call
+  - on_session_end

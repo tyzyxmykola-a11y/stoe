@@ -16,6 +16,7 @@ to the graph engines and experiments.
 | [`plugins/stoe-memory`](plugins/stoe-memory) | Local persistent SQLite reasoning field exposed through MCP over stdio |
 | [`skills/stoe-reasoning`](skills/stoe-reasoning) | Reusable reasoning protocol, references, seed, and seed validator |
 | [`agent`](agent) | Supervised, bounded SToE research-agent rebuild lifecycle and preserved real-cycle evidence |
+| [`stoe-hermes`](stoe-hermes) | Hermes adapter and protected A/B succession supervisor; active Hermes remains external and read-only |
 | [`research/corpus`](research/corpus) | Original research PDFs, including the new *Memory Is Connection* article and the v9.1 manuscript |
 | [`research/texts`](research/texts) | Searchable paper text, including a page-delimited companion to the new article |
 | [`archive/snapshots`](archive/snapshots) | 78 deduplicated historical source snapshots, hashes, and a safe restore tool |

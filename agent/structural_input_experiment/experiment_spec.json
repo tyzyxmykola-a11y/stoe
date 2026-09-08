@@ -13,6 +13,11 @@
     "control_count": 4,
     "case_visibility": "Cases are frozen before generation and never included in either model prompt. They are evaluated only after both candidates have been generated."
   },
+  "input_bundle": {
+    "file": "FROZEN_INPUT_BUNDLE.json",
+    "sha256": "45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49",
+    "content": "Snapshot-derived public investigation, byte-identical unstructured memory, and typed relational overlay used by both generation arms."
+  },
   "conditions": {
     "ORDINARY_OBSERVABLE": "Active source, full observable public diagnostics, and the same bounded unstructured field-node records; no typed relation paths.",
     "BOUNDED_TYPED_STOE": "Exactly the ordinary condition plus a bounded typed and directed relational overlay referencing the same field-node record IDs."
@@ -34,8 +39,8 @@
     "retry_count": 0,
     "proposal_seed": 3701,
     "policy_seed": 4701,
-    "proposal_max_output_tokens": 2400,
-    "policy_max_output_tokens": 3200,
+    "proposal_max_output_tokens": 1400,
+    "policy_max_output_tokens": 1800,
     "temperature": 0,
     "top_p": 0.9,
     "top_k": 40,
@@ -46,8 +51,8 @@
     "failure_handling": "No model retry. A malformed proposal, malformed policy, provider error, or budget failure rejects that condition. Both generation attempts complete before unseen evaluation starts."
   },
   "structural_budget": {
-    "max_records": 14,
-    "max_combined_serialized_characters_for_common_memory_and_overlay": 5000,
+    "max_records": 8,
+    "max_combined_serialized_characters_for_common_memory_and_overlay": 4000,
     "content_matching": "The ordinary and structural arms receive a byte-identical bounded unstructured memory object. The overlay may contain only record IDs, typed/directed paths, navigator selection flags, and numeric scores."
   },
   "active_baseline": {

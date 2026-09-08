@@ -66,6 +66,7 @@ def main(argv=None) -> int:
     structural = subparsers.add_parser("structural-experiment")
     structural.add_argument("--spec", required=True, type=Path)
     structural.add_argument("--allow-generation", action="store_true")
+    structural.add_argument("--freeze-inputs", action="store_true")
     args = parser.parse_args(argv)
 
     supervisor = _supervisor(args)
@@ -133,9 +134,13 @@ def main(argv=None) -> int:
             RebuildSupervisor._atomic_write_json(args.output.resolve(), result)
             result["output_path"] = str(args.output.resolve())
     elif args.command == "structural-experiment":
-        result = StructuralInputExperiment(supervisor, args.spec).run(
-            allow_generation=args.allow_generation
-        )
+        experiment = StructuralInputExperiment(supervisor, args.spec)
+        if args.freeze_inputs:
+            if args.allow_generation:
+                parser.error("--freeze-inputs and --allow-generation are mutually exclusive")
+            result = experiment.freeze_inputs()
+        else:
+            result = experiment.run(allow_generation=args.allow_generation)
     else:
         parser.error(f"unknown command: {args.command}")
     # ASCII escaping keeps structured output printable on Windows hosts whose

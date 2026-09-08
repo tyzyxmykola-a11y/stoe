@@ -5,8 +5,9 @@ import json
 import shutil
 import subprocess
 import time
+import uuid
 from copy import deepcopy
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -16,11 +17,11 @@ from .selection_policy import validate_policy
 from .selector_loader import sha256_file
 
 
-STRUCTURAL_CONTEXT_CHAR_CAP = 5000
+STRUCTURAL_CONTEXT_CHAR_CAP = 4000
 PROPOSAL_SEED = 3701
 POLICY_SEED = 4701
-PROPOSAL_MAX_TOKENS = 2400
-POLICY_MAX_TOKENS = 3200
+PROPOSAL_MAX_TOKENS = 1400
+POLICY_MAX_TOKENS = 1800
 CONDITIONS = ("ORDINARY_OBSERVABLE", "BOUNDED_TYPED_STOE")
 
 
@@ -185,8 +186,6 @@ def bounded_field_contexts(
                         {
                             "relation": step["type"],
                             "direction": step["direction"],
-                            "from": step["from"],
-                            "to": step["to"],
                         }
                         for step in trace["path"]
                     ],
@@ -214,8 +213,6 @@ def bounded_field_contexts(
                     {
                         "relation": step["type"],
                         "direction": step["direction"],
-                        "from": step["from"],
-                        "to": step["to"],
                     }
                     for step in item["path"]
                 ],
@@ -226,7 +223,7 @@ def bounded_field_contexts(
         "version": 1,
         "content_matching": "identical serialized object in both paired conditions",
         "budget": {
-            "max_records": 14,
+            "max_records": 8,
             "max_serialized_characters": STRUCTURAL_CONTEXT_CHAR_CAP,
         },
         "records": [],
@@ -248,23 +245,29 @@ def bounded_field_contexts(
         trial_memory["records"].append(memory_candidate)
         trial_overlay["records"].append(relation_candidate)
         combined_size = len(_canonical_bytes(trial_memory)) + len(_canonical_bytes(trial_overlay))
-        if len(trial_memory["records"]) > 14 or combined_size > STRUCTURAL_CONTEXT_CHAR_CAP - 240:
+        if len(trial_memory["records"]) > 8 or combined_size > STRUCTURAL_CONTEXT_CHAR_CAP - 240:
             omitted += 1
             continue
         memory, overlay = trial_memory, trial_overlay
-    serialization = {
-        "candidate_record_count": len(memory_candidates),
-        "visible_record_count": len(memory["records"]),
-        "omitted_for_budget": omitted,
-    }
-    memory["serialization"] = deepcopy(serialization)
-    overlay["serialization"] = deepcopy(serialization)
-    combined_size = len(_canonical_bytes(memory)) + len(_canonical_bytes(overlay))
-    memory["serialization"]["combined_serialized_characters"] = combined_size
-    overlay["serialization"]["combined_serialized_characters"] = combined_size
-    combined_size = len(_canonical_bytes(memory)) + len(_canonical_bytes(overlay))
-    if combined_size > STRUCTURAL_CONTEXT_CHAR_CAP:
-        raise RuntimeError("bounded paired field contexts exceeded preregistered character cap")
+    while True:
+        serialization = {
+            "candidate_record_count": len(memory_candidates),
+            "visible_record_count": len(memory["records"]),
+            "omitted_for_budget": omitted,
+        }
+        memory["serialization"] = deepcopy(serialization)
+        overlay["serialization"] = deepcopy(serialization)
+        combined_size = len(_canonical_bytes(memory)) + len(_canonical_bytes(overlay))
+        memory["serialization"]["combined_serialized_characters"] = combined_size
+        overlay["serialization"]["combined_serialized_characters"] = combined_size
+        combined_size = len(_canonical_bytes(memory)) + len(_canonical_bytes(overlay))
+        if combined_size <= STRUCTURAL_CONTEXT_CHAR_CAP:
+            break
+        if not memory["records"]:
+            raise RuntimeError("paired field-context metadata alone exceeds character cap")
+        memory["records"].pop()
+        overlay["records"].pop()
+        omitted += 1
     if [item["record_id"] for item in memory["records"]] != [
         item["record_id"] for item in overlay["records"]
     ]:
@@ -280,6 +283,78 @@ class StructuralInputExperiment:
         self.spec = json.loads(self.spec_path.read_text(encoding="utf-8"))
         self.cases_path = (self.root / self.spec["benchmark"]["file"]).resolve()
         self.manifest_path = (self.root / self.spec["freeze_manifest"]).resolve()
+        self.input_bundle_path = (self.root / self.spec["input_bundle"]["file"]).resolve()
+
+    def freeze_inputs(self) -> dict[str, Any]:
+        """Materialize the SToE treatment from a snapshot without touching the live field."""
+        if self.input_bundle_path.exists():
+            raise RuntimeError("frozen input bundle already exists")
+        snapshot = self.supervisor.journal.snapshot(cycle_id="structural_input_freeze")
+        temp_runtime = (
+            self.supervisor.config.repo_root
+            / "agent"
+            / f"runtime_structural_freeze_{uuid.uuid4().hex}"
+        ).resolve()
+        temp_runtime.mkdir(parents=True)
+        try:
+            shutil.copy2(Path(snapshot["path"]), temp_runtime / "research_field.sqlite3")
+            from .supervisor import RebuildSupervisor
+
+            config = replace(
+                self.supervisor.config,
+                runtime_dir=temp_runtime,
+                report_dir=temp_runtime / "reports",
+                rejected_candidate_dir=temp_runtime / "rejected",
+                persist_active_manifest=False,
+                research_checkpoint_dir=temp_runtime / "checkpoints",
+                research_bootstrap_path=None,
+            )
+            frozen_supervisor = RebuildSupervisor(config, model_client=self.supervisor.model_client)
+            active = frozen_supervisor.read_active_pointer()
+            active_path = Path(active["source_path"])
+            public_evaluation = frozen_supervisor._evaluate_public(active_path)
+            component = frozen_supervisor.journal.add_ip(
+                cycle_id="structural_input_v1_frozen",
+                label="active_component",
+                content=f"Frozen investigation of active selector {active['version']}.",
+                kind="component",
+                outcome="active",
+                metadata={"source_sha256": active["sha256"]},
+            )
+            investigation = investigate_selector(
+                public_evaluation=public_evaluation,
+                journal=frozen_supervisor.journal,
+                cycle_id="structural_input_v1_frozen",
+                component_ref=component["ref"],
+            )
+            observable = observable_diagnostics(investigation)
+            memory, overlay = bounded_field_contexts(investigation)
+            bundle = {
+                "format": "stoe.structural_input_bundle",
+                "version": 1,
+                "source_field_snapshot_sha256": snapshot["sha256"],
+                "active_baseline": active,
+                "public_evaluation": public_evaluation,
+                "investigation": investigation,
+                "observable_diagnostics": observable,
+                "unstructured_memory": memory,
+                "typed_relational_overlay": overlay,
+                "observable_sha256": _sha256_json(observable),
+                "unstructured_memory_sha256": _sha256_json(memory),
+                "typed_relational_overlay_sha256": _sha256_json(overlay),
+            }
+            self.supervisor._atomic_write_json(self.input_bundle_path, bundle)
+            return {
+                "created": True,
+                "path": str(self.input_bundle_path),
+                "sha256": sha256_file(self.input_bundle_path),
+                "source_field_snapshot_sha256": snapshot["sha256"],
+                "record_count": len(memory["records"]),
+            }
+        finally:
+            if temp_runtime.parent != (self.supervisor.config.repo_root / "agent").resolve():
+                raise RuntimeError("refusing to remove freeze runtime outside agent directory")
+            shutil.rmtree(temp_runtime, ignore_errors=True)
 
     def preflight(self, *, require_clean: bool = True) -> dict[str, Any]:
         if self.spec.get("status") != "FROZEN_NOT_RUN":
@@ -306,6 +381,15 @@ class StructuralInputExperiment:
         actual_case_hash = sha256_file(self.cases_path)
         if actual_case_hash != self.spec["benchmark"]["sha256"]:
             raise RuntimeError("frozen unseen-case SHA-256 mismatch")
+        if not self.input_bundle_path.exists() or sha256_file(self.input_bundle_path) != self.spec["input_bundle"]["sha256"]:
+            raise RuntimeError("frozen structural-input bundle SHA-256 mismatch")
+        bundle = json.loads(self.input_bundle_path.read_text(encoding="utf-8"))
+        if bundle.get("format") != "stoe.structural_input_bundle":
+            raise RuntimeError("invalid frozen structural-input bundle")
+        memory = bundle["unstructured_memory"]
+        overlay = bundle["typed_relational_overlay"]
+        if [item["record_id"] for item in memory["records"]] != [item["record_id"] for item in overlay["records"]]:
+            raise RuntimeError("frozen common memory and typed overlay are not content matched")
         manifest = json.loads(self.manifest_path.read_text(encoding="utf-8"))
         for relative, expected in manifest["critical_file_sha256"].items():
             path = (self.supervisor.config.repo_root / relative).resolve()
@@ -347,6 +431,7 @@ class StructuralInputExperiment:
             "active_baseline": pointer,
             "benchmark": {"path": str(self.cases_path), "sha256": actual_case_hash, **structure},
             "freeze_manifest_sha256": sha256_file(self.manifest_path),
+            "input_bundle_sha256": sha256_file(self.input_bundle_path),
         }
 
     def _generate_condition(
@@ -500,23 +585,12 @@ class StructuralInputExperiment:
         cycle_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "_structural_v1"
         active_path = Path(preflight["active_baseline"]["source_path"])
         active_source = active_path.read_text(encoding="utf-8")
-        active_public = self.supervisor._evaluate_public(active_path)
-        component = self.supervisor.journal.add_ip(
-            cycle_id=cycle_id,
-            label="paired_experiment_active_component",
-            content=f"Frozen paired experiment targets active selector {preflight['active_baseline']['version']}.",
-            kind="component",
-            outcome="active",
-            metadata={"source_sha256": preflight["active_baseline"]["sha256"]},
-        )
-        investigation = investigate_selector(
-            public_evaluation=active_public,
-            journal=self.supervisor.journal,
-            cycle_id=cycle_id,
-            component_ref=component["ref"],
-        )
-        observable = observable_diagnostics(investigation)
-        unstructured_memory, structural = bounded_field_contexts(investigation)
+        bundle = json.loads(self.input_bundle_path.read_text(encoding="utf-8"))
+        active_public = bundle["public_evaluation"]
+        investigation = bundle["investigation"]
+        observable = bundle["observable_diagnostics"]
+        unstructured_memory = bundle["unstructured_memory"]
+        structural = bundle["typed_relational_overlay"]
         unstructured_hash = _sha256_json(unstructured_memory)
         structural_hash = _sha256_json(structural)
         structural_ip = self.supervisor.journal.add_ip(

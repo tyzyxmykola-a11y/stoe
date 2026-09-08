@@ -4,6 +4,8 @@ Status: **FROZEN NOT RUN**
 
 No candidate has been generated and the twelve new cases have not been scored by the active selector or any candidate. The case file was written before the experiment runner was allowed to call Ollama.
 
+The public investigation and the exact paired field inputs are also materialized from a copy of the persistent field before generation. The frozen input bundle, rather than mutable live retrieval, is used by both arms.
+
 ## Question and intervention
 
 This is a paired pipeline intervention, not a test of the full SToE ontology. Both conditions receive the active selector, the full observable public diagnostics, and exactly the same bounded field-node content. `BOUNDED_TYPED_STOE` alone receives an appended relational overlay showing typed edges, traversal directions, paths, selection flags, and navigator scores for those same record IDs. Thus the treatment changes represented connections, not node content, model, policy expressivity, or evaluation access.
@@ -16,7 +18,7 @@ The ordinary candidate is generated first and the structural candidate second. B
 - Two calls per condition: proposal and inert policy generation. No retry.
 - Identical system prompts, seeds, output caps, 8,192-token context, sampling settings, policy schema, public gate, hidden acceptance rule, and activation rule.
 - Proposal seed 3701; policy seed 4701; temperature 0; top-p 0.9; top-k 40.
-- Common memory and typed overlay together are capped at 14 records and 5,000 serialized characters. Unreachable field nodes are absent.
+- Common memory and typed overlay together are capped at 8 records and 4,000 serialized characters. Unreachable field nodes are absent.
 - The generated artifact is inert `stoe.selection_policy` JSON interpreted by trusted code. It receives no structural information at runtime; structural input can affect only the research decision that generates the policy.
 - Hidden identifiers are automatically checked against both actual prompt traces before hidden evaluation.
 

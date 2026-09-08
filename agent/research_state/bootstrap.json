@@ -98,14 +98,31 @@
       ],
       "started_at": "2026-09-08T10:27:26.645484+00:00",
       "status": "failed"
+    },
+    {
+      "action_id": "self-code-cycle:v2:deduplicate-development-context",
+      "completed_at": null,
+      "description": "Qualify reliable inert line-patch generation, then permit one model-proposed reporter modification only if the disclosed gate passes.",
+      "result_refs": [
+        "self_code_v2_preflight",
+        "self_code_v2_qualification",
+        "self_code_v2_raw_qualification_1",
+        "self_code_v2_raw_qualification_2",
+        "self_code_v2_postmortem",
+        "self_code_v2_memory_snapshot",
+        "self_code_v2_report",
+        "self_code_v2_manifest"
+      ],
+      "started_at": "2026-09-08T11:30:21.009842+00:00",
+      "status": "failed"
     }
   ],
   "active_hypothesis": {
-    "claim": "How can a successor cycle preserve raw Ollama output before parsing and qualify schema-complete gemma4:26b patch responses on disclosed fixtures without weakening the inert patch boundary or executing generated Python?",
+    "claim": "Can gemma4:26b complete two disclosed inert line-patch qualifications under the corrected bounded wire capture before one newly authorized successor attempt?",
     "claim_type": "development_hypothesis",
     "source_refs": [
-      "self_code_v1_attempt_manifest",
-      "self_code_v1_report"
+      "self_code_v2_postmortem",
+      "self_code_v2_memory_snapshot"
     ]
   },
   "artifacts": [
@@ -392,6 +409,110 @@
       ],
       "summary": "Supervised self-code-modification v1 implementation and failed-cycle report.",
       "summary_is_exact_source": false
+    },
+    {
+      "bytes": 7823,
+      "kind": "generation_preflight",
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/preflight.json",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_preflight",
+      "sha256": "b8e766c411484412c5cd62d07300428d9588ce7db9f4c46621a4c0c382a152df",
+      "source_refs": [],
+      "summary": "Bounded model, context, output, checkpoint, and SHA-canonical retrieval preflight.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 765,
+      "kind": "formatting_qualification",
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/qualification.json",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_qualification",
+      "sha256": "a91216220638f7302b474f3ff83acd2f7e957f6300e2bc251368162c8fd2d790",
+      "source_refs": [
+        "self_code_v2_preflight"
+      ],
+      "summary": "Two disclosed formatting calls: first passed; second stopped at the trusted raw-wire capture bound.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 47134,
+      "kind": "raw_model_response",
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/raw/self-code-cycle_v2_format-qualification-1.ndjson",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_raw_qualification_1",
+      "sha256": "b21d45d5eb913bd475bd83c8798f555f50382d78dcfe115a353da81a2a0c244f",
+      "source_refs": [
+        "self_code_v2_qualification"
+      ],
+      "summary": "Losslessly captured first disclosed formatting response.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 64001,
+      "kind": "raw_model_response",
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/raw/self-code-cycle_v2_format-qualification-2.ndjson",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_raw_qualification_2",
+      "sha256": "1512af925030006660c501c8436701f5953498166c1e52f5082b195582536f33",
+      "source_refs": [
+        "self_code_v2_qualification"
+      ],
+      "summary": "Losslessly captured partial second formatting response; stopped by trusted raw-wire bound.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 1529,
+      "kind": "failed_attempt",
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/qualification_postmortem.json",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_postmortem",
+      "sha256": "665673543dd79ef6aab7f8d7c2337d684e166aaf120960729c49eb22707f5610",
+      "source_refs": [
+        "self_code_v2_qualification",
+        "self_code_v2_raw_qualification_2"
+      ],
+      "summary": "Diagnosis separating trusted wire-capture termination from provider output truncation or established schema noncompliance.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 979,
+      "kind": "continuity_reference",
+      "path": "agent/self_code_v2/continuity_snapshot.json",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_memory_snapshot",
+      "sha256": "cbd1b166c54d67301c23c11477b2ee7349957f39ba27c29368db7ee352294760",
+      "source_refs": [
+        "self_code_v2_postmortem"
+      ],
+      "summary": "Hash-addressed SToE Memory observer, failure, decision, succession, and exact-next-action reference map.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 8020,
+      "kind": "research_report",
+      "path": "agent/SUPERVISED_SELF_CODE_MODIFICATION_V2.md",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_report",
+      "sha256": "92d1b10368b2ed74804df51c22c4973180c053cf6a71e84e82a71236b4f0ab2d",
+      "source_refs": [
+        "self_code_v2_postmortem",
+        "self_code_v2_memory_snapshot"
+      ],
+      "summary": "Final supervised self-code cycle v2 report; no candidate or activation.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 1806,
+      "kind": "evidence_manifest",
+      "path": "agent/self_code_candidates/self_code_cycle_v2_deduplicate_context/evidence_manifest.json",
+      "provenance": "supervised_self_code_cycle_v2",
+      "ref": "self_code_v2_manifest",
+      "sha256": "b983bab22281386c5ba7c14d36666e9a5de8ddaf1f7ee42aabbeac47deefb172",
+      "source_refs": [
+        "self_code_v2_report"
+      ],
+      "summary": "Hashes for the immutable v2 call evidence and report.",
+      "summary_is_exact_source": false
     }
   ],
   "author_definitions": [
@@ -441,9 +562,17 @@
         "self_code_v1_attempt_manifest",
         "self_code_v1_report"
       ]
+    },
+    {
+      "claim": "Wire-format capture bytes must be bounded separately from reconstructed model payload and output tokens; future infrastructure uses an 8,000,000-byte bound and RAW_CAPTURE_LIMIT_ABORT classification without rewriting v2 evidence.",
+      "claim_type": "correction",
+      "source_refs": [
+        "self_code_v2_postmortem",
+        "self_code_v2_report"
+      ]
     }
   ],
-  "current_task": "Supervised self-code-modification v1 completed as a safe failed attempt: one gemma4:26b response was malformed; no candidate source or activation exists.",
+  "current_task": "Self-code v2 failed safely at disclosed formatting qualification 2 because the trusted raw-NDJSON cap terminated capture; zero real candidate calls and no activation occurred.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -497,6 +626,13 @@
       "source_refs": [
         "self_code_v1_failed_attempt",
         "self_code_v1_report"
+      ]
+    },
+    {
+      "decision": "Fail closed, preserve both disclosed calls, make no real generation call, leave the active release unchanged, and never retry the closed v2 call IDs.",
+      "source_refs": [
+        "self_code_v2_qualification",
+        "self_code_v2_report"
       ]
     }
   ],
@@ -590,6 +726,16 @@
         "self_code_v1_failed_attempt",
         "self_code_v1_attempt_manifest",
         "self_code_v1_report"
+      ],
+      "stance": "failure"
+    },
+    {
+      "claim": "Qualification 1 passed; qualification 2 was terminated by the trusted 64,000-byte raw NDJSON capture bound before a terminal provider event; the main call was never opened.",
+      "kind": "failure",
+      "source_refs": [
+        "self_code_v2_qualification",
+        "self_code_v2_raw_qualification_2",
+        "self_code_v2_postmortem"
       ],
       "stance": "failure"
     }
@@ -794,6 +940,12 @@
         "checkpoint_id": "20260908T102726Z_2ebdc0d984",
         "created_at": "2026-09-08T10:27:26.941844+00:00",
         "reason": "Conserve supervised self-code-modification v1 failed attempt without retry or activation"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T113021Z_2d77cd2aef",
+        "created_at": "2026-09-08T11:30:21.596029+00:00",
+        "reason": "Conserve v2 formatting-gate failure, raw wire-capture correction, SToE Memory references, and zero real candidate calls"
       }
     ],
     "provider_usage": [
@@ -811,7 +963,7 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Await Mykola's approval for a new action that adds lossless raw-response capture and disclosed schema rehearsal; do not retry self-code-cycle:v1:deduplicate-development-context.",
+  "next_executable_step": "Await Mykola's approval for a new successor action with new stable qualification IDs; do not retry self-code-cycle:v2:deduplicate-development-context.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
@@ -829,9 +981,17 @@
         "self_code_v1_attempt_manifest",
         "self_code_v1_report"
       ]
+    },
+    {
+      "claim_type": "question",
+      "question": "Can gemma4:26b complete two disclosed inert line-patch qualifications under the corrected bounded wire capture before one newly authorized successor attempt?",
+      "source_refs": [
+        "self_code_v2_postmortem",
+        "self_code_v2_memory_snapshot"
+      ]
     }
   ],
-  "updated_at": "2026-09-08T10:27:26.886423+00:00",
+  "updated_at": "2026-09-08T11:30:21.543030+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

@@ -1,0 +1,25 @@
+{
+  "action_id": "self-code-cycle:v2:deduplicate-development-context",
+  "candidate_evaluable": false,
+  "decision": "FORMAT_QUALIFICATION_FAILED_NO_REAL_ATTEMPT",
+  "formatting_calls": 2,
+  "main_generation_calls": 0,
+  "qualification_1": {
+    "diagnosis": "COMPLETE_STRUCTURED_OUTPUT",
+    "passed": true,
+    "raw_response_sha256": "b21d45d5eb913bd475bd83c8798f555f50382d78dcfe115a353da81a2a0c244f"
+  },
+  "qualification_2": {
+    "diagnosis_at_time_of_run": "INTERRUPTED_STREAM",
+    "instrument_cause": "The trusted client stopped capture at 64,001 raw NDJSON wire bytes before a terminal Ollama event. Stream-envelope overhead was incorrectly treated as if it approximated model payload size.",
+    "model_output_limit_reached": false,
+    "parser_error": "JSONDecodeError: Unterminated string starting at: line 19 column 21 (char 1717)",
+    "provider_terminal_metrics_available": false,
+    "raw_response_bytes": 64001,
+    "raw_response_sha256": "1512af925030006660c501c8436701f5953498166c1e52f5082b195582536f33",
+    "stream_complete": false,
+    "transport_error": "RuntimeError: raw response exceeded byte limit"
+  },
+  "scientific_boundary": "This engineering failure neither supports nor falsifies SToE and does not establish gemma4 schema noncompliance because the trusted harness terminated the stream.",
+  "successor_correction": "Future code uses a still-bounded 8,000,000-byte wire-capture limit and records RAW_CAPTURE_LIMIT_ABORT separately. Closed v2 call IDs and evidence are not retried or rewritten."
+}

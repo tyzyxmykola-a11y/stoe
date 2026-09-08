@@ -1,0 +1,187 @@
+{
+  "budget": {
+    "context_limit_tokens": 16384,
+    "estimated": {
+      "category_attribution": {
+        "retrieved_material": 1834,
+        "task_context": 283,
+        "tool_results": 428
+      },
+      "checkpoint_reserve": 1024,
+      "prompt_total": 3897,
+      "remaining": 5665,
+      "reserved_generation": 5718,
+      "system_instructions": 80,
+      "total_with_reserves": 10719
+    },
+    "estimator": {
+      "exact": false,
+      "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+      "method": "conservative_utf8_bytes_div_3"
+    },
+    "fits": true,
+    "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+    "truncation_events": []
+  },
+  "capability": {
+    "advertised_context_tokens": 262144,
+    "context_fields": {
+      "gemma4.context_length": 262144
+    },
+    "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+    "effective_context_tokens": 16384,
+    "model": "gemma4:26b",
+    "native_structured_output": "JSON schema object supplied in /api/generate format",
+    "ollama_version": "0.33.3"
+  },
+  "context_deduplication": {
+    "canonical_payloads": [
+      {
+        "canonical_path": null,
+        "content": "Persist raw Ollama bytes before parsing; simplify the patch envelope; deduplicate payload bytes by SHA while retaining semantic edges.",
+        "sha256": "291d4364948c1e3623449658c4d3fea700fe535df6a3c668d98a99cf6b4789f4"
+      },
+      {
+        "canonical_path": "agent/self_code_candidates/self_code_cycle_v1_deduplicate_context/attempt_manifest.json",
+        "content": "v1 discarded its malformed provider body because JSON parsing occurred before trace return.",
+        "sha256": "6e2012734263aff3a14add336218bd0d546dd7dd46df542b7b8e4ad98c2b1c30"
+      },
+      {
+        "canonical_path": "agent/self_code_candidates/self_code_cycle_v1_deduplicate_context/failed_attempt.json",
+        "content": "v1 made exactly one gemma4:26b call; an unterminated JSON string yielded no candidate and no activation.",
+        "sha256": "6ae8fcf9afafe57bdd49ac641a5f7930ae79afb444b49b3715ed8fd33c65db03"
+      },
+      {
+        "canonical_path": null,
+        "content": "Build a persistent SToE Agent that safely develops agent-owned code alongside Mykola; do not resume memory-comparison experiments.",
+        "sha256": "abbd647117aed9be7fac340d33867cb85692de3fb937dbd862ebb2d35535646b"
+      },
+      {
+        "canonical_path": null,
+        "content": "A subprocess/worktree is not a security sandbox; AST checks are defense in depth; activation or storage is not proof of improvement.",
+        "sha256": "8f69851e96c1babf58217131ef70c5801a5ac945012ca7546bc095cddaef0ba3"
+      },
+      {
+        "canonical_path": null,
+        "content": "Qualify lossless raw capture and a simpler inert envelope, then make one new gemma4:26b attempt without reopening v1.",
+        "sha256": "57dc0f40c07253442352f5afcc75c140c89f009440ff52698e84f4351073c9e6"
+      },
+      {
+        "canonical_path": null,
+        "content": "Only agent/src/stoe_agent/development_report.py is editable; all trusted boundaries, evidence, dependencies, Git and activation are protected.",
+        "sha256": "2640f9b1ae20828197d422ca11f12b786a129393b27c32b85ccefb581e677def"
+      },
+      {
+        "canonical_path": null,
+        "content": "Target 4k–6k prompt input, SHA-canonicalize payloads, preserve edges separately, derive output reserve from file size, and resume within 1,800 tokens.",
+        "sha256": "02450de70af39fb509c74f2d73c4867e15053f9711b12308f5a848108d4efee2"
+      }
+    ],
+    "collapsed_payload_copies": 6,
+    "connections": [
+      {
+        "direction": "outgoing",
+        "payload_sha256": "291d4364948c1e3623449658c4d3fea700fe535df6a3c668d98a99cf6b4789f4",
+        "provenance": "state_change",
+        "ref": "CHANGE_773493dcab96467a",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "6e2012734263aff3a14add336218bd0d546dd7dd46df542b7b8e4ad98c2b1c30",
+        "provenance": "failure_history",
+        "ref": "IP_155b8facb6b9477d",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "6ae8fcf9afafe57bdd49ac641a5f7930ae79afb444b49b3715ed8fd33c65db03",
+        "provenance": "failure_history",
+        "ref": "IP_827838d2c91c4e8c",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "abbd647117aed9be7fac340d33867cb85692de3fb937dbd862ebb2d35535646b",
+        "provenance": "runtime_reasoning",
+        "ref": "IP_8339fea665f14d8a",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "8f69851e96c1babf58217131ef70c5801a5ac945012ca7546bc095cddaef0ba3",
+        "provenance": "runtime_reasoning",
+        "ref": "IP_b4d72aa809fe42bc",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "57dc0f40c07253442352f5afcc75c140c89f009440ff52698e84f4351073c9e6",
+        "provenance": "runtime_reasoning",
+        "ref": "IP_36221ae7d7d84e1e",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "2640f9b1ae20828197d422ca11f12b786a129393b27c32b85ccefb581e677def",
+        "provenance": "runtime_reasoning",
+        "ref": "IP_d67d43bdd7564539",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "02450de70af39fb509c74f2d73c4867e15053f9711b12308f5a848108d4efee2",
+        "provenance": "runtime_reasoning",
+        "ref": "IP_186ce51ec96840be",
+        "relation": "selected_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "291d4364948c1e3623449658c4d3fea700fe535df6a3c668d98a99cf6b4789f4",
+        "provenance": "typed_path:STATE_fb700af6df5d4ad8->contains_change:outgoing->CHANGE_773493dcab96467a",
+        "ref": "CHANGE_773493dcab96467a",
+        "relation": "contains_change"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "6e2012734263aff3a14add336218bd0d546dd7dd46df542b7b8e4ad98c2b1c30",
+        "provenance": "typed_path:CHANGE_773493dcab96467a->invalidates:outgoing->IP_155b8facb6b9477d",
+        "ref": "IP_155b8facb6b9477d",
+        "relation": "invalidates"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "6ae8fcf9afafe57bdd49ac641a5f7930ae79afb444b49b3715ed8fd33c65db03",
+        "provenance": "typed_path:IP_155b8facb6b9477d->diagnoses:outgoing->IP_827838d2c91c4e8c",
+        "ref": "IP_827838d2c91c4e8c",
+        "relation": "diagnoses"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "57dc0f40c07253442352f5afcc75c140c89f009440ff52698e84f4351073c9e6",
+        "provenance": "typed_path:STATE_fb700af6df5d4ad8->evolved_from:outgoing->IP_36221ae7d7d84e1e",
+        "ref": "IP_36221ae7d7d84e1e",
+        "relation": "evolved_from"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "2640f9b1ae20828197d422ca11f12b786a129393b27c32b85ccefb581e677def",
+        "provenance": "typed_path:IP_36221ae7d7d84e1e->constrained_by:outgoing->IP_d67d43bdd7564539",
+        "ref": "IP_d67d43bdd7564539",
+        "relation": "constrained_by"
+      },
+      {
+        "direction": "outgoing",
+        "payload_sha256": "02450de70af39fb509c74f2d73c4867e15053f9711b12308f5a848108d4efee2",
+        "provenance": "typed_path:IP_36221ae7d7d84e1e->constrained_by:outgoing->IP_186ce51ec96840be",
+        "ref": "IP_186ce51ec96840be",
+        "relation": "constrained_by"
+      }
+    ],
+    "token_savings": 143,
+    "tokens_after": 1811,
+    "tokens_before": 1954
+  },
+  "input_tokens": 3977,
+  "output_reserve_tokens": 5718
+}

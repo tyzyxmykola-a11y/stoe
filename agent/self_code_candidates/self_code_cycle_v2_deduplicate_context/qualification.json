@@ -1,0 +1,29 @@
+{
+  "call_budget": 2,
+  "calls_used": 2,
+  "outcomes": [
+    {
+      "call_id": "self-code-cycle:v2:format-qualification-1",
+      "diagnosis": "COMPLETE_STRUCTURED_OUTPUT",
+      "error": null,
+      "passed": true,
+      "raw_sha256": "b21d45d5eb913bd475bd83c8798f555f50382d78dcfe115a353da81a2a0c244f",
+      "tokens": {
+        "output": 460,
+        "prompt": 86
+      }
+    },
+    {
+      "call_id": "self-code-cycle:v2:format-qualification-2",
+      "diagnosis": "INTERRUPTED_STREAM",
+      "error": "V2BoundaryError: patch must be an object",
+      "passed": false,
+      "raw_sha256": "1512af925030006660c501c8436701f5953498166c1e52f5082b195582536f33",
+      "tokens": {
+        "output": null,
+        "prompt": null
+      }
+    }
+  ],
+  "passed": false
+}

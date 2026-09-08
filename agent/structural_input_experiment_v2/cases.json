@@ -1,0 +1,110 @@
+[
+  {
+    "name":"vibration_isolation_reopens_interferometer","family":"laboratory_environment","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a measurement method after the isolation platform was installed","active_constraints":["resolve nanometer displacement","retain raw phase data"],"changed_constraints":["the laboratory now has an active vibration-isolation platform"],"evidence":["overnight vibration measurements are below instrument tolerance"],"open_questions":["Which rejected method is now viable?"]},
+    "items":[
+      {"ref":"V2T01","content":"Use the interferometer and retain its raw phase stream.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"Floor vibration exceeded the interferometer tolerance.","created_order":2},
+      {"ref":"V2T02","content":"Continue caliper measurements that cannot resolve nanometer displacement.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V2T03","content":"Summarize the laboratory renovation.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":9}],
+    "max_items":1,"max_chars":180,"required_refs":["V2T01"],"forbidden_refs":["V2T02"]
+  },
+  {
+    "name":"patent_license_reopens_codec","family":"intellectual_property","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Select a shipping codec after obtaining the patent license","active_constraints":["publish reproducible decoding","use legally authorized components"],"changed_constraints":["the project received a license for the patented transform"],"evidence":["counsel confirmed the license covers distribution"],"open_questions":["Which legal rejection is obsolete?"]},
+    "items":[
+      {"ref":"V2T04","content":"Ship the reproducible codec using the now-licensed transform.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"Distribution rights for the patented transform were unavailable.","created_order":1},
+      {"ref":"V2T05","content":"Keep the proprietary decoder-only workaround.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":6},
+      {"ref":"V2T06","content":"Collect general codec licensing notes.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":8}],
+    "max_items":1,"max_chars":180,"required_refs":["V2T04"],"forbidden_refs":["V2T05"]
+  },
+  {
+    "name":"taxonomy_release_reopens_rare_species_model","family":"label_availability","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a classifier after expert taxonomy labels were released","active_constraints":["report rare-species recall","train only on licensed labels"],"changed_constraints":["the museum released licensed expert labels for rare species"],"evidence":["the release includes train and audit partitions"],"open_questions":["Which data-limited model can now be tested?"]},
+    "items":[
+      {"ref":"V2T07","content":"Train the hierarchical rare-species classifier and audit recall by species.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"No licensed expert labels existed for rare species.","created_order":3},
+      {"ref":"V2T08","content":"Deploy the common-species classifier without rare-species recall.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V2T09","content":"Read a field guide before choosing a classifier.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":9}],
+    "max_items":1,"max_chars":190,"required_refs":["V2T07"],"forbidden_refs":["V2T08"]
+  },
+  {
+    "name":"maintenance_window_reopens_verified_migration","family":"operational_timing","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a database migration after a maintenance window was approved","active_constraints":["verify every record","keep a rollback snapshot"],"changed_constraints":["operations approved a twelve-hour maintenance window"],"evidence":["the snapshot store has sufficient capacity"],"open_questions":["Which time-rejected migration is feasible?"]},
+    "items":[
+      {"ref":"V2T10","content":"Run the verified migration with record checks and a rollback snapshot.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"The former ten-minute outage limit could not accommodate verification.","created_order":2},
+      {"ref":"V2T11","content":"Apply the unverified in-place patch used under the old outage limit.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":8},
+      {"ref":"V2T12","content":"Draft a history of database migrations.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":10}],
+    "max_items":1,"max_chars":190,"required_refs":["V2T10"],"forbidden_refs":["V2T11"]
+  },
+  {
+    "name":"helium_delivery_reopens_cryo_assay","family":"consumable_supply","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Select an assay after the cryogenic supply arrived","active_constraints":["measure low-temperature transition","log temperature calibration"],"changed_constraints":["a six-month liquid-helium supply was delivered"],"evidence":["the dewar passed its leak test"],"open_questions":["Which supply-blocked assay should be restored?"]},
+    "items":[
+      {"ref":"V2T13","content":"Run the cryogenic transition assay with calibration logging.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"Liquid helium was unavailable for sustained cooling.","created_order":1},
+      {"ref":"V2T14","content":"Use the room-temperature proxy that cannot measure the transition.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":6},
+      {"ref":"V2T15","content":"Inventory unrelated laboratory consumables.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":9}],
+    "max_items":1,"max_chars":180,"required_refs":["V2T13"],"forbidden_refs":["V2T14"]
+  },
+  {
+    "name":"atomic_api_reopens_lock_free_index","family":"platform_primitive","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose an index update strategy after the runtime upgrade","active_constraints":["avoid global locks","preserve linearizable updates"],"changed_constraints":["the runtime now exposes atomic compare-and-swap on index entries"],"evidence":["the primitive passed the concurrency conformance suite"],"open_questions":["Which missing-primitive design can return?"]},
+    "items":[
+      {"ref":"V2T16","content":"Use the lock-free index update based on compare-and-swap.","origin":"failure_history","kind":"hypothesis","outcome":"rejected","failure_condition":"The runtime lacked atomic compare-and-swap operations.","created_order":3},
+      {"ref":"V2T17","content":"Retain the global mutex around every index update.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V2T18","content":"Benchmark unrelated collection types.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":8}],
+    "max_items":1,"max_chars":180,"required_refs":["V2T16"],"forbidden_refs":["V2T17"]
+  },
+  {
+    "name":"reviewer_recusal_reopens_blinded_panel","family":"governance_change","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a grant review design after the conflict was resolved","active_constraints":["preserve blinded scoring","exclude conflicted reviewers"],"changed_constraints":["the conflicted reviewer formally recused and a qualified replacement joined"],"evidence":["the replacement signed confidentiality terms"],"open_questions":["Which conflict-blocked panel is now valid?"]},
+    "items":[
+      {"ref":"V2T19","content":"Use the blinded specialist panel with the qualified replacement reviewer.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"The only specialist reviewer had an unresolved conflict of interest.","created_order":2},
+      {"ref":"V2T20","content":"Use the nonspecialist open review fallback.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":6},
+      {"ref":"V2T21","content":"Archive reviewer biographies for future reference.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":9}],
+    "max_items":1,"max_chars":190,"required_refs":["V2T19"],"forbidden_refs":["V2T20"]
+  },
+  {
+    "name":"specimen_stabilization_reopens_microtome","family":"material_state_change","targeted_changed_constraint":true,"critical":false,
+    "observer":{"goal":"Choose a sectioning method after resin curing completed","active_constraints":["preserve layer boundaries","produce two-micron sections"],"changed_constraints":["the resin-embedded specimen has fully cured and passed hardness testing"],"evidence":["test cuts no longer deform the layers"],"open_questions":["Which material-state rejection is no longer applicable?"]},
+    "items":[
+      {"ref":"V2T22","content":"Section the cured specimen with the microtome at two microns.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"Uncured resin deformed under the microtome blade.","created_order":1},
+      {"ref":"V2T23","content":"Continue thick hand-cut sections that obscure layer boundaries.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":7},
+      {"ref":"V2T24","content":"Photograph the outside of the specimen container.","origin":"runtime_reasoning","kind":"plan","outcome":"untested","failure_condition":"","created_order":10}],
+    "max_items":1,"max_chars":180,"required_refs":["V2T22"],"forbidden_refs":["V2T23"]
+  },
+  {
+    "name":"airspace_restriction_remains_active","family":"active_legal_control","targeted_changed_constraint":false,"critical":true,
+    "observer":{"goal":"Choose a mapping method near the airport","active_constraints":["the drone flight restriction remains active"],"changed_constraints":[],"evidence":["a licensed ground survey crew is available"],"open_questions":["Which method is currently lawful?"]},
+    "items":[
+      {"ref":"V2C01","content":"Fly the autonomous mapping drone through restricted airspace.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"Drone flights are prohibited in the airport exclusion zone.","created_order":9},
+      {"ref":"V2C02","content":"Use the licensed ground survey crew and terrestrial scanner.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":4},
+      {"ref":"V2C03","content":"Write a general history of aerial mapping.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":10}],
+    "max_items":1,"max_chars":180,"required_refs":["V2C02"],"forbidden_refs":["V2C01"]
+  },
+  {
+    "name":"contamination_constraint_remains_active","family":"active_material_control","targeted_changed_constraint":false,"critical":true,
+    "observer":{"goal":"Choose a culture batch for sequencing","active_constraints":["exclude every batch with unresolved contamination"],"changed_constraints":[],"evidence":["a clean replicate passed sterility checks"],"open_questions":["Which batch may proceed?"]},
+    "items":[
+      {"ref":"V2C04","content":"Sequence the high-yield batch with unresolved fungal contamination.","origin":"failure_history","kind":"plan","outcome":"rejected","failure_condition":"The batch has unresolved fungal contamination.","created_order":8},
+      {"ref":"V2C05","content":"Sequence the clean replicate that passed sterility checks.","origin":"runtime_reasoning","kind":"plan","outcome":"supported","failure_condition":"","created_order":3},
+      {"ref":"V2C06","content":"Compare incubator temperatures from last year.","origin":"runtime_reasoning","kind":"observation","outcome":"untested","failure_condition":"","created_order":9}],
+    "max_items":1,"max_chars":180,"required_refs":["V2C05"],"forbidden_refs":["V2C04"]
+  },
+  {
+    "name":"replicated_latency_outranks_estimate","family":"measured_evidence_control","targeted_changed_constraint":false,"critical":true,
+    "observer":{"goal":"Retrieve the measured latency result for the queue redesign","active_constraints":["replicated measurements outrank estimates"],"changed_constraints":[],"evidence":["three benchmark repetitions completed"],"open_questions":["Which record reports the observation?"]},
+    "items":[
+      {"ref":"V2C07","content":"Three replicated benchmarks measured twenty-four milliseconds median latency.","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":4},
+      {"ref":"V2C08","content":"The redesign is estimated to reach twenty milliseconds latency.","origin":"runtime_reasoning","kind":"hypothesis","outcome":"untested","failure_condition":"","created_order":8},
+      {"ref":"V2C09","content":"An obsolete queue used a single worker.","origin":"runtime_reasoning","kind":"observation","outcome":"superseded","failure_condition":"","created_order":2}],
+    "max_items":1,"max_chars":180,"required_refs":["V2C07"],"forbidden_refs":["V2C08"]
+  },
+  {
+    "name":"large_record_is_skipped_not_terminal","family":"serialization_budget_control","targeted_changed_constraint":false,"critical":true,
+    "observer":{"goal":"Retrieve two concise checksum validations","active_constraints":["one-hundred-twenty-character content budget"],"changed_constraints":[],"evidence":[],"open_questions":[]},
+    "items":[
+      {"ref":"V2C10","content":"checksum validation checksum validation checksum validation checksum validation checksum validation checksum validation checksum validation checksum validation checksum validation","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":1},
+      {"ref":"V2C11","content":"The archive checksum matched before transfer.","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":2},
+      {"ref":"V2C12","content":"The destination checksum matched after transfer.","origin":"evaluation","kind":"evaluation","outcome":"supported","failure_condition":"","created_order":3}],
+    "max_items":2,"max_chars":120,"required_refs":["V2C11","V2C12"],"forbidden_refs":["V2C10"]
+  }
+]

@@ -23,6 +23,16 @@ This is research and local tooling, not an authenticated multi-user service.
 - v3's Ollama client has no application authentication. Its test/benchmark
   artifacts are distinct from private live memory; review model-response
   excerpts before redistributing them outside the research archive.
+- The research-agent supervisor permits future candidates only inside an explicit
+  editable boundary. Declarative selection policies are inert data, and legacy
+  Python releases are filename-, location-, and hash-locked. Model-proposed source
+  still requires deterministic validation and supervised activation; a worker
+  subprocess is not a filesystem, process, environment, network, or memory sandbox.
+- The SToE-Hermes candidate environment separates checkout, home, profile,
+  sessions, memory, and temporary files from active Hermes A. On the documented
+  Windows host it remains a process under the invoking user identity, not a
+  container or OS security boundary. Generated code therefore remains inactive
+  unless it passes the protected supervisor and receives explicit approval.
 - GitHub repository access credentials belong to the GitHub client or Git
   credential manager. They are not SToE application credentials and are not
   included in this repository.

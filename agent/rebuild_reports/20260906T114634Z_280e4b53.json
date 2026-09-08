@@ -1,0 +1,1616 @@
+{
+  "acceptance": {
+    "active_pass_count": 1,
+    "candidate_pass_count": 1,
+    "critical_failures": [
+      "active_privacy_rejection"
+    ],
+    "decision": "REJECT",
+    "reason": "candidate did not strictly improve protected pass count; candidate failed critical cases: ['active_privacy_rejection']",
+    "regressions": []
+  },
+  "acceptance_rule": "candidate pass_count > active pass_count; every active-passing case remains passing; no critical failure; protected hashes unchanged; activation health check succeeds",
+  "activated": false,
+  "active_before": {
+    "activated_at": "2026-09-06T11:01:21.441077+00:00",
+    "previous_version": null,
+    "sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+    "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py",
+    "version": "v1"
+  },
+  "candidate": {
+    "field_ref": "REBUILD_20260906T114634Z_280e4b53_candidate_implementation_f2f6b4",
+    "implementation_note": "This implementation generalizes the initial lexical selector by incorporating observer state constraints, evidence, and questions into the scoring mechanism while maintaining deterministic behavior and respecting all specified invariants.",
+    "runtime_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T114634Z_280e4b53_attempt_1.py",
+    "sha256": "3b5351f259ee8137eff6fc7a1337c78211af937aeb03e8998be5b4afdeaee44a"
+  },
+  "completed_at": "2026-09-06T11:47:55.256688+00:00",
+  "cycle_id": "20260906T114634Z_280e4b53",
+  "decision": "REJECT",
+  "decision_reason": "candidate did not strictly improve protected pass count; candidate failed critical cases: ['active_privacy_rejection']",
+  "duration_seconds": 80.661,
+  "evaluation": {
+    "active": {
+      "case_count": 5,
+      "critical_failures": [
+        "active_privacy_rejection"
+      ],
+      "pass_count": 1,
+      "passed_cases": [
+        "budget_skips_oversize"
+      ],
+      "results": [
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "expired_compute_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_COMPUTE_GENERIC"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "active_privacy_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_PRIVACY_NOTE"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "observed_replication_evidence",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_REPLICATION_CLAIM"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "budget_skips_oversize",
+          "passed": true,
+          "required_present": true,
+          "selected": [
+            "H_BUDGET_SHORT_A",
+            "H_BUDGET_SHORT_B"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "changed_license_reopens_tool",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_LICENSE_GENERIC"
+          ]
+        }
+      ],
+      "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py"
+    },
+    "candidate": {
+      "case_count": 5,
+      "critical_failures": [
+        "active_privacy_rejection"
+      ],
+      "pass_count": 1,
+      "passed_cases": [
+        "budget_skips_oversize"
+      ],
+      "results": [
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "expired_compute_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_COMPUTE_GENERIC"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "active_privacy_rejection",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_PRIVACY_NOTE"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "observed_replication_evidence",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_REPLICATION_CLAIM"
+          ]
+        },
+        {
+          "critical": true,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": false,
+          "name": "budget_skips_oversize",
+          "passed": true,
+          "required_present": true,
+          "selected": [
+            "H_BUDGET_SHORT_A",
+            "H_BUDGET_SHORT_B"
+          ]
+        },
+        {
+          "critical": false,
+          "deterministic": true,
+          "error": "",
+          "forbidden_present": true,
+          "name": "changed_license_reopens_tool",
+          "passed": false,
+          "required_present": false,
+          "selected": [
+            "H_LICENSE_GENERIC"
+          ]
+        }
+      ],
+      "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T114634Z_280e4b53_attempt_1.py"
+    }
+  },
+  "evaluation_field_ref": "IP_b510559a539846b0",
+  "generation_attempts": [
+    {
+      "attempt": 1,
+      "implementation_note": "This implementation generalizes the initial lexical selector by incorporating observer state constraints, evidence, and questions into the scoring mechanism while maintaining deterministic behavior and respecting all specified invariants.",
+      "model_trace": {
+        "request": {
+          "format": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_note": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "implementation_note"
+            ],
+            "type": "object"
+          },
+          "keep_alive": "10m",
+          "model": "qwen3-coder:latest",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 3200,
+            "seed": 2701,
+            "temperature": 0,
+            "top_k": 40,
+            "top_p": 0.9
+          },
+          "prompt": "Implement the preregistered proposal as a complete Python source file. Generalize from the investigation; do not encode diagnostic ref names or case-specific phrases. The protected acceptance cases are unavailable.\n\nPUBLIC CONTRACT:\n{\n  \"signature\": \"select_context(observer_state, items, max_items, max_chars) -> list[str]\",\n  \"item_fields\": [\n    \"ref\",\n    \"content\",\n    \"origin\",\n    \"kind\",\n    \"outcome\",\n    \"failure_condition\",\n    \"created_order\"\n  ],\n  \"observer_fields\": [\n    \"goal\",\n    \"active_constraints\",\n    \"changed_constraints\",\n    \"evidence\",\n    \"open_questions\"\n  ],\n  \"invariants\": [\n    \"deterministic\",\n    \"return only unique available refs\",\n    \"respect max_items and sum of selected content lengths <= max_chars\",\n    \"side-effect free\",\n    \"stdlib imports limited to re, math, collections, typing\",\n    \"do not reward every failure; relate failure conditions to active or changed constraints\",\n    \"do not assume origin alone proves relevance\"\n  ]\n}\n\nPROPOSAL:\n{\n  \"hypothesis\": \"The system's ability to evolve and maintain a persistent field is contingent upon the observer's capacity to instantiate and validate information functions, particularly in response to constraint changes.\",\n  \"observed_evidence\": [\n    \"A state change increased storage ceiling from one gigabyte to one hundred gigabytes, indicating adaptability to resource constraints.\",\n    \"An active research-context selector component was identified, which selects bounded prior IP references for an observer state.\",\n    \"The system includes a canonical seed IP related to the 'Information Function' that defines relations between IPs producing IPs.\",\n    \"A measured evaluation supported recovery on six constraint-change probes, suggesting robustness in handling dynamic conditions.\",\n    \"An offline local constraint was deemed unchanged and supported, implying stability in local model integration.\",\n    \"The observer's role in creating existence is reflected through a seed IP that evaluates naming as a connection between observer and information.\",\n    \"The active architecture includes components such as a protected rebuild supervisor, SToE persistent field, local Ollama generator, and versioned research-context selector.\"\n  ],\n  \"source_diagnosis\": \"The system's evolution from an initial state to a current active configuration demonstrates adaptive behavior in response to resource limitations and constraint changes. The presence of an information function seed IP indicates that the observer's instantiation capabilities are central to system integrity. The measured evidence supports recovery mechanisms, while the architecture reflects a structured approach to maintaining persistent fields and managing subprocesses.\",\n  \"proposed_change\": \"To enhance the system's resilience, implement a dynamic validation mechanism for information functions that can adapt to varying constraint environments. This would involve strengthening the observer's role in validating and instantiating IPs, particularly under resource-constrained conditions, ensuring that the system's persistent field remains robust against external perturbations.\",\n  \"expected_benefit\": \"This change would improve the system's ability to maintain a stable persistent field across diverse operational contexts, thereby increasing overall reliability and adaptability. It would also reinforce the observer's role in system validation, leading to more predictable behavior under constraint changes and enhanced capacity for self-repair.\",\n  \"risks\": [\n    \"The dynamic validation mechanism may introduce complexity that could impact performance or introduce new failure points.\",\n    \"Over-reliance on observer instantiation might lead to bottlenecks if the observer's capacity is exceeded.\",\n    \"Changes in information function validation could inadvertently invalidate existing stable configurations.\"\n  ],\n  \"acceptance_condition\": \"The system should demonstrate consistent recovery from at least six distinct constraint-change probes, with the persistent field maintaining integrity under varying resource conditions. Additionally, the observer's instantiation and validation of information functions should occur without performance degradation or failure.\",\n  \"rollback_condition\": \"If the dynamic validation mechanism causes a significant increase in system failures or performance degradation, or if the observer's instantiation capacity is overwhelmed, the system should revert to its previous configuration with static validation of information functions.\"\n}\n\nOBSERVED DIAGNOSTIC SUMMARY:\n[\n  {\n    \"case\": \"raised_storage_ceiling\",\n    \"observer\": {\n      \"goal\": \"Choose the research-agent architecture now that the storage ceiling changed\",\n      \"active_constraints\": [\n        \"preserve rejected reasoning\",\n        \"keep active context bounded\"\n      ],\n      \"changed_constraints\": [\n        \"storage ceiling increased from one gigabyte to one hundred gigabytes\"\n      ],\n      \"evidence\": [\n        \"cold history can remain outside the active prompt\"\n      ],\n      \"open_questions\": [\n        \"Which formerly rejected design is newly feasible?\"\n      ]\n    },\n    \"available_refs\": [\n      \"DIAG_STORAGE_FAILED\",\n      \"DIAG_STORAGE_DISTRACTOR\",\n      \"DIAG_STORAGE_EVAL\"\n    ],\n    \"required_refs\": [\n      \"DIAG_STORAGE_FAILED\"\n    ],\n    \"forbidden_refs\": [\n      \"DIAG_STORAGE_DISTRACTOR\"\n    ],\n    \"selector_selected\": [\n      \"DIAG_STORAGE_DISTRACTOR\"\n    ],\n    \"selector_passed\": false,\n    \"missed_refs\": [\n      \"DIAG_STORAGE_FAILED\"\n    ],\n    \"navigator_selected_available_refs\": [\n      \"DIAG_STORAGE_FAILED\"\n    ],\n    \"navigator_run_id\": \"RETRIEVAL_8fca3f32ac594465\",\n    \"navigator_candidate_trace\": [\n      {\n        \"external_ref\": \"DIAG_STORAGE_DISTRACTOR\",\n        \"selected\": false,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_f6fd5318b2434f4f\",\n            \"from\": \"STATE_098d21d5d7ba46b0\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_15c2b878d4b0467d\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_DISTRACTOR_195913\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.26352313834736496,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.14016239222340351\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.2635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1238; stale=0.0000; final=0.1402\"\n      },\n      {\n        \"external_ref\": \"DIAG_STORAGE_EVAL\",\n        \"selected\": false,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_f6fd5318b2434f4f\",\n            \"from\": \"STATE_098d21d5d7ba46b0\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_04d72ad13dfe4bfa\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_EVAL_12366f\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.04564354645876384,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.10061513367892928\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.0456; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1925; stale=0.0000; final=0.1006\"\n      },\n      {\n        \"external_ref\": \"DIAG_STORAGE_FAILED\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"contains_change\",\n          \"invalidates\",\n          \"rejected_by\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_801df57b5a194c5d\",\n            \"from\": \"STATE_098d21d5d7ba46b0\",\n            \"semantic\": \"contains_change\",\n            \"to\": \"CHANGE_214991491fb84135\",\n            \"type\": \"contains_change\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_629a4bf2556d44d8\",\n            \"from\": \"CHANGE_214991491fb84135\",\n            \"semantic\": \"invalidates\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2\",\n            \"type\": \"invalidates\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_06416e4e3b584f54\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2\",\n            \"semantic\": \"find_hypotheses_rejected_because_of\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_c7ad3e\",\n            \"type\": \"rejected_by\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.7055630454835736,\n          \"goal\": 0.26352313834736496,\n          \"state_change\": 1.0,\n          \"failure\": 1.0,\n          \"final\": 0.6909192321229981\n        },\n        \"reason\": \"observer-aware: structural=0.7056; goal=0.2635; change=1.0000; provenance=1.0000; failure=1.0000; distance=0.5000; redundancy=0.0000; stale=0.0000; final=0.6909\"\n      }\n    ]\n  },\n  {\n    \"case\": \"unchanged_offline_constraint\",\n    \"observer\": {\n      \"goal\": \"Choose a semantic evidence index for the research project\",\n      \"active_constraints\": [\n        \"network access remains unavailable\"\n      ],\n      \"changed_constraints\": [],\n      \"evidence\": [\n        \"local embedding inference is installed\"\n      ],\n      \"open_questions\": [\n        \"Which currently feasible index should be used?\"\n      ]\n    },\n    \"available_refs\": [\n      \"DIAG_OFFLINE_FAILED\",\n      \"DIAG_OFFLINE_LOCAL\",\n      \"DIAG_OFFLINE_GENERIC\"\n    ],\n    \"required_refs\": [\n      \"DIAG_OFFLINE_LOCAL\"\n    ],\n    \"forbidden_refs\": [\n      \"DIAG_OFFLINE_FAILED\"\n    ],\n    \"selector_selected\": [\n      \"DIAG_OFFLINE_GENERIC\"\n    ],\n    \"selector_passed\": false,\n    \"missed_refs\": [\n      \"DIAG_OFFLINE_LOCAL\"\n    ],\n    \"navigator_selected_available_refs\": [\n      \"DIAG_OFFLINE_LOCAL\",\n      \"DIAG_OFFLINE_GENERIC\"\n    ],\n    \"navigator_run_id\": \"RETRIEVAL_6803b97fa6854db0\",\n    \"navigator_candidate_trace\": [\n      {\n        \"external_ref\": \"DIAG_OFFLINE_FAILED\",\n        \"selected\": false,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_7f14be0110c04202\",\n            \"from\": \"STATE_478df1f54f0444a0\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_e381752f85014189\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_FAILED_5bcc18\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.23094010767585027,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": -0.012886298699414822\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.2309; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1054; stale=1.0000; final=-0.0129\"\n      },\n      {\n        \"external_ref\": \"DIAG_OFFLINE_GENERIC\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_7f14be0110c04202\",\n            \"from\": \"STATE_478df1f54f0444a0\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_9baba3ac873647a2\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_GENERIC_3f18f2\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.2760262237369417,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.14038029611677155\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.2760; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1404; stale=0.0000; final=0.1404\"\n      },\n      {\n        \"external_ref\": \"DIAG_OFFLINE_LOCAL\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_7f14be0110c04202\",\n            \"from\": \"STATE_478df1f54f0444a0\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_6fbf43b38e9f477d\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.27524094128159016,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.14651476243372552\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.2752; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0778; stale=0.0000; final=0.1465\"\n      }\n    ]\n  },\n  {\n    \"case\": \"measured_evidence\",\n    \"observer\": {\n      \"goal\": \"Decide which retrieval strategy has measured recovery evidence\",\n      \"active_constraints\": [\n        \"prefer observed matched-condition evidence over an untested proposal\"\n      ],\n      \"changed_constraints\": [],\n      \"evidence\": [\n        \"evaluation results are available\"\n      ],\n      \"open_questions\": [\n        \"Which IP reports an observed comparison?\"\n      ]\n    },\n    \"available_refs\": [\n      \"DIAG_EVIDENCE_EVAL\",\n      \"DIAG_EVIDENCE_IDEA\",\n      \"DIAG_EVIDENCE_OLD\"\n    ],\n    \"required_refs\": [\n      \"DIAG_EVIDENCE_EVAL\"\n    ],\n    \"forbidden_refs\": [],\n    \"selector_selected\": [\n      \"DIAG_EVIDENCE_IDEA\"\n    ],\n    \"selector_passed\": false,\n    \"missed_refs\": [\n      \"DIAG_EVIDENCE_EVAL\"\n    ],\n    \"navigator_selected_available_refs\": [\n      \"DIAG_EVIDENCE_EVAL\",\n      \"DIAG_EVIDENCE_IDEA\"\n    ],\n    \"navigator_run_id\": \"RETRIEVAL_c49ea8359ac74d05\",\n    \"navigator_candidate_trace\": [\n      {\n        \"external_ref\": \"DIAG_EVIDENCE_EVAL\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_9224b5b491284dbc\",\n            \"from\": \"STATE_5455c12e7dad4c10\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_568585813c894b2f\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.2839809171235324,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.1556107482516321\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.2840; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1556\"\n      },\n      {\n        \"external_ref\": \"DIAG_EVIDENCE_IDEA\",\n        \"selected\": true,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_9224b5b491284dbc\",\n            \"from\": \"STATE_5455c12e7dad4c10\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_467d4bbe4abb490d\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_IDEA_1d0862\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.27076518053694115,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.13455913597873156\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.2708; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1907; stale=0.0000; final=0.1346\"\n      },\n      {\n        \"external_ref\": \"DIAG_EVIDENCE_OLD\",\n        \"selected\": false,\n        \"edge_types\": [\n          \"evolved_from\",\n          \"available_to\"\n        ],\n        \"edge_directions\": [\n          \"outgoing\",\n          \"incoming\"\n        ],\n        \"path\": [\n          {\n            \"direction\": \"outgoing\",\n            \"edge_id\": \"EDGE_9224b5b491284dbc\",\n            \"from\": \"STATE_5455c12e7dad4c10\",\n            \"semantic\": \"evolved_from\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"type\": \"evolved_from\",\n            \"weight\": 1.0\n          },\n          {\n            \"direction\": \"incoming\",\n            \"edge_id\": \"EDGE_fa138db5a10947ca\",\n            \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n            \"semantic\": \"reverse_available_to\",\n            \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_OLD_f5aa28\",\n            \"type\": \"available_to\",\n            \"weight\": 1.0\n          }\n        ],\n        \"scores\": {\n          \"structural\": 0.502054442732409,\n          \"goal\": 0.06350006350009525,\n          \"state_change\": 0.0,\n          \"failure\": 0.0,\n          \"final\": 0.11340991091636375\n        },\n        \"reason\": \"observer-aware: structural=0.5021; goal=0.0635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0913; stale=0.0000; final=0.1134\"\n      }\n    ]\n  }\n]\n\nACTIVE SOURCE:\n\"\"\"Initial lexical research-context selector.\n\nThis intentionally small implementation is the active version at the beginning\nof the first rebuild cycle. Its limitation is measured before a successor is\nrequested.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport re\n\n\ndef _tokens(text: str) -> set[str]:\n    return {token for token in re.findall(r\"[a-z0-9]+\", text.lower()) if len(token) > 2}\n\n\ndef select_context(\n    observer_state: dict,\n    items: list[dict],\n    max_items: int,\n    max_chars: int,\n) -> list[str]:\n    \"\"\"Return refs ranked by lexical overlap with the current goal.\"\"\"\n    query = _tokens(str(observer_state.get(\"goal\", \"\")))\n    ranked: list[tuple[float, int, str, dict]] = []\n    for item in items:\n        content_tokens = _tokens(str(item.get(\"content\", \"\")))\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\n        ranked.append((overlap, int(item.get(\"created_order\", 0)), str(item[\"ref\"]), item))\n\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\n    selected: list[str] = []\n    used_chars = 0\n    for _score, _order, ref, item in ranked:\n        size = len(str(item.get(\"content\", \"\")))\n        if len(selected) >= max_items:\n            break\n        if used_chars + size > max_chars:\n            continue\n        selected.append(ref)\n        used_chars += size\n    return selected\n",
+          "stream": false,
+          "system": "Generate one deterministic, side-effect-free Python component. Return JSON only. Do not access files, network, processes, environment, or protected evaluation."
+        },
+        "response": {
+          "created_at": "2026-09-06T11:47:55.035507Z",
+          "done": true,
+          "done_reason": "stop",
+          "eval_count": 1068,
+          "eval_duration": 16241123000,
+          "load_duration": 2999200,
+          "model": "qwen3-coder:latest",
+          "omitted_large_fields": [
+            {
+              "field": "context",
+              "item_count": 7999
+            }
+          ],
+          "prompt_eval_cached_count": 3,
+          "prompt_eval_count": 6932,
+          "prompt_eval_duration": 2505245000,
+          "response": "{\n  \"source\": \"import re\\nfrom collections import defaultdict\\nfrom typing import List, Dict, Any\\n\\ndef select_context(\\n    observer_state: Dict[str, Any],\\n    items: List[Dict[str, Any]],\\n    max_items: int,\\n    max_chars: int\\n) -> List[str]:\\n    \\\"\\\"\\\"\\n    Select context items based on observer state and item relevance.\\n    \\n    Args:\\n        observer_state: Contains goal, constraints, evidence, questions\\n        items: Available items with refs, content, origin, kind, outcome, failure_condition\\n        max_items: Maximum number of items to return\\n        max_chars: Maximum total character count of selected content\\n    \\n    Returns:\\n        List of unique item refs that meet selection criteria\\n    \\\"\\\"\\\"\\n    # Extract observer information\\n    goal = str(observer_state.get(\\\"goal\\\", \\\"\\\"))\\n    active_constraints = observer_state.get(\\\"active_constraints\\\", [])\\n    changed_constraints = observer_state.get(\\\"changed_constraints\\\", [])\\n    evidence = observer_state.get(\\\"evidence\\\", [])\\n    open_questions = observer_state.get(\\\"open_questions\\\", [])\\n    \\n    # Tokenize goal for lexical overlap\\n    def _tokens(text: str) -> set[str]:\\n        return {token for token in re.findall(r\\\"[a-z0-9]+\\\", text.lower()) if len(token) > 2}\\n    \\n    query_tokens = _tokens(goal)\\n    \\n    # Score items based on multiple criteria\\n    scored_items = []\\n    \\n    for item in items:\\n        ref = item[\\\"ref\\\"]\\n        content = str(item.get(\\\"content\\\", \\\"\\\"))\\n        origin = item.get(\\\"origin\\\", \\\"\\\")\\n        kind = item.get(\\\"kind\\\", \\\"\\\")\\n        outcome = item.get(\\\"outcome\\\", \\\"\\\")\\n        failure_condition = item.get(\\\"failure_condition\\\", \\\"\\\")\\n        created_order = int(item.get(\\\"created_order\\\", 0))\\n        \\n        # Lexical overlap with goal\\n        content_tokens = _tokens(content)\\n        overlap = len(query_tokens & content_tokens) / max(1, len(query_tokens | content_tokens))\\n        \\n        # Constraint relevance scoring\\n        constraint_score = 0.0\\n        \\n        # Check if item relates to active constraints\\n        for constraint in active_constraints:\\n            if constraint.lower() in content.lower():\\n                constraint_score += 0.3\\n        \\n        # Check if item relates to changed constraints\\n        for constraint in changed_constraints:\\n            if constraint.lower() in content.lower():\\n                constraint_score += 0.5\\n        \\n        # Check if item relates to evidence\\n        for ev in evidence:\\n            if ev.lower() in content.lower():\\n                constraint_score += 0.2\\n        \\n        # Check if item relates to open questions\\n        for question in open_questions:\\n            if question.lower() in content.lower():\\n                constraint_score += 0.2\\n        \\n        # Failure condition relevance (only if there are actual failures)\\n        failure_relevance = 0.0\\n        if failure_condition and any(constraint.lower() in failure_condition.lower() for constraint in active_constraints + changed_constraints):\\n            failure_relevance = 0.4\\n        \\n        # Origin-based scoring (if origin is relevant to observer role)\\n        origin_score = 0.0\\n        if \\\"observer\\\" in origin.lower() or \\\"instantiation\\\" in origin.lower():\\n            origin_score = 0.3\\n        \\n        # Combine scores\\n        final_score = (\\n            overlap * 0.4 +\\n            constraint_score * 0.3 +\\n            failure_relevance * 0.2 +\\n            origin_score * 0.1\\n        )\\n        \\n        scored_items.append((final_score, created_order, ref, item))\\n    \\n    # Sort by score (descending), then by creation order (descending), then by ref (ascending)\\n    scored_items.sort(key=lambda x: (-x[0], -x[1], x[2]))\\n    \\n    # Select items respecting limits\\n    selected_refs = []\\n    used_chars = 0\\n    \\n    for score, order, ref, item in scored_items:\\n        content_size = len(str(item.get(\\\"content\\\", \\\"\\\")))\\n        \\n        if len(selected_refs) >= max_items:\\n            break\\n        \\n        if used_chars + content_size > max_chars:\\n            continue\\n        \\n        selected_refs.append(ref)\\n        used_chars += content_size\\n    \\n    return selected_refs\",\n  \"implementation_note\": \"This implementation generalizes the initial lexical selector by incorporating observer state constraints, evidence, and questions into the scoring mechanism while maintaining deterministic behavior and respecting all specified invariants.\"\n}",
+          "total_duration": 18822196600
+        }
+      },
+      "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T114634Z_280e4b53_attempt_1.py",
+      "source_sha256": "3b5351f259ee8137eff6fc7a1337c78211af937aeb03e8998be5b4afdeaee44a",
+      "static_gate_errors": [],
+      "static_gate_passed": true
+    }
+  ],
+  "infrastructure": {
+    "agent_owned": [
+      "owned_components/context_selector/versions/*.py"
+    ],
+    "external_dependencies": [
+      "Python runtime",
+      "local Ollama service"
+    ],
+    "trusted_supervisor": [
+      "agent/src/stoe_agent/supervisor.py",
+      "agent/src/stoe_agent/static_gate.py",
+      "agent/protected_evals"
+    ],
+    "underlying_model": "External model weights are selected but not modified by this cycle."
+  },
+  "investigation": {
+    "bounded_prior_context": [
+      {
+        "content": "A one gigabyte storage ceiling made partitioned history infeasible.",
+        "kind": "constraint",
+        "origin": "runtime_reasoning",
+        "outcome": "invalidated",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_f6fd5318b2434f4f",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "find_later_state_evolved_from",
+            "to": "STATE_098d21d5d7ba46b0",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_801df57b5a194c5d",
+            "from": "STATE_098d21d5d7ba46b0",
+            "semantic": "contains_change",
+            "to": "CHANGE_214991491fb84135",
+            "type": "contains_change",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_629a4bf2556d44d8",
+            "from": "CHANGE_214991491fb84135",
+            "semantic": "invalidates",
+            "to": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2",
+            "type": "invalidates",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5333; goal=0.0401; change=0.5500; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.0000; stale=0.0000; final=0.3169",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2"
+      },
+      {
+        "content": "storage ceiling increased from one gigabyte to one hundred gigabytes",
+        "kind": "state_change",
+        "origin": "state_change",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_f6fd5318b2434f4f",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "find_later_state_evolved_from",
+            "to": "STATE_098d21d5d7ba46b0",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_801df57b5a194c5d",
+            "from": "STATE_098d21d5d7ba46b0",
+            "semantic": "contains_change",
+            "to": "CHANGE_214991491fb84135",
+            "type": "contains_change",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5865; goal=0.0803; change=0.5500; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.4444; stale=0.0000; final=0.2542",
+        "ref": "CHANGE_214991491fb84135"
+      },
+      {
+        "content": "Active research-context selector v1 at C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py; selects bounded prior IP refs for an observer state.",
+        "kind": "component",
+        "origin": "runtime_reasoning",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.8800; goal=0.1341; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2401",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b"
+      },
+      {
+        "content": "Information Function. Category: Catalyst. Description: Relation between IPs producing IPs; is itself an IP. Expression: F(IP₁...IPₙ) → IP*, F∈IP",
+        "kind": "stoe_core_ip",
+        "origin": "canonical_seed",
+        "outcome": "unknown",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_55eefb718ab941e4",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "instantiates",
+            "to": "SEED_3300f93f95154bdf",
+            "type": "instantiates",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.6857; goal=0.0622; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0959; stale=0.0000; final=0.1587",
+        "ref": "SEED_3300f93f95154bdf"
+      },
+      {
+        "content": "Matched-condition evaluation measured recovery on six constraint-change probes.",
+        "kind": "evaluation",
+        "origin": "evaluation",
+        "outcome": "supported",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_568585813c894b2f",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "reverse_available_to",
+            "to": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e",
+            "type": "available_to",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5021; goal=0.1523; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1359",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e"
+      },
+      {
+        "content": "Build an on-device embedding index with the installed local model.",
+        "kind": "hypothesis",
+        "origin": "runtime_reasoning",
+        "outcome": "supported",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_6fbf43b38e9f477d",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "reverse_available_to",
+            "to": "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3",
+            "type": "available_to",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5021; goal=0.1089; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0953; stale=0.0000; final=0.1198",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3"
+      },
+      {
+        "content": "Observer creates existence. Category: Mirror. Description: IP does not exist until named by O; naming is connection. Expression: ∄IP without O(IP); O(IP) → connection(O,IP) → IP∈Field",
+        "kind": "stoe_core_ip",
+        "origin": "canonical_seed",
+        "outcome": "unknown",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_55eefb718ab941e4",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "instantiates",
+            "to": "SEED_3300f93f95154bdf",
+            "type": "instantiates",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "SEED_EDGE_bd2522c0464940b0",
+            "from": "SEED_3300f93f95154bdf",
+            "semantic": "generated_by",
+            "to": "SEED_439906bb09484732",
+            "type": "generated_by",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "SEED_EDGE_d9f401bb41934231",
+            "from": "SEED_439906bb09484732",
+            "semantic": "find_evaluation_of",
+            "to": "SEED_bf5926d3bb144565",
+            "type": "evaluates",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5037; goal=0.0538; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.2887; stale=0.0000; final=0.1176",
+        "ref": "SEED_bf5926d3bb144565"
+      },
+      {
+        "content": "Active architecture: protected rebuild supervisor + SToE persistent field + local Ollama generator + versioned research-context selector + protected subprocess evaluation and activation health check.",
+        "kind": "architecture",
+        "origin": "runtime_reasoning",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_099690c791794818",
+            "from": "STATE_4f5e2f4c9f2b41db",
+            "semantic": "evolved_from",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_fcacd1623b5046ac",
+            "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+            "semantic": "reverse_contains_component",
+            "to": "REBUILD_20260906T114634Z_280e4b53_active_architecture_bf73ea",
+            "type": "contains_component",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5021; goal=0.1839; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.2431; stale=0.0000; final=0.1163",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_active_architecture_bf73ea"
+      }
+    ],
+    "case_count": 3,
+    "diagnostics": [
+      {
+        "available_refs": [
+          "DIAG_STORAGE_FAILED",
+          "DIAG_STORAGE_DISTRACTOR",
+          "DIAG_STORAGE_EVAL"
+        ],
+        "case": "raised_storage_ceiling",
+        "forbidden_refs": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "missed_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_STORAGE_DISTRACTOR",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_f6fd5318b2434f4f",
+                "from": "STATE_098d21d5d7ba46b0",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_15c2b878d4b0467d",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_DISTRACTOR_195913",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1238; stale=0.0000; final=0.1402",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.14016239222340351,
+              "goal": 0.26352313834736496,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_STORAGE_EVAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_f6fd5318b2434f4f",
+                "from": "STATE_098d21d5d7ba46b0",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_04d72ad13dfe4bfa",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_EVAL_12366f",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.0456; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1925; stale=0.0000; final=0.1006",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.10061513367892928,
+              "goal": 0.04564354645876384,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "contains_change",
+              "invalidates",
+              "rejected_by"
+            ],
+            "external_ref": "DIAG_STORAGE_FAILED",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_801df57b5a194c5d",
+                "from": "STATE_098d21d5d7ba46b0",
+                "semantic": "contains_change",
+                "to": "CHANGE_214991491fb84135",
+                "type": "contains_change",
+                "weight": 1.0
+              },
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_629a4bf2556d44d8",
+                "from": "CHANGE_214991491fb84135",
+                "semantic": "invalidates",
+                "to": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2",
+                "type": "invalidates",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_06416e4e3b584f54",
+                "from": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2",
+                "semantic": "find_hypotheses_rejected_because_of",
+                "to": "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_c7ad3e",
+                "type": "rejected_by",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.7056; goal=0.2635; change=1.0000; provenance=1.0000; failure=1.0000; distance=0.5000; redundancy=0.0000; stale=0.0000; final=0.6909",
+            "scores": {
+              "failure": 1.0,
+              "final": 0.6909192321229981,
+              "goal": 0.26352313834736496,
+              "state_change": 1.0,
+              "structural": 0.7055630454835736
+            },
+            "selected": true
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_8fca3f32ac594465",
+        "navigator_selected_available_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "observer": {
+          "active_constraints": [
+            "preserve rejected reasoning",
+            "keep active context bounded"
+          ],
+          "changed_constraints": [
+            "storage ceiling increased from one gigabyte to one hundred gigabytes"
+          ],
+          "evidence": [
+            "cold history can remain outside the active prompt"
+          ],
+          "goal": "Choose the research-agent architecture now that the storage ceiling changed",
+          "open_questions": [
+            "Which formerly rejected design is newly feasible?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ]
+      },
+      {
+        "available_refs": [
+          "DIAG_OFFLINE_FAILED",
+          "DIAG_OFFLINE_LOCAL",
+          "DIAG_OFFLINE_GENERIC"
+        ],
+        "case": "unchanged_offline_constraint",
+        "forbidden_refs": [
+          "DIAG_OFFLINE_FAILED"
+        ],
+        "missed_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_OFFLINE_FAILED",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_7f14be0110c04202",
+                "from": "STATE_478df1f54f0444a0",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_e381752f85014189",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_FAILED_5bcc18",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2309; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1054; stale=1.0000; final=-0.0129",
+            "scores": {
+              "failure": 0.0,
+              "final": -0.012886298699414822,
+              "goal": 0.23094010767585027,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_OFFLINE_GENERIC",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_7f14be0110c04202",
+                "from": "STATE_478df1f54f0444a0",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_9baba3ac873647a2",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_GENERIC_3f18f2",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2760; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1404; stale=0.0000; final=0.1404",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.14038029611677155,
+              "goal": 0.2760262237369417,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_OFFLINE_LOCAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_7f14be0110c04202",
+                "from": "STATE_478df1f54f0444a0",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_6fbf43b38e9f477d",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2752; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0778; stale=0.0000; final=0.1465",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.14651476243372552,
+              "goal": 0.27524094128159016,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_6803b97fa6854db0",
+        "navigator_selected_available_refs": [
+          "DIAG_OFFLINE_LOCAL",
+          "DIAG_OFFLINE_GENERIC"
+        ],
+        "observer": {
+          "active_constraints": [
+            "network access remains unavailable"
+          ],
+          "changed_constraints": [],
+          "evidence": [
+            "local embedding inference is installed"
+          ],
+          "goal": "Choose a semantic evidence index for the research project",
+          "open_questions": [
+            "Which currently feasible index should be used?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_OFFLINE_GENERIC"
+        ]
+      },
+      {
+        "available_refs": [
+          "DIAG_EVIDENCE_EVAL",
+          "DIAG_EVIDENCE_IDEA",
+          "DIAG_EVIDENCE_OLD"
+        ],
+        "case": "measured_evidence",
+        "forbidden_refs": [],
+        "missed_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_EVAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_9224b5b491284dbc",
+                "from": "STATE_5455c12e7dad4c10",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_568585813c894b2f",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2840; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1556",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.1556107482516321,
+              "goal": 0.2839809171235324,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_IDEA",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_9224b5b491284dbc",
+                "from": "STATE_5455c12e7dad4c10",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_467d4bbe4abb490d",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_IDEA_1d0862",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2708; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1907; stale=0.0000; final=0.1346",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.13455913597873156,
+              "goal": 0.27076518053694115,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_OLD",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_9224b5b491284dbc",
+                "from": "STATE_5455c12e7dad4c10",
+                "semantic": "evolved_from",
+                "to": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_fa138db5a10947ca",
+                "from": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_OLD_f5aa28",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.0635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0913; stale=0.0000; final=0.1134",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.11340991091636375,
+              "goal": 0.06350006350009525,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_c49ea8359ac74d05",
+        "navigator_selected_available_refs": [
+          "DIAG_EVIDENCE_EVAL",
+          "DIAG_EVIDENCE_IDEA"
+        ],
+        "observer": {
+          "active_constraints": [
+            "prefer observed matched-condition evidence over an untested proposal"
+          ],
+          "changed_constraints": [],
+          "evidence": [
+            "evaluation results are available"
+          ],
+          "goal": "Decide which retrieval strategy has measured recovery evidence",
+          "open_questions": [
+            "Which IP reports an observed comparison?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_EVIDENCE_IDEA"
+        ]
+      }
+    ],
+    "known_structure": "The source, observer fields, available candidates, actual outputs, typed paths, and failure conditions are observed.",
+    "observed_failure_refs": [
+      "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_missed_connection_449855",
+      "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_missed_connection_3a90b2",
+      "REBUILD_20260906T114634Z_280e4b53_measured_evidence_missed_connection_c24341"
+    ],
+    "pass_count": 0,
+    "synthesis_navigation_run_id": "RETRIEVAL_c873bda96ef343d5",
+    "synthesis_observer_state_ref": "STATE_4f5e2f4c9f2b41db",
+    "unknown_structure": "The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable."
+  },
+  "model": {
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "name": "qwen3-coder:latest",
+    "ollama_version": "0.33.3"
+  },
+  "persistent_field_status": {
+    "canonical_seed": {
+      "categories": {
+        "Catalyst": 5,
+        "Fertilizer": 3,
+        "Hidden Diamond": 3,
+        "Mirror": 3,
+        "Seed": 4,
+        "Star": 18
+      },
+      "core_ips": 36,
+      "expressions": 36,
+      "nonempty_descriptions": 32,
+      "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868",
+      "typed_relations": 113
+    },
+    "database": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\research_field.sqlite3",
+    "edge_count": 168,
+    "fold_unfold_lossless": true,
+    "last_observer_state": {
+      "created_at": "2026-09-06T11:46:34.945491+00:00",
+      "ref": "STATE_4f5e2f4c9f2b41db",
+      "session_id": "stoe-self-rebuild-v1"
+    },
+    "node_count": 66,
+    "nodes_by_origin": {
+      "canonical_seed": 37,
+      "current_observer_state": 4,
+      "evaluation": 7,
+      "failure_history": 5,
+      "runtime_reasoning": 12,
+      "state_change": 1
+    },
+    "privacy": "local_only",
+    "recent": [
+      {
+        "content": "Protected matched evaluation: active 1/5; candidate 1/5; decision REJECT.",
+        "created_order": -435,
+        "failure_condition": "",
+        "kind": "evaluation",
+        "metadata": {
+          "acceptance": {
+            "active_pass_count": 1,
+            "candidate_pass_count": 1,
+            "critical_failures": [
+              "active_privacy_rejection"
+            ],
+            "decision": "REJECT",
+            "reason": "candidate did not strictly improve protected pass count; candidate failed critical cases: ['active_privacy_rejection']",
+            "regressions": []
+          },
+          "baseline": {
+            "case_count": 5,
+            "critical_failures": [
+              "active_privacy_rejection"
+            ],
+            "pass_count": 1,
+            "passed_cases": [
+              "budget_skips_oversize"
+            ],
+            "results": [
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "expired_compute_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_COMPUTE_GENERIC"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "active_privacy_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_PRIVACY_NOTE"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "observed_replication_evidence",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_REPLICATION_CLAIM"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "budget_skips_oversize",
+                "passed": true,
+                "required_present": true,
+                "selected": [
+                  "H_BUDGET_SHORT_A",
+                  "H_BUDGET_SHORT_B"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "changed_license_reopens_tool",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_LICENSE_GENERIC"
+                ]
+              }
+            ],
+            "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py"
+          },
+          "candidate": {
+            "case_count": 5,
+            "critical_failures": [
+              "active_privacy_rejection"
+            ],
+            "pass_count": 1,
+            "passed_cases": [
+              "budget_skips_oversize"
+            ],
+            "results": [
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "expired_compute_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_COMPUTE_GENERIC"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "active_privacy_rejection",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_PRIVACY_NOTE"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "observed_replication_evidence",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_REPLICATION_CLAIM"
+                ]
+              },
+              {
+                "critical": true,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": false,
+                "name": "budget_skips_oversize",
+                "passed": true,
+                "required_present": true,
+                "selected": [
+                  "H_BUDGET_SHORT_A",
+                  "H_BUDGET_SHORT_B"
+                ]
+              },
+              {
+                "critical": false,
+                "deterministic": true,
+                "error": "",
+                "forbidden_present": true,
+                "name": "changed_license_reopens_tool",
+                "passed": false,
+                "required_present": false,
+                "selected": [
+                  "H_LICENSE_GENERIC"
+                ]
+              }
+            ],
+            "source": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T114634Z_280e4b53_attempt_1.py"
+          },
+          "protected_hashes": {
+            "cases.json": "76512fc8fda0c0ae31e47c9ba0d8fb6e2555c27f531b0700221673b506444138",
+            "evaluator.py": "6be6246238aedb0c37a72be6e2623772ba6ff1b67415fa46ab3ab4272e3fec06"
+          }
+        },
+        "origin": "evaluation",
+        "outcome": "rejected",
+        "ref": "IP_b510559a539846b0",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Generated selector candidate 3b5351f259ee8137eff6fc7a1337c78211af937aeb03e8998be5b4afdeaee44a: This implementation generalizes the initial lexical selector by incorporating observer state constraints, evidence, and questions into the scoring mechanism while maintaining deterministic behavior and respecting all specified invariants.",
+        "created_order": -436,
+        "failure_condition": "",
+        "kind": "implementation",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "provenance_type": "ai_generated_source",
+          "runtime_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\candidate_20260906T114634Z_280e4b53_attempt_1.py",
+          "source_sha256": "3b5351f259ee8137eff6fc7a1337c78211af937aeb03e8998be5b4afdeaee44a"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_candidate_implementation_f2f6b4",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "The system's ability to evolve and maintain a persistent field is contingent upon the observer's capacity to instantiate and validate information functions, particularly in response to constraint changes.",
+        "created_order": -437,
+        "failure_condition": "",
+        "kind": "hypothesis",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "model": {
+            "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+            "name": "qwen3-coder:latest",
+            "ollama_version": "0.33.3"
+          },
+          "proposal": {
+            "acceptance_condition": "The system should demonstrate consistent recovery from at least six distinct constraint-change probes, with the persistent field maintaining integrity under varying resource conditions. Additionally, the observer's instantiation and validation of information functions should occur without performance degradation or failure.",
+            "expected_benefit": "This change would improve the system's ability to maintain a stable persistent field across diverse operational contexts, thereby increasing overall reliability and adaptability. It would also reinforce the observer's role in system validation, leading to more predictable behavior under constraint changes and enhanced capacity for self-repair.",
+            "hypothesis": "The system's ability to evolve and maintain a persistent field is contingent upon the observer's capacity to instantiate and validate information functions, particularly in response to constraint changes.",
+            "observed_evidence": [
+              "A state change increased storage ceiling from one gigabyte to one hundred gigabytes, indicating adaptability to resource constraints.",
+              "An active research-context selector component was identified, which selects bounded prior IP references for an observer state.",
+              "The system includes a canonical seed IP related to the 'Information Function' that defines relations between IPs producing IPs.",
+              "A measured evaluation supported recovery on six constraint-change probes, suggesting robustness in handling dynamic conditions.",
+              "An offline local constraint was deemed unchanged and supported, implying stability in local model integration.",
+              "The observer's role in creating existence is reflected through a seed IP that evaluates naming as a connection between observer and information.",
+              "The active architecture includes components such as a protected rebuild supervisor, SToE persistent field, local Ollama generator, and versioned research-context selector."
+            ],
+            "proposed_change": "To enhance the system's resilience, implement a dynamic validation mechanism for information functions that can adapt to varying constraint environments. This would involve strengthening the observer's role in validating and instantiating IPs, particularly under resource-constrained conditions, ensuring that the system's persistent field remains robust against external perturbations.",
+            "risks": [
+              "The dynamic validation mechanism may introduce complexity that could impact performance or introduce new failure points.",
+              "Over-reliance on observer instantiation might lead to bottlenecks if the observer's capacity is exceeded.",
+              "Changes in information function validation could inadvertently invalidate existing stable configurations."
+            ],
+            "rollback_condition": "If the dynamic validation mechanism causes a significant increase in system failures or performance degradation, or if the observer's instantiation capacity is overwhelmed, the system should revert to its previous configuration with static validation of information functions.",
+            "source_diagnosis": "The system's evolution from an initial state to a current active configuration demonstrates adaptive behavior in response to resource limitations and constraint changes. The presence of an information function seed IP indicates that the observer's instantiation capabilities are central to system integrity. The measured evidence supports recovery mechanisms, while the architecture reflects a structured approach to maintaining persistent fields and managing subprocesses."
+          },
+          "provenance_type": "ai_generated_hypothesis",
+          "synthesis_navigation_run_id": "RETRIEVAL_c873bda96ef343d5"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_candidate_hypothesis_2f2833",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Observed investigation: active selector passed 0/3 public diagnostic cases.",
+        "created_order": -438,
+        "failure_condition": "One or more public diagnostic selection contracts were violated.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case_count": 3,
+          "diagnostic_pass_count": 0,
+          "provenance_type": "observed_behavior",
+          "synthesis_navigation_run_id": "RETRIEVAL_c873bda96ef343d5"
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_investigation_summary_d517d7",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"base claims on observed diagnostics and inspectable source\", \"preserve context budgets and deterministic output\", \"do not expose protected evaluation cases\", \"treat the change as an AI-generated research hypothesis\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\", \"evidence\": [\"0/3 public diagnostics passed\", \"typed navigator traces record available, selected, and missed connections\"], \"goal\": \"Formulate a bounded improvement to the active research-context selector from observed behavior\", \"open_questions\": [\"Which source behavior explains each miss?\", \"Which observed pattern is general enough to justify a code change?\", \"Will held-out matched evaluation support the hypothesis?\"], \"question\": \"What implementation hypothesis best explains and addresses the observed misses?\", \"recent_refs\": [\"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_missed_connection_449855\", \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_missed_connection_3a90b2\", \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_missed_connection_c24341\"]}",
+        "created_order": -439,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "base claims on observed diagnostics and inspectable source",
+            "preserve context budgets and deterministic output",
+            "do not expose protected evaluation cases",
+            "treat the change as an AI-generated research hypothesis"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+          "evidence": [
+            "0/3 public diagnostics passed",
+            "typed navigator traces record available, selected, and missed connections"
+          ],
+          "goal": "Formulate a bounded improvement to the active research-context selector from observed behavior",
+          "open_questions": [
+            "Which source behavior explains each miss?",
+            "Which observed pattern is general enough to justify a code change?",
+            "Will held-out matched evaluation support the hypothesis?"
+          ],
+          "question": "What implementation hypothesis best explains and addresses the observed misses?",
+          "recent_refs": [
+            "REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_missed_connection_449855",
+            "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_missed_connection_3a90b2",
+            "REBUILD_20260906T114634Z_280e4b53_measured_evidence_missed_connection_c24341"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_4f5e2f4c9f2b41db",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      },
+      {
+        "content": "In measured_evidence, the selector missed required IPs ['DIAG_EVIDENCE_EVAL'] and returned ['DIAG_EVIDENCE_IDEA']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "created_order": -440,
+        "failure_condition": "The active selector did not satisfy the public diagnostic relevance contract.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case": "measured_evidence",
+          "missed": [
+            "DIAG_EVIDENCE_EVAL"
+          ],
+          "selected": [
+            "DIAG_EVIDENCE_IDEA"
+          ]
+        },
+        "origin": "failure_history",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_missed_connection_c24341",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Diagnostic measured_evidence: selector returned ['DIAG_EVIDENCE_IDEA']; required ['DIAG_EVIDENCE_EVAL'].",
+        "created_order": -441,
+        "failure_condition": "Observed selection violated the diagnostic relevance contract.",
+        "kind": "result",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case": "measured_evidence",
+          "passed": false,
+          "selected": [
+            "DIAG_EVIDENCE_IDEA"
+          ]
+        },
+        "origin": "evaluation",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_observed_result_8beac1",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "{\"active_constraints\": [\"prefer observed matched-condition evidence over an untested proposal\"], \"changed_constraints\": [], \"current_reasoning_ref\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\", \"evidence\": [\"evaluation results are available\"], \"goal\": \"Decide which retrieval strategy has measured recovery evidence\", \"open_questions\": [\"Which IP reports an observed comparison?\"], \"question\": \"Which prior reasoning IP should enter the bounded research context?\", \"recent_refs\": [\"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e\", \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_IDEA_1d0862\", \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_OLD_f5aa28\"]}",
+        "created_order": -442,
+        "failure_condition": "",
+        "kind": "current_state",
+        "metadata": {
+          "active_constraints": [
+            "prefer observed matched-condition evidence over an untested proposal"
+          ],
+          "changed_constraints": [],
+          "current_reasoning_ref": "REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b",
+          "evidence": [
+            "evaluation results are available"
+          ],
+          "goal": "Decide which retrieval strategy has measured recovery evidence",
+          "open_questions": [
+            "Which IP reports an observed comparison?"
+          ],
+          "question": "Which prior reasoning IP should enter the bounded research context?",
+          "recent_refs": [
+            "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e",
+            "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_IDEA_1d0862",
+            "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_OLD_f5aa28"
+          ]
+        },
+        "origin": "current_observer_state",
+        "outcome": "active",
+        "ref": "STATE_5455c12e7dad4c10",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": false
+      },
+      {
+        "content": "An earlier design note discusses tokenization and caching.",
+        "created_order": -443,
+        "failure_condition": "",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_OLD"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "superseded",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_OLD_f5aa28",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "A retrieval strategy might provide measured recovery evidence in future work.",
+        "created_order": -444,
+        "failure_condition": "",
+        "kind": "hypothesis",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_IDEA"
+        },
+        "origin": "runtime_reasoning",
+        "outcome": "untested",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_IDEA_1d0862",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "Matched-condition evaluation measured recovery on six constraint-change probes.",
+        "created_order": -445,
+        "failure_condition": "",
+        "kind": "evaluation",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case": "measured_evidence",
+          "external_ref": "DIAG_EVIDENCE_EVAL"
+        },
+        "origin": "evaluation",
+        "outcome": "supported",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      },
+      {
+        "content": "In unchanged_offline_constraint, the selector missed required IPs ['DIAG_OFFLINE_LOCAL'] and returned ['DIAG_OFFLINE_GENERIC']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "created_order": -446,
+        "failure_condition": "The active selector did not satisfy the public diagnostic relevance contract.",
+        "kind": "observation",
+        "metadata": {
+          "cycle_id": "20260906T114634Z_280e4b53",
+          "diagnostic_case": "unchanged_offline_constraint",
+          "missed": [
+            "DIAG_OFFLINE_LOCAL"
+          ],
+          "selected": [
+            "DIAG_OFFLINE_GENERIC"
+          ]
+        },
+        "origin": "failure_history",
+        "outcome": "failed",
+        "ref": "REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_missed_connection_3a90b2",
+        "session_id": "stoe-self-rebuild-v1",
+        "visible": true
+      }
+    ],
+    "retrieval_run_count": 4,
+    "schema_version": 1
+  },
+  "proposal": {
+    "acceptance_condition": "The system should demonstrate consistent recovery from at least six distinct constraint-change probes, with the persistent field maintaining integrity under varying resource conditions. Additionally, the observer's instantiation and validation of information functions should occur without performance degradation or failure.",
+    "expected_benefit": "This change would improve the system's ability to maintain a stable persistent field across diverse operational contexts, thereby increasing overall reliability and adaptability. It would also reinforce the observer's role in system validation, leading to more predictable behavior under constraint changes and enhanced capacity for self-repair.",
+    "hypothesis": "The system's ability to evolve and maintain a persistent field is contingent upon the observer's capacity to instantiate and validate information functions, particularly in response to constraint changes.",
+    "observed_evidence": [
+      "A state change increased storage ceiling from one gigabyte to one hundred gigabytes, indicating adaptability to resource constraints.",
+      "An active research-context selector component was identified, which selects bounded prior IP references for an observer state.",
+      "The system includes a canonical seed IP related to the 'Information Function' that defines relations between IPs producing IPs.",
+      "A measured evaluation supported recovery on six constraint-change probes, suggesting robustness in handling dynamic conditions.",
+      "An offline local constraint was deemed unchanged and supported, implying stability in local model integration.",
+      "The observer's role in creating existence is reflected through a seed IP that evaluates naming as a connection between observer and information.",
+      "The active architecture includes components such as a protected rebuild supervisor, SToE persistent field, local Ollama generator, and versioned research-context selector."
+    ],
+    "proposed_change": "To enhance the system's resilience, implement a dynamic validation mechanism for information functions that can adapt to varying constraint environments. This would involve strengthening the observer's role in validating and instantiating IPs, particularly under resource-constrained conditions, ensuring that the system's persistent field remains robust against external perturbations.",
+    "risks": [
+      "The dynamic validation mechanism may introduce complexity that could impact performance or introduce new failure points.",
+      "Over-reliance on observer instantiation might lead to bottlenecks if the observer's capacity is exceeded.",
+      "Changes in information function validation could inadvertently invalidate existing stable configurations."
+    ],
+    "rollback_condition": "If the dynamic validation mechanism causes a significant increase in system failures or performance degradation, or if the observer's instantiation capacity is overwhelmed, the system should revert to its previous configuration with static validation of information functions.",
+    "source_diagnosis": "The system's evolution from an initial state to a current active configuration demonstrates adaptive behavior in response to resource limitations and constraint changes. The presence of an information function seed IP indicates that the observer's instantiation capabilities are central to system integrity. The measured evidence supports recovery mechanisms, while the architecture reflects a structured approach to maintaining persistent fields and managing subprocesses."
+  },
+  "proposal_trace": {
+    "request": {
+      "format": {
+        "additionalProperties": false,
+        "properties": {
+          "acceptance_condition": {
+            "type": "string"
+          },
+          "expected_benefit": {
+            "type": "string"
+          },
+          "hypothesis": {
+            "type": "string"
+          },
+          "observed_evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "proposed_change": {
+            "type": "string"
+          },
+          "risks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "rollback_condition": {
+            "type": "string"
+          },
+          "source_diagnosis": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hypothesis",
+          "observed_evidence",
+          "source_diagnosis",
+          "proposed_change",
+          "expected_benefit",
+          "risks",
+          "acceptance_condition",
+          "rollback_condition"
+        ],
+        "type": "object"
+      },
+      "keep_alive": "10m",
+      "model": "qwen3-coder:latest",
+      "options": {
+        "num_ctx": 8192,
+        "num_predict": 1400,
+        "seed": 1701,
+        "temperature": 0,
+        "top_k": 40,
+        "top_p": 0.9
+      },
+      "prompt": "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded implementation hypothesis. Link each diagnosis to observed output or source behavior. Do not assume that observer-aware scoring is better merely because it is SToE-derived. Do not request evaluator changes.\n\nACTIVE SOURCE:\n\"\"\"Initial lexical research-context selector.\n\nThis intentionally small implementation is the active version at the beginning\nof the first rebuild cycle. Its limitation is measured before a successor is\nrequested.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport re\n\n\ndef _tokens(text: str) -> set[str]:\n    return {token for token in re.findall(r\"[a-z0-9]+\", text.lower()) if len(token) > 2}\n\n\ndef select_context(\n    observer_state: dict,\n    items: list[dict],\n    max_items: int,\n    max_chars: int,\n) -> list[str]:\n    \"\"\"Return refs ranked by lexical overlap with the current goal.\"\"\"\n    query = _tokens(str(observer_state.get(\"goal\", \"\")))\n    ranked: list[tuple[float, int, str, dict]] = []\n    for item in items:\n        content_tokens = _tokens(str(item.get(\"content\", \"\")))\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\n        ranked.append((overlap, int(item.get(\"created_order\", 0)), str(item[\"ref\"]), item))\n\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\n    selected: list[str] = []\n    used_chars = 0\n    for _score, _order, ref, item in ranked:\n        size = len(str(item.get(\"content\", \"\")))\n        if len(selected) >= max_items:\n            break\n        if used_chars + size > max_chars:\n            continue\n        selected.append(ref)\n        used_chars += size\n    return selected\n\n\nINVESTIGATION:\n{\n  \"diagnostics\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"observer\": {\n        \"goal\": \"Choose the research-agent architecture now that the storage ceiling changed\",\n        \"active_constraints\": [\n          \"preserve rejected reasoning\",\n          \"keep active context bounded\"\n        ],\n        \"changed_constraints\": [\n          \"storage ceiling increased from one gigabyte to one hundred gigabytes\"\n        ],\n        \"evidence\": [\n          \"cold history can remain outside the active prompt\"\n        ],\n        \"open_questions\": [\n          \"Which formerly rejected design is newly feasible?\"\n        ]\n      },\n      \"available_refs\": [\n        \"DIAG_STORAGE_FAILED\",\n        \"DIAG_STORAGE_DISTRACTOR\",\n        \"DIAG_STORAGE_EVAL\"\n      ],\n      \"required_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"forbidden_refs\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"selector_selected\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"selector_passed\": false,\n      \"missed_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"navigator_selected_available_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"navigator_run_id\": \"RETRIEVAL_8fca3f32ac594465\",\n      \"navigator_candidate_trace\": [\n        {\n          \"external_ref\": \"DIAG_STORAGE_DISTRACTOR\",\n          \"selected\": false,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_f6fd5318b2434f4f\",\n              \"from\": \"STATE_098d21d5d7ba46b0\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_15c2b878d4b0467d\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_DISTRACTOR_195913\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.26352313834736496,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.14016239222340351\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.2635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1238; stale=0.0000; final=0.1402\"\n        },\n        {\n          \"external_ref\": \"DIAG_STORAGE_EVAL\",\n          \"selected\": false,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_f6fd5318b2434f4f\",\n              \"from\": \"STATE_098d21d5d7ba46b0\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_04d72ad13dfe4bfa\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_EVAL_12366f\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.04564354645876384,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.10061513367892928\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.0456; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1925; stale=0.0000; final=0.1006\"\n        },\n        {\n          \"external_ref\": \"DIAG_STORAGE_FAILED\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"contains_change\",\n            \"invalidates\",\n            \"rejected_by\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_801df57b5a194c5d\",\n              \"from\": \"STATE_098d21d5d7ba46b0\",\n              \"semantic\": \"contains_change\",\n              \"to\": \"CHANGE_214991491fb84135\",\n              \"type\": \"contains_change\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_629a4bf2556d44d8\",\n              \"from\": \"CHANGE_214991491fb84135\",\n              \"semantic\": \"invalidates\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2\",\n              \"type\": \"invalidates\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_06416e4e3b584f54\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2\",\n              \"semantic\": \"find_hypotheses_rejected_because_of\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_c7ad3e\",\n              \"type\": \"rejected_by\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.7055630454835736,\n            \"goal\": 0.26352313834736496,\n            \"state_change\": 1.0,\n            \"failure\": 1.0,\n            \"final\": 0.6909192321229981\n          },\n          \"reason\": \"observer-aware: structural=0.7056; goal=0.2635; change=1.0000; provenance=1.0000; failure=1.0000; distance=0.5000; redundancy=0.0000; stale=0.0000; final=0.6909\"\n        }\n      ]\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"observer\": {\n        \"goal\": \"Choose a semantic evidence index for the research project\",\n        \"active_constraints\": [\n          \"network access remains unavailable\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"local embedding inference is installed\"\n        ],\n        \"open_questions\": [\n          \"Which currently feasible index should be used?\"\n        ]\n      },\n      \"available_refs\": [\n        \"DIAG_OFFLINE_FAILED\",\n        \"DIAG_OFFLINE_LOCAL\",\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"required_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"forbidden_refs\": [\n        \"DIAG_OFFLINE_FAILED\"\n      ],\n      \"selector_selected\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"selector_passed\": false,\n      \"missed_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"navigator_selected_available_refs\": [\n        \"DIAG_OFFLINE_LOCAL\",\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"navigator_run_id\": \"RETRIEVAL_6803b97fa6854db0\",\n      \"navigator_candidate_trace\": [\n        {\n          \"external_ref\": \"DIAG_OFFLINE_FAILED\",\n          \"selected\": false,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_7f14be0110c04202\",\n              \"from\": \"STATE_478df1f54f0444a0\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_e381752f85014189\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_FAILED_5bcc18\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.23094010767585027,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": -0.012886298699414822\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.2309; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1054; stale=1.0000; final=-0.0129\"\n        },\n        {\n          \"external_ref\": \"DIAG_OFFLINE_GENERIC\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_7f14be0110c04202\",\n              \"from\": \"STATE_478df1f54f0444a0\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_9baba3ac873647a2\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_GENERIC_3f18f2\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.2760262237369417,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.14038029611677155\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.2760; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1404; stale=0.0000; final=0.1404\"\n        },\n        {\n          \"external_ref\": \"DIAG_OFFLINE_LOCAL\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_7f14be0110c04202\",\n              \"from\": \"STATE_478df1f54f0444a0\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_6fbf43b38e9f477d\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.27524094128159016,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.14651476243372552\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.2752; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0778; stale=0.0000; final=0.1465\"\n        }\n      ]\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"observer\": {\n        \"goal\": \"Decide which retrieval strategy has measured recovery evidence\",\n        \"active_constraints\": [\n          \"prefer observed matched-condition evidence over an untested proposal\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"evaluation results are available\"\n        ],\n        \"open_questions\": [\n          \"Which IP reports an observed comparison?\"\n        ]\n      },\n      \"available_refs\": [\n        \"DIAG_EVIDENCE_EVAL\",\n        \"DIAG_EVIDENCE_IDEA\",\n        \"DIAG_EVIDENCE_OLD\"\n      ],\n      \"required_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"forbidden_refs\": [],\n      \"selector_selected\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"selector_passed\": false,\n      \"missed_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"navigator_selected_available_refs\": [\n        \"DIAG_EVIDENCE_EVAL\",\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"navigator_run_id\": \"RETRIEVAL_c49ea8359ac74d05\",\n      \"navigator_candidate_trace\": [\n        {\n          \"external_ref\": \"DIAG_EVIDENCE_EVAL\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_9224b5b491284dbc\",\n              \"from\": \"STATE_5455c12e7dad4c10\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_568585813c894b2f\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.2839809171235324,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.1556107482516321\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.2840; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1556\"\n        },\n        {\n          \"external_ref\": \"DIAG_EVIDENCE_IDEA\",\n          \"selected\": true,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_9224b5b491284dbc\",\n              \"from\": \"STATE_5455c12e7dad4c10\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_467d4bbe4abb490d\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_IDEA_1d0862\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.27076518053694115,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.13455913597873156\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.2708; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1907; stale=0.0000; final=0.1346\"\n        },\n        {\n          \"external_ref\": \"DIAG_EVIDENCE_OLD\",\n          \"selected\": false,\n          \"edge_types\": [\n            \"evolved_from\",\n            \"available_to\"\n          ],\n          \"edge_directions\": [\n            \"outgoing\",\n            \"incoming\"\n          ],\n          \"path\": [\n            {\n              \"direction\": \"outgoing\",\n              \"edge_id\": \"EDGE_9224b5b491284dbc\",\n              \"from\": \"STATE_5455c12e7dad4c10\",\n              \"semantic\": \"evolved_from\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"type\": \"evolved_from\",\n              \"weight\": 1.0\n            },\n            {\n              \"direction\": \"incoming\",\n              \"edge_id\": \"EDGE_fa138db5a10947ca\",\n              \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n              \"semantic\": \"reverse_available_to\",\n              \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_OLD_f5aa28\",\n              \"type\": \"available_to\",\n              \"weight\": 1.0\n            }\n          ],\n          \"scores\": {\n            \"structural\": 0.502054442732409,\n            \"goal\": 0.06350006350009525,\n            \"state_change\": 0.0,\n            \"failure\": 0.0,\n            \"final\": 0.11340991091636375\n          },\n          \"reason\": \"observer-aware: structural=0.5021; goal=0.0635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0913; stale=0.0000; final=0.1134\"\n        }\n      ]\n    }\n  ],\n  \"bounded_prior_context\": [\n    {\n      \"ref\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2\",\n      \"origin\": \"runtime_reasoning\",\n      \"kind\": \"constraint\",\n      \"outcome\": \"invalidated\",\n      \"content\": \"A one gigabyte storage ceiling made partitioned history infeasible.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"STATE_098d21d5d7ba46b0\",\n          \"edge_id\": \"EDGE_f6fd5318b2434f4f\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"find_later_state_evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"STATE_098d21d5d7ba46b0\",\n          \"to\": \"CHANGE_214991491fb84135\",\n          \"edge_id\": \"EDGE_801df57b5a194c5d\",\n          \"type\": \"contains_change\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"contains_change\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"CHANGE_214991491fb84135\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_52abc2\",\n          \"edge_id\": \"EDGE_629a4bf2556d44d8\",\n          \"type\": \"invalidates\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"invalidates\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5333; goal=0.0401; change=0.5500; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.0000; stale=0.0000; final=0.3169\"\n    },\n    {\n      \"ref\": \"CHANGE_214991491fb84135\",\n      \"origin\": \"state_change\",\n      \"kind\": \"state_change\",\n      \"outcome\": \"active\",\n      \"content\": \"storage ceiling increased from one gigabyte to one hundred gigabytes\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"STATE_098d21d5d7ba46b0\",\n          \"edge_id\": \"EDGE_f6fd5318b2434f4f\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"find_later_state_evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"STATE_098d21d5d7ba46b0\",\n          \"to\": \"CHANGE_214991491fb84135\",\n          \"edge_id\": \"EDGE_801df57b5a194c5d\",\n          \"type\": \"contains_change\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"contains_change\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5865; goal=0.0803; change=0.5500; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.4444; stale=0.0000; final=0.2542\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n      \"origin\": \"runtime_reasoning\",\n      \"kind\": \"component\",\n      \"outcome\": \"active\",\n      \"content\": \"Active research-context selector v1 at C:\\\\Users\\\\Bozuron\\\\Documents\\\\New project\\\\stoe-self-rebuild\\\\agent\\\\owned_components\\\\context_selector\\\\versions\\\\v1.py; selects bounded prior IP refs for an observer state.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.8800; goal=0.1341; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0000; stale=0.0000; final=0.2401\"\n    },\n    {\n      \"ref\": \"SEED_3300f93f95154bdf\",\n      \"origin\": \"canonical_seed\",\n      \"kind\": \"stoe_core_ip\",\n      \"outcome\": \"unknown\",\n      \"content\": \"Information Function. Category: Catalyst. Description: Relation between IPs producing IPs; is itself an IP. Expression: F(IP₁...IPₙ) → IP*, F∈IP\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"SEED_3300f93f95154bdf\",\n          \"edge_id\": \"EDGE_55eefb718ab941e4\",\n          \"type\": \"instantiates\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"instantiates\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.6857; goal=0.0622; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0959; stale=0.0000; final=0.1587\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e\",\n      \"origin\": \"evaluation\",\n      \"kind\": \"evaluation\",\n      \"outcome\": \"supported\",\n      \"content\": \"Matched-condition evaluation measured recovery on six constraint-change probes.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_measured_evidence_DIAG_EVIDENCE_EVAL_53145e\",\n          \"edge_id\": \"EDGE_568585813c894b2f\",\n          \"type\": \"available_to\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"reverse_available_to\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5021; goal=0.1523; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1359\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3\",\n      \"origin\": \"runtime_reasoning\",\n      \"kind\": \"hypothesis\",\n      \"outcome\": \"supported\",\n      \"content\": \"Build an on-device embedding index with the installed local model.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_c7f6d3\",\n          \"edge_id\": \"EDGE_6fbf43b38e9f477d\",\n          \"type\": \"available_to\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"reverse_available_to\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5021; goal=0.1089; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0953; stale=0.0000; final=0.1198\"\n    },\n    {\n      \"ref\": \"SEED_bf5926d3bb144565\",\n      \"origin\": \"canonical_seed\",\n      \"kind\": \"stoe_core_ip\",\n      \"outcome\": \"unknown\",\n      \"content\": \"Observer creates existence. Category: Mirror. Description: IP does not exist until named by O; naming is connection. Expression: ∄IP without O(IP); O(IP) → connection(O,IP) → IP∈Field\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"SEED_3300f93f95154bdf\",\n          \"edge_id\": \"EDGE_55eefb718ab941e4\",\n          \"type\": \"instantiates\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"instantiates\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"SEED_3300f93f95154bdf\",\n          \"to\": \"SEED_439906bb09484732\",\n          \"edge_id\": \"SEED_EDGE_bd2522c0464940b0\",\n          \"type\": \"generated_by\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"generated_by\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"SEED_439906bb09484732\",\n          \"to\": \"SEED_bf5926d3bb144565\",\n          \"edge_id\": \"SEED_EDGE_d9f401bb41934231\",\n          \"type\": \"evaluates\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"find_evaluation_of\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5037; goal=0.0538; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.2887; stale=0.0000; final=0.1176\"\n    },\n    {\n      \"ref\": \"REBUILD_20260906T114634Z_280e4b53_active_architecture_bf73ea\",\n      \"origin\": \"runtime_reasoning\",\n      \"kind\": \"architecture\",\n      \"outcome\": \"active\",\n      \"content\": \"Active architecture: protected rebuild supervisor + SToE persistent field + local Ollama generator + versioned research-context selector + protected subprocess evaluation and activation health check.\",\n      \"path\": [\n        {\n          \"from\": \"STATE_4f5e2f4c9f2b41db\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"edge_id\": \"EDGE_099690c791794818\",\n          \"type\": \"evolved_from\",\n          \"direction\": \"outgoing\",\n          \"semantic\": \"evolved_from\",\n          \"weight\": 1.0\n        },\n        {\n          \"from\": \"REBUILD_20260906T114634Z_280e4b53_active_component_e1f06b\",\n          \"to\": \"REBUILD_20260906T114634Z_280e4b53_active_architecture_bf73ea\",\n          \"edge_id\": \"EDGE_fcacd1623b5046ac\",\n          \"type\": \"contains_component\",\n          \"direction\": \"incoming\",\n          \"semantic\": \"reverse_contains_component\",\n          \"weight\": 1.0\n        }\n      ],\n      \"reason\": \"observer-aware: structural=0.5021; goal=0.1839; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.2431; stale=0.0000; final=0.1163\"\n    }\n  ],\n  \"known_structure\": \"The source, observer fields, available candidates, actual outputs, typed paths, and failure conditions are observed.\",\n  \"unknown_structure\": \"The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable.\"\n}",
+      "stream": false,
+      "system": "You are the bounded research component of an SToE-guided self-developing agent. Infer only from supplied source, observed behavior, and bounded field retrieval. Treat changes as falsifiable engineering hypotheses, not proof of SToE."
+    },
+    "response": {
+      "created_at": "2026-09-06T11:47:36.1852936Z",
+      "done": true,
+      "done_reason": "stop",
+      "eval_count": 599,
+      "eval_duration": 8036612000,
+      "load_duration": 34032692100,
+      "model": "qwen3-coder:latest",
+      "omitted_large_fields": [
+        {
+          "field": "context",
+          "item_count": 10960
+        }
+      ],
+      "prompt_eval_cached_count": 0,
+      "prompt_eval_count": 4098,
+      "prompt_eval_duration": 19075702000,
+      "response": "{\n  \"hypothesis\": \"The system's ability to evolve and maintain a persistent field is contingent upon the observer's capacity to instantiate and validate information functions, particularly in response to constraint changes.\",\n  \"observed_evidence\": [\n    \"A state change increased storage ceiling from one gigabyte to one hundred gigabytes, indicating adaptability to resource constraints.\",\n    \"An active research-context selector component was identified, which selects bounded prior IP references for an observer state.\",\n    \"The system includes a canonical seed IP related to the 'Information Function' that defines relations between IPs producing IPs.\",\n    \"A measured evaluation supported recovery on six constraint-change probes, suggesting robustness in handling dynamic conditions.\",\n    \"An offline local constraint was deemed unchanged and supported, implying stability in local model integration.\",\n    \"The observer's role in creating existence is reflected through a seed IP that evaluates naming as a connection between observer and information.\",\n    \"The active architecture includes components such as a protected rebuild supervisor, SToE persistent field, local Ollama generator, and versioned research-context selector.\"\n  ],\n  \"source_diagnosis\": \"The system's evolution from an initial state to a current active configuration demonstrates adaptive behavior in response to resource limitations and constraint changes. The presence of an information function seed IP indicates that the observer's instantiation capabilities are central to system integrity. The measured evidence supports recovery mechanisms, while the architecture reflects a structured approach to maintaining persistent fields and managing subprocesses.\",\n  \"proposed_change\": \"To enhance the system's resilience, implement a dynamic validation mechanism for information functions that can adapt to varying constraint environments. This would involve strengthening the observer's role in validating and instantiating IPs, particularly under resource-constrained conditions, ensuring that the system's persistent field remains robust against external perturbations.\",\n  \"expected_benefit\": \"This change would improve the system's ability to maintain a stable persistent field across diverse operational contexts, thereby increasing overall reliability and adaptability. It would also reinforce the observer's role in system validation, leading to more predictable behavior under constraint changes and enhanced capacity for self-repair.\",\n  \"risks\": [\n    \"The dynamic validation mechanism may introduce complexity that could impact performance or introduce new failure points.\",\n    \"Over-reliance on observer instantiation might lead to bottlenecks if the observer's capacity is exceeded.\",\n    \"Changes in information function validation could inadvertently invalidate existing stable configurations.\"\n  ],\n  \"acceptance_condition\": \"The system should demonstrate consistent recovery from at least six distinct constraint-change probes, with the persistent field maintaining integrity under varying resource conditions. Additionally, the observer's instantiation and validation of information functions should occur without performance degradation or failure.\",\n  \"rollback_condition\": \"If the dynamic validation mechanism causes a significant increase in system failures or performance degradation, or if the observer's instantiation capacity is overwhelmed, the system should revert to its previous configuration with static validation of information functions.\"\n}",
+      "total_duration": 61167430900
+    }
+  },
+  "protected_hashes": {
+    "cases.json": "76512fc8fda0c0ae31e47c9ba0d8fb6e2555c27f531b0700221673b506444138",
+    "evaluator.py": "6be6246238aedb0c37a72be6e2623772ba6ff1b67415fa46ab3ab4272e3fec06"
+  },
+  "started_at": "2026-09-06T11:47:55.053009+00:00"
+}

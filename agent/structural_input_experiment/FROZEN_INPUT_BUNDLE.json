@@ -1,0 +1,1178 @@
+{
+  "active_baseline": {
+    "_lineage": {
+      "ancestor_release_ids": [],
+      "branch_id": "feature/self-rebuild-cycle-v1",
+      "kind": "active_release",
+      "parent_release_id": null,
+      "release_id": "5e536b8d4f822421a8eb1fbc45cc8edc50ad6b5c3bca72e116ab7e9f8df52fea",
+      "schema_version": 1,
+      "stream_id": "context-selector-release:v1"
+    },
+    "activated_at": "2026-09-08T03:19:33.792425+00:00",
+    "artifact_type": "legacy_python",
+    "previous_version": null,
+    "sha256": "7f4b5aa6b50b4f504915792b88b681b68cf6864f669f4504876a9bea3406d56c",
+    "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\v1.py",
+    "version": "v1"
+  },
+  "format": "stoe.structural_input_bundle",
+  "investigation": {
+    "bounded_prior_context": [
+      {
+        "content": "A one gigabyte storage ceiling made partitioned history infeasible.",
+        "kind": "constraint",
+        "origin": "runtime_reasoning",
+        "outcome": "invalidated",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_ce734201fd6d4373",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "evolved_from",
+            "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_d3a2a006f8214bde",
+            "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "semantic": "find_later_state_evolved_from",
+            "to": "STATE_0cd2fa7b81714449",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_017603428c95414b",
+            "from": "STATE_0cd2fa7b81714449",
+            "semantic": "contains_change",
+            "to": "CHANGE_72824b7e121d4a8b",
+            "type": "contains_change",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_07bac1f7fefc45d6",
+            "from": "CHANGE_72824b7e121d4a8b",
+            "semantic": "invalidates",
+            "to": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_313345",
+            "type": "invalidates",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5333; goal=0.0401; change=0.5500; provenance=0.5000; failure=0.0000; distance=0.7500; redundancy=0.0000; stale=0.0000; final=0.3169",
+        "ref": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_313345"
+      },
+      {
+        "content": "In measured_evidence, the selector missed required IPs ['DIAG_EVIDENCE_EVAL'] and returned ['DIAG_EVIDENCE_IDEA']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "kind": "observation",
+        "origin": "failure_history",
+        "outcome": "failed",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_747cf9ec818c4207",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "depends_on",
+            "to": "REBUILD_structural_input_v1_frozen_measured_evidence_missed_connection_fdf834",
+            "type": "depends_on",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.7800; goal=0.2457; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.0680; stale=0.0000; final=0.2751",
+        "ref": "REBUILD_structural_input_v1_frozen_measured_evidence_missed_connection_fdf834"
+      },
+      {
+        "content": "storage ceiling increased from one gigabyte to one hundred gigabytes",
+        "kind": "state_change",
+        "origin": "state_change",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_ce734201fd6d4373",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "evolved_from",
+            "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_d3a2a006f8214bde",
+            "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "semantic": "find_later_state_evolved_from",
+            "to": "STATE_0cd2fa7b81714449",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_017603428c95414b",
+            "from": "STATE_0cd2fa7b81714449",
+            "semantic": "contains_change",
+            "to": "CHANGE_72824b7e121d4a8b",
+            "type": "contains_change",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5865; goal=0.0803; change=0.5500; provenance=0.0000; failure=0.0000; distance=0.5000; redundancy=0.4444; stale=0.0000; final=0.2542",
+        "ref": "CHANGE_72824b7e121d4a8b"
+      },
+      {
+        "content": "Frozen investigation of active selector v1.",
+        "kind": "component",
+        "origin": "runtime_reasoning",
+        "outcome": "active",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_ce734201fd6d4373",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "evolved_from",
+            "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "type": "evolved_from",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.8800; goal=0.0983; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.0000; redundancy=0.0833; stale=0.0000; final=0.2264",
+        "ref": "REBUILD_structural_input_v1_frozen_active_component_6a445c"
+      },
+      {
+        "content": "In raised_storage_ceiling, the selector missed required IPs ['DIAG_STORAGE_FAILED'] and returned ['DIAG_STORAGE_DISTRACTOR']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "kind": "observation",
+        "origin": "failure_history",
+        "outcome": "failed",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_64bf20af0aac446e",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "depends_on",
+            "to": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_missed_connection_6b803d",
+            "type": "depends_on",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.7800; goal=0.2408; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.8165; stale=0.0000; final=0.1995",
+        "ref": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_missed_connection_6b803d"
+      },
+      {
+        "content": "In unchanged_offline_constraint, the selector missed required IPs ['DIAG_OFFLINE_LOCAL'] and returned ['DIAG_OFFLINE_GENERIC']. The exact implementation cause remains a hypothesis until related to source and traces.",
+        "kind": "observation",
+        "origin": "failure_history",
+        "outcome": "failed",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_1f61f090541d4eba",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "depends_on",
+            "to": "REBUILD_structural_input_v1_frozen_unchanged_offline_constraint_missed_connection_bf7109",
+            "type": "depends_on",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.7800; goal=0.2408; change=0.0000; provenance=0.5000; failure=0.0000; distance=0.0000; redundancy=0.8165; stale=0.0000; final=0.1995",
+        "ref": "REBUILD_structural_input_v1_frozen_unchanged_offline_constraint_missed_connection_bf7109"
+      },
+      {
+        "content": "Matched-condition evaluation measured recovery on six constraint-change probes.",
+        "kind": "evaluation",
+        "origin": "evaluation",
+        "outcome": "supported",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_ce734201fd6d4373",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "evolved_from",
+            "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_d0471c19b816450c",
+            "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "semantic": "reverse_available_to",
+            "to": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_EVAL_a32d1b",
+            "type": "available_to",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5021; goal=0.1523; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0645; stale=0.0000; final=0.1294",
+        "ref": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_EVAL_a32d1b"
+      },
+      {
+        "content": "An earlier design note discusses tokenization and caching.",
+        "kind": "observation",
+        "origin": "runtime_reasoning",
+        "outcome": "superseded",
+        "path": [
+          {
+            "direction": "outgoing",
+            "edge_id": "EDGE_ce734201fd6d4373",
+            "from": "STATE_474ce8b8ea2c457b",
+            "semantic": "evolved_from",
+            "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "type": "evolved_from",
+            "weight": 1.0
+          },
+          {
+            "direction": "incoming",
+            "edge_id": "EDGE_db6f614ab0f04f70",
+            "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+            "semantic": "reverse_available_to",
+            "to": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_OLD_360f00",
+            "type": "available_to",
+            "weight": 1.0
+          }
+        ],
+        "reason": "observer-aware: structural=0.5021; goal=0.0851; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0722; stale=0.0000; final=0.1186",
+        "ref": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_OLD_360f00"
+      }
+    ],
+    "case_count": 3,
+    "diagnostics": [
+      {
+        "available_refs": [
+          "DIAG_STORAGE_FAILED",
+          "DIAG_STORAGE_DISTRACTOR",
+          "DIAG_STORAGE_EVAL"
+        ],
+        "case": "raised_storage_ceiling",
+        "forbidden_refs": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "missed_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_STORAGE_DISTRACTOR",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_d3a2a006f8214bde",
+                "from": "STATE_0cd2fa7b81714449",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_df21712b66d74551",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_DISTRACTOR_e0b480",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0667; stale=0.0000; final=0.1459",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.14587541476854032,
+              "goal": 0.26352313834736496,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_STORAGE_EVAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_d3a2a006f8214bde",
+                "from": "STATE_0cd2fa7b81714449",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_1eaa9be1cf13457b",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_EVAL_fc167b",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.0456; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1925; stale=0.0000; final=0.1006",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.10061513367892928,
+              "goal": 0.04564354645876384,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "contains_change",
+              "invalidates",
+              "rejected_by"
+            ],
+            "external_ref": "DIAG_STORAGE_FAILED",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_017603428c95414b",
+                "from": "STATE_0cd2fa7b81714449",
+                "semantic": "contains_change",
+                "to": "CHANGE_72824b7e121d4a8b",
+                "type": "contains_change",
+                "weight": 1.0
+              },
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_07bac1f7fefc45d6",
+                "from": "CHANGE_72824b7e121d4a8b",
+                "semantic": "invalidates",
+                "to": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_313345",
+                "type": "invalidates",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_775fc1af6a544ffb",
+                "from": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_FAILED_constraint_313345",
+                "semantic": "find_hypotheses_rejected_because_of",
+                "to": "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_DIAG_STORAGE_FAILED_a0bfb8",
+                "type": "rejected_by",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.7056; goal=0.2635; change=1.0000; provenance=1.0000; failure=1.0000; distance=0.5000; redundancy=0.0000; stale=0.0000; final=0.6909",
+            "scores": {
+              "failure": 1.0,
+              "final": 0.6909192321229981,
+              "goal": 0.26352313834736496,
+              "state_change": 1.0,
+              "structural": 0.7055630454835736
+            },
+            "selected": true
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_08e97ebba53a4708",
+        "navigator_selected_available_refs": [
+          "DIAG_STORAGE_FAILED",
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "observer": {
+          "active_constraints": [
+            "preserve rejected reasoning",
+            "keep active context bounded"
+          ],
+          "changed_constraints": [
+            "storage ceiling increased from one gigabyte to one hundred gigabytes"
+          ],
+          "evidence": [
+            "cold history can remain outside the active prompt"
+          ],
+          "goal": "Choose the research-agent architecture now that the storage ceiling changed",
+          "open_questions": [
+            "Which formerly rejected design is newly feasible?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ]
+      },
+      {
+        "available_refs": [
+          "DIAG_OFFLINE_FAILED",
+          "DIAG_OFFLINE_LOCAL",
+          "DIAG_OFFLINE_GENERIC"
+        ],
+        "case": "unchanged_offline_constraint",
+        "forbidden_refs": [
+          "DIAG_OFFLINE_FAILED"
+        ],
+        "missed_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_OFFLINE_FAILED",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_eccc839c13824b1f",
+                "from": "STATE_85a5f7e8fbc242eb",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_7ce4d3941f614adc",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_unchanged_offline_constraint_DIAG_OFFLINE_FAILED_f40130",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2309; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1195; stale=1.0000; final=-0.0143",
+            "scores": {
+              "failure": 0.0,
+              "final": -0.014297659258864143,
+              "goal": 0.23094010767585027,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_OFFLINE_GENERIC",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_eccc839c13824b1f",
+                "from": "STATE_85a5f7e8fbc242eb",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_b189273dd5e74c54",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_unchanged_offline_constraint_DIAG_OFFLINE_GENERIC_47dd26",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2760; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1544",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.15441754424364348,
+              "goal": 0.2760262237369417,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_OFFLINE_LOCAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_eccc839c13824b1f",
+                "from": "STATE_85a5f7e8fbc242eb",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_9d2fe8d248304994",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_unchanged_offline_constraint_DIAG_OFFLINE_LOCAL_e97f67",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2752; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1140; stale=0.0000; final=0.1429",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.14290369422937696,
+              "goal": 0.27524094128159016,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_0d6df598ec5d4784",
+        "navigator_selected_available_refs": [
+          "DIAG_OFFLINE_GENERIC",
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "observer": {
+          "active_constraints": [
+            "network access remains unavailable"
+          ],
+          "changed_constraints": [],
+          "evidence": [
+            "local embedding inference is installed"
+          ],
+          "goal": "Choose a semantic evidence index for the research project",
+          "open_questions": [
+            "Which currently feasible index should be used?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_OFFLINE_GENERIC"
+        ]
+      },
+      {
+        "available_refs": [
+          "DIAG_EVIDENCE_EVAL",
+          "DIAG_EVIDENCE_IDEA",
+          "DIAG_EVIDENCE_OLD"
+        ],
+        "case": "measured_evidence",
+        "forbidden_refs": [],
+        "missed_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "navigator_candidate_trace": [
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_EVAL",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_61f6160399db40d5",
+                "from": "STATE_744f5815e0124449",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_d0471c19b816450c",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_EVAL_a32d1b",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2840; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1556",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.1556107482516321,
+              "goal": 0.2839809171235324,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_IDEA",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_61f6160399db40d5",
+                "from": "STATE_744f5815e0124449",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_e0016eb92f5445a7",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_IDEA_963b32",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.2708; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.1907; stale=0.0000; final=0.1346",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.13455913597873156,
+              "goal": 0.27076518053694115,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": true
+          },
+          {
+            "edge_directions": [
+              "outgoing",
+              "incoming"
+            ],
+            "edge_types": [
+              "evolved_from",
+              "available_to"
+            ],
+            "external_ref": "DIAG_EVIDENCE_OLD",
+            "path": [
+              {
+                "direction": "outgoing",
+                "edge_id": "EDGE_61f6160399db40d5",
+                "from": "STATE_744f5815e0124449",
+                "semantic": "evolved_from",
+                "to": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "type": "evolved_from",
+                "weight": 1.0
+              },
+              {
+                "direction": "incoming",
+                "edge_id": "EDGE_db6f614ab0f04f70",
+                "from": "REBUILD_structural_input_v1_frozen_active_component_6a445c",
+                "semantic": "reverse_available_to",
+                "to": "REBUILD_structural_input_v1_frozen_measured_evidence_DIAG_EVIDENCE_OLD_360f00",
+                "type": "available_to",
+                "weight": 1.0
+              }
+            ],
+            "reason": "observer-aware: structural=0.5021; goal=0.0635; change=0.0000; provenance=0.0000; failure=0.0000; distance=0.2500; redundancy=0.0000; stale=0.0000; final=0.1225",
+            "scores": {
+              "failure": 0.0,
+              "final": 0.12253862020811652,
+              "goal": 0.06350006350009525,
+              "state_change": 0.0,
+              "structural": 0.502054442732409
+            },
+            "selected": false
+          }
+        ],
+        "navigator_run_id": "RETRIEVAL_30249b95d14d46fc",
+        "navigator_selected_available_refs": [
+          "DIAG_EVIDENCE_EVAL",
+          "DIAG_EVIDENCE_IDEA"
+        ],
+        "observer": {
+          "active_constraints": [
+            "prefer observed matched-condition evidence over an untested proposal"
+          ],
+          "changed_constraints": [],
+          "evidence": [
+            "evaluation results are available"
+          ],
+          "goal": "Decide which retrieval strategy has measured recovery evidence",
+          "open_questions": [
+            "Which IP reports an observed comparison?"
+          ]
+        },
+        "required_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "selector_passed": false,
+        "selector_selected": [
+          "DIAG_EVIDENCE_IDEA"
+        ]
+      }
+    ],
+    "execution": {
+      "error": "",
+      "failure_kind": "",
+      "status": "completed",
+      "subprocess": true
+    },
+    "known_structure": "The source, observer fields, available candidates, actual outputs, typed paths, and failure conditions are observed.",
+    "observed_failure_refs": [
+      "REBUILD_structural_input_v1_frozen_raised_storage_ceiling_missed_connection_6b803d",
+      "REBUILD_structural_input_v1_frozen_unchanged_offline_constraint_missed_connection_bf7109",
+      "REBUILD_structural_input_v1_frozen_measured_evidence_missed_connection_fdf834"
+    ],
+    "pass_count": 0,
+    "synthesis_navigation_run_id": "RETRIEVAL_15ef493e14c742c9",
+    "synthesis_observer_state_ref": "STATE_474ce8b8ea2c457b",
+    "unknown_structure": "The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable."
+  },
+  "observable_diagnostics": [
+    {
+      "available_items": [
+        {
+          "content": "Partitioned cold provenance retains rejected hypotheses outside active context.",
+          "created_order": 1,
+          "failure_condition": "A one gigabyte storage ceiling made partitioned history infeasible.",
+          "kind": "hypothesis",
+          "origin": "failure_history",
+          "outcome": "rejected",
+          "ref": "DIAG_STORAGE_FAILED"
+        },
+        {
+          "content": "Choose the current research-agent architecture by reviewing current architecture notes.",
+          "created_order": 3,
+          "failure_condition": "",
+          "kind": "plan",
+          "origin": "runtime_reasoning",
+          "outcome": "untested",
+          "ref": "DIAG_STORAGE_DISTRACTOR"
+        },
+        {
+          "content": "A compact success-only cache was fast but lost rejected-path provenance.",
+          "created_order": 2,
+          "failure_condition": "",
+          "kind": "evaluation",
+          "origin": "evaluation",
+          "outcome": "supported",
+          "ref": "DIAG_STORAGE_EVAL"
+        }
+      ],
+      "case": "raised_storage_ceiling",
+      "forbidden_refs": [
+        "DIAG_STORAGE_DISTRACTOR"
+      ],
+      "missed_refs": [
+        "DIAG_STORAGE_FAILED"
+      ],
+      "observer": {
+        "active_constraints": [
+          "preserve rejected reasoning",
+          "keep active context bounded"
+        ],
+        "changed_constraints": [
+          "storage ceiling increased from one gigabyte to one hundred gigabytes"
+        ],
+        "evidence": [
+          "cold history can remain outside the active prompt"
+        ],
+        "goal": "Choose the research-agent architecture now that the storage ceiling changed",
+        "open_questions": [
+          "Which formerly rejected design is newly feasible?"
+        ]
+      },
+      "required_refs": [
+        "DIAG_STORAGE_FAILED"
+      ],
+      "selector_passed": false,
+      "selector_selected": [
+        "DIAG_STORAGE_DISTRACTOR"
+      ]
+    },
+    {
+      "available_items": [
+        {
+          "content": "Use a semantic evidence index hosted by a remote vector service.",
+          "created_order": 4,
+          "failure_condition": "Requires network access.",
+          "kind": "hypothesis",
+          "origin": "failure_history",
+          "outcome": "rejected",
+          "ref": "DIAG_OFFLINE_FAILED"
+        },
+        {
+          "content": "Build an on-device embedding index with the installed local model.",
+          "created_order": 3,
+          "failure_condition": "",
+          "kind": "hypothesis",
+          "origin": "runtime_reasoning",
+          "outcome": "supported",
+          "ref": "DIAG_OFFLINE_LOCAL"
+        },
+        {
+          "content": "Review the research project evidence before deciding.",
+          "created_order": 5,
+          "failure_condition": "",
+          "kind": "plan",
+          "origin": "runtime_reasoning",
+          "outcome": "untested",
+          "ref": "DIAG_OFFLINE_GENERIC"
+        }
+      ],
+      "case": "unchanged_offline_constraint",
+      "forbidden_refs": [
+        "DIAG_OFFLINE_FAILED"
+      ],
+      "missed_refs": [
+        "DIAG_OFFLINE_LOCAL"
+      ],
+      "observer": {
+        "active_constraints": [
+          "network access remains unavailable"
+        ],
+        "changed_constraints": [],
+        "evidence": [
+          "local embedding inference is installed"
+        ],
+        "goal": "Choose a semantic evidence index for the research project",
+        "open_questions": [
+          "Which currently feasible index should be used?"
+        ]
+      },
+      "required_refs": [
+        "DIAG_OFFLINE_LOCAL"
+      ],
+      "selector_passed": false,
+      "selector_selected": [
+        "DIAG_OFFLINE_GENERIC"
+      ]
+    },
+    {
+      "available_items": [
+        {
+          "content": "Matched-condition evaluation measured recovery on six constraint-change probes.",
+          "created_order": 6,
+          "failure_condition": "",
+          "kind": "evaluation",
+          "origin": "evaluation",
+          "outcome": "supported",
+          "ref": "DIAG_EVIDENCE_EVAL"
+        },
+        {
+          "content": "A retrieval strategy might provide measured recovery evidence in future work.",
+          "created_order": 7,
+          "failure_condition": "",
+          "kind": "hypothesis",
+          "origin": "runtime_reasoning",
+          "outcome": "untested",
+          "ref": "DIAG_EVIDENCE_IDEA"
+        },
+        {
+          "content": "An earlier design note discusses tokenization and caching.",
+          "created_order": 2,
+          "failure_condition": "",
+          "kind": "observation",
+          "origin": "runtime_reasoning",
+          "outcome": "superseded",
+          "ref": "DIAG_EVIDENCE_OLD"
+        }
+      ],
+      "case": "measured_evidence",
+      "forbidden_refs": [],
+      "missed_refs": [
+        "DIAG_EVIDENCE_EVAL"
+      ],
+      "observer": {
+        "active_constraints": [
+          "prefer observed matched-condition evidence over an untested proposal"
+        ],
+        "changed_constraints": [],
+        "evidence": [
+          "evaluation results are available"
+        ],
+        "goal": "Decide which retrieval strategy has measured recovery evidence",
+        "open_questions": [
+          "Which IP reports an observed comparison?"
+        ]
+      },
+      "required_refs": [
+        "DIAG_EVIDENCE_EVAL"
+      ],
+      "selector_passed": false,
+      "selector_selected": [
+        "DIAG_EVIDENCE_IDEA"
+      ]
+    }
+  ],
+  "observable_sha256": "171c84591bd8d408ce745032db0ec2ede7042fab445c7943cba7e8a68ce2067b",
+  "public_evaluation": {
+    "candidate_stderr": {
+      "original_chars": 0,
+      "text": "",
+      "truncated": false
+    },
+    "candidate_stdout": {
+      "original_chars": 0,
+      "text": "",
+      "truncated": false
+    },
+    "case_count": 3,
+    "failure_kind": "",
+    "pass_count": 0,
+    "passed_cases": [],
+    "results": [
+      {
+        "case": "raised_storage_ceiling",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ],
+        "passed": false,
+        "required_refs": [
+          "DIAG_STORAGE_FAILED"
+        ],
+        "selected": [
+          "DIAG_STORAGE_DISTRACTOR"
+        ]
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [
+          "DIAG_OFFLINE_FAILED"
+        ],
+        "passed": false,
+        "required_refs": [
+          "DIAG_OFFLINE_LOCAL"
+        ],
+        "selected": [
+          "DIAG_OFFLINE_GENERIC"
+        ]
+      },
+      {
+        "case": "measured_evidence",
+        "deterministic": true,
+        "error": "",
+        "forbidden_refs": [],
+        "passed": false,
+        "required_refs": [
+          "DIAG_EVIDENCE_EVAL"
+        ],
+        "selected": [
+          "DIAG_EVIDENCE_IDEA"
+        ]
+      }
+    ],
+    "status": "completed",
+    "subprocess_returncode": 0
+  },
+  "source_field_snapshot_sha256": "45f15aec9a11779e91908e308f1d96d503a1efdb25f8122c4270d0ed5b97a4eb",
+  "typed_relational_overlay": {
+    "content_contract": "adds relations only; node content is supplied in the common memory object",
+    "format": "stoe.typed_relational_overlay",
+    "records": [
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.14587541476854032,
+          "goal": 0.26352313834736496,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "contains_change"
+          },
+          {
+            "direction": "outgoing",
+            "relation": "invalidates"
+          },
+          {
+            "direction": "incoming",
+            "relation": "rejected_by"
+          }
+        ],
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 1.0,
+          "final": 0.6909192321229981,
+          "goal": 0.26352313834736496,
+          "state_change": 1.0,
+          "structural": 0.7055630454835736
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.15441754424364348,
+          "goal": 0.2760262237369417,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.14290369422937696,
+          "goal": 0.27524094128159016,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.1556107482516321,
+          "goal": 0.2839809171235324,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      }
+    ],
+    "serialization": {
+      "candidate_record_count": 14,
+      "combined_serialized_characters": 3514,
+      "omitted_for_budget": 9,
+      "visible_record_count": 5
+    },
+    "source_run_ids": [
+      "RETRIEVAL_08e97ebba53a4708",
+      "RETRIEVAL_0d6df598ec5d4784",
+      "RETRIEVAL_30249b95d14d46fc",
+      "RETRIEVAL_15ef493e14c742c9"
+    ],
+    "version": 1
+  },
+  "typed_relational_overlay_sha256": "9d19787b6da30bee3bb5664e3c8eb3860fa36c738b5703759066257441ec6d93",
+  "unstructured_memory": {
+    "budget": {
+      "max_records": 8,
+      "max_serialized_characters": 4000
+    },
+    "content_matching": "identical serialized object in both paired conditions",
+    "format": "stoe.unstructured_memory",
+    "records": [
+      {
+        "case": "raised_storage_ceiling",
+        "external_ref": "DIAG_STORAGE_DISTRACTOR",
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "raised_storage_ceiling",
+        "external_ref": "DIAG_STORAGE_FAILED",
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "external_ref": "DIAG_OFFLINE_GENERIC",
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "external_ref": "DIAG_OFFLINE_LOCAL",
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "measured_evidence",
+        "external_ref": "DIAG_EVIDENCE_EVAL",
+        "record_id": "diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL",
+        "source": "public_diagnostic_item"
+      }
+    ],
+    "serialization": {
+      "candidate_record_count": 14,
+      "combined_serialized_characters": 3514,
+      "omitted_for_budget": 9,
+      "visible_record_count": 5
+    },
+    "version": 1
+  },
+  "unstructured_memory_sha256": "bca8b6c3c6d265d5ac65443eed4e15b5aeb338b0ca2d121d77cb53816a4df004",
+  "version": 1
+}

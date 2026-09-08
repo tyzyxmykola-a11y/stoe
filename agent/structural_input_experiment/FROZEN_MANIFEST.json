@@ -1,0 +1,25 @@
+{
+  "experiment_id": "stoe_structural_input_v1",
+  "status": "FROZEN_NOT_RUN",
+  "frozen_at_utc": "2026-09-07T23:28:18.5288131Z",
+  "critical_file_sha256": {
+    "agent/structural_input_experiment/cases.json": "10c9e3685bc3634715d65418fb694203309698dfc5d9ec73b257aa9857e9186b",
+    "agent/structural_input_experiment/experiment_spec.json": "2fc8cd248950ddec6f421b31c42370cf00bf87ef0efb2e4d686b8beed0446549",
+    "agent/structural_input_experiment/PRE_REGISTRATION.md": "245d620b8c58a3b0476d5c9178087ee2563a38930bffaf501060307a6b9d843b",
+    "agent/structural_input_experiment/FROZEN_INPUT_BUNDLE.json": "45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49",
+    "agent/src/stoe_agent/structural_experiment.py": "04a0e4213900a41f88603c67f13a7df40837256a7bb24dae30fb8b8f0d99e3ca",
+    "agent/src/stoe_agent/supervisor.py": "0f6e8a621a35c928397ee154e4d5992f5d9fc9a4177daaea976df009e38111ab",
+    "agent/src/stoe_agent/investigation.py": "a9ba1c11b760bdcaae0ca9aeda8c95bc4bc1d106bf4ca7127bd00902f838432f",
+    "agent/src/stoe_agent/selection_policy.py": "eef574eefb8f700784b2d0ae124f6a5c102628bc32d9f78dd83757d24b3cc3e6",
+    "agent/src/stoe_agent/selector_loader.py": "4baf41b2fe1401fdc415c890d3d8c7425f1e103327bdd3217517e8a988ad1b89",
+    "agent/src/stoe_agent/ollama.py": "274dede0edb992c1d745e9be14a4862088ccb8b08327316b4af1fa6c2ee8747d",
+    "agent/src/stoe_agent/protected_worker.py": "135c3b84bffb2cb51cf4bb1b6aa03bbafd12752be878e96460be9577f090e39a",
+    "agent/src/stoe_agent/public_worker.py": "935942ba74a30b80005064c300a69a836ff55181f984a82dccd835437e93199d",
+    "agent/src/stoe_agent/cli.py": "466582109a8be7de3d4b66b3566ed9811fc2e2842a611f15f59dc1b31742a447",
+    "agent/tests/test_structural_experiment.py": "e26371423692bef50d5733e73003037925537312019c26be3a12833f01f88c63"
+  },
+  "historical_evidence_sha256": {
+    "agent/rebuild_reports/20260906T125305Z_92e7e913.json": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1",
+    "agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1"
+  }
+}

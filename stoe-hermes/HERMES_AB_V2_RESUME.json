@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "budget": {
+    "limit_tokens": 1800,
+    "estimator": "conservative_utf8_bytes_div_3",
+    "target_has_meaningful_reserve": true
+  },
+  "canonical_field": "C:\\Users\\Bozuron\\AppData\\Local\\SToE\\field.sqlite3",
+  "observer_state_ref": "STATE_30de6a1f336c4b58",
+  "retrieval_run_id": "RETRIEVAL_3904e31d862c481b",
+  "active_release": {
+    "release_id": "hermes-a-bb924730743c",
+    "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+    "rollback_target": "hermes-a-bb924730743c",
+    "state_ref": "IP_906d9a7961df4591"
+  },
+  "candidate": {
+    "release_id": "hermes-b-base-bb924730743c",
+    "status": "clean_base_only_no_source_candidate",
+    "failure_ref": "IP_b2da861898e04b38"
+  },
+  "decision_ref": "IP_cdc8ce91befe41d0",
+  "next_action_ref": "IP_28cdc8132c3f4b30",
+  "raw_response_ref": "IP_3fa647496c4a4237",
+  "qualification_ref": "IP_68c69374fa2e4a8f",
+  "successor_state_ref": "IP_fed1fbca2e38476a",
+  "closed_action_id": "self-code-cycle:hermes-ab-v2:split-model-deduplicate-context",
+  "completed_model_calls": {
+    "gemma_planner_qualification": 1,
+    "qwen_coder": 0,
+    "gemma_reviewer": 0,
+    "real_stage": 0
+  },
+  "activation_status": "unchanged",
+  "instruction": "Resolve referenced IPs from canonical SToE Memory; never retry the closed v2 action. Await Mykola's decision on a new v2.1 qualification action."
+}

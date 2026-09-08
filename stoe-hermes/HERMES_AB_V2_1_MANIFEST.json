@@ -1,0 +1,25 @@
+{
+  "action_id": "self-code-cycle:hermes-ab-v2-1:split-model-deduplicate-context",
+  "status": "failed_conserved_no_execution_no_activation",
+  "repository_parent": "d81f8b7bd8ca233217442038e2ede68054f594a3",
+  "active_hermes": {"version": "0.20.3", "commit": "bb924730743cc05934bf0dfd188abdfdb46c03c2", "changed": false},
+  "models": {
+    "gemma": {"name": "gemma4:26b", "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68", "calls": 1, "review_calls": 0},
+    "coder": {"name": "qwen3-coder:latest", "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca", "calls": 1}
+  },
+  "plan": {"status": "valid_first_attempt", "repair_children": 0, "prompt_tokens": 4964, "output_tokens": 307, "raw_sha256": "f377c90dafa77cd2a813e2616db084da9f874f6819b06aded32edad1f7cadf30"},
+  "candidate": {"status": "rejected_unmaterialized", "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155", "reconstructed_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff", "raw_sha256": "f899b1f984031a0addf59ff1429816451f1aacbe451fe807c4cc87eaa5f3e1fa", "failure": "validator rejects parent-inherited ast.Raise", "applied": false, "executed": false},
+  "context": {"tokens_before": 5527, "tokens_after": 3438, "canonical_payloads": 10, "connections": 10, "collapsed_duplicates": 0},
+  "tests": {"hermes": "18/18", "agent": "77/77", "v9_1": "50/50", "v3": "21/21", "memory": "9/9", "resume_tokens": 371, "resume_reserve": 1429},
+  "field_refs": {"observer": "STATE_7ffbaf1895d6425a", "objective": "IP_5c913d8bd3f14afb", "plan": "IP_2f8dcdfc77374bff", "failure": "IP_15f488b9926a479f", "diagnosis": "IP_83a2caf23edb43a5", "evaluation": "IP_5a3a733738fd46d8", "decision": "IP_2545cbef7d584210", "successor": "IP_6b7689bcdbfa4eb1", "next_action": "IP_d8e05dd4b1704c56"},
+  "files": {
+    "HERMES_AB_SUCCESSION_V2_1.md": "31a89252c29ae6e3737e761097eb7c505d60331bfb8883b9c38c7c333f38e70e",
+    "HERMES_AB_V2_1_RESUME.json": "ec4bf7714e0041019b111518dd66a089c42fa93e8cd533ade6ca0cb7f2725473",
+    "src/stoe_hermes/split_cycle_v2_1.py": "a68a50da75392dbbb32b0d9e794d82b50343228f3426861ff2b3a884307258a2",
+    "tests/test_split_cycle_v2_1.py": "07bf58e5c4e933a1ab17f02e5c780f213b134537ebf02cff6a6d6f0abf43a9be",
+    "tools/run_split_cycle_v2_1.py": "0c564cbaf3f5def124f8325eabb793588fdf0b5dafa176b4793109bad6d17470",
+    "agent/runtime/hermes_ab_v2_1/cycle.json": "8dfad06c839305b98f909575b9ef5ea0efac96b5be49425b2030781256003201",
+    "agent/runtime/hermes_ab_v2_1/raw/real_gemma_plan.ndjson": "f377c90dafa77cd2a813e2616db084da9f874f6819b06aded32edad1f7cadf30",
+    "agent/runtime/hermes_ab_v2_1/raw/real_qwen_code.ndjson": "f899b1f984031a0addf59ff1429816451f1aacbe451fe807c4cc87eaa5f3e1fa"
+  }
+}

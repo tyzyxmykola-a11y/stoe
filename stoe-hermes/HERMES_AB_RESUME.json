@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "budget": {
+    "limit_tokens": 1800,
+    "estimator": "conservative_utf8_bytes_div_3",
+    "target_has_meaningful_reserve": true
+  },
+  "canonical_field": "C:\\Users\\Bozuron\\AppData\\Local\\SToE\\field.sqlite3",
+  "observer_state_ref": "STATE_0612346daac749e8",
+  "retrieval_run_id": "RETRIEVAL_4f08778dbd1149b6",
+  "active_release": {
+    "release_id": "hermes-a-bb924730743c",
+    "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+    "rollback_target": "hermes-a-bb924730743c",
+    "state_ref": "IP_f5251b1c42e64591"
+  },
+  "candidate": {
+    "release_id": null,
+    "status": "rejected_before_materialization",
+    "failure_ref": "IP_1f723d4454b64d93"
+  },
+  "decision_ref": "IP_66b946664879488d",
+  "next_action_ref": "IP_466b872d21104589",
+  "raw_response_ref": "IP_68becf3abc584e36",
+  "qualification_ref": "IP_8637864afa7d460d",
+  "closed_action_id": "self-code-cycle:hermes-ab-v1:deduplicate-context",
+  "activation_status": "unchanged",
+  "activation_blockers": ["active_source_dirty", "active_source_divergent"],
+  "instruction": "Resolve referenced IPs from canonical SToE Memory; never retry the closed action from this snapshot."
+}

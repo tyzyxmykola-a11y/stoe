@@ -1,0 +1,98 @@
+{
+  "action_id": "self-code-cycle:hermes-ab-v2:split-model-deduplicate-context",
+  "status": "qualification_failed_no_source_candidate_no_activation",
+  "repository_parent": "1dda348f2f493178f1197160f64f8425b1bf3201",
+  "active_hermes": {
+    "version": "0.20.3 (2026.8.16.2)",
+    "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+    "configuration_sha256": "1cd7a8c9c38812b6cfe47b2085dd796ceb4e93f65ac2a2b8339ac33831200b80",
+    "soul_sha256": "2765a846e1bb371d78d3b93b403dfb0f8d1ba1a9895edb5f608367abfe81194d",
+    "changed": false
+  },
+  "candidate_base": {
+    "release_id": "hermes-b-base-bb924730743c",
+    "parent_release": "hermes-a-bb924730743c",
+    "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+    "environment_fingerprint": "cd15314f4557779e7a01a673d4962b1043c25d3dc16c7afabd52b792dd6dedf6",
+    "configuration_sha256": "5a666961722223962ec9d83df6435658418a4ceb9527113477972343bcbadfda",
+    "status": "inactive_clean_base_only"
+  },
+  "models": {
+    "ollama_version": "0.33.3",
+    "planner_reviewer": {
+      "name": "gemma4:26b",
+      "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+      "qualification_calls": 1,
+      "real_calls": 0
+    },
+    "coder": {
+      "name": "qwen3-coder:latest",
+      "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "qualification_calls": 0,
+      "real_calls": 0
+    },
+    "effective_context_tokens": 16384
+  },
+  "planner_failure": {
+    "diagnosis": "OUTPUT_TRUNCATION",
+    "prompt_tokens": 80,
+    "output_tokens": 700,
+    "total_tokens": 780,
+    "done_reason": "length",
+    "stream_complete": true,
+    "wall_seconds": 25.39,
+    "raw_response_bytes": 72184,
+    "raw_response_sha256": "6c2ca9bbc7e3d2f44b05e9e054dbf3a2ef55664eaa753aadbad4508d72f6c18f",
+    "parser_error": "JSONDecodeError: Unterminated string starting at line 7 column 19"
+  },
+  "candidate": {
+    "source_candidate_sha256": null,
+    "coding_model_calls": 0,
+    "validation": "not_reached",
+    "tests": "not_reached",
+    "review": "not_reached",
+    "activation": "not_authorized"
+  },
+  "qualification": {
+    "hermes_ab_and_split": "13/13",
+    "agent": "77/77",
+    "v9_1": "50/50",
+    "v3": "21/21",
+    "stoe_memory": "9/9",
+    "fresh_resume_tokens": 424,
+    "fresh_resume_reserve": 1376,
+    "git_diff_check": "passed"
+  },
+  "field_refs": {
+    "observer_state": "STATE_30de6a1f336c4b58",
+    "retrieval": "RETRIEVAL_3904e31d862c481b",
+    "active_ancestor": "IP_906d9a7961df4591",
+    "clean_base": "IP_2afa733a71154831",
+    "construction_failures": "IP_d9147af913454ae4",
+    "planner_failure": "IP_b2da861898e04b38",
+    "evaluation": "IP_68c69374fa2e4a8f",
+    "decision": "IP_cdc8ce91befe41d0",
+    "successor_state": "IP_fed1fbca2e38476a",
+    "next_action": "IP_28cdc8132c3f4b30"
+  },
+  "files": {
+    "HERMES_AB_SUCCESSION_V2.md": "64cf41a3e7133920957c6f2df15c5b19f4b1bad8ac3361f6122e92f409e03dbd",
+    "HERMES_AB_V2_RESUME.json": "1d389b130a90a2e730ca2b59e30209cb21a64b90272e5cfcc81ff4c23ab4e994",
+    "snapshots/hermes_a_audit.json": "64468630260a049c1ed9e3d8071a69013b5569a41a089ed908d0928921f0f8f3",
+    "snapshots/hermes_a_tracked.patch": "841f54537c5f7db3c597ae0a173323b8222a2c190c8a4724c84adc165c8b8f6d",
+    "src/stoe_hermes/split_cycle.py": "667de30d63b88af494305467d73afb50bcafab6ad3d26c25c42a5b37b38641a6",
+    "tests/test_split_cycle_v2.py": "ad33edab7f88a54de852c566edeacb2c7b423689051b12d3367730bb3e7c3ae1",
+    "tools/prepare_hermes_b.py": "6ebab8ea99fd4cec9293d75bbaa3401f6ac18ed49112858088c2ae98f324b359",
+    "tools/diagnose_candidate_b.py": "9e1d7d62d4cb1dde3f58423a5a2bff1423f73afcf61b6f0611d78d473857f358",
+    "tools/run_split_cycle_v2.py": "53bfc2ca91753601f7536744a8a3ac5b27fa47b7cd6ea0813866b1cc4ecf9509",
+    "agent/runtime/hermes_ab_v2/raw/qualification_gemma_plan.ndjson": "6c2ca9bbc7e3d2f44b05e9e054dbf3a2ef55664eaa753aadbad4508d72f6c18f",
+    "agent/runtime/hermes_ab_v2/split_cycle.json": "8b6189e6c232651c74b76e334620c8dc7cd804610fa00ad25f5c0f093fdc39bc"
+  },
+  "historical_conservation": {
+    "v1_succession_py_sha256": "acaba45820df76c06d11d9df998b008a06dc5271d7226762d442b4cbf22b1268",
+    "v1_test_sha256": "4b3874ae173b716be343176a81da24466267b638ec15c71af619849777bd6879",
+    "accepted_report_sha256": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1",
+    "accepted_selector_sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+    "changed": false
+  }
+}

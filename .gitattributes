@@ -2,3 +2,7 @@
 * -text
 *.pdf binary
 *.gz binary
+
+# Preserve accepted agent artifacts whose published SHA-256 identities are fixed.
+agent/rebuild_reports/20260906T125305Z_92e7e913.json -text whitespace=-trailing-space
+agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py -text whitespace=-trailing-space

@@ -1,0 +1,1030 @@
+{
+  "action_id": "model-cycle:structural-input-v1",
+  "activated": false,
+  "activation": null,
+  "active_frozen_evaluation": {
+    "artifact": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\generated_20260906T125305Z_92e7e913.py",
+    "artifact_type": "legacy_python",
+    "case_count": 12,
+    "critical_failures": [
+      "certification_constraint_remains_active"
+    ],
+    "pass_count": 3,
+    "passed_cases": [
+      "network_constraint_remains_active",
+      "measured_outcome_outranks_prediction",
+      "oversize_item_does_not_block_budget"
+    ],
+    "results": [
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "memory_capacity_reopens_full_provenance",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U03"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "parser_upgrade_reopens_streaming_format",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U06"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "archive_consent_reopens_longitudinal_linkage",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U08"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "deadline_extension_reopens_manual_adjudication",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U11"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "power_upgrade_reopens_onsite_sensor",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U15"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "export_exception_reopens_reproducible_tool",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U17"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "instrument_repair_reopens_high_resolution_scan",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U20"
+        ]
+      },
+      {
+        "critical": false,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": true,
+        "name": "corpus_release_reopens_dialect_model",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "U23"
+        ]
+      },
+      {
+        "critical": true,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "network_constraint_remains_active",
+        "passed": true,
+        "required_present": true,
+        "selected": [
+          "C02"
+        ]
+      },
+      {
+        "critical": true,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "certification_constraint_remains_active",
+        "passed": false,
+        "required_present": false,
+        "selected": [
+          "C06"
+        ]
+      },
+      {
+        "critical": true,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "measured_outcome_outranks_prediction",
+        "passed": true,
+        "required_present": true,
+        "selected": [
+          "C07"
+        ]
+      },
+      {
+        "critical": true,
+        "deterministic": true,
+        "error": "",
+        "forbidden_present": false,
+        "name": "oversize_item_does_not_block_budget",
+        "passed": true,
+        "required_present": true,
+        "selected": [
+          "C12",
+          "C11"
+        ]
+      }
+    ],
+    "status": "completed",
+    "subprocess_returncode": 0
+  },
+  "active_metrics": {
+    "by_family": {
+      "budget_control": true,
+      "data_permission": false,
+      "equipment_state": false,
+      "evaluation_control": true,
+      "evidence_availability": false,
+      "physical_infrastructure": false,
+      "regulatory_change": false,
+      "resource_capacity": false,
+      "safety_control": false,
+      "schedule_change": false,
+      "software_capability": false,
+      "unchanged_constraint_control": true
+    },
+    "case_count": 12,
+    "control_case_count": 4,
+    "control_pass_count": 3,
+    "targeted_case_count": 8,
+    "targeted_pass_count": 0,
+    "total_pass_count": 3
+  },
+  "classification": "single_frozen_paired_pipeline_intervention_on_unseen_cases",
+  "conditions": {
+    "BOUNDED_TYPED_STOE": {
+      "acceptance": {
+        "decision": "REJECT",
+        "reason": "generation or policy validation failed"
+      },
+      "condition": "BOUNDED_TYPED_STOE",
+      "error": "ContextBudgetExceeded: estimated context exceeds fixed limit while preserving generation and checkpoint reserves: 8388 > 8192",
+      "failure_stage": "policy_generation",
+      "frozen_evaluation": {
+        "case_count": 12,
+        "pass_count": 0,
+        "results": [],
+        "status": "not_run"
+      },
+      "metrics": {
+        "by_family": {
+          "budget_control": false,
+          "data_permission": false,
+          "equipment_state": false,
+          "evaluation_control": false,
+          "evidence_availability": false,
+          "physical_infrastructure": false,
+          "regulatory_change": false,
+          "resource_capacity": false,
+          "safety_control": false,
+          "schedule_change": false,
+          "software_capability": false,
+          "unchanged_constraint_control": false
+        },
+        "case_count": 12,
+        "control_case_count": 4,
+        "control_pass_count": 0,
+        "targeted_case_count": 8,
+        "targeted_pass_count": 0,
+        "total_pass_count": 0
+      },
+      "proposal": {
+        "diagnostic_findings": [
+          {
+            "case": "raised_storage_ceiling",
+            "missed_required": [
+              "DIAG_STORAGE_FAILED"
+            ],
+            "observed_selection": [
+              "DIAG_STORAGE_DISTRACTOR"
+            ],
+            "relation_to_hypothesis": "The selector's scoring logic fails to prioritize invalidated items sufficiently when their content overlaps minimally with the goal.",
+            "source_mechanism": "select_context outcome check for 'failed' or 'invalidated' in item.outcome, which does not trigger when content overlaps minimally with the goal and the item is not explicitly marked as failed or invalidated in its content tokens."
+          },
+          {
+            "case": "unchanged_offline_constraint",
+            "missed_required": [
+              "DIAG_OFFLINE_LOCAL"
+            ],
+            "observed_selection": [
+              "DIAG_OFFLINE_GENERIC"
+            ],
+            "relation_to_hypothesis": "The selector's scoring logic fails to prioritize supported items sufficiently when their content overlaps minimally with the goal.",
+            "source_mechanism": "select_context outcome check for 'supported' in item.outcome, which does not trigger when content overlaps minimally with the goal and the item is not explicitly marked as supported in its content tokens."
+          },
+          {
+            "case": "measured_evidence",
+            "missed_required": [
+              "DIAG_EVIDENCE_EVAL"
+            ],
+            "observed_selection": [
+              "DIAG_EVIDENCE_IDEA"
+            ],
+            "relation_to_hypothesis": "The selector's scoring logic fails to prioritize supported items sufficiently when their content overlaps minimally with the goal.",
+            "source_mechanism": "select_context outcome check for 'supported' in item.outcome, which does not trigger when content overlaps minimally with the goal and the item is not explicitly marked as supported in its content tokens."
+          }
+        ],
+        "expected_benefit": "Improved selection accuracy for invalidated or constraint-relevant items, reducing missed required references in diagnostic cases where lexical overlap is low but contextual relevance is high.",
+        "hypothesis": "The selector prioritizes items based on lexical overlap with the goal, but fails to sufficiently boost scores for invalidated or constraint-relevant items when their content overlaps minimally with the goal.",
+        "implementation_inputs": [
+          "observer_state.goal",
+          "observer_state.active_constraints",
+          "observer_state.changed_constraints",
+          "observer_state.evidence",
+          "observer_state.open_questions",
+          "item.ref",
+          "item.content",
+          "item.origin",
+          "item.kind",
+          "item.outcome",
+          "item.failure_condition",
+          "item.created_order",
+          "max_items",
+          "max_chars"
+        ],
+        "input_feasibility": "All required inputs are publicly accessible and observable in the active selector's runtime context.",
+        "observed_evidence": [
+          "DIAG_STORAGE_FAILED was missed despite being invalidated and relevant to the changed constraint.",
+          "DIAG_OFFLINE_LOCAL was missed despite being supported and relevant to the unchanged constraint.",
+          "DIAG_EVIDENCE_EVAL was missed despite being supported and directly addressing the goal."
+        ],
+        "proposed_change": "Increase the boost score for invalidated or constraint-relevant items in select_context to ensure they are prioritized even with minimal lexical overlap, by adjusting the outcome-based scoring logic.",
+        "risks": [
+          "Over-boosting may cause irrelevant items to be selected if not carefully calibrated."
+        ],
+        "source_diagnosis": "The selector's scoring mechanism does not adequately weight outcome-based boosts (e.g., 'failed', 'invalidated', 'supported') when the lexical overlap between item content and the goal is low."
+      },
+      "proposal_trace": {
+        "omitted_response_fields": [
+          "context"
+        ],
+        "parsed_response_channel": "response",
+        "provider_token_usage": {
+          "output_tokens": 760,
+          "prompt_tokens": 3671,
+          "source": "ollama_provider_counts",
+          "total_tokens": 4431
+        },
+        "request": {
+          "format": {
+            "additionalProperties": false,
+            "properties": {
+              "diagnostic_findings": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "case": {
+                      "type": "string"
+                    },
+                    "missed_required": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "observed_selection": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "relation_to_hypothesis": {
+                      "type": "string"
+                    },
+                    "source_mechanism": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "case",
+                    "observed_selection",
+                    "missed_required",
+                    "source_mechanism",
+                    "relation_to_hypothesis"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "expected_benefit": {
+                "type": "string"
+              },
+              "hypothesis": {
+                "type": "string"
+              },
+              "implementation_inputs": {
+                "items": {
+                  "enum": [
+                    "observer_state.goal",
+                    "observer_state.active_constraints",
+                    "observer_state.changed_constraints",
+                    "observer_state.evidence",
+                    "observer_state.open_questions",
+                    "item.ref",
+                    "item.content",
+                    "item.origin",
+                    "item.kind",
+                    "item.outcome",
+                    "item.failure_condition",
+                    "item.created_order",
+                    "max_items",
+                    "max_chars"
+                  ],
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "input_feasibility": {
+                "type": "string"
+              },
+              "observed_evidence": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "proposed_change": {
+                "type": "string"
+              },
+              "risks": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "source_diagnosis": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "hypothesis",
+              "observed_evidence",
+              "diagnostic_findings",
+              "source_diagnosis",
+              "proposed_change",
+              "implementation_inputs",
+              "input_feasibility",
+              "expected_benefit",
+              "risks"
+            ],
+            "type": "object"
+          },
+          "keep_alive": "10m",
+          "model": "qwen3-coder:latest",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 1400,
+            "seed": 3701,
+            "temperature": 0,
+            "top_k": 40,
+            "top_p": 0.9
+          },
+          "prompt": "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded concise implementation hypothesis. Keep every prose field to one or two sentences. diagnostic_findings MUST contain one entry for every failed public diagnostic, with its exact observed selections and missed required refs. Each source_mechanism must name a field or operation visible in ACTIVE SOURCE. Reject abstract ontology language that is not tied to an observed selection decision. Do not assume observer-aware scoring is better merely because it is SToE-derived. List every runtime value required by the proposed implementation in implementation_inputs, using only the exact PUBLIC INPUT FIELDS below. Navigator edge types, paths, relation labels, and scores are investigation evidence only: select_context does not receive them. Do not disguise an unavailable structural signal as failure_condition or another public field. Do not request evaluator changes; the supervisor's acceptance and rollback rules are fixed.\n\nPUBLIC INPUT FIELDS:\n[\n  \"observer_state.goal\",\n  \"observer_state.active_constraints\",\n  \"observer_state.changed_constraints\",\n  \"observer_state.evidence\",\n  \"observer_state.open_questions\",\n  \"item.ref\",\n  \"item.content\",\n  \"item.origin\",\n  \"item.kind\",\n  \"item.outcome\",\n  \"item.failure_condition\",\n  \"item.created_order\",\n  \"max_items\",\n  \"max_chars\"\n]\n\nACTIVE SOURCE:\nimport re\n\ndef _tokens(text: str) -> set[str]:\n    return {token for token in re.findall(r\"[a-z0-9]+\", text.lower()) if len(token) > 2}\n\ndef select_context(\n    observer_state: dict,\n    items: list[dict],\n    max_items: int,\n    max_chars: int,\n) -> list[str]:\n    \"\"\"Return refs ranked by lexical overlap with the current goal, prioritizing invalidated or constraint-relevant items.\"\"\"\n    query = _tokens(str(observer_state.get(\"goal\", \"\")))\n    ranked: list[tuple[float, int, str, dict]] = []\n    for item in items:\n        content_tokens = _tokens(str(item.get(\"content\", \"\")))\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\n        \n        # Boost score for invalidated or constraint-relevant items\n        outcome = str(item.get(\"outcome\", \"\"))\n        kind = str(item.get(\"kind\", \"\"))\n        \n        # Prioritize invalidated items (e.g., 'failed', 'invalidated')\n        if 'failed' in outcome.lower() or 'invalidated' in outcome.lower():\n            overlap += 0.3\n        elif 'supported' in outcome.lower():\n            overlap += 0.2\n        \n        # Prioritize items with constraint-relevant kinds\n        if 'local' in kind.lower():\n            overlap += 0.25\n        elif 'evaluation' in kind.lower() or 'eval' in kind.lower():\n            overlap += 0.25\n        elif 'storage' in kind.lower() or 'memory' in kind.lower():\n            overlap += 0.25\n        \n        ranked.append((overlap, int(item.get(\"created_order\", 0)), str(item[\"ref\"]), item))\n\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\n    selected: list[str] = []\n    used_chars = 0\n    for _score, _order, ref, item in ranked:\n        size = len(str(item.get(\"content\", \"\")))\n        if len(selected) >= max_items:\n            break\n        if used_chars + size > max_chars:\n            continue\n        selected.append(ref)\n        used_chars += size\n    return selected\n\n\nINVESTIGATION:\n{\n  \"diagnostics\": [\n    {\n      \"available_items\": [\n        {\n          \"content\": \"Partitioned cold provenance retains rejected hypotheses outside active context.\",\n          \"created_order\": 1,\n          \"failure_condition\": \"A one gigabyte storage ceiling made partitioned history infeasible.\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"failure_history\",\n          \"outcome\": \"rejected\",\n          \"ref\": \"DIAG_STORAGE_FAILED\"\n        },\n        {\n          \"content\": \"Choose the current research-agent architecture by reviewing current architecture notes.\",\n          \"created_order\": 3,\n          \"failure_condition\": \"\",\n          \"kind\": \"plan\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"untested\",\n          \"ref\": \"DIAG_STORAGE_DISTRACTOR\"\n        },\n        {\n          \"content\": \"A compact success-only cache was fast but lost rejected-path provenance.\",\n          \"created_order\": 2,\n          \"failure_condition\": \"\",\n          \"kind\": \"evaluation\",\n          \"origin\": \"evaluation\",\n          \"outcome\": \"supported\",\n          \"ref\": \"DIAG_STORAGE_EVAL\"\n        }\n      ],\n      \"case\": \"raised_storage_ceiling\",\n      \"forbidden_refs\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"missed_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"observer\": {\n        \"active_constraints\": [\n          \"preserve rejected reasoning\",\n          \"keep active context bounded\"\n        ],\n        \"changed_constraints\": [\n          \"storage ceiling increased from one gigabyte to one hundred gigabytes\"\n        ],\n        \"evidence\": [\n          \"cold history can remain outside the active prompt\"\n        ],\n        \"goal\": \"Choose the research-agent architecture now that the storage ceiling changed\",\n        \"open_questions\": [\n          \"Which formerly rejected design is newly feasible?\"\n        ]\n      },\n      \"required_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"selector_passed\": false,\n      \"selector_selected\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ]\n    },\n    {\n      \"available_items\": [\n        {\n          \"content\": \"Use a semantic evidence index hosted by a remote vector service.\",\n          \"created_order\": 4,\n          \"failure_condition\": \"Requires network access.\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"failure_history\",\n          \"outcome\": \"rejected\",\n          \"ref\": \"DIAG_OFFLINE_FAILED\"\n        },\n        {\n          \"content\": \"Build an on-device embedding index with the installed local model.\",\n          \"created_order\": 3,\n          \"failure_condition\": \"\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"supported\",\n          \"ref\": \"DIAG_OFFLINE_LOCAL\"\n        },\n        {\n          \"content\": \"Review the research project evidence before deciding.\",\n          \"created_order\": 5,\n          \"failure_condition\": \"\",\n          \"kind\": \"plan\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"untested\",\n          \"ref\": \"DIAG_OFFLINE_GENERIC\"\n        }\n      ],\n      \"case\": \"unchanged_offline_constraint\",\n      \"forbidden_refs\": [\n        \"DIAG_OFFLINE_FAILED\"\n      ],\n      \"missed_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"observer\": {\n        \"active_constraints\": [\n          \"network access remains unavailable\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"local embedding inference is installed\"\n        ],\n        \"goal\": \"Choose a semantic evidence index for the research project\",\n        \"open_questions\": [\n          \"Which currently feasible index should be used?\"\n        ]\n      },\n      \"required_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"selector_passed\": false,\n      \"selector_selected\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ]\n    },\n    {\n      \"available_items\": [\n        {\n          \"content\": \"Matched-condition evaluation measured recovery on six constraint-change probes.\",\n          \"created_order\": 6,\n          \"failure_condition\": \"\",\n          \"kind\": \"evaluation\",\n          \"origin\": \"evaluation\",\n          \"outcome\": \"supported\",\n          \"ref\": \"DIAG_EVIDENCE_EVAL\"\n        },\n        {\n          \"content\": \"A retrieval strategy might provide measured recovery evidence in future work.\",\n          \"created_order\": 7,\n          \"failure_condition\": \"\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"untested\",\n          \"ref\": \"DIAG_EVIDENCE_IDEA\"\n        },\n        {\n          \"content\": \"An earlier design note discusses tokenization and caching.\",\n          \"created_order\": 2,\n          \"failure_condition\": \"\",\n          \"kind\": \"observation\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"superseded\",\n          \"ref\": \"DIAG_EVIDENCE_OLD\"\n        }\n      ],\n      \"case\": \"measured_evidence\",\n      \"forbidden_refs\": [],\n      \"missed_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"observer\": {\n        \"active_constraints\": [\n          \"prefer observed matched-condition evidence over an untested proposal\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"evaluation results are available\"\n        ],\n        \"goal\": \"Decide which retrieval strategy has measured recovery evidence\",\n        \"open_questions\": [\n          \"Which IP reports an observed comparison?\"\n        ]\n      },\n      \"required_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"selector_passed\": false,\n      \"selector_selected\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ]\n    }\n  ],\n  \"bounded_prior_context\": [],\n  \"known_structure\": \"The source, observer fields, available candidates, actual outputs, and failure conditions are observed.\",\n  \"unknown_structure\": \"The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable.\"\n}\n\nBOUNDED UNSTRUCTURED MEMORY (identical in both paired conditions):\n{\n  \"budget\": {\n    \"max_records\": 8,\n    \"max_serialized_characters\": 4000\n  },\n  \"content_matching\": \"identical serialized object in both paired conditions\",\n  \"format\": \"stoe.unstructured_memory\",\n  \"records\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"external_ref\": \"DIAG_STORAGE_DISTRACTOR\",\n      \"record_id\": \"diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"external_ref\": \"DIAG_STORAGE_FAILED\",\n      \"record_id\": \"diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"external_ref\": \"DIAG_OFFLINE_GENERIC\",\n      \"record_id\": \"diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"external_ref\": \"DIAG_OFFLINE_LOCAL\",\n      \"record_id\": \"diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"external_ref\": \"DIAG_EVIDENCE_EVAL\",\n      \"record_id\": \"diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL\",\n      \"source\": \"public_diagnostic_item\"\n    }\n  ],\n  \"serialization\": {\n    \"candidate_record_count\": 14,\n    \"combined_serialized_characters\": 3514,\n    \"omitted_for_budget\": 9,\n    \"visible_record_count\": 5\n  },\n  \"version\": 1\n}\n\nBOUNDED TYPED STRUCTURAL EVIDENCE FROM THE STOE FIELD (evidence for research; not selector runtime inputs):\n{\n  \"content_contract\": \"adds relations only; node content is supplied in the common memory object\",\n  \"format\": \"stoe.typed_relational_overlay\",\n  \"records\": [\n    {\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"relation\": \"evolved_from\"\n        },\n        {\n          \"direction\": \"incoming\",\n          \"relation\": \"available_to\"\n        }\n      ],\n      \"record_id\": \"diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR\",\n      \"record_type\": \"diagnostic_typed_path\",\n      \"scores\": {\n        \"failure\": 0.0,\n        \"final\": 0.14587541476854032,\n        \"goal\": 0.26352313834736496,\n        \"state_change\": 0.0,\n        \"structural\": 0.502054442732409\n      },\n      \"selected_by_navigator\": true\n    },\n    {\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"relation\": \"contains_change\"\n        },\n        {\n          \"direction\": \"outgoing\",\n          \"relation\": \"invalidates\"\n        },\n        {\n          \"direction\": \"incoming\",\n          \"relation\": \"rejected_by\"\n        }\n      ],\n      \"record_id\": \"diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED\",\n      \"record_type\": \"diagnostic_typed_path\",\n      \"scores\": {\n        \"failure\": 1.0,\n        \"final\": 0.6909192321229981,\n        \"goal\": 0.26352313834736496,\n        \"state_change\": 1.0,\n        \"structural\": 0.7055630454835736\n      },\n      \"selected_by_navigator\": true\n    },\n    {\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"relation\": \"evolved_from\"\n        },\n        {\n          \"direction\": \"incoming\",\n          \"relation\": \"available_to\"\n        }\n      ],\n      \"record_id\": \"diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC\",\n      \"record_type\": \"diagnostic_typed_path\",\n      \"scores\": {\n        \"failure\": 0.0,\n        \"final\": 0.15441754424364348,\n        \"goal\": 0.2760262237369417,\n        \"state_change\": 0.0,\n        \"structural\": 0.502054442732409\n      },\n      \"selected_by_navigator\": true\n    },\n    {\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"relation\": \"evolved_from\"\n        },\n        {\n          \"direction\": \"incoming\",\n          \"relation\": \"available_to\"\n        }\n      ],\n      \"record_id\": \"diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL\",\n      \"record_type\": \"diagnostic_typed_path\",\n      \"scores\": {\n        \"failure\": 0.0,\n        \"final\": 0.14290369422937696,\n        \"goal\": 0.27524094128159016,\n        \"state_change\": 0.0,\n        \"structural\": 0.502054442732409\n      },\n      \"selected_by_navigator\": true\n    },\n    {\n      \"path\": [\n        {\n          \"direction\": \"outgoing\",\n          \"relation\": \"evolved_from\"\n        },\n        {\n          \"direction\": \"incoming\",\n          \"relation\": \"available_to\"\n        }\n      ],\n      \"record_id\": \"diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL\",\n      \"record_type\": \"diagnostic_typed_path\",\n      \"scores\": {\n        \"failure\": 0.0,\n        \"final\": 0.1556107482516321,\n        \"goal\": 0.2839809171235324,\n        \"state_change\": 0.0,\n        \"structural\": 0.502054442732409\n      },\n      \"selected_by_navigator\": true\n    }\n  ],\n  \"serialization\": {\n    \"candidate_record_count\": 14,\n    \"combined_serialized_characters\": 3514,\n    \"omitted_for_budget\": 9,\n    \"visible_record_count\": 5\n  },\n  \"source_run_ids\": [\n    \"RETRIEVAL_08e97ebba53a4708\",\n    \"RETRIEVAL_0d6df598ec5d4784\",\n    \"RETRIEVAL_30249b95d14d46fc\",\n    \"RETRIEVAL_15ef493e14c742c9\"\n  ],\n  \"version\": 1\n}",
+          "stream": false,
+          "system": "You are the bounded research component of an SToE-guided self-developing agent. Infer only from supplied source and evidence. Treat changes as falsifiable engineering hypotheses, not proof of SToE."
+        },
+        "response": {
+          "created_at": "2026-09-08T03:21:54.1453959Z",
+          "done": true,
+          "done_reason": "stop",
+          "eval_count": 760,
+          "eval_duration": 9422875000,
+          "load_duration": 2500200,
+          "model": "qwen3-coder:latest",
+          "prompt_eval_cached_count": 2467,
+          "prompt_eval_count": 3671,
+          "prompt_eval_duration": 501372000,
+          "response": "{\n  \"hypothesis\": \"The selector prioritizes items based on lexical overlap with the goal, but fails to sufficiently boost scores for invalidated or constraint-relevant items when their content overlaps minimally with the goal.\",\n  \"observed_evidence\": [\n    \"DIAG_STORAGE_FAILED was missed despite being invalidated and relevant to the changed constraint.\",\n    \"DIAG_OFFLINE_LOCAL was missed despite being supported and relevant to the unchanged constraint.\",\n    \"DIAG_EVIDENCE_EVAL was missed despite being supported and directly addressing the goal.\"\n  ],\n  \"diagnostic_findings\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"observed_selection\": [\"DIAG_STORAGE_DISTRACTOR\"],\n      \"missed_required\": [\"DIAG_STORAGE_FAILED\"],\n      \"source_mechanism\": \"select_context outcome check for 'failed' or 'invalidated' in item.outcome, which does not trigger when content overlaps minimally with the goal and the item is not explicitly marked as failed or invalidated in its content tokens.\",\n      \"relation_to_hypothesis\": \"The selector's scoring logic fails to prioritize invalidated items sufficiently when their content overlaps minimally with the goal.\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"observed_selection\": [\"DIAG_OFFLINE_GENERIC\"],\n      \"missed_required\": [\"DIAG_OFFLINE_LOCAL\"],\n      \"source_mechanism\": \"select_context outcome check for 'supported' in item.outcome, which does not trigger when content overlaps minimally with the goal and the item is not explicitly marked as supported in its content tokens.\",\n      \"relation_to_hypothesis\": \"The selector's scoring logic fails to prioritize supported items sufficiently when their content overlaps minimally with the goal.\"\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"observed_selection\": [\"DIAG_EVIDENCE_IDEA\"],\n      \"missed_required\": [\"DIAG_EVIDENCE_EVAL\"],\n      \"source_mechanism\": \"select_context outcome check for 'supported' in item.outcome, which does not trigger when content overlaps minimally with the goal and the item is not explicitly marked as supported in its content tokens.\",\n      \"relation_to_hypothesis\": \"The selector's scoring logic fails to prioritize supported items sufficiently when their content overlaps minimally with the goal.\"\n    }\n  ],\n  \"source_diagnosis\": \"The selector's scoring mechanism does not adequately weight outcome-based boosts (e.g., 'failed', 'invalidated', 'supported') when the lexical overlap between item content and the goal is low.\",\n  \"proposed_change\": \"Increase the boost score for invalidated or constraint-relevant items in select_context to ensure they are prioritized even with minimal lexical overlap, by adjusting the outcome-based scoring logic.\",\n  \"implementation_inputs\": [\n    \"observer_state.goal\",\n    \"observer_state.active_constraints\",\n    \"observer_state.changed_constraints\",\n    \"observer_state.evidence\",\n    \"observer_state.open_questions\",\n    \"item.ref\",\n    \"item.content\",\n    \"item.origin\",\n    \"item.kind\",\n    \"item.outcome\",\n    \"item.failure_condition\",\n    \"item.created_order\",\n    \"max_items\",\n    \"max_chars\"\n  ],\n  \"input_feasibility\": \"All required inputs are publicly accessible and observable in the active selector's runtime context.\",\n  \"expected_benefit\": \"Improved selection accuracy for invalidated or constraint-relevant items, reducing missed required references in diagnostic cases where lexical overlap is low but contextual relevance is high.\",\n  \"risks\": [\n    \"Over-boosting may cause irrelevant items to be selected if not carefully calibrated.\"\n  ]\n}",
+          "total_duration": 9939152000
+        },
+        "token_budget": {
+          "actual_provider_usage": {
+            "output_tokens": 760,
+            "prompt_tokens": 3671,
+            "source": "ollama_provider_counts",
+            "total_tokens": 4431
+          },
+          "context_limit_tokens": 8192,
+          "estimated": {
+            "category_attribution": {
+              "retrieved_material": 1283,
+              "task_context": 637,
+              "tool_results": 1335
+            },
+            "checkpoint_reserve": 512,
+            "prompt_total": 4780,
+            "remaining": 1434,
+            "reserved_generation": 1400,
+            "system_instructions": 66,
+            "total_with_reserves": 6758
+          },
+          "estimator": {
+            "exact": false,
+            "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+            "method": "conservative_utf8_bytes_div_3"
+          },
+          "fits": true,
+          "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+          "truncation_events": []
+        }
+      },
+      "public_evaluation": {
+        "case_count": 3,
+        "pass_count": 0,
+        "status": "not_run"
+      },
+      "public_gate": {
+        "decision": "REJECT",
+        "reason": "generation or policy validation failed"
+      },
+      "status": "policy_generation_failed"
+    },
+    "ORDINARY_OBSERVABLE": {
+      "acceptance": {
+        "decision": "REJECT",
+        "reason": "generation or policy validation failed"
+      },
+      "condition": "ORDINARY_OBSERVABLE",
+      "error": "RuntimeError: proposal source mechanism is not tied to active code fields for unchanged_offline_constraint",
+      "failure_stage": "proposal",
+      "frozen_evaluation": {
+        "case_count": 12,
+        "pass_count": 0,
+        "results": [],
+        "status": "not_run"
+      },
+      "metrics": {
+        "by_family": {
+          "budget_control": false,
+          "data_permission": false,
+          "equipment_state": false,
+          "evaluation_control": false,
+          "evidence_availability": false,
+          "physical_infrastructure": false,
+          "regulatory_change": false,
+          "resource_capacity": false,
+          "safety_control": false,
+          "schedule_change": false,
+          "software_capability": false,
+          "unchanged_constraint_control": false
+        },
+        "case_count": 12,
+        "control_case_count": 4,
+        "control_pass_count": 0,
+        "targeted_case_count": 8,
+        "targeted_pass_count": 0,
+        "total_pass_count": 0
+      },
+      "proposal": {
+        "diagnostic_findings": [
+          {
+            "case": "raised_storage_ceiling",
+            "missed_required": [
+              "DIAG_STORAGE_FAILED"
+            ],
+            "observed_selection": [
+              "DIAG_STORAGE_DISTRACTOR"
+            ],
+            "relation_to_hypothesis": "The selector did not sufficiently boost score for invalidated items relevant to preserving rejected reasoning.",
+            "source_mechanism": "select_context outcome check for 'failed' or 'invalidated' items"
+          },
+          {
+            "case": "unchanged_offline_constraint",
+            "missed_required": [
+              "DIAG_OFFLINE_LOCAL"
+            ],
+            "observed_selection": [
+              "DIAG_OFFLINE_GENERIC"
+            ],
+            "relation_to_hypothesis": "The selector did not sufficiently boost score for supported items relevant to local embedding inference.",
+            "source_mechanism": "select_context kind check for 'evaluation' or 'eval' items"
+          },
+          {
+            "case": "measured_evidence",
+            "missed_required": [
+              "DIAG_EVIDENCE_EVAL"
+            ],
+            "observed_selection": [
+              "DIAG_EVIDENCE_IDEA"
+            ],
+            "relation_to_hypothesis": "The selector did not sufficiently boost score for supported items with measured recovery evidence.",
+            "source_mechanism": "select_context outcome check for 'supported' items"
+          }
+        ],
+        "expected_benefit": "The selector will correctly prioritize invalidated or constraint-relevant items when their relevance aligns with active constraints, improving alignment with SToE goals.",
+        "hypothesis": "The selector prioritizes items based on lexical overlap with the goal, but fails to sufficiently boost scores for invalidated or constraint-relevant items when their outcome or kind matches the active constraints.",
+        "implementation_inputs": [
+          "observer_state.goal",
+          "observer_state.active_constraints",
+          "observer_state.changed_constraints",
+          "observer_state.evidence",
+          "observer_state.open_questions",
+          "item.ref",
+          "item.content",
+          "item.origin",
+          "item.kind",
+          "item.outcome",
+          "item.failure_condition",
+          "item.created_order",
+          "max_items",
+          "max_chars"
+        ],
+        "input_feasibility": "All required inputs are publicly available and observable in the active selector's interface.",
+        "observed_evidence": [
+          "In 'raised_storage_ceiling', the selector chose 'DIAG_STORAGE_DISTRACTOR' over 'DIAG_STORAGE_FAILED' despite the latter being invalidated and relevant to preserving rejected reasoning.",
+          "In 'unchanged_offline_constraint', the selector chose 'DIAG_OFFLINE_GENERIC' over 'DIAG_OFFLINE_LOCAL' despite the latter being supported and relevant to local embedding inference.",
+          "In 'measured_evidence', the selector chose 'DIAG_EVIDENCE_IDEA' over 'DIAG_EVIDENCE_EVAL' despite the former being untested and the latter being supported with measured recovery evidence."
+        ],
+        "proposed_change": "Increase the score boost for invalidated items (e.g., 'failed', 'invalidated') and supported items (e.g., 'supported') to ensure they are prioritized over untested or distractor items when relevant to active constraints.",
+        "risks": [
+          "Over-prioritizing invalidated items may lead to selecting outdated or irrelevant information.",
+          "Adjusting score boosts may introduce unintended side effects in other use cases."
+        ],
+        "source_diagnosis": "The selector's scoring logic does not adequately prioritize invalidated or constraint-relevant items when their relevance aligns with active constraints."
+      },
+      "proposal_trace": {
+        "omitted_response_fields": [
+          "context"
+        ],
+        "parsed_response_channel": "response",
+        "provider_token_usage": {
+          "output_tokens": 762,
+          "prompt_tokens": 2473,
+          "source": "ollama_provider_counts",
+          "total_tokens": 3235
+        },
+        "request": {
+          "format": {
+            "additionalProperties": false,
+            "properties": {
+              "diagnostic_findings": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "case": {
+                      "type": "string"
+                    },
+                    "missed_required": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "observed_selection": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "relation_to_hypothesis": {
+                      "type": "string"
+                    },
+                    "source_mechanism": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "case",
+                    "observed_selection",
+                    "missed_required",
+                    "source_mechanism",
+                    "relation_to_hypothesis"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "expected_benefit": {
+                "type": "string"
+              },
+              "hypothesis": {
+                "type": "string"
+              },
+              "implementation_inputs": {
+                "items": {
+                  "enum": [
+                    "observer_state.goal",
+                    "observer_state.active_constraints",
+                    "observer_state.changed_constraints",
+                    "observer_state.evidence",
+                    "observer_state.open_questions",
+                    "item.ref",
+                    "item.content",
+                    "item.origin",
+                    "item.kind",
+                    "item.outcome",
+                    "item.failure_condition",
+                    "item.created_order",
+                    "max_items",
+                    "max_chars"
+                  ],
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "input_feasibility": {
+                "type": "string"
+              },
+              "observed_evidence": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "proposed_change": {
+                "type": "string"
+              },
+              "risks": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "source_diagnosis": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "hypothesis",
+              "observed_evidence",
+              "diagnostic_findings",
+              "source_diagnosis",
+              "proposed_change",
+              "implementation_inputs",
+              "input_feasibility",
+              "expected_benefit",
+              "risks"
+            ],
+            "type": "object"
+          },
+          "keep_alive": "10m",
+          "model": "qwen3-coder:latest",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 1400,
+            "seed": 3701,
+            "temperature": 0,
+            "top_k": 40,
+            "top_p": 0.9
+          },
+          "prompt": "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded concise implementation hypothesis. Keep every prose field to one or two sentences. diagnostic_findings MUST contain one entry for every failed public diagnostic, with its exact observed selections and missed required refs. Each source_mechanism must name a field or operation visible in ACTIVE SOURCE. Reject abstract ontology language that is not tied to an observed selection decision. Do not assume observer-aware scoring is better merely because it is SToE-derived. List every runtime value required by the proposed implementation in implementation_inputs, using only the exact PUBLIC INPUT FIELDS below. Navigator edge types, paths, relation labels, and scores are investigation evidence only: select_context does not receive them. Do not disguise an unavailable structural signal as failure_condition or another public field. Do not request evaluator changes; the supervisor's acceptance and rollback rules are fixed.\n\nPUBLIC INPUT FIELDS:\n[\n  \"observer_state.goal\",\n  \"observer_state.active_constraints\",\n  \"observer_state.changed_constraints\",\n  \"observer_state.evidence\",\n  \"observer_state.open_questions\",\n  \"item.ref\",\n  \"item.content\",\n  \"item.origin\",\n  \"item.kind\",\n  \"item.outcome\",\n  \"item.failure_condition\",\n  \"item.created_order\",\n  \"max_items\",\n  \"max_chars\"\n]\n\nACTIVE SOURCE:\nimport re\n\ndef _tokens(text: str) -> set[str]:\n    return {token for token in re.findall(r\"[a-z0-9]+\", text.lower()) if len(token) > 2}\n\ndef select_context(\n    observer_state: dict,\n    items: list[dict],\n    max_items: int,\n    max_chars: int,\n) -> list[str]:\n    \"\"\"Return refs ranked by lexical overlap with the current goal, prioritizing invalidated or constraint-relevant items.\"\"\"\n    query = _tokens(str(observer_state.get(\"goal\", \"\")))\n    ranked: list[tuple[float, int, str, dict]] = []\n    for item in items:\n        content_tokens = _tokens(str(item.get(\"content\", \"\")))\n        overlap = len(query & content_tokens) / max(1, len(query | content_tokens))\n        \n        # Boost score for invalidated or constraint-relevant items\n        outcome = str(item.get(\"outcome\", \"\"))\n        kind = str(item.get(\"kind\", \"\"))\n        \n        # Prioritize invalidated items (e.g., 'failed', 'invalidated')\n        if 'failed' in outcome.lower() or 'invalidated' in outcome.lower():\n            overlap += 0.3\n        elif 'supported' in outcome.lower():\n            overlap += 0.2\n        \n        # Prioritize items with constraint-relevant kinds\n        if 'local' in kind.lower():\n            overlap += 0.25\n        elif 'evaluation' in kind.lower() or 'eval' in kind.lower():\n            overlap += 0.25\n        elif 'storage' in kind.lower() or 'memory' in kind.lower():\n            overlap += 0.25\n        \n        ranked.append((overlap, int(item.get(\"created_order\", 0)), str(item[\"ref\"]), item))\n\n    ranked.sort(key=lambda row: (-row[0], -row[1], row[2]))\n    selected: list[str] = []\n    used_chars = 0\n    for _score, _order, ref, item in ranked:\n        size = len(str(item.get(\"content\", \"\")))\n        if len(selected) >= max_items:\n            break\n        if used_chars + size > max_chars:\n            continue\n        selected.append(ref)\n        used_chars += size\n    return selected\n\n\nINVESTIGATION:\n{\n  \"diagnostics\": [\n    {\n      \"available_items\": [\n        {\n          \"content\": \"Partitioned cold provenance retains rejected hypotheses outside active context.\",\n          \"created_order\": 1,\n          \"failure_condition\": \"A one gigabyte storage ceiling made partitioned history infeasible.\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"failure_history\",\n          \"outcome\": \"rejected\",\n          \"ref\": \"DIAG_STORAGE_FAILED\"\n        },\n        {\n          \"content\": \"Choose the current research-agent architecture by reviewing current architecture notes.\",\n          \"created_order\": 3,\n          \"failure_condition\": \"\",\n          \"kind\": \"plan\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"untested\",\n          \"ref\": \"DIAG_STORAGE_DISTRACTOR\"\n        },\n        {\n          \"content\": \"A compact success-only cache was fast but lost rejected-path provenance.\",\n          \"created_order\": 2,\n          \"failure_condition\": \"\",\n          \"kind\": \"evaluation\",\n          \"origin\": \"evaluation\",\n          \"outcome\": \"supported\",\n          \"ref\": \"DIAG_STORAGE_EVAL\"\n        }\n      ],\n      \"case\": \"raised_storage_ceiling\",\n      \"forbidden_refs\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"missed_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"observer\": {\n        \"active_constraints\": [\n          \"preserve rejected reasoning\",\n          \"keep active context bounded\"\n        ],\n        \"changed_constraints\": [\n          \"storage ceiling increased from one gigabyte to one hundred gigabytes\"\n        ],\n        \"evidence\": [\n          \"cold history can remain outside the active prompt\"\n        ],\n        \"goal\": \"Choose the research-agent architecture now that the storage ceiling changed\",\n        \"open_questions\": [\n          \"Which formerly rejected design is newly feasible?\"\n        ]\n      },\n      \"required_refs\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"selector_passed\": false,\n      \"selector_selected\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ]\n    },\n    {\n      \"available_items\": [\n        {\n          \"content\": \"Use a semantic evidence index hosted by a remote vector service.\",\n          \"created_order\": 4,\n          \"failure_condition\": \"Requires network access.\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"failure_history\",\n          \"outcome\": \"rejected\",\n          \"ref\": \"DIAG_OFFLINE_FAILED\"\n        },\n        {\n          \"content\": \"Build an on-device embedding index with the installed local model.\",\n          \"created_order\": 3,\n          \"failure_condition\": \"\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"supported\",\n          \"ref\": \"DIAG_OFFLINE_LOCAL\"\n        },\n        {\n          \"content\": \"Review the research project evidence before deciding.\",\n          \"created_order\": 5,\n          \"failure_condition\": \"\",\n          \"kind\": \"plan\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"untested\",\n          \"ref\": \"DIAG_OFFLINE_GENERIC\"\n        }\n      ],\n      \"case\": \"unchanged_offline_constraint\",\n      \"forbidden_refs\": [\n        \"DIAG_OFFLINE_FAILED\"\n      ],\n      \"missed_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"observer\": {\n        \"active_constraints\": [\n          \"network access remains unavailable\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"local embedding inference is installed\"\n        ],\n        \"goal\": \"Choose a semantic evidence index for the research project\",\n        \"open_questions\": [\n          \"Which currently feasible index should be used?\"\n        ]\n      },\n      \"required_refs\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"selector_passed\": false,\n      \"selector_selected\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ]\n    },\n    {\n      \"available_items\": [\n        {\n          \"content\": \"Matched-condition evaluation measured recovery on six constraint-change probes.\",\n          \"created_order\": 6,\n          \"failure_condition\": \"\",\n          \"kind\": \"evaluation\",\n          \"origin\": \"evaluation\",\n          \"outcome\": \"supported\",\n          \"ref\": \"DIAG_EVIDENCE_EVAL\"\n        },\n        {\n          \"content\": \"A retrieval strategy might provide measured recovery evidence in future work.\",\n          \"created_order\": 7,\n          \"failure_condition\": \"\",\n          \"kind\": \"hypothesis\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"untested\",\n          \"ref\": \"DIAG_EVIDENCE_IDEA\"\n        },\n        {\n          \"content\": \"An earlier design note discusses tokenization and caching.\",\n          \"created_order\": 2,\n          \"failure_condition\": \"\",\n          \"kind\": \"observation\",\n          \"origin\": \"runtime_reasoning\",\n          \"outcome\": \"superseded\",\n          \"ref\": \"DIAG_EVIDENCE_OLD\"\n        }\n      ],\n      \"case\": \"measured_evidence\",\n      \"forbidden_refs\": [],\n      \"missed_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"observer\": {\n        \"active_constraints\": [\n          \"prefer observed matched-condition evidence over an untested proposal\"\n        ],\n        \"changed_constraints\": [],\n        \"evidence\": [\n          \"evaluation results are available\"\n        ],\n        \"goal\": \"Decide which retrieval strategy has measured recovery evidence\",\n        \"open_questions\": [\n          \"Which IP reports an observed comparison?\"\n        ]\n      },\n      \"required_refs\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"selector_passed\": false,\n      \"selector_selected\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ]\n    }\n  ],\n  \"bounded_prior_context\": [],\n  \"known_structure\": \"The source, observer fields, available candidates, actual outputs, and failure conditions are observed.\",\n  \"unknown_structure\": \"The diagnostics do not establish which implementation change will generalize to protected cases; that remains testable.\"\n}\n\nBOUNDED UNSTRUCTURED MEMORY (identical in both paired conditions):\n{\n  \"budget\": {\n    \"max_records\": 8,\n    \"max_serialized_characters\": 4000\n  },\n  \"content_matching\": \"identical serialized object in both paired conditions\",\n  \"format\": \"stoe.unstructured_memory\",\n  \"records\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"external_ref\": \"DIAG_STORAGE_DISTRACTOR\",\n      \"record_id\": \"diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"external_ref\": \"DIAG_STORAGE_FAILED\",\n      \"record_id\": \"diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"external_ref\": \"DIAG_OFFLINE_GENERIC\",\n      \"record_id\": \"diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"external_ref\": \"DIAG_OFFLINE_LOCAL\",\n      \"record_id\": \"diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL\",\n      \"source\": \"public_diagnostic_item\"\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"external_ref\": \"DIAG_EVIDENCE_EVAL\",\n      \"record_id\": \"diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL\",\n      \"source\": \"public_diagnostic_item\"\n    }\n  ],\n  \"serialization\": {\n    \"candidate_record_count\": 14,\n    \"combined_serialized_characters\": 3514,\n    \"omitted_for_budget\": 9,\n    \"visible_record_count\": 5\n  },\n  \"version\": 1\n}",
+          "stream": false,
+          "system": "You are the bounded research component of an SToE-guided self-developing agent. Infer only from supplied source and evidence. Treat changes as falsifiable engineering hypotheses, not proof of SToE."
+        },
+        "response": {
+          "created_at": "2026-09-08T03:21:44.1851727Z",
+          "done": true,
+          "done_reason": "stop",
+          "eval_count": 762,
+          "eval_duration": 8863836000,
+          "load_duration": 13474751400,
+          "model": "qwen3-coder:latest",
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 2473,
+          "prompt_eval_duration": 1025442000,
+          "response": "{\n  \"hypothesis\": \"The selector prioritizes items based on lexical overlap with the goal, but fails to sufficiently boost scores for invalidated or constraint-relevant items when their outcome or kind matches the active constraints.\",\n  \"observed_evidence\": [\n    \"In 'raised_storage_ceiling', the selector chose 'DIAG_STORAGE_DISTRACTOR' over 'DIAG_STORAGE_FAILED' despite the latter being invalidated and relevant to preserving rejected reasoning.\",\n    \"In 'unchanged_offline_constraint', the selector chose 'DIAG_OFFLINE_GENERIC' over 'DIAG_OFFLINE_LOCAL' despite the latter being supported and relevant to local embedding inference.\",\n    \"In 'measured_evidence', the selector chose 'DIAG_EVIDENCE_IDEA' over 'DIAG_EVIDENCE_EVAL' despite the former being untested and the latter being supported with measured recovery evidence.\"\n  ],\n  \"diagnostic_findings\": [\n    {\n      \"case\": \"raised_storage_ceiling\",\n      \"observed_selection\": [\n        \"DIAG_STORAGE_DISTRACTOR\"\n      ],\n      \"missed_required\": [\n        \"DIAG_STORAGE_FAILED\"\n      ],\n      \"source_mechanism\": \"select_context outcome check for 'failed' or 'invalidated' items\",\n      \"relation_to_hypothesis\": \"The selector did not sufficiently boost score for invalidated items relevant to preserving rejected reasoning.\"\n    },\n    {\n      \"case\": \"unchanged_offline_constraint\",\n      \"observed_selection\": [\n        \"DIAG_OFFLINE_GENERIC\"\n      ],\n      \"missed_required\": [\n        \"DIAG_OFFLINE_LOCAL\"\n      ],\n      \"source_mechanism\": \"select_context kind check for 'evaluation' or 'eval' items\",\n      \"relation_to_hypothesis\": \"The selector did not sufficiently boost score for supported items relevant to local embedding inference.\"\n    },\n    {\n      \"case\": \"measured_evidence\",\n      \"observed_selection\": [\n        \"DIAG_EVIDENCE_IDEA\"\n      ],\n      \"missed_required\": [\n        \"DIAG_EVIDENCE_EVAL\"\n      ],\n      \"source_mechanism\": \"select_context outcome check for 'supported' items\",\n      \"relation_to_hypothesis\": \"The selector did not sufficiently boost score for supported items with measured recovery evidence.\"\n    }\n  ],\n  \"source_diagnosis\": \"The selector's scoring logic does not adequately prioritize invalidated or constraint-relevant items when their relevance aligns with active constraints.\",\n  \"proposed_change\": \"Increase the score boost for invalidated items (e.g., 'failed', 'invalidated') and supported items (e.g., 'supported') to ensure they are prioritized over untested or distractor items when relevant to active constraints.\",\n  \"implementation_inputs\": [\n    \"observer_state.goal\",\n    \"observer_state.active_constraints\",\n    \"observer_state.changed_constraints\",\n    \"observer_state.evidence\",\n    \"observer_state.open_questions\",\n    \"item.ref\",\n    \"item.content\",\n    \"item.origin\",\n    \"item.kind\",\n    \"item.outcome\",\n    \"item.failure_condition\",\n    \"item.created_order\",\n    \"max_items\",\n    \"max_chars\"\n  ],\n  \"input_feasibility\": \"All required inputs are publicly available and observable in the active selector's interface.\",\n  \"expected_benefit\": \"The selector will correctly prioritize invalidated or constraint-relevant items when their relevance aligns with active constraints, improving alignment with SToE goals.\",\n  \"risks\": [\n    \"Over-prioritizing invalidated items may lead to selecting outdated or irrelevant information.\",\n    \"Adjusting score boosts may introduce unintended side effects in other use cases.\"\n  ]\n}",
+          "total_duration": 23375948500
+        },
+        "token_budget": {
+          "actual_provider_usage": {
+            "output_tokens": 762,
+            "prompt_tokens": 2473,
+            "source": "ollama_provider_counts",
+            "total_tokens": 3235
+          },
+          "context_limit_tokens": 8192,
+          "estimated": {
+            "category_attribution": {
+              "retrieved_material": 441,
+              "task_context": 637,
+              "tool_results": 1335
+            },
+            "checkpoint_reserve": 512,
+            "prompt_total": 3581,
+            "remaining": 2633,
+            "reserved_generation": 1400,
+            "system_instructions": 66,
+            "total_with_reserves": 5559
+          },
+          "estimator": {
+            "exact": false,
+            "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+            "method": "conservative_utf8_bytes_div_3"
+          },
+          "fits": true,
+          "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+          "truncation_events": []
+        }
+      },
+      "public_evaluation": {
+        "case_count": 3,
+        "pass_count": 0,
+        "status": "not_run"
+      },
+      "public_gate": {
+        "decision": "REJECT",
+        "reason": "generation or policy validation failed"
+      },
+      "status": "proposal_failed"
+    }
+  },
+  "continuity_checkpoint": {
+    "checkpoint_id": "20260908T032154Z_5a6a2ab6d4",
+    "created": true,
+    "created_at": "2026-09-08T03:21:54.366950+00:00",
+    "file": "20260908T032154Z_5a6a2ab6d4.json",
+    "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\research_checkpoints\\20260908T032154Z_5a6a2ab6d4.json",
+    "sha256": "c5317d430cb16fb0af5d08d5e1caeb104fedfd4b1cfbe38bfeb1f4114f707fcf",
+    "state_fingerprint": "5a6a2ab6d44dbac7471db90cf1b376c197402c4d77e2e774f9531ebbb18a0280"
+  },
+  "cycle_id": "20260908T032120Z_structural_v1",
+  "decision": "NO_ACTIVATION",
+  "elapsed_seconds": 33.458080399999744,
+  "eligible_conditions": [],
+  "experiment_id": "stoe_structural_input_v1",
+  "frozen_case_hash_after": "10c9e3685bc3634715d65418fb694203309698dfc5d9ec73b257aa9857e9186b",
+  "independent_variable": "Presence versus absence of the typed, directed SToE relational overlay. Active source, observable diagnostics, bounded node content, model, prompts before the appended overlay, policy language, generation budgets, seeds, public gate, hidden evaluation, and acceptance rule are otherwise identical.",
+  "model_call_budget": {
+    "per_condition": 2,
+    "retries": 0,
+    "total": 4
+  },
+  "model_calls": 2,
+  "observable_context_sha256": "171c84591bd8d408ce745032db0ec2ede7042fab445c7943cba7e8a68ce2067b",
+  "pre_action_checkpoint": {
+    "checkpoint_id": "20260908T032120Z_a8749946c5",
+    "created": true,
+    "created_at": "2026-09-08T03:21:20.757177+00:00",
+    "file": "20260908T032120Z_a8749946c5.json",
+    "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\research_checkpoints\\20260908T032120Z_a8749946c5.json",
+    "sha256": "ccdcbae3a0918faf1afa944afa17e06328763d0e821278a9a10ba127082741ea",
+    "state_fingerprint": "a8749946c53964cd83c4ef8e9f3384213f9b654f19227e33183514b9274e92f5"
+  },
+  "preflight": {
+    "active_baseline": {
+      "_lineage": {
+        "ancestor_release_ids": [
+          "5e536b8d4f822421a8eb1fbc45cc8edc50ad6b5c3bca72e116ab7e9f8df52fea"
+        ],
+        "branch_id": "feature/self-rebuild-cycle-v1",
+        "kind": "active_release",
+        "parent_release_id": "5e536b8d4f822421a8eb1fbc45cc8edc50ad6b5c3bca72e116ab7e9f8df52fea",
+        "release_id": "e38801b4dcf80eec515c6539f0c18c77bbbcc5229713d9ce988fb32131bbbc61",
+        "schema_version": 1,
+        "stream_id": "context-selector-release:v1"
+      },
+      "activated_at": "2026-09-06T12:53:30.785189+00:00",
+      "artifact_type": "legacy_python",
+      "previous_version": "v1",
+      "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+      "source_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\owned_components\\context_selector\\versions\\generated_20260906T125305Z_92e7e913.py",
+      "version": "generated_20260906T125305Z_92e7e913"
+    },
+    "benchmark": {
+      "case_count": 12,
+      "control_count": 4,
+      "family_count": 12,
+      "independent_case_count": 12,
+      "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\structural_input_experiment\\cases.json",
+      "sha256": "10c9e3685bc3634715d65418fb694203309698dfc5d9ec73b257aa9857e9186b",
+      "targeted_count": 8
+    },
+    "freeze_manifest_sha256": "69dd7bca80af59000dd81b6f0739a2809676a3f59a483963603befa1f267bc77",
+    "git_commit": "6de3254c136f5a4385055bcb463cd111ca03504c",
+    "input_bundle_sha256": "45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49",
+    "model": {
+      "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "name": "qwen3-coder:latest",
+      "ollama_version": "0.33.3"
+    },
+    "verified": true
+  },
+  "primary": {
+    "absolute_difference_cases": 0,
+    "interpretation": "paired pipeline intervention; not proof of universal SToE superiority",
+    "minimum_advantage_cases": 2,
+    "ordinary_targeted_pass_count": 0,
+    "stoe_targeted_pass_count": 0,
+    "success_criterion_met": false
+  },
+  "structural_context": {
+    "content_contract": "adds relations only; node content is supplied in the common memory object",
+    "format": "stoe.typed_relational_overlay",
+    "records": [
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.14587541476854032,
+          "goal": 0.26352313834736496,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "contains_change"
+          },
+          {
+            "direction": "outgoing",
+            "relation": "invalidates"
+          },
+          {
+            "direction": "incoming",
+            "relation": "rejected_by"
+          }
+        ],
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 1.0,
+          "final": 0.6909192321229981,
+          "goal": 0.26352313834736496,
+          "state_change": 1.0,
+          "structural": 0.7055630454835736
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.15441754424364348,
+          "goal": 0.2760262237369417,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.14290369422937696,
+          "goal": 0.27524094128159016,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      },
+      {
+        "path": [
+          {
+            "direction": "outgoing",
+            "relation": "evolved_from"
+          },
+          {
+            "direction": "incoming",
+            "relation": "available_to"
+          }
+        ],
+        "record_id": "diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL",
+        "record_type": "diagnostic_typed_path",
+        "scores": {
+          "failure": 0.0,
+          "final": 0.1556107482516321,
+          "goal": 0.2839809171235324,
+          "state_change": 0.0,
+          "structural": 0.502054442732409
+        },
+        "selected_by_navigator": true
+      }
+    ],
+    "serialization": {
+      "candidate_record_count": 14,
+      "combined_serialized_characters": 3514,
+      "omitted_for_budget": 9,
+      "visible_record_count": 5
+    },
+    "source_run_ids": [
+      "RETRIEVAL_08e97ebba53a4708",
+      "RETRIEVAL_0d6df598ec5d4784",
+      "RETRIEVAL_30249b95d14d46fc",
+      "RETRIEVAL_15ef493e14c742c9"
+    ],
+    "version": 1
+  },
+  "structural_context_sha256": "9d19787b6da30bee3bb5664e3c8eb3860fa36c738b5703759066257441ec6d93",
+  "unstructured_memory": {
+    "budget": {
+      "max_records": 8,
+      "max_serialized_characters": 4000
+    },
+    "content_matching": "identical serialized object in both paired conditions",
+    "format": "stoe.unstructured_memory",
+    "records": [
+      {
+        "case": "raised_storage_ceiling",
+        "external_ref": "DIAG_STORAGE_DISTRACTOR",
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_DISTRACTOR",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "raised_storage_ceiling",
+        "external_ref": "DIAG_STORAGE_FAILED",
+        "record_id": "diagnostic:raised_storage_ceiling:DIAG_STORAGE_FAILED",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "external_ref": "DIAG_OFFLINE_GENERIC",
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_GENERIC",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "unchanged_offline_constraint",
+        "external_ref": "DIAG_OFFLINE_LOCAL",
+        "record_id": "diagnostic:unchanged_offline_constraint:DIAG_OFFLINE_LOCAL",
+        "source": "public_diagnostic_item"
+      },
+      {
+        "case": "measured_evidence",
+        "external_ref": "DIAG_EVIDENCE_EVAL",
+        "record_id": "diagnostic:measured_evidence:DIAG_EVIDENCE_EVAL",
+        "source": "public_diagnostic_item"
+      }
+    ],
+    "serialization": {
+      "candidate_record_count": 14,
+      "combined_serialized_characters": 3514,
+      "omitted_for_budget": 9,
+      "visible_record_count": 5
+    },
+    "version": 1
+  },
+  "unstructured_memory_sha256": "bca8b6c3c6d265d5ac65443eed4e15b5aeb338b0ca2d121d77cb53816a4df004",
+  "winner": null
+}

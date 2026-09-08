@@ -1,0 +1,7 @@
+diff --git a/contributors/emails/agent@Agents-Mac-mini.local b/contributors/emails/agent@Agents-Mac-mini.local
+index 73bf022af..850e0a4eb 100644
+--- a/contributors/emails/agent@Agents-Mac-mini.local
++++ b/contributors/emails/agent@Agents-Mac-mini.local
+@@ -1 +1 @@
+-skip-agent
++momomojo

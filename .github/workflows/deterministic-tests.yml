@@ -1,0 +1,62 @@
+name: Deterministic test suites
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deterministic-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            experiments/stoe_v3/requirements.txt
+            plugins/stoe-memory/requirements.txt
+
+      - name: Install deterministic-suite dependencies
+        run: >-
+          python -m pip install
+          psutil==7.0.0
+          -r experiments/stoe_v3/requirements.txt
+          -r plugins/stoe-memory/requirements.txt
+
+      - name: Agent suite
+        working-directory: agent
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+
+      - name: SToE-Hermes suite
+        working-directory: stoe-hermes
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+
+      - name: SToE Memory suite
+        working-directory: plugins/stoe-memory
+        run: python -m unittest discover -s tests -v
+
+      - name: v9.1 suite
+        working-directory: experiments/stoe_v9_1_experiment
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+
+      - name: v3 suite
+        working-directory: experiments/stoe_v3
+        run: python -m unittest discover -s tests -v

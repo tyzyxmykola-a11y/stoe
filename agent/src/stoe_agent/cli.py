@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .supervisor import RebuildSupervisor, SupervisorConfig
+from .structural_experiment import StructuralInputExperiment
 
 
 def _repo_root() -> Path:
@@ -62,6 +63,9 @@ def main(argv=None) -> int:
     replay = subparsers.add_parser("replay")
     replay.add_argument("--source", required=True, type=Path)
     replay.add_argument("--output", type=Path, default=None)
+    structural = subparsers.add_parser("structural-experiment")
+    structural.add_argument("--spec", required=True, type=Path)
+    structural.add_argument("--allow-generation", action="store_true")
     args = parser.parse_args(argv)
 
     supervisor = _supervisor(args)
@@ -128,6 +132,10 @@ def main(argv=None) -> int:
         if args.output is not None:
             RebuildSupervisor._atomic_write_json(args.output.resolve(), result)
             result["output_path"] = str(args.output.resolve())
+    elif args.command == "structural-experiment":
+        result = StructuralInputExperiment(supervisor, args.spec).run(
+            allow_generation=args.allow_generation
+        )
     else:
         parser.error(f"unknown command: {args.command}")
     # ASCII escaping keeps structured output printable on Windows hosts whose

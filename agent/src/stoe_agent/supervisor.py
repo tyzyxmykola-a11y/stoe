@@ -145,6 +145,9 @@ class SupervisorConfig:
 
 
 class RebuildSupervisor:
+    proposal_schema = PROPOSAL_SCHEMA
+    candidate_policy_schema = CANDIDATE_POLICY_SCHEMA
+
     def __init__(self, config: SupervisorConfig, *, model_client: Any | None = None) -> None:
         self.config = config
         self.config.runtime_dir.mkdir(parents=True, exist_ok=True)
@@ -1409,14 +1412,32 @@ class RebuildSupervisor:
             )
         return self._finish_report(report, cycle_id, started)
 
-    def _proposal_prompt(self, source: str, investigation: dict[str, Any]) -> str:
+    def _proposal_prompt(
+        self,
+        source: str,
+        investigation: dict[str, Any],
+        *,
+        observable_diagnostics: list[dict[str, Any]] | None = None,
+        unstructured_memory: dict[str, Any] | None = None,
+        structural_context: dict[str, Any] | None = None,
+    ) -> str:
         evidence = {
-            "diagnostics": self._compact_diagnostics(investigation),
-            "bounded_prior_context": investigation["bounded_prior_context"],
-            "known_structure": investigation["known_structure"],
+            "diagnostics": (
+                observable_diagnostics
+                if observable_diagnostics is not None
+                else self._compact_diagnostics(investigation)
+            ),
+            "bounded_prior_context": (
+                [] if observable_diagnostics is not None else investigation["bounded_prior_context"]
+            ),
+            "known_structure": (
+                "The source, observer fields, available candidates, actual outputs, and failure conditions are observed."
+                if observable_diagnostics is not None
+                else investigation["known_structure"]
+            ),
             "unknown_structure": investigation["unknown_structure"],
         }
-        return (
+        prompt = (
             "Inspect the active selector and the agent's completed SToE investigation below. Formulate one bounded "
             "concise implementation hypothesis. Keep every prose field to one or two sentences. diagnostic_findings "
             "MUST contain one entry for every failed public diagnostic, "
@@ -1431,12 +1452,28 @@ class RebuildSupervisor:
             "PUBLIC INPUT FIELDS:\n" + json.dumps(PUBLIC_INPUT_FIELDS, indent=2) + "\n\n"
             "ACTIVE SOURCE:\n" + source + "\n\nINVESTIGATION:\n" + json.dumps(evidence, indent=2, ensure_ascii=False)
         )
+        if unstructured_memory is not None:
+            prompt += (
+                "\n\nBOUNDED UNSTRUCTURED MEMORY (identical in both paired conditions):\n"
+                + json.dumps(unstructured_memory, indent=2, ensure_ascii=False, sort_keys=True)
+            )
+        if structural_context is not None:
+            prompt += (
+                "\n\nBOUNDED TYPED STRUCTURAL EVIDENCE FROM THE STOE FIELD "
+                "(evidence for research; not selector runtime inputs):\n"
+                + json.dumps(structural_context, indent=2, ensure_ascii=False, sort_keys=True)
+            )
+        return prompt
 
     def _generation_prompt(
         self,
         source: str,
         investigation: dict[str, Any],
         proposal: dict[str, Any],
+        *,
+        observable_diagnostics: list[dict[str, Any]] | None = None,
+        unstructured_memory: dict[str, Any] | None = None,
+        structural_context: dict[str, Any] | None = None,
     ) -> str:
         public_contract = {
             "representation": "inert JSON data interpreted by trusted stoe_agent.selection_policy code",
@@ -1486,15 +1523,27 @@ class RebuildSupervisor:
                 "failure_condition is natural-language rejection-basis text, never an edge-label container",
             ],
         }
-        return (
+        prompt = (
             "Implement the preregistered proposal as one inert declarative selection-policy JSON object. Generalize from "
             "the investigation; do not encode diagnostic ref names or case-specific phrases. The protected acceptance "
             "cases are unavailable. Do not emit executable text or name external resources.\n\n"
             f"PUBLIC CONTRACT:\n{json.dumps(public_contract, indent=2)}\n\n"
             f"PROPOSAL:\n{json.dumps(proposal, indent=2, ensure_ascii=False)}\n\n"
-            f"OBSERVED DIAGNOSTIC SUMMARY:\n{json.dumps(self._compact_diagnostics(investigation), indent=2, ensure_ascii=False)}\n\n"
+            f"OBSERVED DIAGNOSTIC SUMMARY:\n{json.dumps(observable_diagnostics if observable_diagnostics is not None else self._compact_diagnostics(investigation), indent=2, ensure_ascii=False)}\n\n"
             f"ACTIVE SOURCE:\n{source}"
         )
+        if unstructured_memory is not None:
+            prompt += (
+                "\n\nBOUNDED UNSTRUCTURED MEMORY (identical in both paired conditions):\n"
+                + json.dumps(unstructured_memory, indent=2, ensure_ascii=False, sort_keys=True)
+            )
+        if structural_context is not None:
+            prompt += (
+                "\n\nBOUNDED TYPED STRUCTURAL EVIDENCE FROM THE STOE FIELD "
+                "(evidence for implementation; not selector runtime inputs):\n"
+                + json.dumps(structural_context, indent=2, ensure_ascii=False, sort_keys=True)
+            )
+        return prompt
 
     @staticmethod
     def _validate_proposal(proposal: dict[str, Any], investigation: dict[str, Any]) -> None:
@@ -1741,6 +1790,19 @@ class RebuildSupervisor:
     def _evaluate(
         self, source_path: Path, *, artifact_type: str | None = None
     ) -> dict[str, Any]:
+        return self._evaluate_cases(
+            source_path,
+            self.config.protected_eval_dir / "cases.json",
+            artifact_type=artifact_type,
+        )
+
+    def _evaluate_cases(
+        self,
+        source_path: Path,
+        cases_path: Path,
+        *,
+        artifact_type: str | None = None,
+    ) -> dict[str, Any]:
         artifact_type = artifact_type or infer_artifact_type(source_path)
         env = dict(os.environ)
         source_root = str((self.config.repo_root / "agent" / "src").resolve())
@@ -1754,7 +1816,7 @@ class RebuildSupervisor:
             "--artifact-type",
             artifact_type,
             "--cases",
-            str(self.config.protected_eval_dir / "cases.json"),
+            str(cases_path.resolve()),
         ]
         try:
             completed = subprocess.run(

@@ -1,6 +1,6 @@
 # Public Response-Grammar Rehearsal — Preflight
 
-Status: `PROVISIONAL_NOT_MODEL_QUALIFIED`
+Status: `FROZEN_MODEL_QUALIFIED`
 
 This harness exists to test whether the real local Ollama model can reliably
 complete the candidate-generation contract. It uses only the three already
@@ -79,3 +79,24 @@ has its own required fixed table and operator-specific row schema: `equals`,
 `not_equals`, `in_values`, `not_in_values`, `contains_token`, and `nonempty`.
 Every table is always present and unused tables are empty. No model-authored
 operator string or cross-column convention remains.
+
+## Development attempt 3 and freeze decision
+
+Artifact: `attempt_003.json`
+
+Result: `6/6` complete pipelines without retry (`3/3` ordinary, `3/3`
+structural). Every exact-key proposal passed its evidence gate; every policy
+response passed the operator-specific schema, compiled into the inert trusted
+policy representation, and completed public evaluation. Observed provider prompt
+counts ranged from 1,745 to 3,035 tokens and output counts from 640 to 852 tokens.
+
+All generated development policies scored `0/3` on the disclosed diagnostics.
+That behavioral result is retained, but it is not the qualification criterion:
+this rehearsal qualifies response-contract reliability, not candidate quality.
+It is neither hidden-case evidence nor evidence of an SToE advantage.
+
+The harness is frozen at commit `9a64035f2348ead6a775cc25d9fd4e63a677d621`
+with model digest
+`06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca`.
+Exact hashes and settings are recorded in `FROZEN_HARNESS_MANIFEST.json`. No v3
+holdout case existed before this qualification and freeze decision.

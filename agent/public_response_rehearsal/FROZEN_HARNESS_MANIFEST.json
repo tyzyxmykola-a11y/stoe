@@ -1,0 +1,50 @@
+{
+  "status": "FROZEN_MODEL_QUALIFIED",
+  "harness_version": "public-response-grammar-v3-dev3",
+  "freeze_source_commit": "9a64035f2348ead6a775cc25d9fd4e63a677d621",
+  "qualification": {
+    "artifact": "agent/public_response_rehearsal/attempt_003.json",
+    "sha256": "982e7eb8cde9cef99dd15e1b30fdf4c8d05043c429ef6b00ab11964ec8678393",
+    "public_only": true,
+    "hidden_evaluation_performed": false,
+    "activation_performed": false,
+    "pipeline_count": 6,
+    "completed_pipeline_count": 6,
+    "retry_count": 0,
+    "format_reliability": 1.0
+  },
+  "model": {
+    "provider": "local_ollama_only",
+    "name": "qwen3-coder:latest",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "ollama_version": "0.33.3"
+  },
+  "settings": {
+    "temperature": 0,
+    "top_p": 0.9,
+    "top_k": 40,
+    "num_ctx": 8192,
+    "checkpoint_reserve_tokens": 512,
+    "minimum_additional_remaining_tokens": 1024,
+    "proposal_max_output_tokens": 1400,
+    "policy_max_output_tokens": 2000,
+    "retry_count": 0,
+    "proposal_seeds": [7701, 7702, 7703],
+    "policy_seeds": [8701, 8702, 8703]
+  },
+  "context_qualification": {
+    "largest_schema_valid_proposal_estimated_tokens": 1200,
+    "largest_schema_valid_policy_estimated_tokens": 1917,
+    "minimum_complete_pipeline_remaining_tokens": 1161,
+    "estimator": "conservative_utf8_bytes_div_3"
+  },
+  "critical_file_sha256": {
+    "agent/src/stoe_agent/response_rehearsal.py": "0b0832779cd4c0296eb73d40a6e2c8f6331addde8910daa80ce578d23619f314",
+    "agent/tests/test_response_rehearsal.py": "4466c076ef76abd652e5790eafd233331770f7ae730c583f7eee3eb9bf861253",
+    "agent/src/stoe_agent/selection_policy.py": "eef574eefb8f700784b2d0ae124f6a5c102628bc32d9f78dd83757d24b3cc3e6",
+    "agent/src/stoe_agent/ollama.py": "274dede0edb992c1d745e9be14a4862088ccb8b08327316b4af1fa6c2ee8747d",
+    "agent/src/stoe_agent/investigation.py": "a9ba1c11b760bdcaae0ca9aeda8c95bc4bc1d106bf4ca7127bd00902f838432f",
+    "agent/structural_input_experiment/FROZEN_INPUT_BUNDLE.json": "45a7b363bfbfc19038e66901ea101db93af20d7eb96c5a7740e3af9662d46c49"
+  },
+  "claim_boundary": "Formatting and inert-policy compilation reliability on exposed public diagnostics only; no hidden performance or SToE advantage claim."
+}

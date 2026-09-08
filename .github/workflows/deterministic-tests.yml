@@ -19,6 +19,9 @@ jobs:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Whitespace validation compares the checked-out commit with its parent.
+          fetch-depth: 2
 
       - uses: actions/setup-python@v5
         with:

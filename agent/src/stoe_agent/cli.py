@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .supervisor import RebuildSupervisor, SupervisorConfig
 from .structural_experiment import StructuralInputExperiment
+from .qualified_experiment import QualifiedStructuralExperiment
 
 
 def _repo_root() -> Path:
@@ -67,6 +68,9 @@ def main(argv=None) -> int:
     structural.add_argument("--spec", required=True, type=Path)
     structural.add_argument("--allow-generation", action="store_true")
     structural.add_argument("--freeze-inputs", action="store_true")
+    structural_v2 = subparsers.add_parser("structural-experiment-v2")
+    structural_v2.add_argument("--spec", required=True, type=Path)
+    structural_v2.add_argument("--allow-generation", action="store_true")
     args = parser.parse_args(argv)
 
     supervisor = _supervisor(args)
@@ -141,6 +145,10 @@ def main(argv=None) -> int:
             result = experiment.freeze_inputs()
         else:
             result = experiment.run(allow_generation=args.allow_generation)
+    elif args.command == "structural-experiment-v2":
+        result = QualifiedStructuralExperiment(supervisor, args.spec).run(
+            allow_generation=args.allow_generation
+        )
     else:
         parser.error(f"unknown command: {args.command}")
     # ASCII escaping keeps structured output printable on Windows hosts whose

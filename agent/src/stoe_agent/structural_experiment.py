@@ -549,6 +549,7 @@ class StructuralInputExperiment:
         control_names = [case["name"] for case in cases if not case["targeted_changed_constraint"]]
         passed = set(evaluation.get("passed_cases", []))
         return {
+            "evaluable": evaluation.get("status") == "completed",
             "targeted_pass_count": len(passed.intersection(target_names)),
             "targeted_case_count": len(target_names),
             "control_pass_count": len(passed.intersection(control_names)),
@@ -559,6 +560,19 @@ class StructuralInputExperiment:
                 case["family"]: bool(by_name.get(case["name"], {}).get("passed", False))
                 for case in cases
             },
+        }
+
+    @staticmethod
+    def _unevaluated_case_metrics(cases: list[dict[str, Any]]) -> dict[str, Any]:
+        return {
+            "evaluable": False,
+            "targeted_pass_count": None,
+            "targeted_case_count": sum(bool(c["targeted_changed_constraint"]) for c in cases),
+            "control_pass_count": None,
+            "control_case_count": sum(not bool(c["targeted_changed_constraint"]) for c in cases),
+            "total_pass_count": None,
+            "case_count": len(cases),
+            "by_family": None,
         }
 
     def run(self, *, allow_generation: bool) -> dict[str, Any]:
@@ -629,7 +643,7 @@ class StructuralInputExperiment:
             if result.get("status") != "generated" or not result["policy_validation"]["passed"]:
                 result["public_evaluation"] = {"status": "not_run", "pass_count": 0, "case_count": 3}
                 result["frozen_evaluation"] = {"status": "not_run", "pass_count": 0, "case_count": 12, "results": []}
-                result["metrics"] = self._case_metrics(result["frozen_evaluation"], cases)
+                result["metrics"] = self._unevaluated_case_metrics(cases)
                 result["public_gate"] = {"decision": "REJECT", "reason": "generation or policy validation failed"}
                 result["acceptance"] = {"decision": "REJECT", "reason": "generation or policy validation failed"}
                 continue
@@ -650,10 +664,15 @@ class StructuralInputExperiment:
 
         ordinary = conditions["ORDINARY_OBSERVABLE"]["metrics"]
         stoe = conditions["BOUNDED_TYPED_STOE"]["metrics"]
-        primary_difference = stoe["targeted_pass_count"] - ordinary["targeted_pass_count"]
+        comparison_evaluable = bool(ordinary["evaluable"] and stoe["evaluable"])
+        primary_difference = (
+            stoe["targeted_pass_count"] - ordinary["targeted_pass_count"]
+            if comparison_evaluable else None
+        )
         success_criterion = (
             primary_difference >= self.spec["analysis"]["minimum_targeted_advantage_cases"]
             and stoe["control_pass_count"] >= ordinary["control_pass_count"]
+            if comparison_evaluable else None
         )
         eligible, winner = select_unique_winner(conditions)
 
@@ -701,6 +720,7 @@ class StructuralInputExperiment:
             "active_frozen_evaluation": active_eval,
             "active_metrics": active_metrics,
             "primary": {
+                "evaluable": comparison_evaluable,
                 "ordinary_targeted_pass_count": ordinary["targeted_pass_count"],
                 "stoe_targeted_pass_count": stoe["targeted_pass_count"],
                 "absolute_difference_cases": primary_difference,

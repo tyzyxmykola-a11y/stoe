@@ -106,6 +106,15 @@ class QualifiedHarnessTests(unittest.TestCase):
         self.assertIsNone(metrics["total_pass_count"])
         self.assertIsNone(metrics["by_family"])
 
+    def test_v2_holdout_is_new_distinct_and_not_a_v1_rename(self):
+        v1 = json.loads((self.root / "agent/structural_input_experiment/cases.json").read_text(encoding="utf-8"))
+        v2 = json.loads((self.root / "agent/structural_input_experiment_v2/cases.json").read_text(encoding="utf-8"))
+        from stoe_agent.structural_experiment import validate_unseen_cases
+        self.assertEqual(12, validate_unseen_cases(v2)["independent_case_count"])
+        self.assertTrue({c["family"] for c in v1}.isdisjoint({c["family"] for c in v2}))
+        v1_content = {i["content"] for c in v1 for i in c["items"]}
+        self.assertTrue(v1_content.isdisjoint({i["content"] for c in v2 for i in c["items"]}))
+
 
 if __name__ == "__main__":
     unittest.main()

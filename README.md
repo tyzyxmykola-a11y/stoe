@@ -1,5 +1,8 @@
 # SToE: engines, memory, experiments, and supervised agent development
 
+[![Deterministic CI](https://github.com/tyzyxmykola-a11y/stoe/actions/workflows/deterministic-tests.yml/badge.svg?branch=main)](https://github.com/tyzyxmykola-a11y/stoe/actions/workflows/deterministic-tests.yml)
+[![Stable evidence release](https://img.shields.io/badge/release-stoe--self--development--v1-blue)](https://github.com/tyzyxmykola-a11y/stoe/releases/tag/stoe-self-development-v1)
+
 SToE is Mykola Voronin's research program for representing information,
 observer state, change, failure, correction, and succession as a connected typed
 field. This repository conserves the theory and research corpus alongside the
@@ -8,6 +11,11 @@ software mechanisms and experiments derived from it.
 The ontology remains a research hypothesis. The implementations and archived
 measurements are concrete engineering artifacts, but neither their operation nor
 a favorable benchmark result proves the full SToE ontology.
+
+Stable citation boundary: [SToE Self-Development Evidence v1](releases/stoe-self-development-v1/README.md)
+freezes the evidence before Hermes v2.2. Cite it using [CITATION.cff](CITATION.cff),
+verify it with the [release manifest](releases/stoe-self-development-v1/manifest.json),
+and consult the [mixed-license boundary](LICENSING.md).
 
 ## Current experimental architecture
 
@@ -150,4 +158,6 @@ databases, profiles, environment files, caches, loose sessions, and temporary
 files are excluded from publication. Canonical seeds and archived evidence are
 preserved byte-for-byte. See [SECURITY.md](SECURITY.md),
 [authentication notes](docs/authentication.md), and
-[publication notes](docs/publication.md) for detailed boundaries.
+[publication notes](docs/publication.md) for detailed boundaries. Reuse is
+governed by [LICENSING.md](LICENSING.md), not by a single repository-wide
+license assumption.

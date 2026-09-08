@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: >-
+  If you use this repository, cite Mykola Voronin and the
+  stoe-self-development-v1 release. See LICENSING.md for the mixed-license
+  boundaries.
+type: software
+title: >-
+  Special Theory of Everything (SToE): Observer-Aware Memory and Supervised AI
+  Self-Development Evidence
+version: stoe-self-development-v1
+date-released: 2026-09-08
+authors:
+  - family-names: Voronin
+    given-names: Mykola
+repository-code: https://github.com/tyzyxmykola-a11y/stoe
+url: https://github.com/tyzyxmykola-a11y/stoe/releases/tag/stoe-self-development-v1
+license:
+  - MIT
+  - CC-BY-4.0
+abstract: >-
+  A citable pre-Hermes-v2.2 evidence release of SToE-derived observer-aware
+  persistent memory, bounded supervised agent self-development, conserved
+  failures, protected evaluation and rollback, reproducible experiments, and
+  SToE-Hermes A/B succession.

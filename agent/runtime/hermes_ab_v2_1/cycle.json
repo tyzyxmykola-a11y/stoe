@@ -1,0 +1,236 @@
+{
+  "action_id": "self-code-cycle:hermes-ab-v2-1:split-model-deduplicate-context",
+  "activation_status": "inactive",
+  "calls": {
+    "real_gemma_plan": {
+      "budget": {
+        "context_limit_tokens": 16384,
+        "estimated": {
+          "category_attribution": {
+            "retrieved_material": 0,
+            "task_context": 3610,
+            "tool_results": 0
+          },
+          "checkpoint_reserve": 1024,
+          "prompt_total": 3610,
+          "remaining": 10510,
+          "reserved_generation": 1200,
+          "system_instructions": 40,
+          "total_with_reserves": 5874
+        },
+        "estimator": {
+          "exact": false,
+          "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+          "method": "conservative_utf8_bytes_div_3"
+        },
+        "fits": true,
+        "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+        "truncation_events": []
+      },
+      "result": {
+        "diagnosis": "COMPLETE_STRUCTURED_OUTPUT",
+        "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+        "done_reason": "stop",
+        "event_count": 307,
+        "model": "gemma4:26b",
+        "output_limit_tokens": 1200,
+        "output_tokens": 307,
+        "parsed": {
+          "behavior_id": "one_canonical_payload_many_semantic_connections",
+          "budget_invariant_id": "complete_lines_within_max_chars",
+          "connection_invariant_id": "preserve_all_typed_connections_and_provenance",
+          "connection_test_id": "all_connection_records_retained",
+          "format": "stoe.fixed_development_plan",
+          "interface_id": "render_retrieved_context_items_max_chars",
+          "limitation_id": "ambiguous_deduplication_metrics",
+          "patch_scope_id": "single_function_small",
+          "payload_test_id": "one_payload_for_duplicate_sha256",
+          "report_test_id": "explicit_canonical_and_collapsed_counts",
+          "risk_id": "header_compatibility",
+          "target_path": "stoe-hermes/src/stoe_hermes/context_renderer.py",
+          "version": 1
+        },
+        "parser_error": null,
+        "prompt_tokens": 4964,
+        "provider_generation_duration_ns": 9066400000,
+        "provider_load_duration_ns": 8172307500,
+        "provider_prompt_duration_ns": 32378397000,
+        "provider_total_duration_ns": 49627671000,
+        "raw_bytes": 61590,
+        "raw_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\hermes_ab_v2_1\\raw\\real_gemma_plan.ndjson",
+        "raw_sha256": "f377c90dafa77cd2a813e2616db084da9f874f6819b06aded32edad1f7cadf30",
+        "response_channel": "response",
+        "response_chars": 684,
+        "response_text": "{\"format\": \"stoe.fixed_development_plan\", \"version\": 1, \"limitation_id\": \"ambiguous_deduplication_metrics\",\n\"behavior_id\": \"one_canonical_payload_many_semantic_connections\",\n\"target_path\": \"stoe-hermes/src/stoe_hermes/context_renderer.py\",\n\"interface_id\": \"render_retrieved_context_items_max_chars\",\n\"connection_invariant_id\": \"preserve_all_typed_connections_and_provenance\",\n\"budget_invariant_id\":\n\n\"complete_lines_within_max_chars\",\n\"payload_test_id\":\n\n\"one_payload_for_duplicate_sha256\",\"connection_test_id\":\n\"all_connection_records_retained\",\n\"report_test_id\":\n\"explicit_canonical_and_collapsed_counts\",\"risk_id\":\n\"header_compatibility\",\"patch_scope_id\":\n\"single_function_small\"\n}",
+        "stream_complete": true,
+        "stream_errors": [],
+        "termination_reason": "stop",
+        "total_tokens": 5271,
+        "transport_error": null,
+        "wall_seconds": 49.641
+      },
+      "status": "completed"
+    },
+    "real_qwen_code": {
+      "budget": {
+        "context_limit_tokens": 16384,
+        "estimated": {
+          "category_attribution": {
+            "retrieved_material": 0,
+            "task_context": 946,
+            "tool_results": 0
+          },
+          "checkpoint_reserve": 1024,
+          "prompt_total": 946,
+          "remaining": 11979,
+          "reserved_generation": 2400,
+          "system_instructions": 35,
+          "total_with_reserves": 4405
+        },
+        "estimator": {
+          "exact": false,
+          "limitation": "Estimate only; reconcile with provider prompt_eval_count when available.",
+          "method": "conservative_utf8_bytes_div_3"
+        },
+        "fits": true,
+        "note": "Category attribution explains prompt composition; prompt_total is counted once.",
+        "truncation_events": []
+      },
+      "result": {
+        "diagnosis": "COMPLETE_STRUCTURED_OUTPUT",
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "done_reason": "stop",
+        "event_count": 662,
+        "model": "qwen3-coder:latest",
+        "output_limit_tokens": 2400,
+        "output_tokens": 773,
+        "parsed": {
+          "expected_tests": [
+            "one_payload_for_duplicate_sha256",
+            "all_connection_records_retained",
+            "explicit_canonical_and_collapsed_counts"
+          ],
+          "format": "stoe.line_patch",
+          "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+          "path": "stoe-hermes/src/stoe_hermes/context_renderer.py",
+          "rationale": "Modified render_retrieved_context to track canonical_payloads and collapsed_duplicates, preserve all CONNECTION records, maintain legacy payload= and collapsed= header fields, and report new canonical_payloads= and collapsed_duplicates= counts in the header line while keeping existing SHA-256 deduplication behavior intact.",
+          "replacement_lines": [
+            "def render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:",
+            "    \"\"\"Render one canonical payload per hash and every distinct connection.\"\"\"",
+            "    if max_chars < 0:",
+            "        raise ValueError(\"max_chars must be non-negative\")",
+            "    logical_lines: list[str] = []",
+            "    seen_payloads: dict[str, str] = {}",
+            "    connections: list[str] = []",
+            "    collapsed = 0",
+            "    canonical_payloads = 0",
+            "    collapsed_duplicates = 0",
+            "    for index, item in enumerate(items):",
+            "        content = str(item.get(\"content\", \"\"))",
+            "        computed = hashlib.sha256(content.encode(\"utf-8\")).hexdigest()",
+            "        declared = str(item.get(\"sha256\") or computed)",
+            "        if declared != computed:",
+            "            declared = computed",
+            "        if declared not in seen_payloads:",
+            "            seen_payloads[declared] = content",
+            "            logical_lines.append(f\"PAYLOAD | {declared} | {content}\")",
+            "            canonical_payloads += 1",
+            "        else:",
+            "            collapsed += 1",
+            "            collapsed_duplicates += 1",
+            "        connections.append(",
+            "            \"CONNECTION | \"",
+            "            + \" | \".join(",
+            "                str(item.get(key, \"\"))",
+            "                for key in (\"ref\", \"origin\", \"kind\", \"outcome\", \"path\", \"relation\", \"direction\", \"provenance\")",
+            "            )",
+            "            + f\" | payload_sha256={declared}\"",
+            "        )",
+            "    logical_lines = [",
+            "        f\"[stoe-memory] payloads={canonical_payloads} connections={len(connections)} collapsed={collapsed} canonical_payloads={canonical_payloads} collapsed_duplicates={collapsed_duplicates}\",",
+            "        *logical_lines,",
+            "        *connections,",
+            "    ]",
+            "    included: list[str] = []",
+            "    used = 0",
+            "    for line in logical_lines:",
+            "        addition = len(line) + (1 if included else 0)",
+            "        if used + addition > max_chars:",
+            "            break",
+            "        included.append(line)",
+            "        used += addition",
+            "    return \"\\n\".join(included)"
+          ],
+          "version": 3
+        },
+        "parser_error": null,
+        "prompt_tokens": 744,
+        "provider_generation_duration_ns": 9022598000,
+        "provider_load_duration_ns": 13687997700,
+        "provider_prompt_duration_ns": 436463000,
+        "provider_total_duration_ns": 23151712200,
+        "raw_bytes": 77613,
+        "raw_path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-self-rebuild\\agent\\runtime\\hermes_ab_v2_1\\raw\\real_qwen_code.ndjson",
+        "raw_sha256": "f899b1f984031a0addf59ff1429816451f1aacbe451fe807c4cc87eaa5f3e1fa",
+        "response_channel": "response",
+        "response_chars": 2896,
+        "response_text": "{\n  \"format\": \"stoe.line_patch\",\n  \"version\": 3,\n  \"path\": \"stoe-hermes/src/stoe_hermes/context_renderer.py\",\n  \"parent_sha256\": \"b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155\",\n  \"replacement_lines\": [\n    \"def render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:\",\n    \"    \\\"\\\"\\\"Render one canonical payload per hash and every distinct connection.\\\"\\\"\\\"\",\n    \"    if max_chars < 0:\",\n    \"        raise ValueError(\\\"max_chars must be non-negative\\\")\",\n    \"    logical_lines: list[str] = []\",\n    \"    seen_payloads: dict[str, str] = {}\",\n    \"    connections: list[str] = []\",\n    \"    collapsed = 0\",\n    \"    canonical_payloads = 0\",\n    \"    collapsed_duplicates = 0\",\n    \"    for index, item in enumerate(items):\",\n    \"        content = str(item.get(\\\"content\\\", \\\"\\\"))\",\n    \"        computed = hashlib.sha256(content.encode(\\\"utf-8\\\")).hexdigest()\",\n    \"        declared = str(item.get(\\\"sha256\\\") or computed)\",\n    \"        if declared != computed:\",\n    \"            declared = computed\",\n    \"        if declared not in seen_payloads:\",\n    \"            seen_payloads[declared] = content\",\n    \"            logical_lines.append(f\\\"PAYLOAD | {declared} | {content}\\\")\",\n    \"            canonical_payloads += 1\",\n    \"        else:\",\n    \"            collapsed += 1\",\n    \"            collapsed_duplicates += 1\",\n    \"        connections.append(\",\n    \"            \\\"CONNECTION | \\\"\",\n    \"            + \\\" | \\\".join(\",\n    \"                str(item.get(key, \\\"\\\"))\",\n    \"                for key in (\\\"ref\\\", \\\"origin\\\", \\\"kind\\\", \\\"outcome\\\", \\\"path\\\", \\\"relation\\\", \\\"direction\\\", \\\"provenance\\\")\",\n    \"            )\",\n    \"            + f\\\" | payload_sha256={declared}\\\"\",\n    \"        )\",\n    \"    logical_lines = [\",\n    \"        f\\\"[stoe-memory] payloads={canonical_payloads} connections={len(connections)} collapsed={collapsed} canonical_payloads={canonical_payloads} collapsed_duplicates={collapsed_duplicates}\\\",\",\n    \"        *logical_lines,\",\n    \"        *connections,\",\n    \"    ]\",\n    \"    included: list[str] = []\",\n    \"    used = 0\",\n    \"    for line in logical_lines:\",\n    \"        addition = len(line) + (1 if included else 0)\",\n    \"        if used + addition > max_chars:\",\n    \"            break\",\n    \"        included.append(line)\",\n    \"        used += addition\",\n    \"    return \\\"\\\\n\\\".join(included)\"\n  ],\n  \"rationale\": \"Modified render_retrieved_context to track canonical_payloads and collapsed_duplicates, preserve all CONNECTION records, maintain legacy payload= and collapsed= header fields, and report new canonical_payloads= and collapsed_duplicates= counts in the header line while keeping existing SHA-256 deduplication behavior intact.\",\n  \"expected_tests\": [\n    \"one_payload_for_duplicate_sha256\",\n    \"all_connection_records_retained\",\n    \"explicit_canonical_and_collapsed_counts\"\n  ]\n}",
+        "stream_complete": true,
+        "stream_errors": [],
+        "termination_reason": "stop",
+        "total_tokens": 1517,
+        "transport_error": null,
+        "wall_seconds": 23.188
+      },
+      "status": "completed"
+    }
+  },
+  "container": {
+    "client_present": true,
+    "daemon_available": false,
+    "diagnostic": "failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.",
+    "server_version": null
+  },
+  "failure": "SuccessionError: candidate uses forbidden syntax: Raise",
+  "field_context": {
+    "canonical_payload_count": 10,
+    "collapsed_duplicate_count": 0,
+    "connection_count": 10,
+    "estimated_tokens_after": 3438,
+    "estimated_tokens_before": 5527,
+    "retrieval_run_id": "RETRIEVAL_00865c8a41214521"
+  },
+  "format_failures": [],
+  "models": {
+    "coder": {
+      "advertised_context": 262144,
+      "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "effective_context": 16384,
+      "name": "qwen3-coder:latest"
+    },
+    "planner_reviewer": {
+      "advertised_context": 262144,
+      "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+      "effective_context": 16384,
+      "name": "gemma4:26b"
+    }
+  },
+  "plan": {
+    "behavior_id": "one_canonical_payload_many_semantic_connections",
+    "budget_invariant_id": "complete_lines_within_max_chars",
+    "connection_invariant_id": "preserve_all_typed_connections_and_provenance",
+    "connection_test_id": "all_connection_records_retained",
+    "format": "stoe.fixed_development_plan",
+    "interface_id": "render_retrieved_context_items_max_chars",
+    "limitation_id": "ambiguous_deduplication_metrics",
+    "patch_scope_id": "single_function_small",
+    "payload_test_id": "one_payload_for_duplicate_sha256",
+    "report_test_id": "explicit_canonical_and_collapsed_counts",
+    "risk_id": "header_compatibility",
+    "target_path": "stoe-hermes/src/stoe_hermes/context_renderer.py",
+    "version": 1
+  },
+  "plan_attempt_count": 1,
+  "rollback_target": "hermes-a-bb924730743c",
+  "status": "failed_conserved"
+}

@@ -66,14 +66,24 @@
       ],
       "started_at": "2026-09-08T03:38:47.617927+00:00",
       "status": "completed"
+    },
+    {
+      "action_id": "model-cycle:structural-input-v2",
+      "completed_at": "2026-09-08T03:53:39.133202+00:00",
+      "description": "One frozen paired ordinary-versus-bounded-typed-structure development cycle.",
+      "result_refs": [
+        "agent/structural_input_experiment_v2/results/20260908T035306Z_structural_v1.json"
+      ],
+      "started_at": "2026-09-08T03:53:06.727396+00:00",
+      "status": "completed"
     }
   ],
   "active_hypothesis": {
-    "claim": "On new unseen cases, does a content-matched typed relational overlay improve policy generation after structural grounding validation and a worst-case paired prompt-budget proof?",
+    "claim": "Can complete response schemas force exactly one finding per observed failure and the full inert policy grammar under adversarial as well as maximum-valid mocks?",
     "claim_type": "hypothesis",
     "source_refs": [
-      "structural_input_experiment_v1_results",
-      "structural_input_experiment_v1_postmortem"
+      "structural_input_experiment_v2_results",
+      "structural_input_experiment_v2_postmortem"
     ]
   },
   "artifacts": [
@@ -233,19 +243,6 @@
       "summary_is_exact_source": false
     },
     {
-      "bytes": 71671,
-      "kind": "experiment_result",
-      "path": "agent/structural_input_experiment/results/20260908T032120Z_structural_v1.json",
-      "provenance": "frozen_paired_local_ollama_experiment",
-      "ref": "structural_input_experiment_v1_results",
-      "sha256": "68c2e5c2ec0de85e6930b099333362e4e0aa06c2ec88d9bc8af653a67f94410e",
-      "source_refs": [
-        "continuity_reconciliation_report"
-      ],
-      "summary": "Complete paired ordinary-versus-bounded-typed-structure prompts, traces, policies, unseen-case evaluations, and activation decision.",
-      "summary_is_exact_source": false
-    },
-    {
       "bytes": 3717,
       "kind": "experiment_postmortem",
       "path": "agent/structural_input_experiment/RESULTS.md",
@@ -269,6 +266,45 @@
         "structural_input_experiment_v1_postmortem"
       ],
       "summary": "Model-free qualification proving bounded proposals and both mocked paired pipelines fit with at least 1,792 tokens of additional reserve.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 98560,
+      "kind": "experiment_result",
+      "path": "agent/structural_input_experiment_v2/results/20260908T035306Z_structural_v1.json",
+      "provenance": "frozen_paired_local_ollama_experiment",
+      "ref": "structural_input_experiment_v2_results",
+      "sha256": "7f9de2fffb99def23b1b8d94cc78206cf128c01e6c93fd422c75e58a7f1c651c",
+      "source_refs": [
+        "continuity_reconciliation_report"
+      ],
+      "summary": "Complete frozen v2 paired traces; neither candidate reached hidden evaluation.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 2827,
+      "kind": "experiment_postmortem",
+      "path": "agent/structural_input_experiment_v2/RESULTS.md",
+      "provenance": "frozen_v2_result_interpretation",
+      "ref": "structural_input_experiment_v2_postmortem",
+      "sha256": "aff7e86a5df37499f3db98ff0729e26b6074ce82e537f5cd23de1461b47fdafc",
+      "source_refs": [
+        "structural_input_experiment_v2_results"
+      ],
+      "summary": "V2 remained unevaluable: ordinary omitted one required finding; structural emitted invalid policy data containing inert Python; no candidate evaluation occurred.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 71671,
+      "kind": "experiment_result",
+      "path": "agent/structural_input_experiment/results/20260908T032120Z_structural_v1.json",
+      "provenance": "frozen_paired_local_ollama_experiment",
+      "ref": "structural_input_experiment_v1_results",
+      "sha256": "68c2e5c2ec0de85e6930b099333362e4e0aa06c2ec88d9bc8af653a67f94410e",
+      "source_refs": [
+        "continuity_reconciliation_report"
+      ],
+      "summary": "Complete frozen v1 execution-failure traces; no candidate comparison occurred.",
       "summary_is_exact_source": false
     }
   ],
@@ -313,7 +349,7 @@
       ]
     }
   ],
-  "current_task": "v2 harness qualified without model calls or new cases.",
+  "current_task": "Structural-input v2 preserved as not evaluable; context qualification held, but output schemas did not force complete proposals and inert-policy grammar.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -348,6 +384,12 @@
       "decision": "Do not rerun or tune v1 after observing its prompts and cases; any confirmatory retry requires new unseen cases and a separately frozen budget-safe design.",
       "source_refs": [
         "structural_input_experiment_v1_postmortem"
+      ]
+    },
+    {
+      "decision": "Do not reuse v2 cases or rerun v2; qualify complete output schemas with adversarial mocks before authoring another holdout.",
+      "source_refs": [
+        "structural_input_experiment_v2_postmortem"
       ]
     }
   ],
@@ -413,6 +455,15 @@
       "source_refs": [
         "structural_input_experiment_v1_results",
         "structural_input_experiment_v1_postmortem"
+      ],
+      "stance": "failure"
+    },
+    {
+      "claim": "V2 context qualification held, but ordinary omitted one required finding and structural emitted a nonconforming inert object containing Python text; neither candidate was evaluated.",
+      "kind": "failure",
+      "source_refs": [
+        "structural_input_experiment_v2_results",
+        "structural_input_experiment_v2_postmortem"
       ],
       "stance": "failure"
     }
@@ -533,6 +584,48 @@
         "checkpoint_id": "20260908T033848Z_9260f9d05c",
         "created_at": "2026-09-08T03:38:48.524964+00:00",
         "reason": "Qualified v2 measuring instrument before authoring new holdout"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035306Z_3802fb5b59",
+        "created_at": "2026-09-08T03:53:06.762797+00:00",
+        "reason": "Before frozen paired model action model-cycle:structural-input-v2"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035339Z_eb5a22afd0",
+        "created_at": "2026-09-08T03:53:39.197460+00:00",
+        "reason": "After frozen paired structural-input experiment model-cycle:structural-input-v2"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035339Z_6cec4ce904",
+        "created_at": "2026-09-08T03:53:39.328245+00:00",
+        "reason": "Registered immutable structural-input experiment result artifact"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035512Z_f209efd89c",
+        "created_at": "2026-09-08T03:55:12.822522+00:00",
+        "reason": "Conserved v2 non-evaluable outcome and next instrument question"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035549Z_d32d1d656b",
+        "created_at": "2026-09-08T03:55:49.233477+00:00",
+        "reason": "Corrected v1-v2 artifact identity after inherited reporter reused the v1 label"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035602Z_fcdfd61a0b",
+        "created_at": "2026-09-08T03:56:02.285385+00:00",
+        "reason": "Fixed v2 artifact reference spelling"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T035620Z_913b6686ff",
+        "created_at": "2026-09-08T03:56:20.076015+00:00",
+        "reason": "Aligned research question with v2 schema-completeness failure"
       }
     ],
     "provider_usage": [
@@ -550,20 +643,20 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Author a new independent v2 holdout, freeze cases, input bundle, model digest, prompts, gates and hashes, then run exactly once.",
+  "next_executable_step": "Before any further cases or model calls, qualify exact diagnostic cardinality and a complete declarative-policy response schema against maximum valid and adversarial malformed mocked outputs.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
     {
       "claim_type": "question",
-      "question": "On new unseen cases, does a content-matched typed relational overlay improve policy generation after structural grounding validation and a worst-case paired prompt-budget proof?",
+      "question": "Can complete response schemas force exactly one finding per observed failure and the full inert policy grammar under adversarial as well as maximum-valid mocks?",
       "source_refs": [
-        "structural_input_experiment_v1_results",
-        "structural_input_experiment_v1_postmortem"
+        "structural_input_experiment_v2_results",
+        "structural_input_experiment_v2_postmortem"
       ]
     }
   ],
-  "updated_at": "2026-09-08T03:38:48.497464+00:00",
+  "updated_at": "2026-09-08T03:56:20.039251+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

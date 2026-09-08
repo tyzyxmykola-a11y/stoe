@@ -56,6 +56,16 @@
       ],
       "started_at": "2026-09-08T03:21:20.728544+00:00",
       "status": "completed"
+    },
+    {
+      "action_id": "checkpoint:harness-qualification-v2",
+      "completed_at": "2026-09-08T03:38:48.059302+00:00",
+      "description": "Qualify mechanism grounding, schema bounds, null metrics, and worst-case paired prompt budgets without model calls or new cases.",
+      "result_refs": [
+        "harness_qualification_v2"
+      ],
+      "started_at": "2026-09-08T03:38:47.617927+00:00",
+      "status": "completed"
     }
   ],
   "active_hypothesis": {
@@ -247,6 +257,19 @@
       ],
       "summary": "Postmortem classifying the frozen v1 run as an inconclusive execution failure, not a topology result.",
       "summary_is_exact_source": false
+    },
+    {
+      "bytes": 1814,
+      "kind": "qualification_report",
+      "path": "agent/HARNESS_QUALIFICATION_V2.json",
+      "provenance": "deterministic_mock_and_budget_proof",
+      "ref": "harness_qualification_v2",
+      "sha256": "faa9cc3b48b3a32a3a5256420503f5eb59ddde79da3cbd202ceaa9548735681e",
+      "source_refs": [
+        "structural_input_experiment_v1_postmortem"
+      ],
+      "summary": "Model-free qualification proving bounded proposals and both mocked paired pipelines fit with at least 1,792 tokens of additional reserve.",
+      "summary_is_exact_source": false
     }
   ],
   "author_definitions": [
@@ -290,7 +313,7 @@
       ]
     }
   ],
-  "current_task": "Structural-input v1 preserved as an inconclusive execution failure; no candidate was evaluated or activated.",
+  "current_task": "v2 harness qualified without model calls or new cases.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -504,6 +527,12 @@
         "checkpoint_id": "20260908T032512Z_9762a35973",
         "created_at": "2026-09-08T03:25:12.964830+00:00",
         "reason": "Aligned active hypothesis with the conserved inconclusive v1 result"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T033848Z_9260f9d05c",
+        "created_at": "2026-09-08T03:38:48.524964+00:00",
+        "reason": "Qualified v2 measuring instrument before authoring new holdout"
       }
     ],
     "provider_usage": [
@@ -521,7 +550,7 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Before any v2 generation, freeze new unseen cases and prove both complete paired prompts fit at the worst schema-valid proposal size; replace lexical grounding recognition with field-structural validation.",
+  "next_executable_step": "Author a new independent v2 holdout, freeze cases, input bundle, model digest, prompts, gates and hashes, then run exactly once.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
@@ -534,7 +563,7 @@
       ]
     }
   ],
-  "updated_at": "2026-09-08T03:25:12.937804+00:00",
+  "updated_at": "2026-09-08T03:38:48.497464+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

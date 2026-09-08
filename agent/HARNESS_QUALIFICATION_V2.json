@@ -1,0 +1,48 @@
+{
+  "action_id": "checkpoint:harness-qualification-v2",
+  "status": "QUALIFIED_WITHOUT_MODEL_CALLS",
+  "model_calls": 0,
+  "new_hidden_cases_created": 0,
+  "mechanism_grounding": {
+    "representation": "schema-enforced identifier arrays",
+    "lexical_prose_allowlist_removed": true,
+    "examples": ["item.kind", "item.outcome", "item.failure_condition", "token_similarity"]
+  },
+  "proposal_bounds": {
+    "all_string_fields_have_maxLength": true,
+    "all_array_fields_have_maxItems": true,
+    "largest_evidence_gate_valid_proposal_tested": true
+  },
+  "context_limit_tokens": 8192,
+  "checkpoint_reserve_tokens": 512,
+  "minimum_additional_remaining_tokens_required": 1024,
+  "minimum_additional_remaining_tokens_observed": 1792,
+  "budget_proof": {
+    "ORDINARY_OBSERVABLE": {
+      "proposal": {"total_with_reserves": 4072, "remaining": 4120},
+      "policy": {"total_with_reserves": 5599, "remaining": 2593}
+    },
+    "BOUNDED_TYPED_STOE": {
+      "proposal": {"total_with_reserves": 4873, "remaining": 3319},
+      "policy": {"total_with_reserves": 6400, "remaining": 1792}
+    }
+  },
+  "mock_pipeline": {
+    "conditions": ["ORDINARY_OBSERVABLE", "BOUNDED_TYPED_STOE"],
+    "complete_calls": 4,
+    "uses_largest_gate_valid_proposal": true,
+    "passed": true
+  },
+  "unevaluated_metrics": {
+    "evaluable": false,
+    "targeted_pass_count": null,
+    "control_pass_count": null,
+    "total_pass_count": null,
+    "by_family": null
+  },
+  "critical_file_sha256": {
+    "agent/src/stoe_agent/qualified_harness.py": "689541f99855f5cf9fb2956e6917d5cefeee6e1ade99c5de91ddbb7b986ae8b0",
+    "agent/tests/test_qualified_harness.py": "6711a69334d698a20b0e29d40ebd559dc62732e1848859bb42bd9968051ce887"
+  },
+  "preserved_v1_result_sha256": "68c2e5c2ec0de85e6930b099333362e4e0aa06c2ec88d9bc8af653a67f94410e"
+}

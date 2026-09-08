@@ -46,14 +46,24 @@
       ],
       "started_at": "2026-09-07T22:51:44.297025+00:00",
       "status": "completed"
+    },
+    {
+      "action_id": "model-cycle:structural-input-v1",
+      "completed_at": "2026-09-08T03:21:54.317689+00:00",
+      "description": "One frozen paired ordinary-versus-bounded-typed-structure development cycle.",
+      "result_refs": [
+        "agent/structural_input_experiment/results/20260908T032120Z_structural_v1.json"
+      ],
+      "started_at": "2026-09-08T03:21:20.728544+00:00",
+      "status": "completed"
     }
   ],
   "active_hypothesis": {
-    "claim": "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve it on newly frozen cases without expanding candidate authority?",
+    "claim": "On new unseen cases, does a content-matched typed relational overlay improve policy generation after structural grounding validation and a worst-case paired prompt-budget proof?",
     "claim_type": "hypothesis",
     "source_refs": [
-      "continuity_reconciliation_report",
-      "candidate_capability_boundary_report"
+      "structural_input_experiment_v1_results",
+      "structural_input_experiment_v1_postmortem"
     ]
   },
   "artifacts": [
@@ -211,6 +221,32 @@
       ],
       "summary": "Observed stale-state precedence, lineage repair, verification, and remaining boundary.",
       "summary_is_exact_source": false
+    },
+    {
+      "bytes": 71671,
+      "kind": "experiment_result",
+      "path": "agent/structural_input_experiment/results/20260908T032120Z_structural_v1.json",
+      "provenance": "frozen_paired_local_ollama_experiment",
+      "ref": "structural_input_experiment_v1_results",
+      "sha256": "68c2e5c2ec0de85e6930b099333362e4e0aa06c2ec88d9bc8af653a67f94410e",
+      "source_refs": [
+        "continuity_reconciliation_report"
+      ],
+      "summary": "Complete paired ordinary-versus-bounded-typed-structure prompts, traces, policies, unseen-case evaluations, and activation decision.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 3717,
+      "kind": "experiment_postmortem",
+      "path": "agent/structural_input_experiment/RESULTS.md",
+      "provenance": "frozen_result_interpretation",
+      "ref": "structural_input_experiment_v1_postmortem",
+      "sha256": "a8a2922b34019ff18143d210e1fc50cda957012ae4301490e636369590e95946",
+      "source_refs": [
+        "structural_input_experiment_v1_results"
+      ],
+      "summary": "Postmortem classifying the frozen v1 run as an inconclusive execution failure, not a topology result.",
+      "summary_is_exact_source": false
     }
   ],
   "author_definitions": [
@@ -254,7 +290,7 @@
       ]
     }
   ],
-  "current_task": "Continuity reconciliation checkpoint completed without provider generation.",
+  "current_task": "Structural-input v1 preserved as an inconclusive execution failure; no candidate was evaluated or activated.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -283,6 +319,12 @@
       "reason": "File timestamps or location cannot establish descent; bound ancestry can.",
       "source_refs": [
         "continuity_reconciliation_report"
+      ]
+    },
+    {
+      "decision": "Do not rerun or tune v1 after observing its prompts and cases; any confirmatory retry requires new unseen cases and a separately frozen budget-safe design.",
+      "source_refs": [
+        "structural_input_experiment_v1_postmortem"
       ]
     }
   ],
@@ -339,6 +381,15 @@
       "kind": "failure",
       "source_refs": [
         "continuity_reconciliation_report"
+      ],
+      "stance": "failure"
+    },
+    {
+      "claim": "Frozen structural-input v1 was execution-inconclusive: ordinary proposal was falsely rejected by a lexical grounding allowlist and the structural policy prompt exceeded context before generation; no candidate comparison occurred.",
+      "kind": "failure",
+      "source_refs": [
+        "structural_input_experiment_v1_results",
+        "structural_input_experiment_v1_postmortem"
       ],
       "stance": "failure"
     }
@@ -423,6 +474,36 @@
         "checkpoint_id": "20260907T225144Z_5ae3c23669",
         "created_at": "2026-09-07T22:51:44.474813+00:00",
         "reason": "Completed continuity reconciliation v1 without provider generation"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T032120Z_a8749946c5",
+        "created_at": "2026-09-08T03:21:20.757177+00:00",
+        "reason": "Before frozen paired model action model-cycle:structural-input-v1"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T032154Z_5a6a2ab6d4",
+        "created_at": "2026-09-08T03:21:54.366950+00:00",
+        "reason": "After frozen paired structural-input experiment model-cycle:structural-input-v1"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T032154Z_943eb63c9c",
+        "created_at": "2026-09-08T03:21:54.470196+00:00",
+        "reason": "Registered immutable structural-input experiment result artifact"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T032427Z_705c075c52",
+        "created_at": "2026-09-08T03:24:27.709752+00:00",
+        "reason": "Conserved structural-input v1 execution failure and exact next research question"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T032512Z_9762a35973",
+        "created_at": "2026-09-08T03:25:12.964830+00:00",
+        "reason": "Aligned active hypothesis with the conserved inconclusive v1 result"
       }
     ],
     "provider_usage": [
@@ -440,19 +521,20 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Freeze new cases before outcomes, then investigate whether bounded structural input improves changed-constraint invalidation; do not run generation until this continuity checkpoint is independently reviewed.",
+  "next_executable_step": "Before any v2 generation, freeze new unseen cases and prove both complete paired prompts fit at the worst schema-valid proposal size; replace lexical grounding recognition with field-structural validation.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
     {
       "claim_type": "question",
-      "question": "Why did changed-constraint invalidation fail to materialize, and can a bounded structural input improve it on newly frozen cases without expanding candidate authority?",
+      "question": "On new unseen cases, does a content-matched typed relational overlay improve policy generation after structural grounding validation and a worst-case paired prompt-budget proof?",
       "source_refs": [
-        "continuity_reconciliation_report"
+        "structural_input_experiment_v1_results",
+        "structural_input_experiment_v1_postmortem"
       ]
     }
   ],
-  "updated_at": "2026-09-07T22:51:44.454314+00:00",
+  "updated_at": "2026-09-08T03:25:12.937804+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

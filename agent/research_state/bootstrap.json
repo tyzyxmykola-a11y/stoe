@@ -86,13 +86,26 @@
       ],
       "started_at": "2026-09-08T05:30:18.790788+00:00",
       "status": "completed"
+    },
+    {
+      "action_id": "self-code-cycle:v1:deduplicate-development-context",
+      "completed_at": null,
+      "description": "One bounded model-proposed source modification of the agent-owned development-context reporter.",
+      "result_refs": [
+        "self_code_v1_attempt_manifest",
+        "self_code_v1_failed_attempt",
+        "self_code_v1_report"
+      ],
+      "started_at": "2026-09-08T10:27:26.645484+00:00",
+      "status": "failed"
     }
   ],
   "active_hypothesis": {
-    "claim": "Why did typed input induce outcome-to-change scoring and impossible public-specific conjunctions, and can a separately qualified representation express changed_constraints-to-failure_condition without leakage, overfit, or budget changes?",
-    "claim_type": "hypothesis",
+    "claim": "How can a successor cycle preserve raw Ollama output before parsing and qualify schema-complete gemma4:26b patch responses on disclosed fixtures without weakening the inert patch boundary or executing generated Python?",
+    "claim_type": "development_hypothesis",
     "source_refs": [
-      "structural_input_experiment_v3_results"
+      "self_code_v1_attempt_manifest",
+      "self_code_v1_report"
     ]
   },
   "artifacts": [
@@ -341,6 +354,44 @@
       ],
       "summary": "Adversarial interpretation of the frozen v3 loss and exact remaining research question.",
       "summary_is_exact_source": false
+    },
+    {
+      "bytes": 60959,
+      "kind": "generation_trace",
+      "path": "agent/self_code_candidates/self_code_cycle_v1_deduplicate_context/attempt_manifest.json",
+      "provenance": "supervised_self_code_cycle_v1",
+      "ref": "self_code_v1_attempt_manifest",
+      "sha256": "f3be8a9fb6e4d02b4ac564163e3805215c3aa9ec03d924f9e5839a724407249c",
+      "source_refs": [],
+      "summary": "Exact bounded objective, retrieved SToE context and traversal trace, prompt/schema/settings, and response-preservation limitation.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 2319,
+      "kind": "failed_candidate",
+      "path": "agent/self_code_candidates/self_code_cycle_v1_deduplicate_context/failed_attempt.json",
+      "provenance": "supervised_self_code_cycle_v1",
+      "ref": "self_code_v1_failed_attempt",
+      "sha256": "f13d74d3e81b4673462bf2448e8dca4371252c9e3e8a0517a6b8992db968bbfb",
+      "source_refs": [
+        "self_code_v1_attempt_manifest"
+      ],
+      "summary": "One gemma4:26b call failed schema parsing; no valid patch or candidate source was accepted.",
+      "summary_is_exact_source": false
+    },
+    {
+      "bytes": 8685,
+      "kind": "research_report",
+      "path": "agent/SUPERVISED_SELF_CODE_MODIFICATION_V1.md",
+      "provenance": "supervised_self_code_cycle_v1",
+      "ref": "self_code_v1_report",
+      "sha256": "0f5b1f4b88b0243b4ab9768478d53466204ebf02a009a43729817e7aa7f07982",
+      "source_refs": [
+        "self_code_v1_attempt_manifest",
+        "self_code_v1_failed_attempt"
+      ],
+      "summary": "Supervised self-code-modification v1 implementation and failed-cycle report.",
+      "summary_is_exact_source": false
     }
   ],
   "author_definitions": [
@@ -382,9 +433,17 @@
       "source_refs": [
         "continuity_reconciliation_report"
       ]
+    },
+    {
+      "claim": "Instrumentation correction: the frozen Ollama client raises during JSON parsing before returning the malformed raw provider body, so this attempt preserves the exact error and prompt but not the raw response.",
+      "claim_type": "correction",
+      "source_refs": [
+        "self_code_v1_attempt_manifest",
+        "self_code_v1_report"
+      ]
     }
   ],
-  "current_task": "Frozen v3 completed once: typed 0/8 targets versus ordinary 3/8; no activation.",
+  "current_task": "Supervised self-code-modification v1 completed as a safe failed attempt: one gemma4:26b response was malformed; no candidate source or activation exists.",
   "decisions": [
     {
       "decision": "Retain the accepted successor under the original fixed adoption rule.",
@@ -431,6 +490,13 @@
       "decision": "Do not tune or rerun v3; investigate the failed structural-to-operation mapping only on exposed development cases and qualify a new instrument before any new holdout.",
       "source_refs": [
         "structural_input_experiment_v3_report"
+      ]
+    },
+    {
+      "decision": "Fail closed, preserve the attempt, do not retry its stable action, and do not activate; qualify lossless raw-response capture under a new approved development action before another generation.",
+      "source_refs": [
+        "self_code_v1_failed_attempt",
+        "self_code_v1_report"
       ]
     }
   ],
@@ -514,6 +580,16 @@
       "source_refs": [
         "structural_input_experiment_v3_results",
         "structural_input_experiment_v3_report"
+      ],
+      "stance": "failure"
+    },
+    {
+      "claim": "The first supervised source-generation call returned an unterminated JSON string; the inert patch gate accepted no artifact, the active source stayed unchanged, and the same stable action is not retryable.",
+      "kind": "failure",
+      "source_refs": [
+        "self_code_v1_failed_attempt",
+        "self_code_v1_attempt_manifest",
+        "self_code_v1_report"
       ],
       "stance": "failure"
     }
@@ -712,6 +788,12 @@
         "checkpoint_id": "20260908T084234Z_a732e6e8b2",
         "created_at": "2026-09-08T08:42:34.833387+00:00",
         "reason": "Compact frozen v3 state while preserving full evidence by hash"
+      },
+      {
+        "budget": {},
+        "checkpoint_id": "20260908T102726Z_2ebdc0d984",
+        "created_at": "2026-09-08T10:27:26.941844+00:00",
+        "reason": "Conserve supervised self-code-modification v1 failed attempt without retry or activation"
       }
     ],
     "provider_usage": [
@@ -729,7 +811,7 @@
     ],
     "truncations": []
   },
-  "next_executable_step": "Investigate the failed typed-to-policy mapping on exposed cases only; qualify any successor before a new holdout.",
+  "next_executable_step": "Await Mykola's approval for a new action that adds lossless raw-response capture and disclosed schema rehearsal; do not retry self-code-cycle:v1:deduplicate-development-context.",
   "objective": "Develop an agent that uses SToE to research and develop agent-owned components alongside Mykola Voronin with persistent understanding and efficient context management across bounded sessions.",
   "schema_version": 1,
   "unresolved_questions": [
@@ -739,9 +821,17 @@
       "source_refs": [
         "structural_input_experiment_v3_report"
       ]
+    },
+    {
+      "claim_type": "question",
+      "question": "How can a successor cycle preserve raw Ollama output before parsing and qualify schema-complete gemma4:26b patch responses on disclosed fixtures without weakening the inert patch boundary or executing generated Python?",
+      "source_refs": [
+        "self_code_v1_attempt_manifest",
+        "self_code_v1_report"
+      ]
     }
   ],
-  "updated_at": "2026-09-08T08:42:34.790397+00:00",
+  "updated_at": "2026-09-08T10:27:26.886423+00:00",
   "versions": {
     "active": {
       "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",

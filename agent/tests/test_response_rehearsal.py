@@ -138,8 +138,8 @@ class ResponseRehearsalTests(unittest.TestCase):
             lambda value: value.pop("filters"),
             lambda value: value.update({"policy": {"implementation": "open('cases.json').read()"}}),
             lambda value: value["filters"].append({"conditions": []}),
-            lambda value: value["constant_if_rules"][0]["conditions"][0].update({"op": "exec"}),
-            lambda value: value["constant_if_rules"][0]["conditions"][0].update({"value": "x" * 129}),
+            lambda value: value["constant_if_rules"][0]["conditions"].update({"exec": []}),
+            lambda value: value["constant_if_rules"][0]["conditions"]["equals"][0].update({"value": "x" * 33}),
             lambda value: value["token_similarity_rules"].clear() or value["constant_if_rules"].clear() or value["conditional_similarity_rules"].clear(),
         ]
         for mutate in mutators:
@@ -150,13 +150,15 @@ class ResponseRehearsalTests(unittest.TestCase):
                         self.active_source, self.bundle,
                     )
 
-    def test_condition_operator_reads_only_its_fixed_table_column(self):
+    def test_condition_operator_has_an_unambiguous_typed_table(self):
         response = largest_valid_policy_response()
-        row = response["constant_if_rules"][0]["conditions"][0]
-        row.update({"op": "in", "value": "ignored bounded cell", "values": ["supported"]})
+        tables = response["constant_if_rules"][0]["conditions"]
+        for name in tables:
+            tables[name] = []
+        tables["in_values"] = [{"field": "item.outcome", "values": ["supported"]}]
         policy = compile_policy_tables(response)
-        compiled = policy["score_rules"][3]["conditions"][0]
-        self.assertEqual({"field": "item.failure_condition", "op": "in", "values": ["supported"]}, compiled)
+        compiled = policy["score_rules"][3]["conditions"]
+        self.assertEqual([{"field": "item.outcome", "op": "in", "values": ["supported"]}], compiled)
 
     def test_schema_validator_rejects_nonfinite_or_wrong_numbers(self):
         response = largest_valid_policy_response()

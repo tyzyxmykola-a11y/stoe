@@ -11,7 +11,6 @@ from .investigation import evaluate_public_selector
 from .qualified_harness import CONDITIONS, MECHANISM_IDS
 from .selection_policy import (
     ALL_FIELDS,
-    CONDITION_OPS,
     EXPECTED_SORT,
     POLICY_FORMAT,
     POLICY_VERSION,
@@ -22,12 +21,12 @@ from .selection_policy import (
 
 
 PROPOSAL_MAX_TOKENS = 1400
-POLICY_MAX_TOKENS = 1800
+POLICY_MAX_TOKENS = 2000
 MIN_REMAINING_TOKENS = 1024
 REPETITIONS = 3
 PROPOSAL_SEEDS = (7701, 7702, 7703)
 POLICY_SEEDS = (8701, 8702, 8703)
-HARNESS_VERSION = "public-response-grammar-v3-dev2"
+HARNESS_VERSION = "public-response-grammar-v3-dev3"
 
 
 def _string(max_length: int, *, allow_empty: bool = False) -> dict[str, Any]:
@@ -84,24 +83,41 @@ def proposal_schema(investigation: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-CONDITION_ROW_SCHEMA: dict[str, Any] = {
-    "type": "object",
-    "additionalProperties": False,
-    "properties": {
+def _condition_item(*, plural: bool = False, value_required: bool = True) -> dict[str, Any]:
+    properties: dict[str, Any] = {
         "field": {"type": "string", "maxLength": 64, "enum": sorted(ALL_FIELDS)},
-        "op": {"type": "string", "maxLength": 32, "enum": sorted(CONDITION_OPS)},
-        "value": _string(128, allow_empty=True),
-        "values": {
-            "type": "array", "maxItems": 16, "uniqueItems": True,
-            "items": _string(128),
-        },
-    },
-    "required": ["field", "op", "value", "values"],
-}
+    }
+    required = ["field"]
+    if value_required:
+        key = "values" if plural else "value"
+        properties[key] = (
+            {"type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": True, "items": _string(32)}
+            if plural else _string(32)
+        )
+        required.append(key)
+    return {
+        "type": "object", "additionalProperties": False,
+        "properties": properties, "required": required,
+    }
 
 
 def _conditions_schema() -> dict[str, Any]:
-    return {"type": "array", "minItems": 1, "maxItems": 2, "items": deepcopy(CONDITION_ROW_SCHEMA)}
+    names = {
+        "equals": _condition_item(),
+        "not_equals": _condition_item(),
+        "in_values": _condition_item(plural=True),
+        "not_in_values": _condition_item(plural=True),
+        "contains_token": _condition_item(),
+        "nonempty": _condition_item(value_required=False),
+    }
+    return {
+        "type": "object", "additionalProperties": False,
+        "properties": {
+            name: {"type": "array", "maxItems": 1, "items": item}
+            for name, item in names.items()
+        },
+        "required": list(names),
+    }
 
 
 POLICY_TABLE_SCHEMA: dict[str, Any] = {
@@ -221,24 +237,29 @@ def validate_proposal(proposal: dict[str, Any], investigation: dict[str, Any]) -
             raise RuntimeError(f"finding mechanisms are disconnected from implementation inputs for {case}")
 
 
-def _compile_condition(row: dict[str, Any], path: str) -> dict[str, Any]:
-    op = row["op"]
-    if op == "nonempty":
-        return {"field": row["field"], "op": op}
-    if op in {"in", "not_in"}:
-        if not row["values"]:
-            raise RuntimeError(f"{path}: {op} requires at least one values entry")
-        return {"field": row["field"], "op": op, "values": row["values"]}
-    if not row["value"]:
-        raise RuntimeError(f"{path}: {op} requires a value")
-    return {"field": row["field"], "op": op, "value": row["value"]}
+def _compile_conditions(tables: dict[str, list[dict[str, Any]]], path: str) -> list[dict[str, Any]]:
+    mapping = {
+        "equals": ("eq", "value"), "not_equals": ("not_eq", "value"),
+        "in_values": ("in", "values"), "not_in_values": ("not_in", "values"),
+        "contains_token": ("contains_token", "value"), "nonempty": ("nonempty", None),
+    }
+    compiled: list[dict[str, Any]] = []
+    for table, (op, operand) in mapping.items():
+        for row in tables[table]:
+            condition = {"field": row["field"], "op": op}
+            if operand is not None:
+                condition[operand] = row[operand]
+            compiled.append(condition)
+    if not compiled:
+        raise RuntimeError(f"{path} must select at least one typed condition")
+    return compiled
 
 
 def compile_policy_tables(response: dict[str, Any]) -> dict[str, Any]:
     validate_schema(response, POLICY_TABLE_SCHEMA, "policy_response")
     rules: list[dict[str, Any]] = []
     filters = [
-        {"action": "exclude_if", "conditions": [_compile_condition(c, f"filter {i}") for c in row["conditions"]]}
+        {"action": "exclude_if", "conditions": _compile_conditions(row["conditions"], f"filter {i}")}
         for i, row in enumerate(response["filters"])
     ]
     for row in response["token_similarity_rules"]:
@@ -246,12 +267,12 @@ def compile_policy_tables(response: dict[str, Any]) -> dict[str, Any]:
     for i, row in enumerate(response["constant_if_rules"]):
         rules.append({
             "op": "constant_if", "weight": row["weight"],
-            "conditions": [_compile_condition(c, f"constant_if {i}") for c in row["conditions"]],
+            "conditions": _compile_conditions(row["conditions"], f"constant_if {i}"),
         })
     for i, row in enumerate(response["conditional_similarity_rules"]):
         rules.append({
             "op": "conditional_similarity", "weight": row["weight"], "bias": row["bias"],
-            "conditions": [_compile_condition(c, f"conditional_similarity {i}") for c in row["conditions"]],
+            "conditions": _compile_conditions(row["conditions"], f"conditional_similarity {i}"),
             "left_fields": row["left_fields"], "right_field": row["right_field"],
         })
     if not rules:
@@ -290,8 +311,14 @@ def largest_valid_proposal(investigation: dict[str, Any]) -> dict[str, Any]:
 
 
 def largest_valid_policy_response() -> dict[str, Any]:
-    condition = {"field": "item.failure_condition", "op": "eq", "value": "x" * 128, "values": []}
-    conditions = [deepcopy(condition), {**deepcopy(condition), "field": "item.outcome"}]
+    conditions = {
+        "equals": [{"field": "item.failure_condition", "value": "x" * 32}],
+        "not_equals": [{"field": "item.outcome", "value": "x" * 32}],
+        "in_values": [{"field": "item.kind", "values": ["x" * 32, "y" * 32]}],
+        "not_in_values": [{"field": "item.origin", "values": ["x" * 32, "y" * 32]}],
+        "contains_token": [{"field": "item.content", "value": "x" * 32}],
+        "nonempty": [{"field": "observer_state.goal"}],
+    }
     response = {
         "format": POLICY_FORMAT, "version": POLICY_VERSION,
         "filters": [{"conditions": deepcopy(conditions)} for _ in range(2)],
@@ -336,7 +363,7 @@ def policy_prompt(active_source: str, bundle: dict[str, Any], proposal: dict[str
     payload = {
         "instructions": [
             "Provide all fixed tables, using [] when a table is unused.",
-            "Each row is fixed width: nonempty ignores value/values; in/not_in read values; other operators read value.",
+            "Each condition operator has its own table and operand shape; include every table and use [] when unused.",
             "At least one scoring-rule table must be nonempty.",
             "Generalize from mechanism fields; do not encode case names or item refs.",
         ],

@@ -21,8 +21,8 @@ holdout, or activate a candidate.
   and field list is bounded.
 - The largest valid proposal is conservatively estimated at 1,200 tokens against
   a 1,400-token output reserve. The largest valid policy-table response is
-  estimated at 1,485 tokens against a 1,800-token output reserve.
-- The worst complete prompt plan retains 1,363 tokens after generation and
+  estimated at 1,917 tokens against a 2,000-token output reserve.
+- The worst complete prompt plan retains 1,161 tokens after generation and
   checkpoint reserves in the fixed 8,192-token context.
 
 ## Mock qualification
@@ -63,3 +63,19 @@ semantics: `in`/`not_in` read `values`, scalar operators read `value`, and
 `nonempty` reads neither. Unused bounded cells are ignored. Supported operators,
 fields, table sizes, output bounds, trusted compilation, evaluation scope, and
 the no-activation rule are unchanged.
+
+## Development attempt 2
+
+Artifact: `attempt_002.json`
+
+Result: `0/6` complete pipelines. Again, all six exact-key proposals and policy
+JSON objects were schema-valid. Qwen now placed each `in` operand in the scalar
+cell while leaving `values` empty, the opposite convention from attempt 1. This
+falsified the idea that an overloaded condition row could be made reliable by
+prompt wording or ignored cells.
+
+Development revision 3 removes the overloaded row. Each condition operator now
+has its own required fixed table and operator-specific row schema: `equals`,
+`not_equals`, `in_values`, `not_in_values`, `contains_token`, and `nonempty`.
+Every table is always present and unused tables are empty. No model-authored
+operator string or cross-column convention remains.

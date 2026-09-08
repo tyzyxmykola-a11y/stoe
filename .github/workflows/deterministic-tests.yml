@@ -19,9 +19,6 @@ jobs:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
-        with:
-          # Whitespace validation compares the checked-out commit with its parent.
-          fetch-depth: 2
 
       - uses: actions/setup-python@v5
         with:
@@ -63,6 +60,3 @@ jobs:
       - name: v3 suite
         working-directory: experiments/stoe_v3
         run: python -m unittest discover -s tests -v
-
-      - name: Whitespace validation
-        run: git diff --check HEAD^

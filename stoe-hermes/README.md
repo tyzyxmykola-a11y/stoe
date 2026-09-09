@@ -14,6 +14,12 @@ The protected `succession.py` supervisor creates candidate Hermes B from a pinne
 
 The inspected active checkout was dirty and divergent from its upstream. That state is preserved, not repaired here, and blocks candidate activation even though the exact committed parent can be materialized separately.
 
+Hermes A/B Succession v2.2 corrects the protected validator's inherited-
+`Raise` mismatch without globally allowing `Raise`. The exact v2.1 candidate now
+passes parent-relative validation and the pre-existing withheld focused behavior
+check, but remains inactive pending Mykola's explicit approval. See
+[HERMES_AB_SUCCESSION_V2_2.md](HERMES_AB_SUCCESSION_V2_2.md).
+
 ## Isolation boundary
 
 Separate directories and a sanitized process environment prevent intentional inheritance of Hermes profiles, `.env`, credentials, sessions, memories, and production gateways. Resource monitoring bounds time, output, process-tree size, RAM, and disk growth. On this Windows host it is still an ordinary subprocess under the invoking user identity: it is **not** an OS security sandbox and cannot prove network/filesystem denial against arbitrary native code. For that reason generated source is additionally constrained by a small static capability allowlist and remains inactive pending review.

@@ -1,6 +1,6 @@
 # SToE Local Worker Delegation v1
 
-Status: development tooling; local model output is data, never authority.
+Status: engineering-qualified fail-closed delegation; local model output is data, never authority.
 
 This thin layer lets Codex supervise bounded local Ollama workers while reusing the existing SToE Reasoning protocol, SToE Memory field, navigator, retrieval traces, evaluations, token estimator, and canonical artifact conventions. It does not introduce another memory system or modify SToE retrieval.
 
@@ -43,11 +43,20 @@ python agent/tools/local_worker.py pilot --observer-state STATE_ea54e40a1786498c
 
 The pilot only analyzes the conserved Hermes v2.1 inherited-`Raise` validator mismatch. It does not edit Hermes, implement v2.2, apply patches, or activate anything.
 
+The one authorized live qualification call has now been consumed. Do not rerun
+that stable action. Its observed result and exact metrics are recorded in
+[LOCAL_WORKER_DELEGATION_V1_REPORT.md](LOCAL_WORKER_DELEGATION_V1_REPORT.md).
+The response reached its 650-token output limit and ended with malformed JSON;
+validation rejected it. The deterministic `summarize-failure` command converted
+the preserved raw envelope into a bounded artifact-backed failure packet without
+making another model call.
+
 ## Current limitations
 
 - Windows resource telemetry is best-effort; CPU/process RAM may remain unavailable without an approved dependency.
 - Resource governance preserves configured margins but is not a security sandbox or a perfect predictor of model offload behavior.
 - Initial routing evidence is sparse. Future validated evaluations should update role scores without declaring a permanent winner.
 - Workers cannot inspect files themselves; deterministic trusted tooling supplies bounded excerpts.
+- Output-limit selection is not yet adaptive enough for schema-heavy analysis. The sole live result exhausted 650 tokens; no research conclusion was accepted.
+- The successful-response path records SToE continuity automatically. The qualification failure was recorded by the trusted supervisor through the same SToE Memory plugin because parsing stopped before the success recorder.
 - Hosted-token billing savings are not measurable here. The engineering metric is reduction of detail reinjected into Codex-visible context.
-

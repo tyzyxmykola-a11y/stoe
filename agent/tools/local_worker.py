@@ -17,7 +17,10 @@ from stoe_agent.local_workers import (  # noqa: E402
     ResourcePolicy,
     TaskDescriptor,
     capture_machine_snapshot,
+    chunk_context_text,
+    compact_failed_response,
     environment_summary,
+    redact_python_assignments,
     record_delegation,
     registry_fingerprint,
     result_schema,
@@ -87,7 +90,8 @@ def pilot(api: OllamaAPI, observer_state_ref: str) -> dict:
     target_path = ROOT / TARGET
     full_source = target_path.read_text(encoding="utf-8")
     narrowed = function_excerpt(target_path, "validate_candidate_source")
-    context = ["SOURCE_EXCERPT\n" + narrowed]
+    narrowed = redact_python_assignments(narrowed, {"secret_patterns"})
+    context = chunk_context_text("SOURCE_EXCERPT", narrowed)
     context.extend(f"STOE_REF={item['ref']} ORIGIN={item['origin']} OUTCOME={item['outcome']} CONTENT={item['content']}" for item in retrieval["selected_items"])
     task = TaskDescriptor(role="reviewer", difficulty="high", code_heavy=True, estimated_input_tokens=TokenEstimator().estimate("\n".join(context)), required_output_tokens=650, requires_json=True, security_sensitive=True, quality_priority=1.0, latency_priority=0.25)
     packet = {
@@ -95,7 +99,7 @@ def pilot(api: OllamaAPI, observer_state_ref: str) -> dict:
         "goal": "Analyze the supplied protected validator excerpt and conserved v2.1 failure. Recommend a narrow parent-relative policy for inherited ast.Raise without writing or applying code.",
         "constraints": ["analysis only", "no code or patch", "no filesystem or tools", "all authority-bearing constructs remain rejected", "candidate remains byte-identical", "cite supplied evidence only"],
         "relevant_context": context, "allowed_paths": [TARGET],
-        "expected_output_schema": result_schema(PILOT_ACTION, "reviewer", "selected-at-dispatch"),
+        "expected_output_schema": result_schema(PILOT_ACTION, "reviewer", "selected-at-dispatch", [TARGET]),
         "resource_limits": {"mode": "interactive", "one_heavy_worker": True, "max_output_tokens": 650, "operator_ram_reserve_bytes": 10 * 1024**3, "operator_vram_reserve_bytes": 2 * 1024**3},
         "time_limit_seconds": 420, "security_sensitivity": "high",
         "provenance": {"observer_state_ref": observer_state_ref, "retrieval_run_id": retrieval["run_id"], "release": "2d31df76e2350b2845be27adf757228988670359"},
@@ -120,13 +124,32 @@ def pilot(api: OllamaAPI, observer_state_ref: str) -> dict:
     return report
 
 
+def summarize_pilot_failure() -> dict:
+    raw_path = RUNTIME / "artifacts" / PILOT_ACTION.replace(":", "_") / "raw_response.json"
+    value = compact_failed_response(
+        raw_path,
+        action_id=PILOT_ACTION,
+        role="reviewer",
+        model="gemma4:12b",
+        parser_error="Unterminated JSON string after Ollama exhausted the configured output limit.",
+    )
+    summary_path = raw_path.parent / "failure_summary.json"
+    summary_path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
+    return {"status": "completed", "failure_summary_path": str(summary_path), **value}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Bounded trusted SToE local-worker orchestration")
-    parser.add_argument("command", choices=["discover", "pilot"])
+    parser.add_argument("command", choices=["discover", "pilot", "summarize-failure"])
     parser.add_argument("--observer-state", default="STATE_ea54e40a1786498c")
     args = parser.parse_args()
     api = OllamaAPI()
-    value = discover(api, "interactive")[0] if args.command == "discover" else pilot(api, args.observer_state)
+    if args.command == "discover":
+        value = discover(api, "interactive")[0]
+    elif args.command == "pilot":
+        value = pilot(api, args.observer_state)
+    else:
+        value = summarize_pilot_failure()
     print(json.dumps(value, indent=2, sort_keys=True, default=str))
     return 0 if value.get("status", "completed") in {"completed", "success"} else 2
 

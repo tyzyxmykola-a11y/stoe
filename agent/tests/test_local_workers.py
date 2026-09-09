@@ -23,11 +23,14 @@ from stoe_agent.local_workers import (  # noqa: E402
     WorkerContractError,
     WorkerUnavailable,
     capture_machine_snapshot,
+    chunk_context_text,
+    compact_failed_response,
     compact_result,
     govern_dispatch,
     load_registry,
     parse_model_inventory,
     record_delegation,
+    redact_python_assignments,
     registry_fingerprint,
     result_schema,
     route_model,
@@ -70,7 +73,7 @@ def worker_result(**updates) -> dict:
 
 
 def models(*, loaded=False, role_score=0.8, size=2_000_000_000) -> list[dict]:
-    return [{"model": MODEL, "digest": "d" * 64, "size_bytes": size, "context_capacity": 8192, "loaded": loaded, "observations": ["fixture qualification"], "role_scores": {"scout": role_score}}]
+    return [{"model": MODEL, "digest": "d" * 64, "size_bytes": size, "context_capacity": 8192, "capabilities": ["completion"], "loaded": loaded, "observations": ["fixture qualification"], "role_scores": {"scout": role_score}}]
 
 
 def snapshot(**updates) -> MachineSnapshot:
@@ -117,10 +120,22 @@ class LocalWorkerTests(unittest.TestCase):
         self.assertTrue(found[0]["loaded"])
         self.assertEqual("Q4", found[0]["quantization"])
 
+    def test_embedding_only_model_is_not_routed_as_reasoning_worker(self):
+        embedding = {**models()[0], "model": "embed", "capabilities": ["embedding"], "role_scores": {"scout": 1.0}}
+        routed = route_model(TaskDescriptor(role="scout"), [embedding, *models()], snapshot())
+        self.assertEqual(MODEL, routed["selected_model"])
+
     def test_task_packet_is_compact_and_validated(self):
         self.assertEqual(ACTION, validate_task_packet(packet())["action_id"])
         bad = packet(); bad["role"] = "shell"
         with self.assertRaises(WorkerContractError): validate_task_packet(bad)
+
+    def test_context_chunking_preserves_content_within_contract_cap(self):
+        original = "x" * 5_001
+        chunks = chunk_context_text("SOURCE", original)
+        self.assertTrue(all(len(chunk) <= 2_000 for chunk in chunks))
+        rebuilt = "".join(chunk.split("\n", 1)[1] for chunk in chunks)
+        self.assertEqual(original, rebuilt)
 
     def test_path_traversal_and_protected_scope_fail_closed(self):
         for path in ("../x", ".git/config", ".env"):
@@ -131,6 +146,19 @@ class LocalWorkerTests(unittest.TestCase):
         self.assertEqual("success", validate_worker_result(worker_result(), action_id=ACTION, role="scout", model=MODEL)["status"])
         for bad in ({}, dict(worker_result(), unexpected=True), dict(worker_result(), model="wrong")):
             with self.assertRaises(WorkerContractError): validate_worker_result(bad, action_id=ACTION, role="scout", model=MODEL)
+
+    def test_worker_cannot_assert_artifacts_hashes_or_out_of_scope_files(self):
+        for bad in (
+            worker_result(artifact_paths=["made-up.json"]),
+            worker_result(hashes=["sha256=untrusted"]),
+        ):
+            with self.assertRaises(WorkerContractError):
+                validate_worker_result(bad, action_id=ACTION, role="scout", model=MODEL)
+        envelope = {"response": json.dumps(worker_result(files=["other.py"]))}
+        with tempfile.TemporaryDirectory(dir=TEST_TMP) as tmp:
+            orchestrator = LocalWorkerOrchestrator(api=FakeAPI(json.dumps(envelope).encode()), artifact_root=Path(tmp))
+            with self.assertRaisesRegex(WorkerContractError, "outside"):
+                orchestrator.run(packet(), TaskDescriptor(role="scout"), {"models": models()}, snapshot())
 
     def test_secret_pattern_is_rejected(self):
         bad = packet(); bad["relevant_context"] = ["api_key=github_pat_abcdefghijklmnopqrstuvwxyz"]
@@ -189,6 +217,24 @@ class LocalWorkerTests(unittest.TestCase):
             self.assertNotIn(forbidden, schema["properties"])
         self.assertFalse(schema["additionalProperties"])
 
+    def test_trusted_ast_narrowing_removes_secret_table_without_weakening_packet_scan(self):
+        source = '''def validate_candidate_source(source):
+    secret_patterns = [r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"]
+    if "raise" in source:
+        raise ValueError("forbidden")
+'''
+        narrowed = redact_python_assignments(source, {"secret_patterns"})
+        self.assertNotIn("PRIVATE KEY", narrowed)
+        self.assertIn("raise ValueError", narrowed)
+        compile(narrowed, "<narrowed>", "exec")
+        candidate = packet()
+        candidate["relevant_context"] = chunk_context_text("SOURCE", narrowed)
+        self.assertEqual(ACTION, validate_task_packet(candidate)["action_id"])
+
+    def test_result_schema_constrains_reported_files_to_supplied_scope(self):
+        schema = result_schema(ACTION, "scout", MODEL, ["agent/src/example.py"])
+        self.assertEqual(["agent/src/example.py"], schema["properties"]["files"]["items"]["enum"])
+
     def test_malformed_ollama_response_fails_closed_and_raw_is_preserved(self):
         with tempfile.TemporaryDirectory(dir=TEST_TMP) as tmp:
             api = FakeAPI(b"not-json")
@@ -197,6 +243,25 @@ class LocalWorkerTests(unittest.TestCase):
                 orchestrator.run(packet(), TaskDescriptor(role="scout"), {"models": models()}, snapshot())
             raw = next(Path(tmp).rglob("raw_response.json"))
             self.assertEqual(b"not-json", raw.read_bytes())
+
+    def test_failed_provider_response_has_bounded_artifact_backed_compact_packet(self):
+        envelope = {
+            "response": '{"decision":"unterminated',
+            "done": True,
+            "done_reason": "length",
+            "prompt_eval_count": 1749,
+            "eval_count": 650,
+        }
+        with tempfile.TemporaryDirectory(dir=TEST_TMP) as tmp:
+            raw_path = Path(tmp) / "raw.json"
+            raw_path.write_text(json.dumps(envelope), encoding="utf-8")
+            value = compact_failed_response(
+                raw_path, action_id=ACTION, role="scout", model=MODEL, parser_error="unterminated JSON"
+            )
+            self.assertEqual("failure", value["compact_result"]["status"])
+            self.assertEqual("length", value["metrics"]["done_reason"])
+            self.assertLessEqual(value["compact_result"]["return_packet_tokens_estimated"], 400)
+            self.assertEqual(str(raw_path), value["artifact"]["path"])
 
     def test_timeout_or_unavailable_ollama_is_bounded(self):
         with tempfile.TemporaryDirectory(dir=TEST_TMP) as tmp:

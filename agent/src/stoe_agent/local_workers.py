@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import ctypes
 import hashlib
 import json
@@ -27,6 +28,7 @@ SECRET_RE = re.compile(r"(?i)(?:api[_-]?key|password|secret|token)\s*[:=]\s*[^,\
 ACTION_RE = re.compile(r"^[a-z0-9][a-z0-9:._-]{5,127}$")
 MAX_PACKET_BYTES = 100_000
 MAX_RESULT_BYTES = 24_000
+MAX_RAW_RESPONSE_BYTES = 8_000_000
 DEFAULT_RETURN_TOKENS = 400
 
 
@@ -120,6 +122,43 @@ def _safe_path(value: str) -> str:
     return normalized
 
 
+def chunk_context_text(label: str, text: str, *, max_chars: int = 2_000) -> list[str]:
+    if not label or len(label) > 80 or max_chars < len(label) + 16:
+        raise WorkerContractError("invalid context chunk parameters")
+    width = max_chars - len(label) - 12
+    chunks = [text[index : index + width] for index in range(0, len(text), width)] or [""]
+    return [f"{label}[{index + 1}/{len(chunks)}]\n{chunk}" for index, chunk in enumerate(chunks)]
+
+
+def redact_python_assignments(source: str, names: set[str]) -> str:
+    """Remove named assignment payloads from a trusted Python excerpt.
+
+    This narrows supplied context without teaching the packet secret scanner to
+    ignore dangerous signatures. Replacements remain valid Python and retain
+    line structure so surrounding evidence is still inspectable.
+    """
+    if not names or any(not isinstance(name, str) or not name.isidentifier() for name in names):
+        raise WorkerContractError("invalid Python assignment redaction names")
+    tree = ast.parse(source)
+    ranges: list[tuple[int, int, int]] = []
+    for node in ast.walk(tree):
+        targets: list[ast.expr] = []
+        if isinstance(node, ast.Assign):
+            targets = list(node.targets)
+        elif isinstance(node, ast.AnnAssign):
+            targets = [node.target]
+        assigned = {item.id for target in targets for item in ast.walk(target) if isinstance(item, ast.Name)}
+        if assigned.intersection(names) and node.end_lineno is not None:
+            ranges.append((node.lineno, node.end_lineno, node.col_offset))
+    lines = source.splitlines()
+    for start, end, indent in sorted(ranges, reverse=True):
+        replacement = " " * indent + "pass  # assignment payload omitted by trusted context narrowing"
+        lines[start - 1 : end] = [replacement] + [""] * (end - start)
+    narrowed = "\n".join(lines)
+    ast.parse(narrowed)
+    return narrowed
+
+
 def validate_task_packet(packet: Any) -> dict[str, Any]:
     required = {
         "action_id", "role", "goal", "constraints", "relevant_context", "allowed_paths",
@@ -160,7 +199,7 @@ RESULT_FIELDS = {
 }
 
 
-def result_schema(action_id: str, role: str, model: str) -> dict[str, Any]:
+def result_schema(action_id: str, role: str, model: str, allowed_paths: list[str] | None = None) -> dict[str, Any]:
     string_array = {"type": "array", "maxItems": 20, "items": {"type": "string", "maxLength": 600}}
     props: dict[str, Any] = {
         "action_id": {"type": "string", "enum": [action_id]},
@@ -173,8 +212,15 @@ def result_schema(action_id: str, role: str, model: str) -> dict[str, Any]:
         "confidence": {"type": "number", "minimum": 0, "maximum": 1},
         "recommended_next_action": {"type": "string", "maxLength": 800},
     }
-    for name in ("evidence", "failures", "files", "test_results", "artifact_paths", "hashes", "unresolved"):
+    for name in ("evidence", "failures", "files", "test_results", "unresolved"):
         props[name] = string_array
+    if allowed_paths is not None:
+        safe_paths = [_safe_path(path) for path in allowed_paths]
+        props["files"] = {"type": "array", "maxItems": 20, "items": {"type": "string", "enum": safe_paths}}
+    # Workers cannot create artifacts or certify hashes. The trusted
+    # orchestrator fills these fields only after validation and persistence.
+    props["artifact_paths"] = {"type": "array", "maxItems": 0}
+    props["hashes"] = {"type": "array", "maxItems": 0}
     return {"type": "object", "properties": props, "required": sorted(RESULT_FIELDS), "additionalProperties": False}
 
 
@@ -195,7 +241,64 @@ def validate_worker_result(value: Any, *, action_id: str, role: str, model: str)
     encoded = json.dumps(value, ensure_ascii=False, sort_keys=True).encode()
     if len(encoded) > MAX_RESULT_BYTES or SECRET_RE.search(encoded.decode("utf-8")):
         raise WorkerContractError("worker result is oversized or resembles secret material")
+    if value["artifact_paths"] or value["hashes"]:
+        raise WorkerContractError("worker cannot assert artifact paths or hashes")
     return value
+
+
+def compact_failed_response(
+    raw_path: Path, *, action_id: str, role: str, model: str, parser_error: str, estimator: TokenEstimator | None = None
+) -> dict[str, Any]:
+    """Create trusted compact evidence for an already-failed provider response."""
+    raw = raw_path.read_bytes()
+    if len(raw) > MAX_RAW_RESPONSE_BYTES:
+        raise WorkerContractError("raw Ollama response exceeds the hard output cap")
+    try:
+        envelope = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise WorkerContractError(f"malformed Ollama envelope: {exc}") from exc
+    response = envelope.get("response", "")
+    if not isinstance(response, str):
+        response = ""
+    raw_sha = sha256_bytes(raw)
+    result = {
+        "action_id": action_id,
+        "status": "failure",
+        "worker_role": role,
+        "model": model,
+        "files_examined": 0,
+        "decision": "Worker response rejected before acceptance; inspect the canonical raw artifact for full evidence.",
+        "evidence": [
+            f"done={envelope.get('done')!r}",
+            f"done_reason={envelope.get('done_reason')!r}",
+            f"prompt_tokens={envelope.get('prompt_eval_count')!r}",
+            f"output_tokens={envelope.get('eval_count')!r}",
+        ],
+        "failures": [parser_error[:600]],
+        "failure_condition": "Provider output did not satisfy the validated result contract.",
+        "files": [],
+        "test_results": ["fail-closed contract rejection"],
+        "artifact_paths": [str(raw_path)],
+        "hashes": [f"raw_response_sha256={raw_sha}"],
+        "unresolved": ["No worker conclusion was accepted."],
+        "confidence": 1.0,
+        "recommended_next_action": "Use the conserved failure to improve bounded output reliability; do not retry this stable action.",
+    }
+    compact = compact_result(result, estimator=estimator)
+    return {
+        "compact_result": compact,
+        "artifact": {"path": str(raw_path), "sha256": raw_sha},
+        "metrics": {
+            "raw_bytes": len(raw),
+            "response_chars": len(response),
+            "prompt_tokens": envelope.get("prompt_eval_count"),
+            "output_tokens": envelope.get("eval_count"),
+            "done": envelope.get("done"),
+            "done_reason": envelope.get("done_reason"),
+            "total_duration_ns": envelope.get("total_duration"),
+            "return_packet_tokens_estimated": compact["return_packet_tokens_estimated"],
+        },
+    }
 
 
 def parse_model_inventory(tags: dict[str, Any], loaded: dict[str, Any] | None = None) -> list[dict[str, Any]]:
@@ -208,7 +311,7 @@ def parse_model_inventory(tags: dict[str, Any], loaded: dict[str, Any] | None = 
         result.append({
             "model": str(item["name"]), "digest": str(item["digest"]), "size_bytes": int(item.get("size") or 0),
             "parameter_size": details.get("parameter_size"), "quantization": details.get("quantization_level"),
-            "context_capacity": None, "loaded": str(item["name"]) in loaded_names, "observations": [], "role_scores": {},
+            "context_capacity": None, "capabilities": [], "loaded": str(item["name"]) in loaded_names, "observations": [], "role_scores": {},
             "json_reliability": None, "latency_seconds": None, "tokens_per_second": None,
         })
     return sorted(result, key=lambda item: (item["size_bytes"], item["model"]))
@@ -271,6 +374,7 @@ class OllamaAPI:
                 shown = self.json("/api/show", {"model": model["model"]})
                 contexts = [int(value) for key, value in shown.get("model_info", {}).items() if key.endswith(".context_length")]
                 model["context_capacity"] = max(contexts) if contexts else None
+                model["capabilities"] = sorted(str(value) for value in shown.get("capabilities", []))
             except (WorkerUnavailable, TypeError, ValueError):
                 model["context_capacity"] = None
         return {"ollama_version": version, "models": models, "loaded_models": sorted(item["model"] for item in models if item["loaded"])}
@@ -305,7 +409,11 @@ def capture_machine_snapshot(*, mode: str = "interactive", loaded_models: list[s
     total, available = _windows_memory()
     gpu, gpu_util, total_vram, free_vram = _nvidia_snapshot()
     unavailable = []
-    values = {"total_ram": total, "available_ram": available, "gpu": gpu, "gpu_utilization": gpu_util, "total_vram": total_vram, "free_vram": free_vram}
+    values = {
+        "total_ram": total, "available_ram": available, "process_ram": None,
+        "cpu_utilization": None, "gpu": gpu, "gpu_utilization": gpu_util,
+        "total_vram": total_vram, "free_vram": free_vram,
+    }
     unavailable.extend(name for name, value in values.items() if value is None)
     return MachineSnapshot(time.time(), mode, total, available, None, None, os.cpu_count(), gpu, gpu_util, total_vram, free_vram, tuple(sorted(loaded_models or [])), active_workers, active_heavy_workers, tuple(unavailable))
 
@@ -315,6 +423,9 @@ def route_model(task: TaskDescriptor, models: list[dict[str, Any]], snapshot: Ma
         return {"selected_model": None, "reason": "deterministic tool is sufficient", "fallback_models": [], "capability_evidence": [], "action": "USE_DETERMINISTIC_TOOL_INSTEAD"}
     viable = []
     for model in models:
+        capabilities = set(model.get("capabilities") or [])
+        if capabilities and "completion" not in capabilities:
+            continue
         context = model.get("context_capacity")
         if context is not None and context < task.estimated_input_tokens + task.required_output_tokens + 512:
             continue
@@ -323,7 +434,14 @@ def route_model(task: TaskDescriptor, models: list[dict[str, Any]], snapshot: Ma
         if not evidence:
             score = max(score, 0.45)  # probationary, not a capability claim
         size = int(model.get("size_bytes") or 0)
+        if not evidence and task.difficulty == "high":
+            # A conservative initial heuristic, not a capability finding: very
+            # small unqualified models receive less trust on a high-difficulty
+            # task until an observed evaluation says otherwise.
+            score = 0.55 if size >= 6 * 1024**3 else 0.35
         pressure_penalty = 0.25 if snapshot.available_ram_bytes is not None and size and snapshot.available_ram_bytes < size + 8 * 1024**3 else 0.0
+        if snapshot.free_vram_bytes is not None and size > max(0, snapshot.free_vram_bytes - 2 * 1024**3):
+            pressure_penalty += 0.50
         loaded_bonus = 0.12 if model.get("loaded") else 0.0
         quality = task.quality_priority * score
         latency = task.latency_priority * (1 / (1 + max(size, 1) / 1024**3))
@@ -435,19 +553,23 @@ class LocalWorkerOrchestrator:
         prompt = json.dumps({key: packet[key] for key in ("action_id", "role", "goal", "constraints", "relevant_context", "allowed_paths", "resource_limits", "time_limit_seconds", "security_sensitivity", "provenance")}, ensure_ascii=False, sort_keys=True)
         system = "Return exactly one JSON object matching the schema. You have no tools, filesystem, shell, network, memory-write, commit, patch-application, or activation authority. Analyze only supplied text."
         budget = TokenBudgetManager(context_limit_tokens=min(int(next((item.get("context_capacity") or 8192 for item in registry["models"] if item["model"] == model), 8192)), 16384), checkpoint_reserve_tokens=512, estimator=self.estimator).require_plan(system=system, prompt=prompt, reserved_generation_tokens=task.required_output_tokens)
-        payload = {"model": model, "system": system, "prompt": prompt, "stream": False, "format": result_schema(packet["action_id"], packet["role"], model), "options": {"temperature": 0, "seed": 4401, "num_ctx": budget["context_limit_tokens"], "num_predict": task.required_output_tokens}}
+        payload = {"model": model, "system": system, "prompt": prompt, "stream": False, "format": result_schema(packet["action_id"], packet["role"], model, packet["allowed_paths"]), "options": {"temperature": 0, "seed": 4401, "num_ctx": budget["context_limit_tokens"], "num_predict": task.required_output_tokens}}
         started = time.monotonic()
         raw = self.api.request("/api/generate", payload, timeout=packet["time_limit_seconds"])
         duration = time.monotonic() - started
         raw_path = run_dir / "raw_response.json"
         raw_path.write_bytes(raw)
         raw_sha = sha256_bytes(raw)
+        if len(raw) > MAX_RAW_RESPONSE_BYTES:
+            raise WorkerContractError("raw Ollama response exceeds the hard output cap")
         try:
             envelope = json.loads(raw.decode("utf-8"))
             parsed = json.loads(str(envelope.get("response", "")))
         except (UnicodeDecodeError, json.JSONDecodeError, AttributeError) as exc:
             raise WorkerContractError(f"malformed Ollama response: {exc}") from exc
         result = validate_worker_result(parsed, action_id=packet["action_id"], role=packet["role"], model=model)
+        if any(_safe_path(path) not in packet["allowed_paths"] for path in result["files"]):
+            raise WorkerContractError("worker reported a file outside the supplied scope")
         result_path = run_dir / "validated_result.json"
         result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         result_sha = sha256_bytes(result_path.read_bytes())
@@ -465,7 +587,8 @@ class LocalWorkerOrchestrator:
         resume_path.write_text(json.dumps(resume, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         if self.estimator.estimate(resume_path.read_text(encoding="utf-8")) >= 1800:
             raise WorkerContractError("fresh-process resume exceeds 1800-token budget")
-        return {"route": route, "governor": decision, "compact_result": compact, "artifact": {"path": str(result_path), "sha256": result_sha, "raw_path": str(raw_path), "raw_sha256": raw_sha}, "metrics": metrics, "resume_path": str(resume_path)}
+        after = capture_machine_snapshot(mode=self.policy.mode, loaded_models=[model], active_workers=0, active_heavy_workers=0)
+        return {"route": route, "governor": decision, "compact_result": compact, "artifact": {"path": str(result_path), "sha256": result_sha, "raw_path": str(raw_path), "raw_sha256": raw_sha}, "metrics": metrics, "machine_after": asdict(after), "resume_path": str(resume_path)}
 
 
 def environment_summary(snapshot: MachineSnapshot) -> dict[str, Any]:

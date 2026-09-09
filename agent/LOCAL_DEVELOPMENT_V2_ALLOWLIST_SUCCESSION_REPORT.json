@@ -1,0 +1,80 @@
+{
+  "allowlist_correction": {
+    "added": "hash",
+    "authority_expansion": false,
+    "scope": "the fixed render_retrieved_context function under the existing exact path/function grammar",
+    "still_forbidden": [
+      "imports",
+      "filesystem and I/O",
+      "process and network",
+      "Git",
+      "dynamic execution and import",
+      "reflection and dunder traversal",
+      "module or nested-function scope expansion"
+    ]
+  },
+  "applied": false,
+  "checkpoint_source_head": "bad69dd87f68b769c5de44e006b2df0e313aee57",
+  "closed_actions": [
+    {
+      "action_id": "worker:local-development-v2:coder-function-v2-allowlist-successor",
+      "model": "gemma4:12b",
+      "raw_sha256": "705a10df5e2e5a184fa7b810d1c89d74e9e4c18431ef566d7133410092c933bb",
+      "result_ref": "LDR_efeb00b6157e497b",
+      "status": "syntax_rejected"
+    },
+    {
+      "action_id": "worker:local-development-v2:coder-function-v2-allowlist-correction-1",
+      "model": "qwen3.5:2b",
+      "raw_sha256": "1ddd60c5b354bef7325fb3991a84ee34ceda6c61228a95038e077065d5d92f38",
+      "result_ref": "LDR_9687d32d2fe15f1e",
+      "status": "indentation_rejected"
+    },
+    {
+      "action_id": "worker:local-development-v2:coder-function-v2-allowlist-correction-2",
+      "candidate_sha256": "cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7",
+      "model": "gemma3:12b",
+      "raw_sha256": "cc01e1af70b0ab4fcc86f80073a880e1584d7f5aba1d5bfe56336a351b4a3daf",
+      "result_ref": "LDR_f0a869694def9c43",
+      "status": "grammar_valid_but_byte_identical_to_parent"
+    },
+    {
+      "action_id": "worker:local-development-v2:reviewer-function-v2-allowlist-successor",
+      "model": "qwen3.5:2b",
+      "raw_sha256": "f119ede890e8b1eff7dcfed8e11fda88265fd245bf2092d4a993143ee05a3abb",
+      "result_ref": "LDR_0888b156a9175cd5",
+      "status": "false_acceptance_contradicted_by_exact_diff_and_tests"
+    },
+    {
+      "action_id": "worker:local-development-v2:test-analyst-function-v2-allowlist-successor",
+      "model": "phi4:latest",
+      "raw_sha256": "fdadf7359b0afeffcc4979fbfdd7669aa5b6e3f925eea42b8978b68a7082bcb7",
+      "result_ref": "LDR_f5958cffd09deaa2",
+      "status": "diagnosed_missing_semantic_implementation"
+    }
+  ],
+  "deterministic_qualification": {
+    "adversarial_boundary_tests": "18 passed",
+    "agent_suite": "130 passed",
+    "candidate_behavior": {
+      "failed": [
+        "canonical content once",
+        "all paths preserved",
+        "canonical_payload_count field",
+        "collapsed_duplicate_count field"
+      ],
+      "passed": [
+        "refs visible",
+        "unhashed records distinct",
+        "input immutable",
+        "max_chars bounded",
+        "negative max_chars rejected"
+      ]
+    },
+    "frozen_cli_sha256": "fca641b2bc136e01441f2f22b36fa493cd662da082ece5ec38d3cfae306567e7"
+  },
+  "observer_state": "STATE_f80a2bf24b754382",
+  "result": "The capability mismatch was corrected and qualified, but no semantic successor materialized within bounded local recovery. The active reporting source is unchanged.",
+  "stoe_correction_ref": "IP_ldv2allowlistcorrection01",
+  "unresolved_next_action": "Improve local code-emission reliability or approve a stronger coding route; do not apply the unchanged candidate and do not retry closed actions."
+}

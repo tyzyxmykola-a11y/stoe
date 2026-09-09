@@ -124,6 +124,74 @@ class SelfCodeCycleV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(V2BoundaryError, "capability allowlist"):
             validate_candidate_source(self.parent, reconstruct_candidate(self.parent, authority))
 
+    def test_narrow_hash_delta_is_pure_and_authority_free(self):
+        reporting = envelope([
+            "def render_retrieved_context(items, max_chars):",
+            "    value = hash(str(items[0].get('content', ''))) if items else 0",
+            "    return str(value)[:max_chars]",
+        ])
+        self.assertTrue(validate_candidate_source(self.parent, reconstruct_candidate(self.parent, reporting))["passed"])
+
+        forbidden_calls = (
+            "open('cases.json')",
+            "eval('1 + 1')",
+            "exec('x = 1')",
+            "__import__('os')",
+            "getattr(items, '__class__')",
+            "globals()",
+            "locals()",
+            "vars(items)",
+            "compile('1', 'x', 'eval')",
+        )
+        for call in forbidden_calls:
+            with self.subTest(call=call):
+                candidate = envelope([
+                    "def render_retrieved_context(items, max_chars):",
+                    f"    value = {call}",
+                    "    return str(value)[:max_chars]",
+                ])
+                with self.assertRaises(V2BoundaryError):
+                    validate_candidate_source(self.parent, reconstruct_candidate(self.parent, candidate))
+
+    def test_narrow_delta_cannot_change_path_imports_or_function_scope(self):
+        imported = self.parent.replace("from typing import Any", "from typing import Any\nimport os")
+        with self.assertRaisesRegex(V2BoundaryError, "imports changed"):
+            validate_candidate_source(self.parent, imported)
+        renamed = self.parent.replace("def render_retrieved_context", "def acquire_authority")
+        with self.assertRaisesRegex(V2BoundaryError, "module structure"):
+            validate_candidate_source(self.parent, renamed)
+        nested = self.parent.replace("    if max_chars < 0:", "    def hidden():\n        return hash('x')\n    if max_chars < 0:")
+        with self.assertRaises(V2BoundaryError):
+            validate_candidate_source(self.parent, nested)
+
+    def test_narrow_reporting_hash_does_not_admit_unrelated_authority(self):
+        pure = envelope([
+            "def render_retrieved_context(items, max_chars):",
+            "    value = hash(str(items))",
+            "    return str(value)[:max_chars]",
+        ])
+        self.assertTrue(validate_candidate_source(self.parent, reconstruct_candidate(self.parent, pure))["passed"])
+        forbidden_calls = (
+            "open('cases.json')",
+            "eval('1 + 1')",
+            "exec('x = 1')",
+            "__import__('os')",
+            "getattr(items, '__class__')",
+            "globals()",
+            "locals()",
+            "vars(items)",
+            "os.system('whoami')",
+            "subprocess.run(['whoami'])",
+            "socket.socket()",
+        )
+        for call in forbidden_calls:
+            candidate = envelope([
+                "def render_retrieved_context(items, max_chars):",
+                f"    return str({call})",
+            ])
+            with self.subTest(call=call), self.assertRaises(V2BoundaryError):
+                validate_candidate_source(self.parent, reconstruct_candidate(self.parent, candidate))
+
     def test_canonical_payload_dedup_preserves_all_connections(self):
         content = "one canonical payload " * 40
         digest = hashlib.sha256(content.encode()).hexdigest()

@@ -382,13 +382,19 @@ def validate_candidate_source(parent: str, candidate: str) -> dict[str, Any]:
     forbidden = (ast.While, ast.AsyncFor, ast.Await, ast.Yield, ast.YieldFrom, ast.Lambda, ast.ClassDef)
     if any(isinstance(node, forbidden) for node in ast.walk(functions[0])):
         raise V2BoundaryError("unbounded/asynchronous/dynamic constructs are forbidden")
+    if len([node for node in ast.walk(functions[0]) if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))]) != 1:
+        raise V2BoundaryError("nested function scope is forbidden")
     if len(list(ast.walk(functions[0]))) > 600:
         raise V2BoundaryError("candidate operation count exceeds static bound")
     if any(isinstance(node, ast.Name) and node.id.startswith("__") for node in ast.walk(functions[0])):
         raise V2BoundaryError("dunder names are forbidden")
     if any(isinstance(node, ast.Attribute) and node.attr.startswith("__") for node in ast.walk(functions[0])):
         raise V2BoundaryError("dunder traversal is forbidden")
-    safe_names = {"str", "len", "set", "dict", "list", "ValueError", "min", "max", "sorted", "sum", "range", "enumerate"}
+    # ``hash`` is an authority-free in-process data operation.
+    # It is permitted only inside the already-fixed reporting function; the
+    # function/path grammar and semantic tests still decide whether its use is
+    # correct (for example, unhashed records must remain distinct).
+    safe_names = {"str", "len", "set", "dict", "list", "ValueError", "min", "max", "sorted", "sum", "range", "enumerate", "hash"}
     safe_methods = {"get", "replace", "append", "add", "join", "setdefault", "items", "values"}
     for node in ast.walk(functions[0]):
         if not isinstance(node, ast.Call):

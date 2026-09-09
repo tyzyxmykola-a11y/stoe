@@ -1,0 +1,13 @@
+{
+  "active_release": "hermes-a-bb924730743c",
+  "candidate_release": "hermes-b-fc16fd510289",
+  "candidate_status": "qualified_inactive_after_rollback",
+  "historical_replay_after_rollback": {
+    "passed": 19,
+    "total": 19
+  },
+  "pointer_sha256": "b6a1e4f89ea85a845eda7a8aa821135fa152cbbb126f3c294a6dc0a10e7c82c3",
+  "rollback_source_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+  "schema_version": 1,
+  "standing_policy_status": "inactive_after_failed_activation"
+}

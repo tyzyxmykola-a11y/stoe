@@ -1,0 +1,22 @@
+{
+  "action_id": "checkpoint:hermes-v2.2-promotion-v1",
+  "active_candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+  "failed_tests": [
+    {
+      "failure": "stale parent hash",
+      "name": "test_exact_v2_1_candidate_is_reproduced_and_inherited_raise_is_accepted"
+    },
+    {
+      "failure": "expected forbidden syntax Raise; active candidate was incorrectly used as the historical parent",
+      "name": "test_current_validator_rejects_parent_inherited_raise"
+    }
+  ],
+  "failure_condition": "The active root context_renderer path also served as the immutable parent fixture for historical v2.1/v2.2 replay.",
+  "initial_fresh_process_health": "passed",
+  "post_activation_hermes_suite": {
+    "passed": 34,
+    "total": 36
+  },
+  "result": "rolled_back",
+  "schema_version": 1
+}

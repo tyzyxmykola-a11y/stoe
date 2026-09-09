@@ -1,0 +1,43 @@
+{
+  "action_id": "checkpoint:hermes-v2.2-promotion-v1",
+  "activation": {
+    "activated_as": "hermes-b-fc16fd510289",
+    "authorization_policy_id": "standing:bounded-qualified-succession-v1",
+    "rollback_target": "hermes-a-bb924730743c",
+    "source_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "status": "active"
+  },
+  "approved_release_sha256": "5d02b05a3742242a00bb2b4fb21884b6ceeb4214b346da610ed43007a607e402",
+  "authorization_policy": {
+    "policy_id": "standing:bounded-qualified-succession-v1",
+    "sha256": "5ea04e31d10e86f60fa58ca9f6ad2b666be42bd602b05ab87d3a7358a0786905"
+  },
+  "health": {
+    "duration_seconds": 0.109,
+    "isolation_note": "Monitored subprocess under caller identity; not an OS sandbox.",
+    "limits": {
+      "disk_growth_bytes": 250000000,
+      "output_bytes": 100000,
+      "processes": 12,
+      "ram_bytes": 2000000000,
+      "timeout_seconds": 20
+    },
+    "output_bytes": 0,
+    "passed": true,
+    "peak_process_count": 1,
+    "peak_ram_bytes": 5206016,
+    "returncode": 0,
+    "timed_out": false,
+    "violation": null
+  },
+  "identity": {
+    "candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155"
+  },
+  "model_calls": 0,
+  "rollback": {
+    "release_id": "hermes-a-bb924730743c",
+    "source_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155"
+  },
+  "status": "active"
+}

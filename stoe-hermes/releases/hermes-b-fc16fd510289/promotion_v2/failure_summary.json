@@ -1,0 +1,18 @@
+{
+  "action_id": "checkpoint:hermes-v2.2-promotion-v2-release-resolver",
+  "candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+  "diagnostic_limitation": "run_bounded recorded 7204 output bytes but deleted stdout and stderr without conserving their content, so exact failing test names cannot be recovered from this closed action",
+  "full_activated_layout_suite": {
+    "output_bytes": 7204,
+    "passed": false,
+    "returncode": 1
+  },
+  "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+  "release_resolver_health": {
+    "passed": true,
+    "returncode": 0
+  },
+  "result": "rolled_back",
+  "schema_version": 1,
+  "standing_policy_status": "inactive_after_failed_activation"
+}

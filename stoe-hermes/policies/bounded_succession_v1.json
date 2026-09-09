@@ -1,0 +1,28 @@
+{
+  "allowed_editable_paths": [
+    "stoe-hermes/src/stoe_hermes/context_renderer.py"
+  ],
+  "authority_expansion_requires_explicit_approval": [
+    "broader_editable_scope",
+    "weaker_validator",
+    "new_filesystem_process_or_network_authority",
+    "new_credential_access",
+    "rollback_unavailable",
+    "protected_prerequisite_failure",
+    "model_weight_modification",
+    "other_explicit_authority_expansion"
+  ],
+  "authorized_by": "Mykola Voronin",
+  "decision_rule": "all_required",
+  "policy_id": "standing:bounded-qualified-succession-v1",
+  "requirements": {
+    "exact_candidate_identity": true,
+    "no_authority_expansion": true,
+    "protected_evaluation_passed": true,
+    "protected_validation_passed": true,
+    "rollback_available": true,
+    "trusted_parent_identity": true
+  },
+  "schema_version": 1,
+  "status": "inactive_after_failed_activation"
+}

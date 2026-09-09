@@ -1,0 +1,73 @@
+{
+  "activation_blockers": [],
+  "activation_status": "inactive",
+  "authorization_policy_id": "standing:bounded-qualified-succession-v1",
+  "candidate_source_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+  "candidate_status": "approved",
+  "configuration_hash": "1cd7a8c9c38812b6cfe47b2085dd796ceb4e93f65ac2a2b8339ac33831200b80",
+  "creation_action_id": "checkpoint:hermes-v2.2-promotion-v1",
+  "editable_path": "stoe-hermes/src/stoe_hermes/context_renderer.py",
+  "environment_fingerprint": "6ab42213ade990624d34841bc97a93f2ec22209dab35b8dcbe7b0036815f9303",
+  "hermes_commit": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+  "hermes_version": "0.20.3 (2026.8.16.2)",
+  "integration_plugin_version": "0.1.0",
+  "model_configuration": {
+    "coder": {
+      "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "model": "qwen3-coder:latest"
+    },
+    "planner": {
+      "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
+      "model": "gemma4:26b"
+    }
+  },
+  "parent_release": "hermes-a-bb924730743c",
+  "parent_source_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+  "protected_results": [
+    {
+      "duration_seconds": 0.125,
+      "isolation_note": "Monitored subprocess under caller identity; not an OS sandbox.",
+      "limits": {
+        "disk_growth_bytes": 250000000,
+        "output_bytes": 100000,
+        "processes": 12,
+        "ram_bytes": 2000000000,
+        "timeout_seconds": 20
+      },
+      "name": "syntax",
+      "output_bytes": 0,
+      "passed": true,
+      "peak_process_count": 2,
+      "peak_ram_bytes": 19251200,
+      "returncode": 0,
+      "timed_out": false,
+      "violation": null
+    },
+    {
+      "duration_seconds": 0.109,
+      "isolation_note": "Monitored subprocess under caller identity; not an OS sandbox.",
+      "limits": {
+        "disk_growth_bytes": 250000000,
+        "output_bytes": 100000,
+        "processes": 12,
+        "ram_bytes": 2000000000,
+        "timeout_seconds": 20
+      },
+      "name": "established_protected_behavior",
+      "output_bytes": 0,
+      "passed": true,
+      "peak_process_count": 2,
+      "peak_ram_bytes": 18501632,
+      "returncode": 0,
+      "timed_out": false,
+      "violation": null
+    }
+  ],
+  "release_id": "hermes-b-fc16fd510289",
+  "rollback_target": "hermes-a-bb924730743c",
+  "stoe_field_ids": [
+    "IP_52b9f2678db549e0",
+    "IP_f4d2f7b504cd433f",
+    "IP_48cf7c158ae24efd"
+  ]
+}

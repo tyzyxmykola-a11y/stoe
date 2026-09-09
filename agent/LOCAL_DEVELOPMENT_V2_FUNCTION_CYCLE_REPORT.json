@@ -1,0 +1,98 @@
+{
+  "activation": "not_applied",
+  "candidate": {
+    "sha256": "053d1d12df32200c3b0042fd8f90462df46eed1a9a73e065044e4af43bf18275",
+    "status": "rejected_by_focused_tests",
+    "validated_artifact_sha256": "336f91688182c783c6901321e05a3ef0e32a68e516f525b80909d3129f568a05"
+  },
+  "checkpoint_source_head": "9f55707663742b288872a74524df7760e72c42b8",
+  "closed_actions": [
+    {
+      "action_id": "worker:local-development-v2:coder-function-v1",
+      "model": "gemma4:12b",
+      "output_tokens": 829,
+      "prompt_tokens": 934,
+      "raw_sha256": "70e60c2fddf97474af50f5fe03e6cf931d70ad1094efc992e566ba8bb1d94c86",
+      "result_ref": "LDR_0cd0a46bf68e7a33",
+      "status": "candidate_validated"
+    },
+    {
+      "action_id": "worker:local-development-v2:reviewer-function-v1",
+      "model": "qwen3.5:2b",
+      "output_tokens": 219,
+      "prompt_tokens": 942,
+      "raw_sha256": "f734ae12b6ca942ab977ed5c692b87cfef5fca55c1925cabcd565829ca85758b",
+      "result_ref": "LDR_d4baefde27edea1f",
+      "status": "accepted_advisory"
+    },
+    {
+      "action_id": "worker:local-development-v2:test-analyst-function-v1",
+      "model": "gemma3:12b",
+      "output_tokens": 291,
+      "prompt_tokens": 1054,
+      "raw_sha256": "522fb8b7cc7718fc93831efdbf1ca9889611d9184321b6e87996ecb58e84d9b7",
+      "result_ref": "LDR_0159d1ed5fc4bc77",
+      "status": "diagnosed_test_failure"
+    },
+    {
+      "action_id": "worker:local-development-v2:coder-function-v1-test-correction-1",
+      "failure": "FunctionCandidateError: invalid Python source: invalid syntax (<unknown>, line 1)",
+      "model": "qwen3.5:2b",
+      "output_tokens": 428,
+      "prompt_tokens": 937,
+      "raw_sha256": "5bf424a3a276639bda921af35de9ff2a07c428864a497bda6fb1580fa4c21904",
+      "result_ref": "LDR_d8e92ecbcbfa8104",
+      "status": "grammar_rejected"
+    },
+    {
+      "action_id": "worker:local-development-v2:coder-function-v1-test-correction-2",
+      "failure": "V2BoundaryError: call is outside pure reporting capability allowlist",
+      "model": "gemma4:12b",
+      "output_tokens": 818,
+      "prompt_tokens": 996,
+      "raw_sha256": "8541f42d23a8261f02d7c25731ef4b70f07d5de0db186440cb1f6593b657461a",
+      "result_ref": "LDR_4188e0c8e27a784d",
+      "status": "capability_rejected"
+    }
+  ],
+  "context": {
+    "largest_worker_prompt_tokens": 1054,
+    "worker_prompts_remained_bounded": true
+  },
+  "deterministic_tests": {
+    "agent_complete": "126 passed",
+    "focused_infrastructure": "35 passed",
+    "initial_candidate_behavior": {
+      "failed": [
+        "all duplicate connection refs preserved",
+        "all duplicate paths preserved",
+        "canonical_payload_count exact field",
+        "collapsed_duplicate_count exact field"
+      ],
+      "passed": [
+        "canonical content once",
+        "unhashed records distinct",
+        "input immutable",
+        "max_chars bounded",
+        "negative max_chars rejected"
+      ]
+    }
+  },
+  "function_grammar": {
+    "format": "stoe.function_replacement",
+    "rules": "exact path, function and parent-function hash; exactly one matching FunctionDef; no imports, module code, decorators, nested functions, classes, or scope expansion",
+    "status": "qualified"
+  },
+  "planner_result_ref": "LDR_c35db8e77852421d",
+  "recovery": {
+    "limit": "one test-diagnosis correction plus two linked coder corrections",
+    "status": "exhausted"
+  },
+  "resources": {
+    "interactive_governor": "active for every call",
+    "ollama_context": 8192,
+    "parallel_heavy_models": false
+  },
+  "result": "No candidate was applied. Bounded local recovery exhausted after deterministic semantic, grammar, and capability rejections.",
+  "unresolved_next_action": "Escalate the capability-allowlist rejection and failed semantic preservation to ChatGPT architecture authority; do not retry a closed action."
+}

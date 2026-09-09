@@ -93,6 +93,14 @@ class LocalDevelopmentV2Tests(unittest.TestCase):
         self.assertEqual({"architecture", "escalation", "contract", "role"}, set(artifacts))
         self.assertTrue(all(len(item["sha256"]) == 64 for item in artifacts.values()))
 
+    def test_test_analyst_is_a_hash_bound_non_coding_role(self):
+        text, artifacts = model_instructions("test_analyst")
+        self.assertIn("smallest exact behavioral defect", text)
+        self.assertIn("Do not write implementation", text)
+        self.assertEqual({"architecture", "escalation", "contract", "role"}, set(artifacts))
+        envelope = trusted_envelope(control(status="failure", evidence=[], risks=["exact failed assertion"]), action_id="worker:v2:test-analysis:1", role="test_analyst", model="local", digest="d" * 64, instructions=artifacts)
+        self.assertEqual("test_analyst", envelope["role"])
+
     def test_instruction_content_hash_is_verified_before_trust(self):
         instructions = load_instructions("planner")
         instructions["role"]["content"] += "tampered"

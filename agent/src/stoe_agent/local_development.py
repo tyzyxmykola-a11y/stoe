@@ -10,7 +10,7 @@ from typing import Any
 
 
 FIELDS = {"status", "decision", "evidence", "risks", "next_action"}
-ROLES = {"planner": "PLANNER.md", "coder": "CODER.md", "reviewer": "REVIEWER.md"}
+ROLES = {"planner": "PLANNER.md", "coder": "CODER.md", "reviewer": "REVIEWER.md", "test_analyst": "TEST_ANALYST.md"}
 STATUSES = {"success", "failure", "deferred"}
 MAX_RAW_BYTES = 1_000_000
 MAX_CANDIDATE_ARTIFACT_BYTES = 1_000_000

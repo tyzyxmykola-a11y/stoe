@@ -20,13 +20,21 @@ from .local_workers import (
     route_model,
 )
 from .token_budget import TokenEstimator
-from .self_code_cycle_v2 import patch_schema, reconstruct_candidate, validate_candidate_source, validate_patch_envelope
+from .function_candidate import (
+    function_artifact_schema,
+    reconstruct_module,
+    sha256_text,
+    target_function,
+    validate_function_artifact,
+)
+from .self_code_cycle_v2 import validate_candidate_source
 
 
 ROOT = Path(__file__).resolve().parents[3]
 RUNTIME = ROOT / "agent" / "runtime" / "local_development_v2"
 SESSION = "development:local-development-v2"
 TARGET = "agent/src/stoe_agent/development_report.py"
+TARGET_FUNCTION = "render_retrieved_context"
 DEFAULT_ACTION = "worker:local-development-v2:architecture-plan-v2"
 
 
@@ -128,7 +136,7 @@ def run_planner(observer_state_ref: str, action_id: str = DEFAULT_ACTION, *, dif
     return result
 
 
-def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str) -> dict:
+def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, *, correction_ref: str | None = None) -> dict:
     api = OllamaAPI(timeout_seconds=30)
     discovery = api.discover()
     _merge_measured_evidence(discovery)
@@ -138,7 +146,13 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str) 
     parent_path = ROOT / TARGET
     parent = parent_path.read_text(encoding="utf-8")
     parent_sha = _sha256(parent.encode("utf-8"))
+    _, parent_function = target_function(parent, TARGET_FUNCTION)
+    parent_function_sha = sha256_text(parent_function)
+    correction_ip = store.get_ip(correction_ref) if correction_ref else None
+    correction = None if correction_ip is None else " | ".join(filter(None, (correction_ip["content"], correction_ip.get("failure_condition", ""))))
     context = [f"ACCEPTED_PLAN {plan['content']}", f"AUTHORIZED_SOURCE {TARGET}\n{parent}"]
+    if correction:
+        context.append(f"AUTHORITATIVE_CORRECTION {correction}")
     context.extend(f"STOE_REF={item['ref']} OUTCOME={item['outcome']} CONTENT={item['content']}" for item in retrieval["selected_items"][:3])
     task = TaskDescriptor(role="coder", difficulty="high", code_heavy=True, estimated_input_tokens=TokenEstimator().estimate("\n".join(context)), required_output_tokens=1_200, requires_json=True, quality_priority=1.0, latency_priority=0.2)
     snapshot = capture_machine_snapshot(mode="interactive", loaded_models=discovery["loaded_models"])
@@ -153,10 +167,22 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str) 
     instructions = load_instructions("coder")
     system, _ = model_instructions("coder")
     system += "\n\nReturn one wrapper object with control and patch. You have no tools, filesystem, shell, network, memory-write, Git, tests, patch application, or activation authority."
-    wrapper_schema = {"type": "object", "properties": {"control": control_schema(), "patch": patch_schema(parent_sha)}, "required": ["control", "patch"], "additionalProperties": False}
-    prompt = json.dumps({"accepted_plan": plan["content"], "requirements": ["Use item payload_sha256 when non-empty; do not recompute identity from text", "Emit each canonical payload content once", "Emit every original ref/relation/direction/provenance connection", "Report canonical_payload_count and collapsed_duplicate_count", "Unhashed records remain distinct", "Preserve input order and max_chars bound"], "source": parent}, ensure_ascii=False, sort_keys=True)
+    wrapper_schema = {
+        "type": "object",
+        "properties": {
+            "control": control_schema(),
+            "patch": function_artifact_schema(
+                path=TARGET,
+                function=TARGET_FUNCTION,
+                parent_function_sha256=parent_function_sha,
+            ),
+        },
+        "required": ["control", "patch"],
+        "additionalProperties": False,
+    }
+    prompt = json.dumps({"accepted_plan": plan["content"], "authoritative_correction": correction, "artifact_identity": {"format": "stoe.function_replacement", "path": TARGET, "function": TARGET_FUNCTION, "parent_function_sha256": parent_function_sha}, "replacement_source_rule": "Return the complete Python source of exactly the target function in replacement_source. It must start with def render_retrieved_context and contain no imports, decorators, nested functions, classes, or module code.", "requirements": ["Use item payload_sha256 when non-empty; do not recompute identity from text", "Emit each canonical payload content once", "Emit every original ref/relation/direction/provenance connection including duplicates", "Emit exact canonical_payload_count=N and collapsed_duplicate_count=N fields", "Unhashed records remain distinct", "Preserve input order and max_chars bound"], "source": parent}, ensure_ascii=False, sort_keys=True)
     payload = {"model": route["selected_model"], "think": False, "system": system, "prompt": prompt, "stream": False, "format": wrapper_schema, "options": {"temperature": 0, "top_p": 0.9, "top_k": 40, "seed": 4403, "num_ctx": 8192, "num_predict": 1200}, "keep_alive": "10m"}
-    manifest = {"action_id": action_id, "status": "started", "role": "coder", "model": route["selected_model"], "digest": route["selected_digest"], "parent_sha256": parent_sha, "planner_result_ref": planner_result_ref, "retrieval_run_id": retrieval["run_id"]}
+    manifest = {"action_id": action_id, "status": "started", "role": "coder", "model": route["selected_model"], "digest": route["selected_digest"], "parent_sha256": parent_sha, "parent_function_sha256": parent_function_sha, "planner_result_ref": planner_result_ref, "correction_ref": correction_ref, "retrieval_run_id": retrieval["run_id"]}
     _atomic_json(run_dir / "manifest.json", manifest)
     started = time.monotonic()
     try:
@@ -166,6 +192,7 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str) 
         _atomic_json(run_dir / "manifest.json", manifest)
         raise RuntimeError("coder provider failure; stable action closed uncertain") from exc
     (run_dir / "raw_response.json").write_bytes(raw)
+    outer: dict = {}
     try:
         outer = json.loads(raw.decode("utf-8"))
         if outer.get("done") is not True or outer.get("done_reason") in {"length", "error"}:
@@ -174,11 +201,31 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str) 
         if not isinstance(wrapper, dict) or set(wrapper) != {"control", "patch"}:
             raise RuntimeError("coder wrapper fields invalid")
         control = validate_control(wrapper["control"], known_metadata=(action_id, route["selected_model"], route["selected_digest"], TARGET, parent_sha))
-        patch = validate_patch_envelope(wrapper["patch"], expected_parent=parent_sha)
-        candidate = reconstruct_candidate(parent, patch)
+        patch = validate_function_artifact(
+            wrapper["patch"],
+            expected_path=TARGET,
+            expected_function=TARGET_FUNCTION,
+            parent_source=parent,
+        )
+        candidate = reconstruct_module(
+            parent,
+            patch,
+            expected_path=TARGET,
+            expected_function=TARGET_FUNCTION,
+        )
         validation = validate_candidate_source(parent, candidate)
     except Exception as exc:
-        manifest.update({"status": "failed", "failure": f"{type(exc).__name__}: {exc}", "raw_sha256": _sha256(raw)})
+        exact_defect = f"{type(exc).__name__}: {exc}"[:160]
+        failure_control = {
+            "status": "failure",
+            "decision": "Candidate artifact rejected by deterministic function-only grammar.",
+            "evidence": [f"Preserved raw response sha256={_sha256(raw)}"],
+            "risks": [exact_defect],
+            "next_action": "Create a new linked corrective action using this exact deterministic defect.",
+        }
+        failure_envelope = trusted_envelope(failure_control, action_id=action_id, role="coder", model=route["selected_model"], digest=route["selected_digest"], instructions=instructions)
+        field_refs = LocalDevelopmentRunner(api=api, artifact_root=RUNTIME / "artifacts", field=store)._record(failure_envelope, goal=plan["content"], session_id=SESSION)
+        manifest.update({"status": "failed", "failure": exact_defect, "raw_sha256": _sha256(raw), "field_refs": field_refs, "duration_seconds": round(time.monotonic() - started, 3), "prompt_tokens": outer.get("prompt_eval_count") if isinstance(outer, dict) else None, "output_tokens": outer.get("eval_count") if isinstance(outer, dict) else None})
         _atomic_json(run_dir / "manifest.json", manifest)
         raise
     patch_path = run_dir / "candidate_patch.json"
@@ -192,3 +239,99 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str) 
     _atomic_json(run_dir / "manifest.json", manifest)
     refs = LocalDevelopmentRunner(api=api, artifact_root=RUNTIME / "artifacts", field=store)._record(envelope, goal=plan["content"], session_id=SESSION)
     return {"status": "completed", "route": route, "governor": governor, "manifest": manifest, "control": control, "artifact": artifact, "validation": validation, "field_refs": refs, "candidate_path": str(run_dir / "candidate_development_report.py")}
+
+
+def run_reviewer(observer_state_ref: str, planner_result_ref: str, coder_action_id: str, action_id: str, *, test_evidence: str | None = None) -> dict:
+    api = OllamaAPI(timeout_seconds=30)
+    discovery = api.discover()
+    _merge_measured_evidence(discovery)
+    store = field_store()
+    plan = store.get_ip(planner_result_ref)
+    coder_dir = RUNTIME / "artifacts" / coder_action_id.replace(":", "_")
+    coder_manifest = json.loads((coder_dir / "manifest.json").read_text(encoding="utf-8"))
+    if coder_manifest.get("status") != "completed":
+        raise RuntimeError("review target is not a completed validated coder action")
+    candidate_path = coder_dir / "candidate_development_report.py"
+    candidate = candidate_path.read_text(encoding="utf-8")
+    candidate_sha = _sha256(candidate.encode("utf-8"))
+    if candidate_sha != coder_manifest.get("candidate_sha256"):
+        raise RuntimeError("review target hash mismatch")
+    role = "test_analyst" if test_evidence else "reviewer"
+    retrieval = store.navigate(observer_state_ref=observer_state_ref, include_seed=False, include_failures=True, limit=4, max_depth=4, per_item_chars=260, total_chars=900, run_label=f"local_development_v2_{role}")
+    context = [f"ACCEPTED_PLAN {plan['content']}", f"VALIDATED_CANDIDATE_SHA256 {candidate_sha}\n{candidate}"]
+    context.extend(f"STOE_REF={item['ref']} OUTCOME={item['outcome']} CONTENT={item['content']}" for item in retrieval["selected_items"][:2])
+    task = TaskDescriptor(role=role, difficulty="high", code_heavy=True, estimated_input_tokens=TokenEstimator().estimate("\n".join(context)), required_output_tokens=650, requires_json=True, quality_priority=1.0, latency_priority=0.2)
+    snapshot = capture_machine_snapshot(mode="interactive", loaded_models=discovery["loaded_models"])
+    route = route_model(task, discovery["models"], snapshot)
+    if route["selected_model"] == coder_manifest["model"]:
+        alternatives = [item for item in discovery["models"] if item.get("model") != coder_manifest["model"]]
+        alternative = route_model(task, alternatives, snapshot)
+        if alternative.get("action") == "RUN":
+            route = alternative
+    governor = govern_dispatch(task, route, snapshot, ResourcePolicy(mode="interactive"))
+    if not governor["allowed"]:
+        return {"status": "deferred", "route": route, "governor": governor}
+    run_dir = RUNTIME / "artifacts" / action_id.replace(":", "_")
+    if run_dir.exists():
+        raise RuntimeError("reviewer stable action already exists and will not be retried")
+    run_dir.mkdir(parents=True)
+    instructions = load_instructions(role)
+    system, _ = model_instructions(role)
+    system += "\n\nReturn only Worker Contract v2. You have no tools, filesystem, shell, network, memory-write, Git, tests, patch application, or activation authority."
+    if role == "reviewer":
+        system += " Reject unless duplicate payload text is emitted once while every distinct connection remains visible and both required counts are accurate."
+    prompt = json.dumps({"accepted_plan": plan["content"], "candidate_sha256": candidate_sha, "candidate_source": candidate, "deterministic_validation": "function-only grammar and capability validation passed", "deterministic_test_failure": test_evidence}, ensure_ascii=False, sort_keys=True)
+    payload = {"model": route["selected_model"], "think": False, "system": system, "prompt": prompt, "stream": False, "format": control_schema(), "options": {"temperature": 0, "top_p": 0.9, "top_k": 40, "seed": 4404, "num_ctx": 8192, "num_predict": 650}, "keep_alive": "10m"}
+    manifest = {"action_id": action_id, "status": "started", "role": role, "model": route["selected_model"], "digest": route["selected_digest"], "planner_result_ref": planner_result_ref, "coder_action_id": coder_action_id, "candidate_sha256": candidate_sha, "retrieval_run_id": retrieval["run_id"]}
+    _atomic_json(run_dir / "manifest.json", manifest)
+    started = time.monotonic()
+    try:
+        raw = api.request("/api/generate", payload, timeout=420)
+    except Exception as exc:
+        manifest.update({"status": "uncertain", "failure": type(exc).__name__})
+        _atomic_json(run_dir / "manifest.json", manifest)
+        raise RuntimeError("reviewer provider failure; stable action closed uncertain") from exc
+    (run_dir / "raw_response.json").write_bytes(raw)
+    try:
+        outer = json.loads(raw.decode("utf-8"))
+        if outer.get("done") is not True or outer.get("done_reason") in {"length", "error"}:
+            raise RuntimeError("reviewer response incomplete")
+        control = validate_control(json.loads(outer["response"]), known_metadata=(action_id, route["selected_model"], route["selected_digest"], TARGET, candidate_sha))
+        envelope = trusted_envelope(control, action_id=action_id, role=role, model=route["selected_model"], digest=route["selected_digest"], instructions=instructions)
+    except Exception as exc:
+        manifest.update({"status": "failed", "failure": f"{type(exc).__name__}: {exc}", "raw_sha256": _sha256(raw)})
+        _atomic_json(run_dir / "manifest.json", manifest)
+        raise
+    _atomic_json(run_dir / "validated_envelope.json", envelope)
+    manifest.update({"status": "completed", "duration_seconds": round(time.monotonic() - started, 3), "raw_sha256": _sha256(raw), "prompt_tokens": outer.get("prompt_eval_count"), "output_tokens": outer.get("eval_count")})
+    _atomic_json(run_dir / "manifest.json", manifest)
+    refs = LocalDevelopmentRunner(api=api, artifact_root=RUNTIME / "artifacts", field=store)._record(envelope, goal=plan["content"], session_id=SESSION)
+    return {"status": "completed", "route": route, "governor": governor, "manifest": manifest, "control": control, "field_refs": refs}
+
+
+def conserve_failed_coder(action_id: str) -> dict:
+    run_dir = RUNTIME / "artifacts" / action_id.replace(":", "_")
+    manifest_path = run_dir / "manifest.json"
+    raw_path = run_dir / "raw_response.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("action_id") != action_id or manifest.get("role") != "coder" or manifest.get("status") != "failed":
+        raise RuntimeError("only an exact closed failed coder action can be conserved")
+    raw_sha = _sha256(raw_path.read_bytes())
+    if raw_sha != manifest.get("raw_sha256"):
+        raise RuntimeError("failed coder raw response hash mismatch")
+    exact_defect = str(manifest.get("failure") or "deterministic candidate validation failed")[:160]
+    control = {"status": "failure", "decision": "Candidate artifact rejected by deterministic function-only grammar.", "evidence": [f"Preserved raw response sha256={raw_sha}"], "risks": [exact_defect], "next_action": "Create a new linked corrective action using this exact deterministic defect."}
+    instructions = load_instructions("coder")
+    envelope = trusted_envelope(control, action_id=action_id, role="coder", model=manifest["model"], digest=manifest["digest"], instructions=instructions)
+    store = field_store()
+    plan = store.get_ip(manifest["planner_result_ref"])
+    refs = LocalDevelopmentRunner(api=OllamaAPI(timeout_seconds=30), artifact_root=RUNTIME / "artifacts", field=store)._record(envelope, goal=plan["content"], session_id=SESSION)
+    manifest["field_refs"] = refs
+    try:
+        outer = json.loads(raw_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        outer = {}
+    manifest.setdefault("prompt_tokens", outer.get("prompt_eval_count"))
+    manifest.setdefault("output_tokens", outer.get("eval_count"))
+    _atomic_json(manifest_path, manifest)
+    return {"status": "conserved", "field_refs": refs, "raw_sha256": raw_sha, "exact_defect": exact_defect}

@@ -1,5 +1,10 @@
 # SToE research-agent rebuild supervisor
 
+Local bounded Ollama delegation for development is documented in
+[LOCAL_WORKER_DELEGATION.md](LOCAL_WORKER_DELEGATION.md). It reuses SToE Memory
+and SToE Reasoning while keeping workers non-authoritative and preserving
+interactive machine resources.
+
 This directory adds one bounded self-rebuild capability to the existing SToE
 repository. It does not alter model weights or provider infrastructure. It can
 inspect, revise, test, activate, and roll back an agent-owned selection policy.

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "release": "stoe-self-development-v1",
+  "repository": "https://github.com/tyzyxmykola-a11y/stoe",
+  "tag": "stoe-self-development-v1",
+  "release_base_commit": "3ba7d7cafd59bad58c85a02c158c75e07bae3a38",
+  "release_commit_resolution": "The annotated tag target is authoritative; verify with git rev-parse stoe-self-development-v1^{commit}.",
+  "created_utc": "2026-09-08T23:56:09.8398552Z",
+  "author": "Mykola Voronin",
+  "scope": "Stable pre-Hermes-v2.2 evidence for observer-aware persistent SToE Memory, bounded supervised self-development, conserved failures, protected evaluation and rollback, reproducible experiments, and SToE-Hermes A/B succession.",
+  "licenses": {
+    "software": "MIT",
+    "original_research_and_documentation": "CC-BY-4.0",
+    "boundaries": "LICENSING.md",
+    "exceptions": "Third-party, model-generated, and preserved historical artifacts retain existing or provenance-specific terms and are not relicensed."
+  },
+  "test_results": {
+    "agent": {
+      "command": "cd agent; $env:PYTHONPATH=(Resolve-Path src).Path; python -m unittest discover -s tests -q",
+      "passed": 77,
+      "total": 77
+    },
+    "stoe_hermes": {
+      "command": "cd stoe-hermes; $env:PYTHONPATH=(Resolve-Path src).Path; python -m unittest discover -s tests -q",
+      "passed": 18,
+      "total": 18
+    },
+    "v9_1": {
+      "command": "cd experiments/stoe_v9_1_experiment; $env:PYTHONPATH=(Resolve-Path src).Path; python -m unittest discover -s tests -q",
+      "passed": 50,
+      "total": 50
+    },
+    "v3": {
+      "command": "cd experiments/stoe_v3; python -m unittest discover -s tests -q",
+      "passed": 21,
+      "total": 21
+    },
+    "stoe_memory": {
+      "command": "cd plugins/stoe-memory; python -m unittest discover -s tests -q",
+      "passed": 9,
+      "total": 9
+    }
+  },
+  "canonical_evidence": {
+    "accepted_selector_sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1",
+    "accepted_report_sha256": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1",
+    "hermes_v2_1_status": "failed_conserved_no_execution_no_activation",
+    "hermes_resume_tokens": 371,
+    "hermes_resume_limit": 1800,
+    "hermes_resume_reserve": 1429,
+    "canonical_seed_sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868"
+  },
+  "base_ci": {
+    "workflow": "Deterministic test suites",
+    "run_id": 34291282907,
+    "result": "success",
+    "url": "https://github.com/tyzyxmykola-a11y/stoe/actions/runs/34291282907"
+  },
+  "artifacts": [
+    {"path": ".github/workflows/deterministic-tests.yml", "sha256": "be69b2eb0842e2ef4eac648be83688ee3c87ae4c56fd65c70109a5663682eecb", "role": "deterministic_ci"},
+    {"path": "CITATION.cff", "sha256": "c49a08b24afe657627f182036c35414b675b7dcd99a3676ce888f82670624b4f", "role": "citation"},
+    {"path": "LICENSE", "sha256": "13eaca4212e7e805af8bdf09618a28ace35d5cbd395be6970d3c2cb3e3e30d9e", "role": "mixed_license_pointer"},
+    {"path": "LICENSES/CC-BY-4.0.txt", "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411", "role": "canonical_license_text"},
+    {"path": "LICENSES/MIT.txt", "sha256": "18666dd34a2fd5a14383eeffa9f2c93c9a39c2352a41869513cbcadf56617eec", "role": "canonical_license_text"},
+    {"path": "LICENSING.md", "sha256": "15d8ec5a820c341c78f9252d92030f6e0f61bc389959581aa9ea8ca15de666a5", "role": "license_boundaries"},
+    {"path": "README.md", "sha256": "115755c3304970e4a9246b3a3afaef9d0db71cc521a44554c6211aef5d7651cf", "role": "public_entry_point"},
+    {"path": "SECURITY.md", "sha256": "a5000af4e383691c296826b86352cda58d6e5db727f2f4cded00f3991f97e217", "role": "trust_boundaries"},
+    {"path": "agent/SELF_REBUILD_MILESTONE_REPORT.md", "sha256": "d27e9e01aa848fa600d2f200e4c9f9c9dc76e8aa2e66495fb5dbd3a71999fdea", "role": "agent_milestone"},
+    {"path": "agent/owned_components/context_selector/versions/generated_20260906T125305Z_92e7e913.py", "sha256": "d37f48335f87c4c4370ea78d7719cf3a79aa26ef41b0911c81f448f7828d2cb1", "role": "accepted_selector"},
+    {"path": "agent/rebuild_reports/20260906T125305Z_92e7e913.json", "sha256": "a008eba9e581ccb1850f509c1a535c26b7b6c361c3174a0936fb18dd473677b1", "role": "accepted_report"},
+    {"path": "experiments/stoe_v3/runs/README.md", "sha256": "b86412d18a958bd985e9175de210377d430e45fcdddd5e9593681c044f6c42d5", "role": "v3_evidence_index"},
+    {"path": "experiments/stoe_v9_1_experiment/V9_1_FINAL_REPORT.md", "sha256": "fe1294dc44a0d2414e62769dcf5d19ad7dcf43a358ae593922008b905b0f5426", "role": "v9_1_final_report"},
+    {"path": "plugins/stoe-memory/README.md", "sha256": "c846daf6f6e4329b468adfbe0235513a4843be76b1c5c30a601e51671a071918", "role": "memory_documentation"},
+    {"path": "releases/stoe-self-development-v1/README.md", "sha256": "3dbd1fde78001f2af7354f35679d2027a4e1421d868a4d0160796225e621f40a", "role": "release_catalog"},
+    {"path": "skills/stoe-reasoning/assets/stoe_seed.json", "sha256": "b327db6dbce9981ed21561b9d1a857e2e3786f1391d41edc0381fead79e59868", "role": "canonical_seed"},
+    {"path": "stoe-hermes/HERMES_AB_SUCCESSION_V2_1.md", "sha256": "31a89252c29ae6e3737e761097eb7c505d60331bfb8883b9c38c7c333f38e70e", "role": "latest_pre_v2_2_report"},
+    {"path": "stoe-hermes/HERMES_AB_V2_1_MANIFEST.json", "sha256": "c2903766df818ba5c08e19f5e958b20fe5ef4ca93d2de3a588fcf6f48a1637d4", "role": "latest_pre_v2_2_manifest"}
+  ],
+  "artifact_count": 18,
+  "artifact_hash_mismatches": 0,
+  "manifest_self_hash": null,
+  "limitations": [
+    "The release does not establish the full SToE ontology or independent scientific confirmation.",
+    "Preserved model outputs and generated artifacts have provenance-specific terms.",
+    "A subprocess or separate worktree is not an operating-system security sandbox.",
+    "Hermes v2.1 produced no executable or activated successor."
+  ]
+}

@@ -17,6 +17,7 @@ from stoe_agent.function_candidate import (  # noqa: E402
     target_function,
     validate_function_artifact,
 )
+from stoe_agent.local_development_pipeline import validate_required_reporting_obligations  # noqa: E402
 
 
 PATH = "agent/src/stoe_agent/development_report.py"
@@ -67,6 +68,14 @@ class FunctionCandidateTests(unittest.TestCase):
         for source in values:
             with self.subTest(source=source), self.assertRaises(FunctionCandidateError):
                 validate_function_artifact(artifact(source), expected_path=PATH, expected_function=NAME, parent_source=PARENT)
+
+    def test_pre_review_gate_rejects_noop_and_missing_obligations(self):
+        with self.assertRaisesRegex(RuntimeError, "equals parent"):
+            validate_required_reporting_obligations(PARENT, PARENT)
+        with self.assertRaisesRegex(RuntimeError, "payload_sha256"):
+            validate_required_reporting_obligations(PARENT, PARENT + "\n# changed\n")
+        candidate = PARENT + "\n# payload_sha256 canonical_payload_count collapsed_duplicate_count path\n"
+        self.assertTrue(validate_required_reporting_obligations(PARENT, candidate)["changed"])
 
 
 if __name__ == "__main__":

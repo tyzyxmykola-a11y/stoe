@@ -4,30 +4,37 @@ from typing import Any
 
 
 def render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:
-    """Render a bounded development-context summary.
-
-    This deliberately small, non-security-critical component is owned by the
-    agent.  The trusted supervisor supplies already-authorized records; this
-    function only formats them and has no authority over retrieval or files.
-    """
-
+    """Render canonical payloads once while preserving every connection."""
     if max_chars < 0:
         raise ValueError("max_chars must be non-negative")
-    lines: list[str] = []
-    used = 0
-    for item in items:
-        line = " | ".join(
-            (
+    seen: set[str] = set()
+    logical_lines: list[str] = []
+    collapsed_duplicate_count = 0
+    for index, item in enumerate(items):
+        declared = str(item.get("payload_sha256", ""))
+        identity = declared if declared else "unhashed:" + str(index)
+        content = str(item.get("content", "")).replace("\n", " ")
+        if identity not in seen:
+            seen.add(identity)
+            logical_lines.append("PAYLOAD | " + identity + " | " + content)
+        else:
+            collapsed_duplicate_count += 1
+        logical_lines.append(
+            "CONNECTION | " + " | ".join((
                 str(item.get("ref", "unknown")),
                 str(item.get("origin", "unknown")),
                 str(item.get("kind", "unknown")),
                 str(item.get("outcome", "unknown")),
-                str(item.get("content", "")).replace("\n", " "),
-            )
+                str(item.get("path", "unknown")),
+            ))
         )
-        addition = line if not lines else "\n" + line
+    header = "canonical_payload_count=" + str(len(seen)) + " | collapsed_duplicate_count=" + str(collapsed_duplicate_count)
+    output: list[str] = []
+    used = 0
+    for line in [header] + logical_lines:
+        addition = line if not output else "\n" + line
         if used + len(addition) > max_chars:
             continue
-        lines.append(line)
+        output.append(line)
         used += len(addition)
-    return "\n".join(lines)
+    return "\n".join(output)

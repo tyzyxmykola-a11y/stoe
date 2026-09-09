@@ -14,7 +14,7 @@ from stoe_agent.local_development_pipeline import DEFAULT_ACTION, conserve_faile
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Trusted Local Development v2 stage runner")
-    parser.add_argument("command", choices=["planner", "coder", "reviewer", "test-analyst", "conserve-failed-coder"])
+    parser.add_argument("command", choices=["planner", "coder", "ir-coder", "reviewer", "test-analyst", "conserve-failed-coder"])
     parser.add_argument("--observer-state")
     parser.add_argument("--action-id", default=DEFAULT_ACTION)
     parser.add_argument("--difficulty", choices=["low", "medium", "high"], default="medium")
@@ -29,10 +29,10 @@ def main() -> int:
         parser.error(f"{args.command} requires --observer-state")
     elif args.command == "planner":
         value = run_planner(args.observer_state, args.action_id, difficulty=args.difficulty)
-    elif args.command == "coder":
+    elif args.command in {"coder", "ir-coder"}:
         if not args.planner_result:
             parser.error("coder requires --planner-result")
-        value = run_coder(args.observer_state, args.planner_result, args.action_id, correction_ref=args.correction_ref)
+        value = run_coder(args.observer_state, args.planner_result, args.action_id, correction_ref=args.correction_ref, ir_mode=args.command == "ir-coder")
     else:
         if not args.planner_result or not args.coder_action:
             parser.error("reviewer requires --planner-result and --coder-action")

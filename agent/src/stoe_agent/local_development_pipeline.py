@@ -28,6 +28,7 @@ from .function_candidate import (
     validate_function_artifact,
 )
 from .self_code_cycle_v2 import validate_candidate_source
+from .report_candidate_ir import render_report_function, report_ir_schema, validate_report_ir
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -36,6 +37,19 @@ SESSION = "development:local-development-v2"
 TARGET = "agent/src/stoe_agent/development_report.py"
 TARGET_FUNCTION = "render_retrieved_context"
 DEFAULT_ACTION = "worker:local-development-v2:architecture-plan-v2"
+
+
+def validate_required_reporting_obligations(parent: str, candidate: str) -> dict:
+    if candidate == parent:
+        raise RuntimeError("candidate equals parent")
+    missing = [
+        token
+        for token in ("payload_sha256", "canonical_payload_count", "collapsed_duplicate_count", "path")
+        if token not in candidate
+    ]
+    if missing:
+        raise RuntimeError("candidate omits required reporting obligations: " + ", ".join(missing))
+    return {"changed": True, "static_obligations": "passed"}
 
 
 def _sha256(data: bytes) -> str:
@@ -136,7 +150,7 @@ def run_planner(observer_state_ref: str, action_id: str = DEFAULT_ACTION, *, dif
     return result
 
 
-def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, *, correction_ref: str | None = None) -> dict:
+def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, *, correction_ref: str | None = None, ir_mode: bool = False) -> dict:
     api = OllamaAPI(timeout_seconds=30)
     discovery = api.discover()
     _merge_measured_evidence(discovery)
@@ -171,18 +185,23 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, 
         "type": "object",
         "properties": {
             "control": control_schema(),
-            "patch": function_artifact_schema(
-                path=TARGET,
-                function=TARGET_FUNCTION,
-                parent_function_sha256=parent_function_sha,
+            "patch": (
+                report_ir_schema(path=TARGET, function=TARGET_FUNCTION, parent_function_sha256=parent_function_sha)
+                if ir_mode else
+                function_artifact_schema(path=TARGET, function=TARGET_FUNCTION, parent_function_sha256=parent_function_sha)
             ),
         },
         "required": ["control", "patch"],
         "additionalProperties": False,
     }
-    prompt = json.dumps({"accepted_plan": plan["content"], "authoritative_correction": correction, "artifact_identity": {"format": "stoe.function_replacement", "path": TARGET, "function": TARGET_FUNCTION, "parent_function_sha256": parent_function_sha}, "replacement_source_rule": "Return the complete Python source of exactly the target function in replacement_source. It must start with def render_retrieved_context and contain no imports, decorators, nested functions, classes, or module code.", "requirements": ["Use item payload_sha256 when non-empty; do not recompute identity from text", "Emit each canonical payload content once", "Emit every original ref/relation/direction/provenance connection including duplicates", "Emit exact canonical_payload_count=N and collapsed_duplicate_count=N fields", "Unhashed records remain distinct", "Preserve input order and max_chars bound"], "source": parent}, ensure_ascii=False, sort_keys=True)
+    prompt_value = {"accepted_plan": plan["content"], "authoritative_correction": correction, "artifact_identity": {"format": "stoe.report_dedup_ir" if ir_mode else "stoe.function_replacement", "path": TARGET, "function": TARGET_FUNCTION, "parent_function_sha256": parent_function_sha}, "requirements": ["Use item payload_sha256 when non-empty; do not recompute identity from text", "Emit each canonical payload content once", "Emit every original ref/relation/direction/provenance connection including duplicates", "Emit exact canonical_payload_count=N and collapsed_duplicate_count=N fields", "Unhashed records remain distinct", "Preserve input order and max_chars bound"]}
+    if ir_mode:
+        prompt_value["emission_rule"] = "Select the exact bounded reporting IR values. No Python or prose belongs in the patch artifact."
+    else:
+        prompt_value.update({"replacement_source_rule": "Return the complete Python source of exactly the target function in replacement_source. It must start with def render_retrieved_context and contain no imports, decorators, nested functions, classes, or module code.", "source": parent})
+    prompt = json.dumps(prompt_value, ensure_ascii=False, sort_keys=True)
     payload = {"model": route["selected_model"], "think": False, "system": system, "prompt": prompt, "stream": False, "format": wrapper_schema, "options": {"temperature": 0, "top_p": 0.9, "top_k": 40, "seed": 4403, "num_ctx": 8192, "num_predict": 1200}, "keep_alive": "10m"}
-    manifest = {"action_id": action_id, "status": "started", "role": "coder", "model": route["selected_model"], "digest": route["selected_digest"], "parent_sha256": parent_sha, "parent_function_sha256": parent_function_sha, "planner_result_ref": planner_result_ref, "correction_ref": correction_ref, "retrieval_run_id": retrieval["run_id"]}
+    manifest = {"action_id": action_id, "status": "started", "role": "coder", "model": route["selected_model"], "digest": route["selected_digest"], "parent_sha256": parent_sha, "parent_function_sha256": parent_function_sha, "planner_result_ref": planner_result_ref, "correction_ref": correction_ref, "ir_mode": ir_mode, "retrieval_run_id": retrieval["run_id"]}
     _atomic_json(run_dir / "manifest.json", manifest)
     started = time.monotonic()
     try:
@@ -201,12 +220,12 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, 
         if not isinstance(wrapper, dict) or set(wrapper) != {"control", "patch"}:
             raise RuntimeError("coder wrapper fields invalid")
         control = validate_control(wrapper["control"], known_metadata=(action_id, route["selected_model"], route["selected_digest"], TARGET, parent_sha))
-        patch = validate_function_artifact(
-            wrapper["patch"],
-            expected_path=TARGET,
-            expected_function=TARGET_FUNCTION,
-            parent_source=parent,
-        )
+        if ir_mode:
+            model_artifact = validate_report_ir(wrapper["patch"], path=TARGET, function=TARGET_FUNCTION, parent_function_sha256=parent_function_sha)
+            patch = {"format": "stoe.function_replacement", "path": TARGET, "function": TARGET_FUNCTION, "parent_function_sha256": parent_function_sha, "replacement_source": render_report_function(model_artifact)}
+        else:
+            model_artifact = validate_function_artifact(wrapper["patch"], expected_path=TARGET, expected_function=TARGET_FUNCTION, parent_source=parent)
+            patch = model_artifact
         candidate = reconstruct_module(
             parent,
             patch,
@@ -214,6 +233,7 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, 
             expected_function=TARGET_FUNCTION,
         )
         validation = validate_candidate_source(parent, candidate)
+        validation.update(validate_required_reporting_obligations(parent, candidate))
     except Exception as exc:
         exact_defect = f"{type(exc).__name__}: {exc}"[:160]
         failure_control = {
@@ -228,12 +248,12 @@ def run_coder(observer_state_ref: str, planner_result_ref: str, action_id: str, 
         manifest.update({"status": "failed", "failure": exact_defect, "raw_sha256": _sha256(raw), "field_refs": field_refs, "duration_seconds": round(time.monotonic() - started, 3), "prompt_tokens": outer.get("prompt_eval_count") if isinstance(outer, dict) else None, "output_tokens": outer.get("eval_count") if isinstance(outer, dict) else None})
         _atomic_json(run_dir / "manifest.json", manifest)
         raise
-    patch_path = run_dir / "candidate_patch.json"
-    _atomic_json(patch_path, patch)
+    patch_path = run_dir / ("candidate_ir.json" if ir_mode else "candidate_patch.json")
+    _atomic_json(patch_path, model_artifact)
     artifact = {"path": f"local_development_v2/artifacts/{run_dir.name}/candidate_patch.json", "sha256": _sha256(patch_path.read_bytes()), "size_bytes": patch_path.stat().st_size}
     envelope = trusted_envelope(control, action_id=action_id, role="coder", model=route["selected_model"], digest=route["selected_digest"], instructions=instructions, artifact=artifact)
     _atomic_json(run_dir / "validated_envelope.json", envelope)
-    _atomic_json(run_dir / "candidate_validation.json", validation)
+    _atomic_json(run_dir / "candidate_validation.json", {**validation, "deterministic_renderer": ir_mode})
     (run_dir / "candidate_development_report.py").write_text(candidate, encoding="utf-8", newline="\n")
     manifest.update({"status": "completed", "duration_seconds": round(time.monotonic() - started, 3), "raw_sha256": _sha256(raw), "patch_sha256": artifact["sha256"], "candidate_sha256": validation["candidate_sha256"], "prompt_tokens": outer.get("prompt_eval_count"), "output_tokens": outer.get("eval_count")})
     _atomic_json(run_dir / "manifest.json", manifest)

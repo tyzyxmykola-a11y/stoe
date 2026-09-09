@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "action_id": "self-code-cycle:hermes-ab-v2-2:parent-relative-validation",
+  "status": "awaiting_author_approval",
+  "branch_base": "179b85c2cb4072dbfc8a07b25c9db1333a1c48da",
+  "observer_state_ref": "STATE_eef3fe6eb8ce4e73",
+  "retrieval_run_id": "RETRIEVAL_e5092f84df20472d",
+  "implementation_observer_state_ref": "STATE_9b67da81d2c7479d",
+  "implementation_retrieval_run_id": "RETRIEVAL_c06df2a38cb44a31",
+  "validator": {
+    "method": "normalized_ast_prefix_and_structural_path",
+    "correction_ref": "IP_4afce2212e8c4bf3",
+    "validation_ref": "IP_f4d2f7b504cd433f",
+    "focused_tests": "18/18"
+  },
+  "candidate": {
+    "source": "exact_v2_1_inert_patch",
+    "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+    "candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "candidate_ref": "IP_52b9f2678db549e0"
+  },
+  "protected_evaluation": {
+    "status": "passed_2_of_2",
+    "evaluation_ref": "IP_48cf7c158ae24efd",
+    "protocol": "unchanged_v2_1_withheld_focused_check"
+  },
+  "activation": {
+    "status": "inactive",
+    "decision_ref": "IP_80337f0df2224e72",
+    "next_action_ref": "IP_8eed182da4384b73",
+    "rollback_target": "hermes-a-bb924730743c"
+  },
+  "model_calls": 0,
+  "instruction": "Resolve field refs and hashes. Do not rerun v2.1 or v2.2. Await Mykola approval for a separately supervised promotion action."
+}

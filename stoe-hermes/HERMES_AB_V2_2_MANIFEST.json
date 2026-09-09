@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "action_id": "self-code-cycle:hermes-ab-v2-2:parent-relative-validation",
+  "status": "exact_v2_1_candidate_qualified_inactive_awaiting_author_approval",
+  "repository_parent": "179b85c2cb4072dbfc8a07b25c9db1333a1c48da",
+  "validator": {
+    "method": "normalized_ast_prefix_and_structural_path",
+    "grandfathering_rule": "each candidate forbidden occurrence consumes one identical trusted-parent fingerprint",
+    "matched_type": "Raise",
+    "matched_parent_occurrence": 1,
+    "matched_candidate_occurrence": 1,
+    "matched_fingerprint": "f559a161ab5b43ab39a7393fe7e4196d7cb069c7c843cf47aebc0b4ea95e074b",
+    "focused_tests": {
+      "passed": 18,
+      "total": 18
+    }
+  },
+  "candidate": {
+    "source": "exact_v2_1_inert_patch",
+    "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+    "candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "proposal_sha256": "623e64041a87ed4670f6dd52a0d6422c2a4b4a21d4df11781e7cf5f0061ec344",
+    "byte_identical_to_v2_1_record": true,
+    "validation": "passed",
+    "activation": "inactive"
+  },
+  "protected_evaluation": {
+    "protocol": "unchanged_v2_1_withheld_focused_check",
+    "passed": 2,
+    "total": 2,
+    "candidate_executed_after_static_validation": true,
+    "isolation": "monitored subprocess under caller identity; not an OS sandbox"
+  },
+  "active_release": {
+    "hermes_version": "0.20.3",
+    "hermes_commit": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
+    "context_renderer_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+    "pointer_sha256": "b6a1e4f89ea85a845eda7a8aa821135fa152cbbb126f3c294a6dc0a10e7c82c3",
+    "changed": false,
+    "rollback_target": "hermes-a-bb924730743c"
+  },
+  "model_calls": 0,
+  "regression": {
+    "hermes": "32/32",
+    "agent": "101/101",
+    "stoe_memory": "9/9",
+    "v9_1": "50/50",
+    "v3": "21/21",
+    "canonical_seed": "passed",
+    "release_hashes": "18/18",
+    "python_compilation": "passed",
+    "git_diff_check": "passed"
+  },
+  "field_refs": {
+    "observer_state": "STATE_eef3fe6eb8ce4e73",
+    "retrieval": "RETRIEVAL_e5092f84df20472d",
+    "implementation_observer_state": "STATE_9b67da81d2c7479d",
+    "implementation_retrieval": "RETRIEVAL_c06df2a38cb44a31",
+    "v2_1_failure": "IP_15f488b9926a479f",
+    "v2_1_diagnosis": "IP_83a2caf23edb43a5",
+    "correction": "IP_4afce2212e8c4bf3",
+    "validation": "IP_f4d2f7b504cd433f",
+    "candidate": "IP_52b9f2678db549e0",
+    "protected_evaluation": "IP_48cf7c158ae24efd",
+    "decision": "IP_80337f0df2224e72",
+    "next_action": "IP_8eed182da4384b73"
+  },
+  "files": {
+    "src/stoe_hermes/succession.py": "5e7939139d68e4a5477b1a6baa9b34b9526ede8b851dfecb56f845e4758d692d",
+    "src/stoe_hermes/split_cycle_v2_2.py": "09b905dba9d24ae2e954c7056852f165a5250e78befd2a0162c08fdfa10f86fb",
+    "evidence/v2_2/v2_1_candidate_patch.json": "623e64041a87ed4670f6dd52a0d6422c2a4b4a21d4df11781e7cf5f0061ec344",
+    "tests/test_succession_v2_2.py": "a49223fdbaf9732cadc84609c04545daf2fb38ea8bfd5a56c4aeb09697381277",
+    "tests/test_split_cycle_v2_1.py": "07bf58e5c4e933a1ab17f02e5c780f213b134537ebf02cff6a6d6f0abf43a9be",
+    "tools/run_hermes_ab_v2_2.py": "4b24cf7b4484d7d78c579188e49af33a42dd4b66ae70e8f1ef6ef68c140a47ef",
+    "HERMES_AB_SUCCESSION_V2_2.md": "3526f273fcee691bb01d6a5df9ba26896539d9612c236782122831875404a288",
+    "HERMES_AB_V2_2_RESUME.json": "db92a1c2e962be6b309a9bb74c25257508d6d342a59d91a6fc08bb342a0b7e9d",
+    "agent/runtime/hermes_ab_v2_2/cycle.json": "707111d04b10da646265c11651ba57a88b462d0e0627b0360335093c1018f35a",
+    "agent/runtime/hermes_ab_v2_2/artifacts/context_renderer.py": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "agent/runtime/hermes_ab_v2_2/artifacts/validation.json": "594166500df546224545765e8de4825cf6abc45d8ea4f7b98f95a9bc88c55dc6"
+  },
+  "historical_v2_1": {
+    "report_sha256": "31a89252c29ae6e3737e761097eb7c505d60331bfb8883b9c38c7c333f38e70e",
+    "manifest_sha256": "c2903766df818ba5c08e19f5e958b20fe5ef4ca93d2de3a588fcf6f48a1637d4",
+    "changed": false
+  }
+}

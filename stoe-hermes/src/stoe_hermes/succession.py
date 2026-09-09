@@ -26,6 +26,10 @@ PROTECTED_MARKERS = (
 MAX_PATCH_LINES = 80
 MAX_LINE_CHARS = 200
 MAX_CANDIDATE_BYTES = 12_000
+FORBIDDEN_AST_TYPES = (
+    ast.Import, ast.ImportFrom, ast.ClassDef, ast.AsyncFunctionDef, ast.Lambda,
+    ast.While, ast.With, ast.AsyncWith, ast.Try, ast.Raise, ast.Global, ast.Nonlocal,
+)
 
 
 class SuccessionError(RuntimeError):
@@ -247,7 +251,68 @@ def reconstruct_candidate(parent: str, patch: dict[str, Any]) -> str:
     return candidate
 
 
+def _walk_structural_paths(node: ast.AST, path: tuple[tuple[str, int | None], ...] = ()) -> list[tuple[ast.AST, tuple[tuple[str, int | None], ...]]]:
+    result = [(node, path)]
+    for field_name, value in ast.iter_fields(node):
+        if isinstance(value, ast.AST):
+            result.extend(_walk_structural_paths(value, (*path, (field_name, None))))
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                if isinstance(child, ast.AST):
+                    result.extend(_walk_structural_paths(child, (*path, (field_name, index))))
+    return result
+
+
+def _forbidden_occurrences(function: ast.FunctionDef) -> list[dict[str, Any]]:
+    """Fingerprint forbidden nodes with their normalized semantic prefix.
+
+    The prefix ends at the top-level statement containing the node. This binds
+    the occurrence to all earlier function state and its exact control-flow
+    position without depending on source lines or unrelated later changes.
+    """
+    signature = {
+        "name": function.name,
+        "args": ast.dump(function.args, include_attributes=False),
+        "decorators": [ast.dump(item, include_attributes=False) for item in function.decorator_list],
+        "returns": ast.dump(function.returns, include_attributes=False) if function.returns else None,
+    }
+    occurrences: list[dict[str, Any]] = []
+    type_counts: dict[str, int] = {}
+    for statement_index, statement in enumerate(function.body):
+        prefix = [ast.dump(item, include_attributes=False) for item in function.body[: statement_index + 1]]
+        for node, local_path in _walk_structural_paths(statement, (("body", statement_index),)):
+            if not isinstance(node, FORBIDDEN_AST_TYPES):
+                continue
+            node_type = type(node).__name__
+            type_counts[node_type] = type_counts.get(node_type, 0) + 1
+            material = {
+                "function": signature,
+                "prefix": prefix,
+                "path": [[field, index] for field, index in local_path],
+                "node_type": node_type,
+            }
+            encoded = json.dumps(material, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            occurrences.append({
+                "node": node,
+                "node_type": node_type,
+                "occurrence": type_counts[node_type],
+                "structural_path": material["path"],
+                "fingerprint": sha256_bytes(encoded),
+            })
+    return occurrences
+
+
+def _is_within(node: ast.AST, roots: set[int], parents: dict[int, ast.AST]) -> bool:
+    current: ast.AST | None = node
+    while current is not None:
+        if id(current) in roots:
+            return True
+        current = parents.get(id(current))
+    return False
+
+
 def validate_candidate_source(parent: str, candidate: str) -> dict[str, Any]:
+    """Legacy v2.1 validator retained for historical action replay."""
     if "\x00" in candidate:
         raise SuccessionError("candidate contains binary NUL data")
     secret_patterns = (
@@ -271,14 +336,13 @@ def validate_candidate_source(parent: str, candidate: str) -> dict[str, Any]:
         raise SuccessionError("candidate must define only the editable function")
     if len(list(ast.walk(tree))) > 500:
         raise SuccessionError("candidate AST is over-complex")
-    forbidden = (ast.Import, ast.ImportFrom, ast.ClassDef, ast.AsyncFunctionDef, ast.Lambda, ast.While, ast.With, ast.AsyncWith, ast.Try, ast.Raise, ast.Global, ast.Nonlocal)
     allowed_calls = {"str", "len", "min", "max", "range", "enumerate", "sorted", "set", "dict", "list"}
     allowed_methods = {
         "get", "append", "add", "join", "setdefault", "items", "values", "replace",
         "encode", "hexdigest", "sha256",
     }
     for node in ast.walk(functions[0]):
-        if isinstance(node, forbidden):
+        if isinstance(node, FORBIDDEN_AST_TYPES):
             raise SuccessionError(f"candidate uses forbidden syntax: {type(node).__name__}")
         if isinstance(node, ast.Attribute) and (node.attr.startswith("__") or node.attr not in allowed_methods):
             raise SuccessionError("candidate attribute is outside capability allowlist")
@@ -293,6 +357,84 @@ def validate_candidate_source(parent: str, candidate: str) -> dict[str, Any]:
     if candidate == parent:
         raise SuccessionError("candidate is a no-op")
     return {"candidate_sha256": digest, "bytes": len(candidate.encode("utf-8")), "lines": len(candidate.splitlines())}
+
+
+def validate_candidate_source_v2_2(parent: str, candidate: str) -> dict[str, Any]:
+    if "\x00" in candidate:
+        raise SuccessionError("candidate contains binary NUL data")
+    secret_patterns = (
+        r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----",
+        r"(?i)(?:api[_-]?key|secret|password|token)\s*[:=]\s*['\"][^'\"]{8,}",
+        r"\b(?:sk|ghp|github_pat)_[A-Za-z0-9_\-]{20,}\b",
+    )
+    if any(re.search(pattern, candidate) for pattern in secret_patterns):
+        raise SuccessionError("candidate resembles secret material")
+    try:
+        parent_tree = ast.parse(parent)
+        tree = ast.parse(candidate)
+    except SyntaxError as exc:
+        raise SuccessionError(f"candidate syntax error: {exc}") from exc
+    parent_imports = [ast.dump(node) for node in parent_tree.body if isinstance(node, (ast.Import, ast.ImportFrom))]
+    imports = [ast.dump(node) for node in tree.body if isinstance(node, (ast.Import, ast.ImportFrom))]
+    if imports != parent_imports:
+        raise SuccessionError("candidate changed imports")
+    parent_functions = [node for node in parent_tree.body if isinstance(node, ast.FunctionDef)]
+    functions = [node for node in tree.body if isinstance(node, ast.FunctionDef)]
+    if len(parent_functions) != 1 or parent_functions[0].name != "render_retrieved_context":
+        raise SuccessionError("trusted parent editable function is invalid")
+    if len(functions) != 1 or functions[0].name != "render_retrieved_context":
+        raise SuccessionError("candidate must define only the editable function")
+    if len(list(ast.walk(tree))) > 500:
+        raise SuccessionError("candidate AST is over-complex")
+    parent_occurrences: dict[str, list[dict[str, Any]]] = {}
+    for occurrence in _forbidden_occurrences(parent_functions[0]):
+        parent_occurrences.setdefault(occurrence["fingerprint"], []).append(occurrence)
+    grandfathered: list[dict[str, Any]] = []
+    matched_roots: set[int] = set()
+    for candidate_occurrence in _forbidden_occurrences(functions[0]):
+        matches = parent_occurrences.get(candidate_occurrence["fingerprint"], [])
+        if not matches:
+            raise SuccessionError(
+                f"candidate introduces or changes forbidden syntax: {candidate_occurrence['node_type']}"
+            )
+        parent_occurrence = matches.pop(0)
+        matched_roots.add(id(candidate_occurrence["node"]))
+        grandfathered.append({
+            "node_type": candidate_occurrence["node_type"],
+            "parent_occurrence": parent_occurrence["occurrence"],
+            "candidate_occurrence": candidate_occurrence["occurrence"],
+            "structural_path": candidate_occurrence["structural_path"],
+            "comparison": "normalized_ast_prefix_and_structural_path",
+            "fingerprint": candidate_occurrence["fingerprint"],
+        })
+    allowed_calls = {"str", "len", "min", "max", "range", "enumerate", "sorted", "set", "dict", "list"}
+    allowed_methods = {
+        "get", "append", "add", "join", "setdefault", "items", "values", "replace",
+        "encode", "hexdigest", "sha256",
+    }
+    parents = {id(child): node for node in ast.walk(functions[0]) for child in ast.iter_child_nodes(node)}
+    for node in ast.walk(functions[0]):
+        if _is_within(node, matched_roots, parents):
+            continue
+        if isinstance(node, ast.Attribute) and (node.attr.startswith("__") or node.attr not in allowed_methods):
+            raise SuccessionError("candidate attribute is outside capability allowlist")
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name) and node.func.id not in allowed_calls:
+                raise SuccessionError("candidate call is outside capability allowlist")
+            if not isinstance(node.func, (ast.Name, ast.Attribute)):
+                raise SuccessionError("candidate uses indirect call")
+        if isinstance(node, ast.Name) and node.id.startswith("__"):
+            raise SuccessionError("candidate uses dunder authority")
+    digest = sha256_bytes(candidate.encode("utf-8"))
+    if candidate == parent:
+        raise SuccessionError("candidate is a no-op")
+    return {
+        "candidate_sha256": digest,
+        "bytes": len(candidate.encode("utf-8")),
+        "lines": len(candidate.splitlines()),
+        "grandfathered_forbidden_nodes": grandfathered,
+        "grandfathered_count": len(grandfathered),
+    }
 
 
 @dataclass

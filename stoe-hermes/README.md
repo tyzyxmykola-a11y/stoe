@@ -24,6 +24,11 @@ The [activation-failure attribution](HERMES_ACTIVATION_FAILURE_ATTRIBUTION.md)
 preserves bounded stdout/stderr, identifies the stripped-`PATH` health-harness
 defect, and requalifies the unchanged candidate layout without promoting it.
 
+The subsequent [protected promotion v3](HERMES_V2_2_PROMOTION_V3.md) activated
+that exact candidate after fresh-process resolver health and the full 41-test
+suite passed under the corrected bounded harness. Hermes A remains the rollback
+release.
+
 ## Isolation boundary
 
 Separate directories and a sanitized process environment prevent intentional inheritance of Hermes profiles, `.env`, credentials, sessions, memories, and production gateways. Resource monitoring bounds time, output, process-tree size, RAM, and disk growth. On this Windows host it is still an ordinary subprocess under the invoking user identity: it is **not** an OS security sandbox and cannot prove network/filesystem denial against arbitrary native code. For that reason generated source is additionally constrained by a small static capability allowlist and remains inactive pending review.

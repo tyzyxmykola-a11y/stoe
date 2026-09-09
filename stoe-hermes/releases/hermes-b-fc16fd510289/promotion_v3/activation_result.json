@@ -1,0 +1,104 @@
+{
+  "action_id": "checkpoint:hermes-v2.2-promotion-v3-preserved-health",
+  "activation": {
+    "activated_as": "hermes-b-fc16fd510289",
+    "artifact_path": "releases/hermes-b-fc16fd510289/context_renderer.py",
+    "authorization_policy_id": "standing:bounded-qualified-succession-v1",
+    "rollback_target": "hermes-a-bb924730743c",
+    "source_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "status": "active"
+  },
+  "active_pointer_sha256": "08450acae4336f80bc09332f3c87d7eafa5504bfc8946e462c8fa984e712636c",
+  "active_source_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155",
+  "approved_release_sha256": "c30c4a1f37c8dc219899a378911abe0964410ce5b61dc1ef02b26c122b681f21",
+  "environment": {
+    "explicit_required_tools": {
+      "git": "C:\\Program Files\\Git\\cmd\\git.exe"
+    },
+    "minimal": true
+  },
+  "health": [
+    {
+      "duration_seconds": 0.203,
+      "isolation_note": "Monitored subprocess under caller identity; not an OS sandbox.",
+      "limits": {
+        "disk_growth_bytes": 250000000,
+        "output_bytes": 100000,
+        "processes": 12,
+        "ram_bytes": 2000000000,
+        "timeout_seconds": 20
+      },
+      "output_truncated": false,
+      "passed": true,
+      "peak_process_count": 2,
+      "peak_ram_bytes": 25985024,
+      "preserved_output_bytes": 0,
+      "returncode": 0,
+      "stderr": {
+        "original_bytes": 0,
+        "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-hermes-ab-v2.2\\stoe-hermes\\releases\\hermes-b-fc16fd510289\\promotion_v3\\artifacts\\fresh_process_resolver.stderr.txt",
+        "preserved_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "truncated": false
+      },
+      "stdout": {
+        "original_bytes": 0,
+        "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-hermes-ab-v2.2\\stoe-hermes\\releases\\hermes-b-fc16fd510289\\promotion_v3\\artifacts\\fresh_process_resolver.stdout.txt",
+        "preserved_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "truncated": false
+      },
+      "timed_out": false,
+      "violation": null
+    },
+    {
+      "duration_seconds": 5.219,
+      "isolation_note": "Monitored subprocess under caller identity; not an OS sandbox.",
+      "limits": {
+        "disk_growth_bytes": 250000000,
+        "output_bytes": 300000,
+        "processes": 12,
+        "ram_bytes": 2000000000,
+        "timeout_seconds": 60
+      },
+      "output_truncated": false,
+      "passed": true,
+      "peak_process_count": 7,
+      "peak_ram_bytes": 73895936,
+      "preserved_output_bytes": 102,
+      "returncode": 0,
+      "stderr": {
+        "original_bytes": 102,
+        "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-hermes-ab-v2.2\\stoe-hermes\\releases\\hermes-b-fc16fd510289\\promotion_v3\\artifacts\\full_activated_suite.stderr.txt",
+        "preserved_bytes": 102,
+        "sha256": "5e6713dbbd48167da93b4069c0e8fe163440d9a456f686dbeec374afacb4d6c0",
+        "truncated": false
+      },
+      "stdout": {
+        "original_bytes": 0,
+        "path": "C:\\Users\\Bozuron\\Documents\\New project\\stoe-hermes-ab-v2.2\\stoe-hermes\\releases\\hermes-b-fc16fd510289\\promotion_v3\\artifacts\\full_activated_suite.stdout.txt",
+        "preserved_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "truncated": false
+      },
+      "timed_out": false,
+      "violation": null
+    }
+  ],
+  "identity": {
+    "candidate_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff",
+    "parent_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155"
+  },
+  "model_calls": 0,
+  "policy": {
+    "authorized_sha256": "5ea04e31d10e86f60fa58ca9f6ad2b666be42bd602b05ab87d3a7358a0786905",
+    "before_sha256": "9254b6eb0723a47deca798545dd2f73c99abb39488011e73ba59c91cd29d14e5",
+    "id": "standing:bounded-qualified-succession-v1",
+    "status": "active"
+  },
+  "rollback": {
+    "release_id": "hermes-a-bb924730743c",
+    "source_sha256": "b1d11d98c8797c11fcd5ff7f8e337764580ca8c4a6c9ca66a32c336158041155"
+  },
+  "status": "active"
+}

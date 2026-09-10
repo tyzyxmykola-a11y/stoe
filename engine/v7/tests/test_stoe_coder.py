@@ -133,6 +133,10 @@ class StoeCoderTests(unittest.TestCase):
         feedback = runtime._execute_tool("TASK_test", 1, self.repo, action("run"), None)
         self.assertFalse(feedback["ok"])
         self.assertIn("non-empty", feedback["error"])
+        script = self.repo / "check.py"
+        script.write_text("print('checked')\n", encoding="utf-8")
+        feedback = runtime._execute_tool("TASK_test", 2, self.repo, action("run", path="check.py"), None)
+        self.assertTrue(feedback["exit_code"] == 0)
 
     def test_navigator_exposes_coder_routes_and_rejects_remote_clients(self):
         try:

@@ -586,6 +586,8 @@ class StoeCoderRuntime:
         if kind == "run":
             cwd = _safe_repo_path(worktree, request.get("cwd") or ".")
             command = request.get("command") or []
+            if not command and str(request.get("path", "")).endswith(".py"):
+                command = [sys.executable, request["path"]]
             if not command:
                 return {"ok": False, "error": "run requires a non-empty argv command"}
             result = self._runner.run(action_id=f"{task_id}:tool:{step}:run", command=command, cwd=cwd, timeout=300)

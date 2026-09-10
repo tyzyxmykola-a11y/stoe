@@ -38,3 +38,7 @@ Later stages may investigate a native SToE memory provider or context engine onl
 ## SToE Hermes Development Governor v1
 
 The SToE Hermes Development Governor v1 enforces deterministic authority through TaskScope, which defines allowed and forbidden capabilities for all models. Models operate under strict limits: they cannot apply Git operations, execute processes, or modify protected trust boundaries. Existing evidence and verification remain unchanged regardless of model activity. SToE Memory continuity is maintained only when qualified adapters are present before any native provider use. Documentation must not claim unrestricted autonomy; instead, it explicitly states that all actions are bounded by the current TaskScope configuration. Trusted verification relies on these fixed constraints to ensure system integrity without overstepping defined roles.
+
+## Standalone Hermes Development Runtime v1
+
+The Hermes environment operates within a defined lifecycle to ensure stability. Each session utilizes SToE Memory to maintain state across valid transitions. The TaskScope defines the specific boundaries for all model interactions. A restart procedure is available if the system enters an invalid state. Only trusted executors are permitted to modify core configuration parameters. The model remains bound by the current configuration at all times.

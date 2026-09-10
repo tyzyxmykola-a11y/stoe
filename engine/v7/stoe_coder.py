@@ -341,7 +341,7 @@ TOOL_SCHEMA = {
         "cwd": {"type": "string", "maxLength": 300},
         "summary": {"type": "string", "maxLength": 1_000},
     },
-    "required": ["kind", "path", "destination", "query", "content", "command", "cwd", "summary"],
+    "required": ["kind"],
     "additionalProperties": False,
 }
 

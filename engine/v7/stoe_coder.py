@@ -85,6 +85,33 @@ def _default_state() -> dict[str, Any]:
     }
 
 
+def _ollama_schema(schema: Any) -> Any:
+    """Remove bounds unsupported by Ollama's grammar compiler.
+
+    The original schema remains the deterministic post-parse authority.
+    """
+    if isinstance(schema, dict):
+        return {key: _ollama_schema(value) for key, value in schema.items() if key not in {"maxLength", "maxItems", "minLength", "minItems"}}
+    if isinstance(schema, list):
+        return [_ollama_schema(value) for value in schema]
+    return schema
+
+
+def _validate_bounds(value: Any, schema: dict[str, Any], path: str = "result") -> None:
+    if isinstance(value, str) and len(value) > int(schema.get("maxLength", len(value))):
+        raise ValueError(f"{path} exceeds maxLength")
+    if isinstance(value, list):
+        if len(value) > int(schema.get("maxItems", len(value))):
+            raise ValueError(f"{path} exceeds maxItems")
+        for index, item in enumerate(value):
+            _validate_bounds(item, schema.get("items", {}), f"{path}[{index}]")
+    if isinstance(value, dict):
+        properties = schema.get("properties", {})
+        for key, item in value.items():
+            if key in properties:
+                _validate_bounds(item, properties[key], f"{path}.{key}")
+
+
 @dataclass
 class CommandResult:
     action_id: str
@@ -245,7 +272,7 @@ class OllamaWorker:
         run_dir.mkdir(parents=True)
         serialized = json.dumps(prompt, ensure_ascii=False, sort_keys=True)
         payload = {
-            "model": model, "think": False, "stream": False, "format": schema,
+            "model": model, "think": False, "stream": False, "format": _ollama_schema(schema),
             "system": "You are a local SToE Coder worker inside an isolated candidate worktree. Use only the supplied tool feedback. Return exactly the requested JSON. Never claim a tool ran unless its result is supplied. Never request credentials or protected-history changes.",
             "prompt": serialized,
             "options": {"temperature": 0, "top_p": 0.9, "top_k": 40, "seed": seed, "num_ctx": 16_384, "num_predict": output_tokens},
@@ -258,6 +285,7 @@ class OllamaWorker:
         if raw.get("done") is not True or raw.get("done_reason") in {"length", "error"}:
             raise RuntimeError("local worker response incomplete")
         result = json.loads(str(raw.get("response", "")))
+        _validate_bounds(result, schema)
         _atomic_json(run_dir / "result.json", result)
         metrics = {
             "action_id": action_id, "model": model, "digest": digest,

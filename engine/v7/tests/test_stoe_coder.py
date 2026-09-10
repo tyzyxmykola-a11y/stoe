@@ -9,7 +9,7 @@ import shutil
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from stoe_coder import FullLocalRunner, StoeCoderRuntime, _git
+from stoe_coder import FullLocalRunner, StoeCoderRuntime, _git, _ollama_schema, _validate_bounds
 
 
 class FakeOllama:
@@ -85,6 +85,12 @@ class StoeCoderTests(unittest.TestCase):
         first = StoeCoderRuntime.task_identity("x", "h", "s")
         second = StoeCoderRuntime.task_identity("x", "h", "s", first)
         self.assertNotEqual(first, second)
+
+    def test_unsupported_grammar_bounds_are_enforced_after_parse(self):
+        schema = {"type": "object", "properties": {"x": {"type": "string", "maxLength": 2}}}
+        self.assertNotIn("maxLength", _ollama_schema(schema)["properties"]["x"])
+        with self.assertRaises(ValueError):
+            _validate_bounds({"x": "too long"}, schema)
 
     def test_runner_preserves_bounded_output_and_denies_destructive_git(self):
         runner = FullLocalRunner(self.runtime_root / "commands")

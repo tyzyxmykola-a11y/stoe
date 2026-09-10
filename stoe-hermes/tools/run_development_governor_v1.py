@@ -81,24 +81,14 @@ def model_call(*, action_id: str, role: str, prompt_value: dict, schema: dict, d
         route = route_model(task, discovery["models"], snapshot)
         governor = govern_dispatch(task, route, snapshot, ResourcePolicy(mode="interactive"))
         if not governor["allowed"]:
-            ranked_names = list(route.get("fallback_models", []))
-            ranked_names.extend(model["model"] for model in discovery["models"] if model["model"] != route["selected_model"] and model["model"] not in ranked_names)
-            inventory = {model["model"]: model for model in discovery["models"]}
-            for name in ranked_names:
-                model = inventory[name]
-                alternate = {
-                    "selected_model": name,
-                    "selected_digest": model["digest"],
-                    "reason": "ranked fallback selected because the preferred model breached the interactive resource reserve",
-                    "fallback_models": [],
-                    "capability_evidence": list(model.get("observations") or []),
-                    "expected_resource_use": {"model_size_bytes": model.get("size_bytes"), "loaded": model.get("loaded")},
-                    "action": "REUSE_LOADED_MODEL" if model.get("loaded") else "RUN_SMALLER_MODEL",
-                }
+            remaining = [model for model in discovery["models"] if model["model"] != route["selected_model"] and "embed" not in model["model"].casefold()]
+            while remaining:
+                alternate = route_model(task, remaining, snapshot)
                 alternate_governor = govern_dispatch(task, alternate, snapshot, ResourcePolicy(mode="interactive"))
                 if alternate_governor["allowed"]:
                     route, governor = alternate, alternate_governor
                     break
+                remaining = [model for model in remaining if model["model"] != alternate["selected_model"]]
         if not governor["allowed"]:
             run_dir.mkdir(parents=True, exist_ok=False)
             deferred = {"status": "deferred", "action_id": action_id, "role": role, "route": route, "governor": governor}

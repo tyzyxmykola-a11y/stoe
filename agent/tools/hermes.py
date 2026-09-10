@@ -309,11 +309,30 @@ def develop(objective_arg: str | None) -> dict:
     atomic_json(STATE_PATH, state)
     scope_expected = exact_scope(objective, task_id)
     scope_wrapper = {"type": "object", "properties": {"control": control_schema(), "task_scope": task_scope_schema(task_id=task_id, objective=objective, read_scope=[TARGET], write_scope=[TARGET], parent_refs=PARENT_REFS, role="coder")}, "required": ["control", "task_scope"], "additionalProperties": False}
-    governed, governor_manifest = run_model(f"worker:hermes-standalone-v1:{task_key}:governor-1", "governor", {"current_observer": PARENT_OBSERVER, "objective": objective, "required_scope": scope_expected}, scope_wrapper, 950)
+    governed = governor_manifest = None
+    store = field_store()
+    governor_defects = []
+    for attempt in range(1, 3):
+        action_id = f"worker:hermes-standalone-v1:{task_key}:governor-{attempt}"
+        try:
+            governed, governor_manifest = run_model(action_id, "governor", {"current_observer": PARENT_OBSERVER, "objective": objective, "required_scope": scope_expected, "prior_exact_defects": governor_defects}, scope_wrapper, 950)
+            break
+        except Exception as exc:
+            manifest_path = gov.action_dir(action_id) / "manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+            exact_defect = manifest.get("failure") or str(exc)
+            governor_defects.append(exact_defect)
+            failure_ref = f"IP_hermes_standalone_governor_{task_key}_{attempt:02d}"
+            content = f"Closed governor action failed before TaskScope validation: {exact_defect}"
+            metadata = {"action_id": action_id, "raw_sha256": manifest.get("raw_sha256")}
+            _ensure_ip(store, ref=failure_ref, identity={"content": content, "kind": "FailureIP", "metadata": metadata}, create={"content": content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": exact_defect, "session_id": SESSION, "metadata": metadata, "visible": True})
+            state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "governor_correction"; atomic_json(STATE_PATH, state)
+    if governed is None or governor_manifest is None:
+        state.update({"status": "failed", "failure": f"governor recovery exhausted: {governor_defects}", "pending_next": "chatgpt_escalation"}); atomic_json(STATE_PATH, state)
+        raise RuntimeError(state["failure"])
     scope = validate_task_scope(governed["task_scope"], exact=scope_expected)
     scope_path = gov.action_dir(governor_manifest["action_id"]) / "task_scope.json"
     atomic_json(scope_path, scope)
-    store = field_store()
     scope_ref = "IP_hermes_standalone_scope_" + sha256(scope_path.read_bytes())[:12]
     try:
         store.get_ip(scope_ref)

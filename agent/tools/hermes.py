@@ -109,13 +109,13 @@ def patch_schema(parent_sha: str) -> dict:
             "patch": {
                 "type": "object",
                 "properties": {
-                    "format": {"type": "string", "enum": ["stoe.documentation_append.v1"]},
+                    "format": {"type": "string", "enum": ["stoe.documentation_sentences.v1"]},
                     "path": {"type": "string", "enum": [TARGET]},
                     "parent_sha256": {"type": "string", "enum": [parent_sha]},
                     "heading": {"type": "string", "enum": [HEADING]},
-                    "body": {"type": "string", "minLength": 300, "maxLength": 1200},
+                    "sentences": {"type": "array", "minItems": 4, "maxItems": 7, "items": {"type": "string", "minLength": 55, "maxLength": 240, "pattern": "^[^#\\r\\n]+$"}},
                 },
-                "required": ["format", "path", "parent_sha256", "heading", "body"],
+                "required": ["format", "path", "parent_sha256", "heading", "sentences"],
                 "additionalProperties": False,
             },
         },
@@ -125,18 +125,20 @@ def patch_schema(parent_sha: str) -> dict:
 
 
 def validate_patch(value: dict, parent_sha: str) -> dict:
-    required = {"format", "path", "parent_sha256", "heading", "body"}
+    required = {"format", "path", "parent_sha256", "heading", "sentences"}
     if not isinstance(value, dict) or set(value) != required:
         raise ValueError("patch fields mismatch")
-    if value["format"] != "stoe.documentation_append.v1" or value["path"] != TARGET:
+    if value["format"] != "stoe.documentation_sentences.v1" or value["path"] != TARGET:
         raise ValueError("patch target mismatch")
     if value["parent_sha256"] != parent_sha or value["heading"] != HEADING:
         raise ValueError("patch identity mismatch")
-    body = value["body"]
-    if not isinstance(body, str) or not 300 <= len(body) <= 1200 or "\x00" in body:
-        raise ValueError("patch body outside bounds")
-    if any(line.lstrip().startswith("#") for line in body.splitlines()):
-        raise ValueError("body contains a heading")
+    sentences = value["sentences"]
+    if (not isinstance(sentences, list) or not 4 <= len(sentences) <= 7
+            or any(not isinstance(item, str) or not 55 <= len(item) <= 240 or "\n" in item or "\r" in item or item.lstrip().startswith("#") for item in sentences)):
+        raise ValueError("sentence table outside bounds")
+    body = " ".join(sentences)
+    if not 300 <= len(body) <= 1200 or "\x00" in body:
+        raise ValueError("assembled body outside bounds")
     required_terms = ("hermes", "stoe memory", "taskscope", "restart", "trusted", "model")
     if any(term not in body.casefold() for term in required_terms):
         raise ValueError("patch omits required runtime semantics")
@@ -337,11 +339,12 @@ def develop(objective_arg: str | None) -> dict:
     coder_manifest = None
     for attempt in range(1, 4):
         action_id = f"worker:hermes-standalone-v1:{task_key}:coder-{attempt}"
-        prompt = {"task_scope": scope, "accepted_plan": planned, "source_tail": parent[-2200:], "artifact_contract": "One inert append. Body 300-1200 chars, plain paragraphs, include Hermes, SToE Memory, TaskScope, restart, trusted, model; no headings or authority claims.", "prior_exact_defects": defects}
+        prompt = {"task_scope": scope, "accepted_plan": planned, "source_tail": parent[-2200:], "artifact_contract": "Return 4-7 plain sentences, 55-240 chars each. Across them include Hermes, SToE Memory, TaskScope, restart, trusted, model. No Markdown, paths, hashes, test counts, or authority claims.", "prior_exact_defects": defects}
         coded, coder_manifest = run_model(action_id, "coder", prompt, patch_schema(parent_sha), 900)
         try:
             patch = validate_patch(coded["patch"], parent_sha)
-            candidate = parent.rstrip() + f"\n\n## {HEADING}\n\n" + patch["body"].strip() + "\n"
+            body = " ".join(sentence.strip() for sentence in patch["sentences"])
+            candidate = parent.rstrip() + f"\n\n## {HEADING}\n\n" + body + "\n"
             candidate_path = gov.action_dir(action_id) / "candidate_README.md"
             candidate_path.write_text(candidate, encoding="utf-8", newline="\n")
             patch_path = gov.action_dir(action_id) / "candidate_patch.json"

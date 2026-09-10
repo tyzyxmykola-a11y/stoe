@@ -22,15 +22,16 @@ class StandaloneHermesTests(unittest.TestCase):
 
     def test_patch_validation_is_exact_and_authority_safe(self):
         parent = "a" * 64
-        body = ("Hermes uses TaskScope so each model remains bounded. Restart recovery reads stable actions and "
-                "SToE Memory. A trusted deterministic executor verifies the inert proposal before applying it. "
-                "This separation keeps worker reasoning distinct from repository authority and preserves provenance. "
-                "The ordinary terminal process reconstructs its observer, candidate identity, completed actions, and "
-                "pending operation before proceeding; every privileged repository operation remains explicit.")
-        patch = {"format": "stoe.documentation_append.v1", "path": hermes.TARGET, "parent_sha256": parent, "heading": hermes.HEADING, "body": body}
+        sentences = [
+            "Hermes uses TaskScope so each model remains bounded while the trusted executor retains repository authority.",
+            "Restart recovery reads stable actions and SToE Memory before selecting the exact pending operation.",
+            "The deterministic verifier checks identity, scope, candidate content, and tests before any commit.",
+            "The ordinary terminal process preserves provenance and stops safely when a required gate does not pass.",
+        ]
+        patch = {"format": "stoe.documentation_sentences.v1", "path": hermes.TARGET, "parent_sha256": parent, "heading": hermes.HEADING, "sentences": sentences}
         self.assertEqual(patch, hermes.validate_patch(patch, parent))
         for mutation in ("force push", "merge to main", "unrestricted"):
-            changed = dict(patch); changed["body"] = body + " " + mutation
+            changed = dict(patch); changed["sentences"] = sentences[:-1] + [sentences[-1] + " " + mutation]
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):
                 hermes.validate_patch(changed, parent)
 

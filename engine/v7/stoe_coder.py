@@ -281,14 +281,14 @@ class OllamaWorker:
         except (OSError, json.JSONDecodeError, KeyError, TypeError):
             pass
         preferences = (
-            ["qwen3-coder:latest", "gemma4:26b", "gemma3:27b", "gemma4:12b"]
+            ["qwen3-coder:latest", "gemma4:26b", "gemma3:27b", "gemma4:12b", "codegemma:latest", "sharky172/qwen3.6:27b-mtp-q4_K_M-512k"]
             if role in {"coder", "debugger"}
             else ["gemma4:26b", "gemma3:27b", "maverick:latest", "llama3.1:latest"]
         )
         for name in preferences:
             if name in names and failures.get(name, 0) < 2:
                 return name, names[name]
-        candidates = [item for item in models if "embed" not in str(item.get("name", "")).lower()]
+        candidates = [item for item in models if "embed" not in str(item.get("name", "")).lower() and failures.get(str(item.get("name", "")), 0) < 2]
         if not candidates:
             raise RuntimeError("no generation-capable local model is installed")
         candidates.sort(key=lambda item: int(item.get("size", 0)), reverse=True)
@@ -492,7 +492,7 @@ class StoeCoderRuntime:
                 if request["kind"] == "finish":
                     break
             else:
-                raise RuntimeError("local worker exhausted tool-step budget")
+                self._event("Worker", "tool-step budget reached; candidate sent to deterministic gates", level="warning", task_id=task_id)
             _git(worktree, "add", "-N", ".")
             touched = [line for line in _git(worktree, "diff", "--name-only").stdout.splitlines() if line]
             if not touched:

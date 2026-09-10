@@ -10,6 +10,22 @@ The initial standalone development baseline preserves the trusted Coder executiv
 
 Current capabilities include local Ollama workers, isolated candidate worktrees, deterministic verification, independent review, SToE Memory provenance, explicit model commit/push authorization, and operator Git controls for Diff, Commit, Pull, Push, and Merge to main.
 
+## Run the standalone UI
+
+From the repository root on Windows PowerShell:
+
+```powershell
+cd StoeCoder
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python server.py
+```
+
+Then open `http://127.0.0.1:5000`.
+
+The UI and its local field support are copied into this project so StoeCoder can now be started and evolved from `StoeCoder/` without modifying `engine/v7`.
+
 ## Development rule
 
 New SToE Coder development belongs under this `StoeCoder/` tree. Do not modify `engine/v7` merely to evolve StoeCoder; that directory is now the preserved Navigator integration baseline.

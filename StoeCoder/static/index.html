@@ -1,0 +1,3669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SToE — Information Field Navigator v7</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23050508'/><circle cx='16' cy='16' r='8' fill='none' stroke='%237c3aed' stroke-width='1.5'/><circle cx='16' cy='16' r='3' fill='%2306b6d4'/><circle cx='16' cy='8' r='2' fill='%237c3aed'/><circle cx='22' cy='20' r='2' fill='%237c3aed'/><circle cx='10' cy='20' r='2' fill='%237c3aed'/><line x1='16' y1='10' x2='16' y2='13' stroke='%237c3aed' stroke-width='1'/><line x1='20' y1='19' x2='18' y2='17' stroke='%237c3aed' stroke-width='1'/><line x1='12' y1='19' x2='14' y2='17' stroke='%237c3aed' stroke-width='1'/></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;800&display=swap');
+
+:root {
+  --bg: #050508;
+  --surface: #0d0d14;
+  --panel: #111118;
+  --border: #1e1e2e;
+  --accent: #7c3aed;
+  --accent2: #06b6d4;
+  --accent3: #f59e0b;
+  --accent4: #10b981;
+  --text: #e2e8f0;
+  --text-dim: #64748b;
+  --text-bright: #f8fafc;
+  --star: #fbbf24;
+  --seed: #4ade80;
+  --catalyst: #f97316;
+  --diamond: #818cf8;
+  --mirror: #38bdf8;
+  --vampire: #fb7185;
+  --ghost-color: #94a3b8;
+  --echo: #a78bfa;
+  --fertilizer: #86efac;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* HEADER */
+header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; color: var(--text-bright); }
+.logo span { color: var(--accent); }
+.logo sub { font-size: 9px; color: var(--text-dim); font-family: 'Space Mono'; font-weight: 400; margin-left: 4px; }
+.header-stats { display: flex; gap: 20px; font-size: 11px; color: var(--text-dim); }
+.stat { display: flex; flex-direction: column; align-items: center; }
+.stat-val { font-size: 15px; font-weight: 700; color: var(--accent2); font-family: 'Syne', sans-serif; }
+.header-actions { display: flex; gap: 6px; }
+button { font-family: 'Space Mono', monospace; cursor: pointer; border: none; border-radius: 4px; transition: all 0.15s; }
+.btn-primary { background: var(--accent); color: white; font-size: 11px; padding: 6px 12px; }
+.btn-primary:hover { background: #6d28d9; }
+.btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-size: 11px; padding: 6px 12px; }
+.btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+.btn-sm { font-size: 10px; padding: 4px 8px; }
+
+/* LAYOUT */
+.app { display: flex; flex: 1; overflow: hidden; }
+
+/* LEFT PANEL */
+.left-panel { width: 230px; min-width: 160px; max-width: 420px; flex-shrink: 0; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; transition: width 0.18s ease, min-width 0.18s ease; position: relative; }
+.left-panel.collapsed { width: 0 !important; min-width: 0 !important; border-right: none; }
+.panel-section { border-bottom: 1px solid var(--border); padding: 12px; }
+.panel-title { font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; }
+.search-box { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'Space Mono', monospace; font-size: 11px; padding: 6px 8px; border-radius: 4px; outline: none; }
+.search-box:focus { border-color: var(--accent); }
+.category-list { display: flex; flex-direction: column; gap: 2px; }
+.cat-item { display: flex; align-items: center; justify-content: space-between; padding: 5px 7px; border-radius: 4px; cursor: pointer; font-size: 11px; transition: background 0.1s; }
+.cat-item:hover { background: var(--border); }
+.cat-item.active { background: rgba(124,58,237,0.15); border-left: 2px solid var(--accent); }
+.cat-dot { width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; flex-shrink: 0; }
+.cat-name { flex: 1; }
+.cat-count { font-size: 9px; color: var(--text-dim); background: var(--surface); padding: 1px 5px; border-radius: 8px; }
+.session-list { flex: 1; overflow-y: auto; }
+.session-item { padding: 7px 9px; font-size: 10px; color: var(--text-dim); border-bottom: 1px solid var(--border); cursor: pointer; }
+.session-item:hover { background: var(--border); color: var(--text); }
+.session-sub { font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+
+/* CENTER */
+.center-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.tab-bar { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+.tab { padding: 9px 18px; font-size: 11px; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+/* DIALOG VIEW */
+.dialog-view { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+.messages { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 80%; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:none; } }
+.msg-user { align-self: flex-end; }
+.msg-system { align-self: flex-start; }
+.msg-result { align-self: flex-start; max-width: 96%; }
+.msg-bubble { padding: 9px 13px; border-radius: 8px; font-size: 12px; line-height: 1.6; }
+.msg-user .msg-bubble { background: var(--accent); color: white; border-bottom-right-radius: 2px; }
+.msg-system .msg-bubble { background: var(--panel); border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 2px; }
+.msg-result .msg-bubble { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent2); font-size: 11px; width: 100%; }
+.msg-label { font-size: 9px; color: var(--text-dim); margin-bottom: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
+.step-card { margin-bottom: 7px; padding: 8px 10px; background: var(--panel); border-radius: 4px; border-left: 2px solid var(--accent); }
+.step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.step-op { font-size: 14px; color: var(--accent); }
+.step-meta { font-size: 9px; color: var(--text-dim); }
+.step-content { font-size: 11px; color: var(--text); line-height: 1.5; }
+.step-score { display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+.score-pill { font-size: 9px; padding: 2px 6px; border-radius: 8px; background: rgba(6,182,212,0.1); color: var(--accent2); }
+.cat-pill { font-size: 9px; padding: 2px 6px; border-radius: 8px; }
+
+/* INPUT AREA */
+.input-area { border-top: 1px solid var(--border); background: var(--surface); padding: 12px 14px; flex-shrink: 0; }
+.progress-bar { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; margin-bottom: 8px; display: none; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.3s; }
+.config-row { display: flex; gap: 7px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
+.config-label { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.preset-btn { font-size: 10px; padding: 4px 9px; background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); border-radius: 4px; cursor: pointer; transition: all 0.1s; white-space: nowrap; }
+.preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+.preset-btn.active { background: rgba(124,58,237,0.2); border-color: var(--accent); color: var(--text-bright); }
+.mode-btn { font-size: 10px; padding: 4px 10px; background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); border-radius: 4px; cursor: pointer; transition: all 0.1s; }
+.mode-btn.active { background: rgba(6,182,212,0.15); border-color: var(--accent2); color: var(--accent2); }
+.op-toggle { width: 28px; height: 28px; font-size: 13px; background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.1s; font-family: 'Space Mono'; }
+.op-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.op-toggle.selected { background: rgba(124,58,237,0.2); border-color: var(--accent); color: var(--text-bright); }
+.op-toggle:active { transform: scale(0.92); }
+.iter-control { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); }
+.iter-btn { width: 22px; height: 22px; font-size: 14px; background: var(--panel); border: 1px solid var(--border); color: var(--text-dim); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.iter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.iter-val { font-family: 'Syne', sans-serif; font-size: 16px; color: var(--accent2); min-width: 18px; text-align: center; font-weight: 700; }
+.op-chip { font-size: 11px; padding: 2px 7px; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); border-radius: 3px; color: var(--accent); font-family: 'Space Mono'; cursor: grab; user-select: none; transition: opacity 0.1s, border-color 0.1s; }
+.op-chip.dragging { opacity: 0.35; }
+.op-chip.drag-over { border-left: 2px solid var(--accent2); margin-left: -1px; }
+.seq-trash { font-size: 10px; color: var(--text-dim); padding: 2px 6px; border: 1px dashed transparent; border-radius: 3px; transition: all 0.15s; margin-left: 4px; }
+.seq-trash.drag-active { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.08); }
+.op-arrow { color: var(--text-dim); font-size: 10px; }
+.ctx-item { padding: 7px 16px; font-size: 11px; color: var(--text-bright); cursor: pointer; font-family: 'Space Mono', monospace; white-space: nowrap; }
+.ctx-item:hover { background: rgba(124,58,237,0.2); }
+.fv-tab { transition: all 0.1s; }
+.pdf-zone { border: 1px dashed var(--border); border-radius: 6px; padding: 9px 13px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text-dim); background: var(--panel); min-height: 44px; flex-wrap: wrap; }
+.pdf-zone:hover { border-color: var(--accent); color: var(--text); }
+.pdf-zone.has-file { border-color: var(--accent2); background: rgba(6,182,212,0.04); }
+.pdf-zone.dragging { border-color: var(--accent); background: rgba(124,58,237,0.05); }
+#pdf-input { display: none; }
+.pdf-chip { display: inline-flex; align-items: center; gap: 5px; background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.3); border-radius: 4px; padding: 2px 7px; font-size: 10px; color: var(--accent2); white-space: nowrap; }
+.pdf-chip-remove { cursor: pointer; color: var(--text-dim); font-size: 12px; line-height: 1; }
+.pdf-chip-remove:hover { color: var(--danger); }
+/* LOG PANEL */
+.log-panel { border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0; transition: height 0.2s; overflow: hidden; }
+.log-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px; cursor: pointer; user-select: none; }
+.log-title { font-size: 9px; letter-spacing: 1.5px; color: var(--text-dim); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.log-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent4); animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.log-actions { display: flex; gap: 6px; }
+.log-body { height: 160px; overflow-y: auto; padding: 0 14px 10px; font-family: 'Space Mono', monospace; font-size: 10px; line-height: 1.7; }
+.log-body.collapsed { height: 0; }
+.log-line { color: var(--text-dim); border-bottom: 1px solid rgba(30,30,46,0.5); padding: 2px 0; }
+.log-line.info { color: var(--text-dim); }
+.log-line.ok { color: var(--accent4); }
+.log-line.warn { color: var(--accent3); }
+.log-line.err { color: var(--danger); }
+.log-line.step { color: var(--accent2); }
+.log-line .log-time { color: #374151; margin-right: 6px; }
+.main-input-row { display: flex; gap: 7px; }
+.coder-controls { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; margin-top: 7px; }
+.coder-controls label { color: var(--text-dim); font-size: 10px; display: inline-flex; gap: 4px; align-items: center; }
+.coder-git-result { display: none; max-height: 150px; overflow: auto; margin-top: 7px; padding: 7px; border: 1px solid var(--border); border-radius: 5px; background: var(--panel); color: var(--text-dim); font: 9px/1.5 'Space Mono', monospace; white-space: pre-wrap; }
+.main-textarea { flex: 1; background: var(--panel); border: 1px solid var(--border); color: var(--text); font-family: 'Space Mono'; font-size: 12px; padding: 8px 11px; border-radius: 6px; outline: none; resize: none; transition: border-color 0.15s; min-height: 40px; max-height: 90px; }
+.main-textarea:focus { border-color: var(--accent); }
+.send-btn { background: var(--accent); color: white; font-size: 16px; width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; align-self: flex-end; }
+.send-btn:hover { background: #6d28d9; }
+.send-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+/* FIELD VIEW */
+.field-view { flex: 1; position: relative; overflow: hidden; display: none; }
+canvas { position: absolute; top: 0; left: 0; cursor: grab; }
+canvas:active { cursor: grabbing; }
+.tooltip { position: absolute; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 11px; pointer-events: none; font-size: 11px; max-width: 200px; z-index: 200; display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+.tt-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 12px; color: var(--text-bright); margin-bottom: 3px; }
+.tt-meta { color: var(--text-dim); font-size: 10px; }
+.canvas-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: var(--text-dim); font-size: 11px; letter-spacing: 2px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+/* RIGHT PANEL */
+.right-panel { width: 290px; min-width: 180px; max-width: 520px; flex-shrink: 0; background: var(--panel); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+.right-panel.collapsed { width: 0 !important; min-width: 0 !important; border-left: none; }
+
+/* RESIZE HANDLES */
+.resize-handle { position: absolute; top: 0; bottom: 0; width: 5px; cursor: col-resize; z-index: 50; background: transparent; transition: background 0.15s; }
+.resize-handle:hover, .resize-handle.dragging { background: var(--accent); opacity: 0.5; }
+.left-panel .resize-handle { right: 0; }
+.right-panel .resize-handle { left: 0; }
+
+/* SIDEBAR TOGGLE BUTTONS */
+.sidebar-toggle { position: absolute; top: 50%; transform: translateY(-50%); width: 14px; height: 44px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; z-index: 60; display: flex; align-items: center; justify-content: center; font-size: 9px; color: var(--text-dim); border-radius: 0 4px 4px 0; transition: all 0.15s; }
+.sidebar-toggle:hover { background: var(--border); color: var(--text); }
+.sidebar-toggle.right-toggle { border-radius: 4px 0 0 4px; }
+.ip-detail { flex: 1; overflow-y: auto; padding: 14px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); text-align: center; padding: 20px; }
+.empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.3; }
+.empty-title { font-family: 'Syne', sans-serif; font-size: 13px; margin-bottom: 5px; }
+.empty-sub { font-size: 10px; line-height: 1.6; }
+.ip-content-text { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; color: var(--text-bright); line-height: 1.4; margin-bottom: 7px; }
+.ip-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.badge { font-size: 9px; padding: 2px 7px; border-radius: 8px; font-weight: 600; letter-spacing: 0.5px; }
+.ip-id { font-size: 12px; color: var(--text-dim); margin-bottom: 10px; }
+.ip-scores { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 10px; }
+.score-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 6px; text-align: center; }
+.score-label { font-size: 8px; color: var(--text-dim); margin-bottom: 3px; }
+.score-val { font-size: 15px; font-family: 'Syne', sans-serif; font-weight: 800; color: var(--accent2); }
+.adj-title { font-size: 9px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px; }
+.adj-list { display: flex; flex-direction: column; gap: 3px; }
+.adj-item { padding: 6px 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 10px; transition: all 0.1s; }
+.adj-item:hover { border-color: var(--accent); }
+.adj-edge { font-size: 11px; color: var(--accent); margin-bottom: 2px; }
+.adj-content { color: var(--text); line-height: 1.3; font-size: 13px; }
+
+/* MISC */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.notif { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 7px 16px; border-radius: 6px; font-size: 11px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.notif.show { opacity: 1; }
+.cat-Star{background:rgba(251,191,36,0.15);color:#fbbf24}
+.cat-Hidden-Diamond{background:rgba(129,140,248,0.15);color:#818cf8}
+.cat-Seed{background:rgba(74,222,128,0.15);color:#4ade80}
+.cat-Fertilizer{background:rgba(134,239,172,0.15);color:#86efac}
+.cat-Mirror{background:rgba(56,189,248,0.15);color:#38bdf8}
+.cat-Catalyst{background:rgba(249,115,22,0.15);color:#f97316}
+.cat-Vampire{background:rgba(251,113,133,0.15);color:#fb7185}
+.cat-Ghost{background:rgba(148,163,184,0.15);color:#94a3b8}
+.cat-Echo{background:rgba(167,139,250,0.15);color:#a78bfa}
+.cat-Unknown{background:rgba(100,116,139,0.15);color:#64748b}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">SToE<span>Field</span><sub id="version-badge">v7</sub></div>
+  <div class="header-stats">
+    <div class="stat"><span class="stat-val" id="stat-points">0</span><span>points</span></div>
+    <div class="stat"><span class="stat-val" id="stat-edges">0</span><span>connections</span></div>
+    <div class="stat"><span class="stat-val" id="stat-sessions">0</span><span>sessions</span></div>
+    <div class="stat"><span class="stat-val" id="stat-ghosts">0</span><span>ghosts</span></div>
+  </div>
+  <div class="header-actions" style="display:flex;align-items:center;gap:6px">
+    <button class="btn-ghost btn-sm" id="toggle-left-btn" onclick="togglePanel('left')" title="Toggle left panel">◧</button>
+    <select id="model-select" onchange="selectModel(this.value)" style="font-family:'Space Mono',monospace;font-size:10px;background:var(--panel);border:1px solid var(--border);color:var(--text-dim);padding:4px 8px;border-radius:4px;outline:none;cursor:pointer">
+      <option value="">⚡ model</option>
+    </select>
+    <button class="btn-ghost btn-sm" onclick="seedFundamentals()">⬇ Seed SToE</button>
+    <button class="btn-ghost btn-sm" onclick="exportFieldJson()" title="Export field to JSON with timestamp">⬇ Export Field</button>
+    <button class="btn-ghost btn-sm" onclick="loadFieldJson()" title="Load field_data.json — replaces current field">📂 Load Field</button>
+    <button class="btn-ghost btn-sm" onclick="addFieldJson()" title="Add from JSON — merges new points only, skips duplicates" style="color:#4ade80;border-color:#4ade80">＋ Add Field</button>
+    <input type="file" id="field-json-input" accept=".json" style="display:none" onchange="onFieldJsonSelected(this)">
+    <input type="file" id="field-json-merge-input" accept=".json" style="display:none" onchange="onFieldJsonMerge(this)">
+    <button class="btn-ghost btn-sm" onclick="wipeField()" style="color:#ef4444;border-color:#ef4444">✕ Wipe Field</button>
+    <button class="btn-ghost btn-sm" onclick="refreshAll()">↻ Refresh</button>
+    <button class="btn-ghost btn-sm" onclick="downloadLog()" title="Download interaction log" style="color:#94a3b8;border-color:#334155">⬇ Log</button>
+    <button class="btn-ghost btn-sm" onclick="clearLog()" title="Clear interaction log" style="color:#475569;border-color:#1e293b;font-size:10px">✕ log</button>
+    <button class="btn-ghost btn-sm" id="toggle-right-btn" onclick="togglePanel('right')" title="Toggle right panel">◨</button>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- LEFT -->
+  <div class="left-panel" id="left-panel">
+    <div class="resize-handle" id="left-resize-handle"></div>
+    <div class="panel-section">
+      <div class="panel-title">Search Field</div>
+      <input class="search-box" id="search-input" placeholder="search information points..." oninput="handleSearch(this.value)">
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">Dashboard</div>
+      <div class="category-list" id="category-list"></div>
+    </div>
+    <div class="panel-section" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+      <div class="panel-title">Sessions</div>
+      <div class="session-list" id="session-list"></div>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center-area">
+    <div class="tab-bar">
+      <div class="tab active" id="tab-dialog" onclick="switchTab('dialog')">◎ Dialog</div>
+      <div class="tab" id="tab-field" onclick="switchTab('field')">⬡ Field View</div>
+      <div class="tab" id="tab-connections" onclick="switchTab('connections')">⇔ Connections</div>
+      <div class="tab" id="tab-agent" onclick="switchTab('agent')">⟳ Agent</div>
+    </div>
+
+    <!-- DIALOG -->
+    <div class="dialog-view" id="dialog-view">
+      <div class="messages" id="messages">
+        <div class="msg msg-system">
+          <div class="msg-label">SToE Field</div>
+          <div class="msg-bubble">
+            <strong>Information Field active.</strong><br><br>
+            Choose a mode, pick a preset or build your operator sequence, set iterations, then enter your seed idea, question, or load a PDF, TXT, or MD file.<br><br>
+            Every output is conserved in the field — nothing is discarded. Switch to <strong>Field View</strong> to navigate the graph.
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+        <!-- MODE -->
+        <div class="config-row">
+          <span class="config-label">Mode</span>
+          <button class="mode-btn active" id="mode-idea" onclick="setMode('idea')">💡 Idea</button>
+          <button class="mode-btn" id="mode-question" onclick="setMode('question')">❓ Question</button>
+          <button class="mode-btn" id="mode-pdf" onclick="setMode('pdf')">📄 File</button>
+        </div>
+
+        <!-- PRESETS -->
+        <div class="config-row">
+          <span class="config-label">Preset</span>
+          <button class="preset-btn" onclick="applyPreset('balanced',this)">🧠 Balanced</button>
+          <button class="preset-btn" onclick="applyPreset('innovator',this)">💡 Innovator</button>
+          <button class="preset-btn" onclick="applyPreset('builder',this)">🔧 Builder</button>
+          <button class="preset-btn" onclick="applyPreset('disruptor',this)">🔥 Disruptor</button>
+          <button class="preset-btn" onclick="applyPreset('chaos',this)">🎭 Chaos</button>
+          <button class="preset-btn" onclick="applyPreset('philosopher',this)">🧘 Philosopher</button>
+        </div>
+
+        <!-- OPERATORS + ITERATIONS -->
+        <div class="config-row">
+          <span class="config-label">Ops</span>
+          <div id="op-btn-row" style="display:flex;gap:3px;align-items:center;flex-wrap:wrap"></div>
+          <button class="op-toggle" id="op-add-btn" title="Add new operator" onclick="openOpModal(null)" style="font-size:16px;color:var(--accent2);border-color:var(--accent2);width:28px;height:28px">+</button>
+          <div style="width:1px;height:20px;background:var(--border);margin:0 4px"></div>
+          <div class="iter-control">
+            <button class="iter-btn" onclick="changeIter(-1)">−</button>
+            <input id="iter-val" type="number" min="1" max="20" value="3"
+              style="width:36px;height:24px;text-align:center;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--accent2);background:var(--panel);border:1px solid var(--border);border-radius:4px;outline:none;"
+              oninput="onIterInput(this)" onblur="onIterBlur(this)">
+            <button class="iter-btn" onclick="changeIter(1)">+</button>
+            <span style="font-size:9px;color:var(--text-dim)">Iterations</span>
+          </div>
+        </div>
+
+        <!-- OPERATOR EDIT MODAL -->
+        <div id="op-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
+          <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:24px;width:380px;max-width:95vw;display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:13px;font-weight:700;color:var(--text-bright);letter-spacing:.05em;" id="op-modal-title">Edit Operator</span>
+              <button onclick="closeOpModal()" style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:18px;line-height:1;">✕</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;">Symbol</label>
+              <input id="op-modal-symbol" maxlength="4" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:18px;font-family:'Space Mono';width:60px;outline:none;" placeholder="↻">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;">Name</label>
+              <input id="op-modal-name" maxlength="32" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:13px;width:100%;box-sizing:border-box;outline:none;" placeholder="Recursion">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;">Description (tooltip)</label>
+              <input id="op-modal-desc" maxlength="160" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;width:100%;box-sizing:border-box;outline:none;" placeholder="Short description shown on hover">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;">Prompt (sent to LLM)</label>
+              <textarea id="op-modal-prompt" rows="4" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;width:100%;box-sizing:border-box;resize:vertical;outline:none;font-family:inherit;" placeholder="Evolve this idea further through one recursive cycle:"></textarea>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center;">
+              <button id="op-modal-delete" onclick="deleteCurrentOp()" style="margin-right:auto;background:none;border:1px solid #ef4444;color:#ef4444;border-radius:5px;padding:5px 12px;cursor:pointer;font-size:11px;">Delete</button>
+              <button onclick="closeOpModal()" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;padding:5px 14px;cursor:pointer;font-size:12px;">Cancel</button>
+              <button onclick="saveCurrentOp()" style="background:var(--accent);border:none;color:#fff;border-radius:5px;padding:5px 16px;cursor:pointer;font-size:12px;font-weight:700;">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEQUENCE PREVIEW -->
+        <div class="config-row" id="seq-row">
+          <span class="config-label">Sequence</span>
+          <div id="op-sequence" style="display:flex;gap:3px;align-items:center;flex-wrap:wrap"></div>
+          <span class="seq-trash" id="seq-trash" title="Drag chip here to remove">✕</span>
+        </div>
+
+        <!-- FILE ZONE -->
+        <div class="pdf-zone" id="pdf-zone" style="display:none"
+          ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+          <span style="font-size:16px;flex-shrink:0">📄</span>
+          <span id="pdf-drop-label" style="color:var(--text-dim);font-size:10px;flex-shrink:0">Drop files or</span>
+          <button onclick="document.getElementById('pdf-input').click()" style="font-size:10px;padding:3px 8px;background:var(--panel);border:1px solid var(--border);color:var(--accent);border-radius:4px;cursor:pointer;flex-shrink:0">+ Add Files</button>
+          <div id="pdf-chips" style="display:flex;gap:4px;flex-wrap:wrap;flex:1"></div>
+          <input type="file" id="pdf-input" accept=".pdf,.txt,.md,.csv" multiple onchange="onPdfSelect(event)">
+          <div style="display:flex;align-items:center;gap:6px;width:100%;margin-top:6px;padding-top:6px;border-top:1px solid var(--border)">
+            <span style="font-size:10px;color:var(--text-dim);flex-shrink:0">Chunk by:</span>
+            <label style="font-size:10px;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;gap:3px"><input type="radio" name="chunk-mode" value="paragraph" checked style="accent-color:var(--accent)" onchange="updateChunkPreview()"> Paragraph</label>
+            <label style="font-size:10px;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;gap:3px"><input type="radio" name="chunk-mode" value="sentence" style="accent-color:var(--accent)" onchange="updateChunkPreview()"> Sentence</label>
+            <label style="font-size:10px;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;gap:3px"><input type="radio" name="chunk-mode" value="line" style="accent-color:var(--accent)" onchange="updateChunkPreview()"> Line</label>
+            <label style="font-size:10px;color:var(--accent2);cursor:pointer;display:flex;align-items:center;gap:3px;border-left:1px solid var(--border);padding-left:8px;margin-left:2px"><input type="radio" name="chunk-mode" value="single" style="accent-color:var(--accent2)" onchange="updateChunkPreview()"> Single IP</label>
+            <span id="chunk-preview" style="font-size:9px;color:var(--text-dim);margin-left:auto"></span>
+          </div>
+        </div>
+
+        <!-- MAIN INPUT -->
+        <div class="main-input-row">
+          <textarea class="main-textarea" id="main-input" placeholder="Enter seed idea..." rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"
+            oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendMessage()">↑</button>
+          <button class="send-btn" id="stop-btn" onclick="stopProcessing()" style="display:none;background:#ef4444">✕</button>
+        </div>
+      </div>
+
+      <!-- LOG PANEL -->
+      <div class="log-panel" id="log-panel">
+        <div class="log-header" onclick="toggleLog()">
+          <div class="log-title">
+            <div class="log-dot" id="log-dot"></div>
+            <span>Session Log</span>
+            <span id="log-count" style="color:var(--accent2);font-size:9px">0 entries</span>
+          </div>
+          <div class="log-actions" onclick="event.stopPropagation()">
+            <button class="btn-ghost btn-sm" onclick="downloadServerLog()">⬇ server log</button>
+            <button class="btn-ghost btn-sm" onclick="clearLog()">✕ clear</button>
+            <span id="log-toggle-icon" style="color:var(--text-dim);font-size:11px;margin-left:4px">▲</span>
+          </div>
+        </div>
+        <div class="log-body collapsed" id="log-body"></div>
+      </div>
+      </div>
+
+    <!-- AGENT VIEW -->
+    <div class="dialog-view" id="agent-view" style="display:none">
+      <div style="display:flex;gap:6px;padding:10px 14px 0;align-items:center">
+        <button class="btn-ghost btn-sm" id="mode-coder" onclick="setAgentMode('coder')">SToE Coder</button>
+        <button class="btn-ghost btn-sm" id="mode-field" onclick="setAgentMode('field')">Field Agent</button>
+        <span id="coder-status" style="margin-left:auto;color:var(--text-dim);font-size:10px">idle</span>
+      </div>
+      <div class="messages" id="agent-messages">
+        <div class="msg msg-system">
+          <div class="msg-label">SToE Agent</div>
+          <div class="msg-bubble">
+            <strong>Agent ready.</strong><br><br>
+            Every reasoning step is conserved in the field.
+          </div>
+        </div>
+      </div>
+      <!-- AGENT LOG PANEL -->
+      <div class="log-panel" id="agent-log-panel">
+        <div class="log-header" onclick="toggleAgentLog()">
+          <div class="log-title">
+            <div class="log-dot" id="agent-log-dot"></div>
+            <span>Agent Log</span>
+            <span id="agent-log-count" style="color:var(--accent2);font-size:9px">0 entries</span>
+          </div>
+          <div class="log-actions" onclick="event.stopPropagation()">
+            <button class="btn-ghost btn-sm" onclick="clearAgentLog()">✕ clear</button>
+            <span id="agent-log-toggle-icon" style="color:var(--text-dim);font-size:11px;margin-left:4px">▲</span>
+          </div>
+        </div>
+        <div class="log-body collapsed" id="agent-log-body"></div>
+      </div>
+      <div class="input-area" style="padding:12px 14px">
+        <div class="progress-bar" id="agent-progress"><div class="progress-fill" id="agent-progress-fill" style="width:0%"></div></div>
+        <div class="main-input-row">
+          <textarea class="main-textarea" id="agent-input" placeholder="Ask the agent anything about the field..." rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAgent();}"
+            oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="agent-send-btn" title="Ask" onclick="sendAgent()">↑</button>
+          <button class="btn-ghost btn-sm" id="coder-run-btn" onclick="runCoderTask()">Run</button>
+          <button class="btn-ghost btn-sm" id="coder-resume-btn" onclick="resumeCoder()">Resume</button>
+          <button class="send-btn" id="agent-stop-btn" onclick="stopAgent()" style="display:none;background:#ef4444">✕</button>
+        </div>
+        <div class="coder-controls" id="coder-run-controls">
+          <label><input type="checkbox" id="coder-allow-commit"> allow commit</label>
+          <label><input type="checkbox" id="coder-allow-push"> allow push</label>
+        </div>
+        <div class="coder-controls" id="coder-git-controls">
+          <span style="color:var(--text-dim);font-size:9px;letter-spacing:1px">GIT</span>
+          <button class="btn-ghost btn-sm" onclick="coderGitDiff()">Diff</button>
+          <button class="btn-ghost btn-sm" onclick="coderGitCommit()">Commit</button>
+          <button class="btn-ghost btn-sm" onclick="coderGitPull()">Pull</button>
+          <button class="btn-ghost btn-sm" onclick="coderGitPush()">Push</button>
+          <button class="btn-ghost btn-sm" onclick="coderGitMerge()">Merge to main</button>
+        </div>
+        <div class="coder-git-result" id="coder-git-result"></div>
+      </div>
+    </div>
+
+    <!-- FIELD VIEW -->
+    <div class="field-view" id="field-view">
+      <!-- TAB BAR -->
+      <div style="position:absolute;top:10px;left:10px;right:10px;z-index:10;display:flex;gap:6px;align-items:center">
+        <div style="display:flex;gap:4px;flex:1">
+          <button class="btn-ghost btn-sm fv-tab" id="tab-graph-btn"    onclick="setFieldView('graph')"       style="background:rgba(124,58,237,0.2);border-color:#7c3aed;color:#a78bfa">⬡ Graph</button>
+          <button class="btn-ghost btn-sm fv-tab" id="tab-table-btn"    onclick="setFieldView('table')">☰ Table</button>
+
+        </div>
+        <button class="btn-ghost btn-sm" onclick="openIPModal(null)" style="color:var(--accent2);border-color:var(--accent2)">＋ Add IP</button>
+        <button class="btn-ghost btn-sm" onclick="openConnModalFromSelection()" style="color:#4ade80;border-color:#4ade80">⇔ Add Conn</button>
+        <button class="btn-ghost btn-sm" onclick="deselectAllIPs()" title="Deselect all" style="color:#64748b;border-color:#334155">✕ sel</button>
+      </div>
+
+      <!-- GRAPH (IPs) -->
+      <div id="pane-graph" style="position:absolute;inset:0;top:44px">
+        <div class="canvas-loading" id="canvas-loading">LOADING FIELD...</div>
+        <canvas id="field-canvas"></canvas>
+      </div>
+
+      <!-- TABLE (IPs) -->
+      <div id="pane-table" style="display:none;position:absolute;inset:0;top:44px;overflow:auto;padding:14px;box-sizing:border-box;background:var(--bg)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <input id="table-search" placeholder="filter points..." oninput="renderTable()" style="flex:1;font-family:'Space Mono',monospace;font-size:11px;background:var(--panel);border:1px solid var(--border);color:var(--text-bright);padding:5px 10px;border-radius:4px;outline:none">
+          <span id="table-count" style="font-size:10px;color:var(--text-dim)"></span>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'Space Mono',monospace">
+          <thead><tr style="border-bottom:1px solid var(--border);color:var(--text-dim)">
+            <th onclick="sortTable('id')"          style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">ID <span id="sort-id"></span></th>
+            <th onclick="sortTable('name')"        style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Name <span id="sort-name"></span></th>
+            <th onclick="sortTable('description')" style="cursor:pointer;padding:6px 8px;text-align:left">Description <span id="sort-description"></span></th>
+            <th onclick="sortTable('expression')"  style="cursor:pointer;padding:6px 8px;text-align:left">Expression <span id="sort-expression"></span></th>
+            <th onclick="sortTable('category')"    style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Category <span id="sort-category"></span></th>
+            <th onclick="sortTable('connections')" style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Conn <span id="sort-connections"></span></th>
+            <th onclick="sortTable('created_at')"  style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Created <span id="sort-created_at"></span></th>
+            <th style="padding:6px 8px">Actions</th>
+          </tr></thead>
+          <tbody id="field-table-body"></tbody>
+        </table>
+      </div>
+
+
+      <!-- TOOLTIP -->
+      <div class="tooltip" id="tooltip">
+        <div class="tt-title" id="tt-title"></div>
+        <div class="tt-meta" id="tt-meta"></div>
+      </div>
+
+      <!-- CONTEXT MENU -->
+      <div id="ctx-menu" style="display:none;position:fixed;z-index:999;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:4px 0;min-width:150px;box-shadow:0 4px 20px rgba(0,0,0,0.5)">
+        <div class="ctx-item" id="ctx-edit"   onclick="ctxEdit()">✎ Edit IP</div>
+        <div class="ctx-item" id="ctx-conn"   onclick="ctxConnect()">⇔ Connect from here</div>
+        <div class="ctx-item" id="ctx-file"   onclick="ctxFileToIP()">📄 Load file as IP</div>
+        <div class="ctx-item" id="ctx-delete" onclick="ctxDelete()" style="color:#ef4444">✕ Delete IP</div>
+        <div class="ctx-item" id="ctx-add"    onclick="openIPModal(null)">＋ Add IP here</div>
+      </div>
+
+      <!-- FILE-TO-IP INPUT -->
+      <input type="file" id="file-to-ip-input" accept=".txt,.md,.pdf" style="display:none" onchange="onFileToIP(this)">
+    </div>
+
+    <!-- CONNECTIONS VIEW (top-level tab) -->
+    <div id="connections-view" style="display:none;flex:1;position:relative;overflow:hidden;flex-direction:column">
+      <!-- Sub-tab bar -->
+      <div style="position:absolute;top:10px;left:10px;right:10px;z-index:10;display:flex;gap:6px;align-items:center">
+        <div style="display:flex;gap:4px;flex:1">
+          <button class="btn-ghost btn-sm" id="ctab-graph-btn" onclick="setConnView('graph')" style="background:rgba(124,58,237,0.2);border-color:#7c3aed;color:#a78bfa">⬡ Graph</button>
+          <button class="btn-ghost btn-sm" id="ctab-table-btn" onclick="setConnView('table')">≡ Table</button>
+          <button class="btn-ghost btn-sm" id="ctab-gen-btn"   onclick="setConnView('generate')">⚡ Generate</button>
+          <span id="pair-status" style="font-size:10px;color:#22d3ee;margin-left:4px"></span>
+          <button id="quick-connect-btn" onclick="quickConnectPair()" style="display:none;background:rgba(34,211,238,0.15);border:1px solid #22d3ee;color:#22d3ee;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px;margin-left:4px">⚡ Connect Pair</button>
+        </div>
+        <button class="btn-ghost btn-sm" onclick="openConnModalFromSelection()" style="color:#4ade80;border-color:#4ade80">⇔ Add Conn</button>
+        <button class="btn-ghost btn-sm" onclick="deselectAllEdges()" title="Deselect all edges" style="color:#64748b;border-color:#334155">✕ sel</button>
+        <button class="btn-ghost btn-sm" onclick="clearPairAndGo()" title="Clear IP pair" style="color:#94a3b8;border-color:#334155">✕ pair</button>
+      </div>
+      <!-- Graph pane -->
+      <div id="pane-conn" style="position:absolute;inset:0;top:44px">
+        <canvas id="conn-canvas"></canvas>
+      </div>
+      <!-- Table pane -->
+      <div id="pane-conn-table" style="display:none;position:absolute;inset:0;top:44px;overflow:auto;padding:14px;box-sizing:border-box;background:var(--bg)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <input id="conn-table-search" placeholder="filter connections..." oninput="renderConnTable()" style="flex:1;font-family:'Space Mono',monospace;font-size:11px;background:var(--panel);border:1px solid var(--border);color:var(--text-bright);padding:5px 10px;border-radius:4px;outline:none">
+          <span id="conn-table-count" style="font-size:10px;color:var(--text-dim)"></span>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;font-family:'Space Mono',monospace">
+          <thead><tr style="border-bottom:1px solid var(--border);color:var(--text-dim)">
+            <th onclick="sortConnTable('id')"              style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Edge ID <span id="csort-id"></span></th>
+            <th onclick="sortConnTable('source')"          style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Source ID <span id="csort-source"></span></th>
+            <th style="padding:6px 8px;text-align:left;max-width:160px">Source</th>
+            <th onclick="sortConnTable('target')"          style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Target ID <span id="csort-target"></span></th>
+            <th style="padding:6px 8px;text-align:left;max-width:160px">Target</th>
+            <th onclick="sortConnTable('type')"            style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Type <span id="csort-type"></span></th>
+            <th onclick="sortConnTable('weight')"          style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Weight <span id="csort-weight"></span></th>
+            <th style="padding:6px 8px;text-align:left">Note</th>
+            <th onclick="sortConnTable('created_at')"      style="cursor:pointer;padding:6px 8px;text-align:left;white-space:nowrap">Created <span id="csort-created_at"></span></th>
+            <th style="padding:6px 8px">Actions</th>
+          </tr></thead>
+          <tbody id="conn-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- GENERATE PANE -->
+      <div id="pane-conn-generate" style="display:none;position:absolute;inset:0;top:44px;overflow:auto;padding:16px;box-sizing:border-box;background:var(--bg)">
+        <div style="max-width:640px;display:flex;flex-direction:column;gap:14px">
+
+          <!-- Selected IPs -->
+          <div>
+            <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Selected IPs <span style="color:var(--text-dim);font-size:9px">(click nodes on graph, or type IDs below)</span></div>
+            <div id="gen-selected-list" style="display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:6px;background:var(--panel);border:1px solid var(--border);border-radius:5px"></div>
+            <div style="display:flex;gap:6px;margin-top:6px">
+              <input id="gen-ip-input" placeholder="paste IP id and press Enter..." style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:5px 10px;color:var(--text-bright);font-size:11px;font-family:'Space Mono';outline:none"
+                onkeydown="if(event.key==='Enter'){genAddIPById(this.value);this.value='';}">
+              <button onclick="genClearSelected()" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;padding:4px 10px;cursor:pointer;font-size:11px">Clear</button>
+            </div>
+          </div>
+
+          <!-- Operators -->
+          <div>
+            <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Operators <span style="color:var(--text-dim);font-size:9px">(toggle — each selected op generates one connection per pair)</span></div>
+            <div id="gen-op-btns" style="display:flex;gap:4px;flex-wrap:wrap"></div>
+          </div>
+
+          <!-- Custom prompt -->
+          <div>
+            <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Custom Prompt <span style="color:var(--text-dim);font-size:9px">(optional — overrides operator prompt)</span></div>
+            <textarea id="gen-custom-prompt" rows="3" placeholder="Leave empty to use operator prompts. Or write a custom relationship question..." style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text-bright);font-size:12px;resize:vertical;outline:none;font-family:inherit"></textarea>
+          </div>
+
+          <!-- N + Generate -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:11px;color:var(--text-dim)">Connections per pair:</span>
+            <input id="gen-n" type="number" min="1" max="20" value="1" style="width:50px;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text-bright);font-size:13px;font-weight:700;text-align:center;outline:none"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'');if(this.value<1)this.value=1;if(this.value>20)this.value=20">
+            <button onclick="generateConnections()" style="background:var(--accent);border:none;color:#fff;border-radius:5px;padding:7px 20px;cursor:pointer;font-size:13px;font-weight:700;flex:1">⚡ Generate</button>
+          </div>
+
+          <!-- Progress -->
+          <div id="gen-progress" style="display:none;font-size:11px;color:var(--text-dim);font-family:'Space Mono'"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel" id="right-panel">
+    <div class="resize-handle" id="right-resize-handle"></div>
+    <div style="padding:10px 14px 0;border-bottom:1px solid var(--border);display:flex;gap:6px;align-items:center">
+      <input id="retrieve-id-input" placeholder="retrieve by ID..." style="flex:1;font-family:'Space Mono',monospace;font-size:10px;background:var(--panel);border:1px solid var(--border);color:var(--text-bright);padding:4px 8px;border-radius:4px;outline:none"
+        onkeydown="if(event.key==='Enter')retrieveById()">
+      <button class="btn-ghost btn-sm" onclick="retrieveById()">→</button>
+    </div>
+    <div class="ip-detail" id="ip-detail">
+      <div class="empty-state">
+        <div class="empty-icon">◎</div>
+        <div class="empty-title">No point selected</div>
+        <div class="empty-sub">Results appear here. In Field View, click any node to explore connections.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+const API = 'http://localhost:5000/api';
+let currentMode = 'idea';
+let iterations = 3;
+let selectedOps = ['↻','^','!'];
+let currentPdfs = [];  // multiple PDFs
+let isRunning = false;
+// ============================================================
+// INTERACTION LOGGER — append-only, downloadable
+// ============================================================
+const _log = [];
+const _logStart = Date.now();
+
+function _ts() { return ((Date.now()-_logStart)/1000).toFixed(2)+'s'; }
+
+function ilog(category, action, detail={}) {
+  const entry = { t: _ts(), cat: category, action, ...detail };
+  _log.push(entry);
+  // Keep max 500 entries
+  if (_log.length > 500) _log.shift();
+}
+
+function downloadLog() {
+  const lines = [
+    '# SToE Interaction Log',
+    '# Generated: ' + new Date().toISOString(),
+    '# Format: [time] CATEGORY | action | key=value ...',
+    '',
+    ..._log.map(e => {
+      const extras = Object.entries(e)
+        .filter(([k])=>!['t','cat','action'].includes(k))
+        .map(([k,v])=>k+'='+JSON.stringify(v)).join(' ');
+      return '['+e.t+'] '+e.cat+' | '+e.action+(extras?' | '+extras:'');
+    })
+  ];
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'stoe_log_'+new Date().toISOString().slice(0,19).replace(/:/g,'-')+'.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function clearLog() { _log.length=0; ilog('LOGGER','cleared'); }
+
+// VERSION loaded from server .env via /api/meta on startup
+let VERSION = 'v7';  // fallback until server responds
+async function loadVersion() {
+  try {
+    const d = await apiFetch('/meta', 'GET');
+    if (d && d.version) {
+      VERSION = d.version;
+      const badge = document.getElementById('version-badge');
+      if (badge) badge.textContent = VERSION;
+      document.title = 'SToE — Information Field Navigator ' + VERSION;
+    }
+  } catch(e) {}
+}
+
+let fieldData = { nodes:[], edges:[], stats:{} };
+let selectedIP = null, hoveredIP = null, filterCategory = null;
+let selectedEdge = null;  // shared across field graph, conn graph, tables
+let selectedIPIds   = new Set(); // table multi-select for IPs
+let selectedEdgeIds = new Set(); // table multi-select for edges
+let canvas, ctx;
+let positions = {}, scale = 1, offsetX = 0, offsetY = 0;
+let isDragging = false, dragStart = {x:0,y:0}, dragIP = null;
+let canvasReady = false;
+
+const CAT_COLORS = {'Star':'#fbbf24','Hidden Diamond':'#818cf8','Seed':'#4ade80','Fertilizer':'#86efac','Mirror':'#38bdf8','Catalyst':'#f97316','Vampire':'#fb7185','Ghost':'#94a3b8','Echo':'#a78bfa','Unknown':'#64748b'};
+const EDGE_COLORS = {'generated_by':'#7c3aed','evolved_from':'#06b6d4','amplified_from':'#f59e0b','synergy_with':'#10b981','connected_to':'#64748b','removed_from':'#ef4444','distributed_to':'#8b5cf6','failed_from':'#374151','contradicts':'#dc2626','evaluates':'#0ea5e9','confirmed_by':'#22c55e','adjacent_to':'#4b5563','session_of':'#1e293b'};
+const PRESETS = {
+  balanced:   ['↻','^','!'],
+  innovator:  ['↻','^','!','!'],
+  builder:    ['⊓','^','↻'],
+  disruptor:  ['!','↻','^'],
+  chaos:      ['!','!','!'],
+  philosopher:['+','−','↻'],
+};
+const OP_MEANING = {
+  '+': 'connection — points co-exist in relation',
+  '×': 'synergy — new entity emerges from interaction',
+  '−': 'removal — isolates by absence',
+  '↻': 'recursion — self-evolution through iteration',
+  '^': 'amplification — resonance escalation',
+  '⊓': 'distribution — spreads essence across context',
+  '!': 'disruption — challenges assumptions',
+  '∑': 'autoinjection — collapses to core information point'
+};
+const OP_TO_EDGE = {'+':'connected_to','×':'synergy_with','−':'removed_from','↻':'evolved_from','^':'amplified_from','⊓':'distributed_to','!':'generated_by','∑':'evaluates'};
+
+window.addEventListener('load', () => {
+  canvas = document.getElementById('field-canvas');
+  ctx = canvas.getContext('2d');
+  // Load operators from server, then init UI
+  loadOperatorsFromServer().then(async () => {
+    // Default: ∑ summarise, 1 iteration
+    manualSeq = ['∑'];
+    renderOpButtons();
+    buildSymbolToEdge();
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    updateSeq();
+    await refreshAll();
+    await loadConnData();
+    await loadVersion();
+    loadModels();
+    checkOllama();
+    setInterval(refreshStats, 8000);
+  });
+});
+
+// ── TABS ──
+function switchTab(tab) {
+  ilog('NAV','tab_switch',{tab,from:document.querySelector('.tab.active')?.textContent?.trim()});
+  ['dialog','field','connections','agent'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if (el) el.classList.toggle('active', t===tab);
+  });
+  document.getElementById('dialog-view').style.display = tab==='dialog' ? 'flex' : 'none';
+  document.getElementById('agent-view').style.display  = tab==='agent'  ? 'flex' : 'none';
+  const fv = document.getElementById('field-view');
+  fv.style.display = tab==='field' ? 'block' : 'none';
+  const cv = document.getElementById('connections-view');
+  if (cv) cv.style.display = tab==='connections' ? 'block' : 'none';
+  if (tab==='field') {
+    setTimeout(()=>{ resizeCanvas(); if(!canvasReady){setupCanvas();canvasReady=true;} layoutNodes(); draw(); const cl=document.getElementById('canvas-loading');if(cl)cl.style.display='none'; },50);
+  }
+  if (tab==='connections') {
+    setTimeout(()=>{ setConnView('graph'); }, 50);
+  }
+}
+
+// ── MODE ──
+function setMode(m) {
+  currentMode = m;
+  ['idea','question','pdf'].forEach(x => document.getElementById(`mode-${x}`).classList.toggle('active',x===m));
+  document.getElementById('pdf-zone').style.display = m==='pdf' ? 'flex' : 'none';
+  const inp = document.getElementById('main-input');
+  inp.placeholder = m==='idea'?'Enter seed idea...':m==='question'?'Enter question...':'Optional: context for PDF...';
+}
+
+// ── PRESETS ──
+function applyPreset(name, btn) {
+  const ops = PRESETS[name]; if(!ops) return;
+  selectedOps = [...ops];
+  manualSeq = [...ops];
+  syncIterInput();
+  renderOpButtons();
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  updateSeq();
+}
+
+// ── OPERATORS ──
+function toggleOp(btn) {
+  btn.classList.toggle('selected');
+  selectedOps = Array.from(document.querySelectorAll('#op-btn-row .op-toggle.selected')).map(b=>b.dataset.op);
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  updateSeq();
+}
+
+function changeIter(d) {
+  const newLen = Math.max(1, Math.min(20, manualSeq.length + d));
+  if (d > 0) {
+    // Add last op repeated
+    const last = manualSeq[manualSeq.length - 1] || '↻';
+    for (let i = 0; i < d; i++) manualSeq.push(last);
+  } else {
+    manualSeq = manualSeq.slice(0, newLen);
+    if (manualSeq.length === 0) manualSeq = ['↻'];
+  }
+  syncIterInput();
+  updateSeq();
+}
+
+function onIterInput(el) {
+  // Strip anything that isn't a digit
+  el.value = el.value.replace(/[^0-9]/g, '');
+}
+
+function onIterBlur(el) {
+  let v = parseInt(el.value, 10);
+  if (isNaN(v) || v < 1) v = 1;
+  if (v > 20) v = 20;
+  el.value = v;
+  // Extend or trim manualSeq to match
+  while (manualSeq.length < v) manualSeq.push(manualSeq[manualSeq.length - 1] || '↻');
+  manualSeq = manualSeq.slice(0, v);
+  if (manualSeq.length === 0) manualSeq = ['↻'];
+  iterations = manualSeq.length;
+  updateSeq();
+}
+
+// manualSeq is the single source of truth for the sequence
+// operator buttons are a palette — click adds, right-click on chip removes
+let manualSeq = ['∑'];   // default: 1x summarize
+let dragSrcIdx = null;
+let dragFromTrash = false;
+
+function buildSeq() {
+  return [...manualSeq];
+}
+
+function syncIterInput() {
+  const el = document.getElementById('iter-val');
+  if (el) el.value = manualSeq.length;
+  iterations = manualSeq.length;
+}
+
+function updateSeq() {
+  const container = document.getElementById('op-sequence');
+  container.innerHTML = '';
+
+  manualSeq.forEach((op, i) => {
+    if (i > 0) {
+      const arrow = document.createElement('span');
+      arrow.className = 'op-arrow';
+      arrow.textContent = '→';
+      container.appendChild(arrow);
+    }
+    const chip = document.createElement('span');
+    chip.className = 'op-chip';
+    chip.textContent = op;
+    chip.draggable = true;
+    chip.dataset.idx = i;
+
+    // Right-click removes chip
+    chip.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      manualSeq.splice(i, 1);
+      if (manualSeq.length === 0) manualSeq = ['↻'];
+      syncIterInput();
+      updateSeq();
+    });
+
+    chip.addEventListener('dragstart', (e) => {
+      dragSrcIdx = i;
+      dragFromTrash = false;
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      // Show trash zone
+      const trash = document.getElementById('seq-trash');
+      if (trash) trash.classList.add('drag-active');
+    });
+    chip.addEventListener('dragend', () => {
+      chip.classList.remove('dragging');
+      document.querySelectorAll('.op-chip').forEach(c => c.classList.remove('drag-over'));
+      const trash = document.getElementById('seq-trash');
+      if (trash) trash.classList.remove('drag-active');
+    });
+    chip.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      document.querySelectorAll('.op-chip').forEach(c => c.classList.remove('drag-over'));
+      if (dragSrcIdx !== i) chip.classList.add('drag-over');
+    });
+    chip.addEventListener('dragleave', () => {
+      chip.classList.remove('drag-over');
+    });
+    chip.addEventListener('drop', (e) => {
+      e.preventDefault();
+      chip.classList.remove('drag-over');
+      if (dragSrcIdx === null || dragSrcIdx === i) return;
+      const moved = manualSeq.splice(dragSrcIdx, 1)[0];
+      manualSeq.splice(i, 0, moved);
+      dragSrcIdx = null;
+      syncIterInput();
+      updateSeq();
+    });
+
+    container.appendChild(chip);
+  });
+
+  // Wire trash zone drop
+  const trash = document.getElementById('seq-trash');
+  if (trash) {
+    trash.ondragover = (e) => { e.preventDefault(); };
+    trash.ondrop = (e) => {
+      e.preventDefault();
+      trash.classList.remove('drag-active');
+      if (dragSrcIdx === null) return;
+      manualSeq.splice(dragSrcIdx, 1);
+      if (manualSeq.length === 0) manualSeq = ['↻'];
+      dragSrcIdx = null;
+      syncIterInput();
+      updateSeq();
+    };
+  }
+
+  syncIterInput();
+}
+
+// ── FILE HANDLING (PDF + TXT + MD + CSV) ──
+function getChunkMode(){ return (document.querySelector('input[name="chunk-mode"]:checked')||{value:'paragraph'}).value; }
+
+function updateChunkPreview(){
+  const mode = getChunkMode();
+  const label = document.getElementById('chunk-preview');
+  if(!label) return;
+  const desc = { paragraph:'Split on blank lines, merge short blocks', sentence:'Split on . ! ? endings', line:'One chunk per non-empty line', single:'Entire file as one IP — opens in IP modal' };
+  label.textContent = desc[mode]||'';
+}
+
+function onDragOver(e){e.preventDefault();document.getElementById('pdf-zone').classList.add('dragging');}
+function onDragLeave(e){document.getElementById('pdf-zone').classList.remove('dragging');}
+function onDrop(e){
+  e.preventDefault();document.getElementById('pdf-zone').classList.remove('dragging');
+  const allowed=['application/pdf','text/plain','text/markdown','text/csv',''];
+  const files=Array.from(e.dataTransfer.files).filter(f=>
+    f.type.startsWith('text/') || f.type==='application/pdf' ||
+    /\.(txt|md|csv|pdf)$/i.test(f.name)
+  );
+  files.forEach(addPdf);
+}
+function onPdfSelect(e){
+  Array.from(e.target.files).forEach(addPdf);
+  e.target.value='';
+}
+function addPdf(file){
+  if(currentPdfs.find(f=>f.name===file.name)){notify(`${file.name} already added`);return;}
+  currentPdfs.push(file);
+  renderPdfChips();
+  const type = file.name.endsWith('.pdf') ? 'PDF' : 'text';
+  logEntry(`${type} added: ${file.name} (${(file.size/1024).toFixed(0)}KB)`,'info');
+}
+function removePdf(name){
+  currentPdfs=currentPdfs.filter(f=>f.name!==name);
+  renderPdfChips();
+}
+function renderPdfChips(){
+  const chips=document.getElementById('pdf-chips');
+  const zone=document.getElementById('pdf-zone');
+  chips.innerHTML=currentPdfs.map(f=>{
+    const icon = f.name.endsWith('.pdf') ? '📄' : f.name.endsWith('.md') ? '📝' : '📃';
+    return `<span class="pdf-chip">${icon} ${f.name.length>20?f.name.slice(0,20)+'…':f.name} (${(f.size/1024).toFixed(0)}KB)<span class="pdf-chip-remove" onclick="event.stopPropagation();removePdf('${f.name}')">×</span></span>`;
+  }).join('');
+  zone.classList.toggle('has-file', currentPdfs.length>0);
+  updateChunkPreview();
+}
+
+async function extractFileText(file){
+  if(file.name.endsWith('.pdf')){
+    return extractPdfText(file);
+  }
+  // Plain text files — just read as text
+  return new Promise(res=>{
+    const r=new FileReader();
+    r.onload=e=>res(e.target.result||'');
+    r.onerror=()=>res('');
+    r.readAsText(file, 'utf-8');
+  });
+}
+
+async function extractPdfText(file){
+  return new Promise(res=>{
+    const r=new FileReader();
+    r.onload=async e=>{
+      try{
+        const ta=new Uint8Array(e.target.result);
+        if(window.pdfjsLib){
+          const pdf=await pdfjsLib.getDocument(ta).promise;
+          let text='';
+          for(let i=1;i<=pdf.numPages;i++){
+            const page=await pdf.getPage(i);
+            const content=await page.getTextContent();
+            text+=content.items.map(s=>s.str).join(' ')+'\n\n';
+          }
+          res(text);
+        } else res(null);
+      }catch(err){res(null);}
+    };
+    r.readAsArrayBuffer(file);
+  });
+}
+
+function chunkText(text, mode){
+  mode = mode || getChunkMode() || 'paragraph';
+  let raw = [];
+
+  if(mode === 'paragraph'){
+    raw = text.split(/\n\n+/).map(p=>p.trim()).filter(p=>p.length>60);
+    // merge very short paragraphs
+    const chunks=[]; let current='';
+    for(const p of raw){
+      if(!current){ current=p; }
+      else if(current.length<200){ current+='\n\n'+p; }
+      else { chunks.push(current); current=p; }
+    }
+    if(current) chunks.push(current);
+    return chunks;
+
+  } else if(mode === 'sentence'){
+    // Split on sentence boundaries: '. ', '! ', '? '  followed by capital or end
+    raw = text
+      .replace(/\n+/g,' ')
+      .split(/(?<=[.!?])\s+(?=[A-Z"'(])/)
+      .map(s=>s.trim())
+      .filter(s=>s.length>30);
+    // Group into ~3-sentence chunks
+    const chunks=[]; let buf=[];
+    for(const s of raw){
+      buf.push(s);
+      if(buf.length>=3){ chunks.push(buf.join(' ')); buf=[]; }
+    }
+    if(buf.length) chunks.push(buf.join(' '));
+    return chunks;
+
+  } else if(mode === 'line'){
+    raw = text.split(/\n/).map(l=>l.trim()).filter(l=>l.length>10);
+    return raw;
+  }
+
+  return [text];
+}
+
+// ── SEND ──
+let stopRequested = false;
+
+function stopProcessing(){
+  stopRequested = true;
+  document.getElementById('stop-btn').style.display = 'none';
+  document.getElementById('send-btn').disabled = false;
+  addMsg('system', '⚠️ Processing stopped by user.');
+  logEntry('User stopped processing', 'warn');
+  showProg(false);
+}
+
+async function sendMessage(){
+  if(isRunning)return;
+  const inp=document.getElementById('main-input');
+  const text=inp.value.trim();
+  if(currentMode==='pdf'&&!currentPdfs.length){notify('Add at least one PDF first');return;}
+  if(currentMode!=='pdf'&&!text){notify('Enter something first');return;}
+  inp.value='';autoResize(inp);
+  isRunning=true;
+  stopRequested=false;
+  document.getElementById('send-btn').disabled=true;
+  document.getElementById('stop-btn').style.display='flex';
+  try{
+    if(currentMode==='pdf') await runPdfs(text);
+    else await runEngine(text);
+  }catch(e){addMsg('system',`⚠️ Error: ${e.message}`);}
+  isRunning=false;
+  stopRequested=false;
+  document.getElementById('send-btn').disabled=false;
+  document.getElementById('stop-btn').style.display='none';
+  await refreshAll();
+}
+
+// ── ENGINE ──
+async function runEngine(input){
+  const ops=buildSeq();
+  addMsg('user',input);
+  addMsg('system',`Running ${currentMode} · ${ops.length} iterations · ${ops.join(' → ')}`);
+  logEntry(`Session start: mode=${currentMode} ops=${ops.join(' ')} seed="${input.slice(0,50)}"`, 'info');
+  showProg(true);
+
+  const _seedSearch=await apiFetch('/points?q='+encodeURIComponent(input.slice(0,80)));
+  const _exactSeed=(_seedSearch||[]).find(ip=>ip.content.trim().toLowerCase()===input.trim().toLowerCase());
+  let seedId, seedResp;
+  if(_exactSeed){
+    seedId=_exactSeed.id;
+    logEntry(`Reusing existing seed IP: id=${seedId}`, 'ok');
+  } else {
+    seedResp=await apiFetch('/points','POST',{content:input,category:'Seed',operator:currentMode==='question'?'?':'seed',session_id:sid(),metadata:{is_seed:true,mode:currentMode}});
+    seedId=seedResp.id;
+    logEntry(`Seed IP created: id=${seedId}`, 'ok');
+  }
+  let prevId=seedId, current=input, best={score:-1,content:'',id:seedId};
+
+  const resultDiv=document.createElement('div');
+  resultDiv.className='msg msg-result';
+  resultDiv.innerHTML='<div class="msg-label">Results</div><div class="msg-bubble" id="live-result"></div>';
+  document.getElementById('messages').appendChild(resultDiv);
+  scrollMsgs();
+
+  for(let i=0;i<ops.length;i++){
+    const op=ops[i];
+    setProg((i/ops.length)*100);
+    logEntry(`Step ${i+1}: applying ${op} (${OP_MEANING[op[0]]||'?'})...`, 'step');
+    const result=await callOp(op,current,input);
+    if(!result){
+      logEntry(`Step ${i+1}: no result returned`, 'warn');
+      const ghostResp=await apiFetch('/points','POST',{content:`[FAILED] Step ${i+1} op:${op}`,category:'Ghost',operator:op,session_id:sid(),metadata:{failed:true,step:i+1}});
+      await apiFetch('/connect','POST',{source:prevId,target:ghostResp.id,type:'failed_from',weight:0});
+      logEntry(`Step ${i+1}: conserved as Ghost id=${ghostResp.id}`, 'warn');
+      prevId=ghostResp.id;
+      continue;
+    }
+    const score=await callScore(result);
+    const total=score.Novelty+score.Usefulness+score.Feasibility;
+    const category=classify(total,result);
+    logEntry(`Step ${i+1}: [${category}] score=${total} N:${score.Novelty} U:${score.Usefulness} F:${score.Feasibility}`, 'ok');
+    const ipResp=await apiFetch('/points','POST',{content:result,category,score,operator:op,session_id:sid(),metadata:{step:i+1,original:input}});
+    const newId=ipResp.id;
+    logEntry(`IP saved: id=${newId}`, 'info');
+    await apiFetch('/connect','POST',{source:prevId,target:newId,type:OP_TO_EDGE[op[0]]||'generated_by',weight:total/15});
+    if(total>best.score){best={score:total,content:result,id:newId};}
+    prevId=newId;current=result;
+    updateLive(i+1,op,result,score,total,category);
+  }
+
+  setProg(100);setTimeout(()=>showProg(false),500);
+  if(best.score===-1){
+    addMsg('system','⚠️ All iterations failed. Check that Ollama is running and the model is loaded.');
+  } else if(best.id){
+    const d=await apiFetch(`/points/${best.id}`);
+    renderDetail(d.point,d.adjacent);
+  }
+}
+
+// ── PDF MODE ──
+async function runPdfs(context){
+  const names=currentPdfs.map(f=>f.name).join(', ');
+  addMsg('user',`📄 ${currentPdfs.length} file(s): ${names}${context?' — '+context:''}`);
+  logEntry(`Starting file batch: ${currentPdfs.length} file(s), chunk mode: ${getChunkMode()}`,'info');
+  showProg(true);
+
+  const hasPdf = currentPdfs.some(f=>f.name.endsWith('.pdf'));
+  if(hasPdf && !window.pdfjsLib){
+    logEntry('Loading PDF.js...','info');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  const ops=buildSeq();
+  const sessionId=sid();
+  const chunkMode=getChunkMode();
+
+  // Single IP mode — store each file directly as one IP, no LLM
+  if (chunkMode === 'single') {
+    showProg(false);
+    if (currentPdfs.length === 0) { notify('No file selected'); return; }
+    let stored = 0;
+    for (const file of currentPdfs) {
+      addMsg('system', `Storing ${file.name} as single IP...`);
+      let text = await extractFileText(file);
+      if (!text) { notify('Could not extract text from ' + file.name); continue; }
+      await apiFetch('/points', 'POST', {
+        content: text.slice(0, 50000),
+        category: 'Seed',
+        type: 'physical',
+        operator: 'store',
+        session_id: sessionId,
+        score: {},
+        metadata: { source: file.name, passthrough: true, char_count: text.length }
+      });
+      stored++;
+      logEntry(`Stored "${file.name}" — ${text.length} chars`, 'ok');
+    }
+    await refreshAll();
+    addMsg('system', `✓ Stored ${stored} file(s) as information points.`);
+    notify(`✓ ${stored} IP(s) stored`);
+    return;
+  }
+
+  let totalChunks=0, totalProcessed=0;
+
+  const resultDiv=document.createElement('div');
+  resultDiv.className='msg msg-result';
+  resultDiv.innerHTML=`<div class="msg-label">File Processing [${chunkMode}]</div><div class="msg-bubble" id="live-result"></div>`;
+  document.getElementById('messages').appendChild(resultDiv);
+
+  for(let fi=0;fi<currentPdfs.length;fi++){
+    if(stopRequested) break;
+    const file=currentPdfs[fi];
+    logEntry(`[${fi+1}/${currentPdfs.length}] Extracting: ${file.name}`,'step');
+    addMsg('system',`Processing ${fi+1}/${currentPdfs.length}: ${file.name}...`);
+
+    const text=await extractFileText(file);
+    if(!text){
+      logEntry(`⚠️ Could not extract text from ${file.name}. Skipping.`,'warn');
+      addMsg('system',`⚠️ Could not extract text from ${file.name} — skipping`);
+      continue;
+    }
+
+    const chunks=chunkText(text, chunkMode).slice(0,12);
+    totalChunks+=chunks.length;
+    logEntry(`Extracted ${chunks.length} chunks from ${file.name}`,'ok');
+
+    // Add PDF root node
+    const rootResp=await apiFetch('/points','POST',{
+      content:`PDF: ${file.name}`,category:'Seed',session_id:sessionId,
+      metadata:{is_pdf_root:true,filename:file.name,chunks:chunks.length,batch_index:fi}
+    });
+    const rootId=rootResp.id;
+
+    for(let ci=0;ci<chunks.length;ci++){
+      if(stopRequested) break;
+      const globalPct=((fi*12+ci)/((currentPdfs.length)*12))*100;
+      setProg(globalPct);
+      const chunk=chunks[ci];
+
+      // Add chunk as IP
+      const chunkResp=await apiFetch('/points','POST',{
+        content:chunk.slice(0,300),category:'Seed',operator:'+',session_id:sessionId,
+        metadata:{is_chunk:true,chunk_index:ci,source_file:file.name}
+      });
+      await apiFetch('/connect','POST',{source:rootId,target:chunkResp.id,type:'generated_by'});
+
+      // Apply operator
+      const op=ops[ci%ops.length]||'↻';
+      logEntry(`  Chunk ${ci+1}/${chunks.length} op:${op}...`,'info');
+      const evolved=await callOp(op,chunk,context||'extract the key insight from this passage');
+
+      if(evolved){
+        const score=await callScore(evolved);
+        const total=score.Novelty+score.Usefulness+score.Feasibility;
+        const category=classify(total,evolved);
+        logEntry(`  → [${category}] score:${total} N:${score.Novelty} U:${score.Usefulness} F:${score.Feasibility}`,'ok');
+
+        const evResp=await apiFetch('/points','POST',{
+          content:evolved,category,score,operator:op,session_id:sessionId,
+          metadata:{source_file:file.name,chunk_index:ci}
+        });
+        await apiFetch('/connect','POST',{source:chunkResp.id,target:evResp.id,type:OP_TO_EDGE[op]||'evolved_from'});
+
+        const liveEl=document.getElementById('live-result');
+        if(liveEl){
+          const cc='cat-'+category.replace(' ','-');
+          liveEl.innerHTML+=`<div class="step-card">
+            <div class="step-header">
+              <span class="step-op">${op}</span>
+              <span class="step-meta">${file.name.slice(0,16)} · chunk ${ci+1} · <span class="cat-pill ${cc}">${category}</span> ∑${total}</span>
+            </div>
+            <div class="step-content">${evolved}</div>
+          </div>`;
+          scrollMsgs();
+        }
+        totalProcessed++;
+      } else {
+        logEntry(`  ⚠️ Operator failed for chunk ${ci+1}`,'warn');
+      }
+    }
+    logEntry(`✓ Done: ${file.name} — ${chunks.length} chunks`,'ok');
+  }
+
+  setProg(100);setTimeout(()=>showProg(false),500);
+  logEntry(`Batch complete: ${totalProcessed} IPs created from ${totalChunks} chunks across ${currentPdfs.length} PDF(s)`,'ok');
+  addMsg('system',`✓ ${currentPdfs.length} PDF(s) processed. ${totalProcessed} information points conserved.`);
+}
+
+// ── API HELPERS ──
+async function apiFetch(path,method='GET',body=null){
+  const opts={method,headers:{'Content-Type':'application/json'}};
+  if(body)opts.body=JSON.stringify(body);
+  const r=await fetch(API+path,opts);
+  return r.json();
+}
+
+async function callOp(op,idea,seed,passthroughMeta){
+  // Passthrough operator — skip LLM, store content directly
+  if(passthroughMeta){
+    const ipId = await apiFetch('/points','POST',{
+      content: idea.slice(0,50000),
+      category: 'Seed',
+      type: 'physical',
+      operator: op,
+      session_id: passthroughMeta.sessionId,
+      score: {},
+      metadata: { source: passthroughMeta.source, passthrough: true, char_count: idea.length }
+    });
+    return idea.slice(0,50000);  // return content so engine can continue if needed
+  }
+  try{
+    // v7: pass any selected IPs as focal points for topology-aware context
+    const node_ids = (typeof selectedIPIds !== 'undefined' && selectedIPIds.size) ? [...selectedIPIds] : [];
+    const d=await apiFetch('/apply_operator','POST',{op,idea,seed,node_ids});
+    if(d.error){addMsg('system','⚠️ '+d.error);logEntry('Operator error: '+d.error,'err');return null;}
+    if (d.trace) lastOpTrace = d.trace;  // stash for trace-viewer / next IP creation
+    return d.result;
+  }catch(e){addMsg('system','⚠️ Server error: '+e.message);logEntry('Server error: '+e.message,'err');return null;}
+}
+// v7: most recent operator trace — attached to the next IP created via /points
+let lastOpTrace = null;
+async function callScore(idea){
+  try{const d=await apiFetch('/score','POST',{idea});return d.scores||{Novelty:5,Usefulness:5,Feasibility:5};}
+  catch(e){return{Novelty:5,Usefulness:5,Feasibility:5};}
+}
+
+// ── UI ──
+function addMsg(type,content){
+  const msgs=document.getElementById('messages');
+  const d=document.createElement('div');
+  d.className=`msg msg-${type==='user'?'user':'system'}`;
+  d.innerHTML=`${type!=='user'?'<div class="msg-label">SToE Field</div>':''}<div class="msg-bubble">${content}</div>`;
+  msgs.appendChild(d);scrollMsgs();
+}
+
+function updateLive(step,op,result,score,total,category){
+  const el=document.getElementById('live-result');if(!el)return;
+  const cc='cat-'+category.replace(' ','-');
+  el.innerHTML+=`<div class="step-card">
+    <div class="step-header"><span class="step-op">${op}</span><span class="step-meta">Step ${step} · ${OP_MEANING[op[0]]||''}</span></div>
+    <div class="step-content">${result}</div>
+    <div class="step-score">
+      <span class="score-pill">N:${score.Novelty}</span><span class="score-pill">U:${score.Usefulness}</span><span class="score-pill">F:${score.Feasibility}</span><span class="score-pill">∑${total}</span>
+      <span class="cat-pill ${cc}">${category}</span>
+    </div>
+  </div>`;
+  scrollMsgs();
+}
+
+function scrollMsgs(){const m=document.getElementById('messages');m.scrollTop=m.scrollHeight;}
+function showProg(s){document.getElementById('progress-bar').style.display=s?'block':'none';}
+function setProg(p){document.getElementById('progress-fill').style.width=p+'%';}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';}
+function classify(total,content){
+  if(total>=14)return'Star';if(total>=12)return'Catalyst';if(total>=10)return'Seed';
+  if(total>=8)return'Hidden Diamond';if(content.toLowerCase().includes('repeat'))return'Echo';
+  if(total<5)return'Vampire';return'Unknown';
+}
+let _sid=null;
+function sid(){if(!_sid)_sid=new Date().toISOString().replace(/[:.]/g,'').slice(0,15);return _sid;}
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+
+// ── DATA ──
+async function refreshAll(){
+  try{
+    const r=await fetch(`${API}/field?limit=500`);
+    fieldData=await r.json();
+    updateStats(fieldData.stats);
+    renderCats(fieldData.stats.categories||{});
+    const s=await(await fetch(`${API}/sessions`)).json();
+    renderSessions(s);
+    if(canvasReady){layoutNodes();draw();}
+    // refresh table if visible
+    const tv = document.getElementById('field-table-view');
+    if(tv && tv.style.display !== 'none') renderTable();
+  }catch(e){}
+}
+async function refreshStats(){try{const r=await fetch(`${API}/stats`);const s=await r.json();updateStats(s);}catch(e){}}
+function updateStats(s){
+  document.getElementById('stat-points').textContent=s.total_points||0;
+  document.getElementById('stat-edges').textContent=s.active_connections||0;
+  document.getElementById('stat-sessions').textContent=s.sessions||0;
+  document.getElementById('stat-ghosts').textContent=s.ghosts||0;
+}
+
+function renderCats(cats){
+  const allCats=['Star','Hidden Diamond','Seed','Fertilizer','Mirror','Catalyst','Vampire','Ghost','Echo','Unknown'];
+  document.getElementById('category-list').innerHTML=`
+    <div class="cat-item ${!filterCategory?'active':''}" onclick="setFilter(null)">
+      <div class="cat-dot" style="background:#64748b"></div><span class="cat-name">All</span>
+      <span class="cat-count">${(fieldData.nodes||[]).length}</span></div>
+    ${allCats.map(cat=>{const c=cats[cat]||0,col=CAT_COLORS[cat]||'#64748b';
+      return`<div class="cat-item ${filterCategory===cat?'active':''}" onclick="setFilter('${cat}')">
+        <div class="cat-dot" style="background:${col}"></div><span class="cat-name">${cat}</span>
+        <span class="cat-count">${c}</span></div>`;}).join('')}`;
+}
+
+function setFilter(cat){filterCategory=cat;renderCats(fieldData.stats.categories||{});if(canvasReady){layoutNodes();draw();}}
+
+function renderSessions(sessions){
+  const list=document.getElementById('session-list');
+  if(!sessions.length){list.innerHTML='<div style="padding:10px;color:var(--text-dim);font-size:10px">No sessions yet</div>';return;}
+  list.innerHTML=sessions.map(s=>`<div class="session-item"><div>${s.id.slice(0,18)}${s.id.length>18?'…':''}</div><div class="session-sub">${s.count} points · ${new Date(s.created_at).toLocaleDateString()}</div></div>`).join('');
+}
+
+let searchTO;
+function handleSearch(q){
+  clearTimeout(searchTO);
+  searchTO=setTimeout(async()=>{
+    if(!q){ await refreshAll(); return; }
+    try {
+      const r = await fetch(`${API}/points?q=${encodeURIComponent(q)}`);
+      const results = await r.json();
+      // Update field data so table + canvas both reflect search
+      fieldData.nodes = results;
+      // Switch to Field View → Table mode to show results
+      switchTab('field');
+      setFieldView('table');
+      // Sync table-search box so renderTable sees the same query
+      const ts = document.getElementById('table-search');
+      if(ts) ts.value = q;
+      renderTable();
+      // Update dashboard category counts
+      const cats = {};
+      results.forEach(n => { const c=n.category||'Unknown'; cats[c]=(cats[c]||0)+1; });
+      renderCats(cats);
+      // Update session list
+      const sids = [...new Set(results.map(n=>n.session_id).filter(Boolean))];
+      const sl = document.getElementById('session-list');
+      if(sl) sl.innerHTML = sids.map(s=>`<div class="session-item" onclick="filterBySession('${s}')"><div>${s.slice(0,28)}</div><div class="session-sub">${results.filter(n=>n.session_id===s).length} points</div></div>`).join('');
+    } catch(e) {}
+  }, 300);
+}
+
+// ── PANEL TOGGLE ──
+function togglePanel(side) {
+  const panel = document.getElementById(side + '-panel');
+  const btn = document.getElementById('toggle-' + side + '-btn');
+  const collapsed = panel.classList.toggle('collapsed');
+  if(side === 'left') btn.textContent = collapsed ? '◨' : '◧';
+  else btn.textContent = collapsed ? '◧' : '◨';
+  if(canvasReady) setTimeout(()=>{ resizeCanvas(); }, 200);
+}
+
+// ── PANEL RESIZE ──
+(function initResize() {
+  function makeResizable(handleId, panelId, side) {
+    const handle = document.getElementById(handleId);
+    const panel  = document.getElementById(panelId);
+    if(!handle || !panel) return;
+    let startX, startW;
+    handle.addEventListener('mousedown', e => {
+      startX = e.clientX;
+      startW = panel.offsetWidth;
+      handle.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      function onMove(e) {
+        const dx = side === 'left' ? e.clientX - startX : startX - e.clientX;
+        const newW = Math.max(160, Math.min(520, startW + dx));
+        panel.style.width = newW + 'px';
+        if(canvasReady) resizeCanvas();
+      }
+      function onUp() {
+        handle.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      e.preventDefault();
+    });
+  }
+  window.addEventListener('load', () => {
+    makeResizable('left-resize-handle',  'left-panel',  'left');
+    makeResizable('right-resize-handle', 'right-panel', 'right');
+  });
+})();
+
+function renderDetail(ip,adjacent){
+  const panel=document.getElementById('ip-detail');
+  if(!ip){panel.innerHTML='<div class="empty-state"><div class="empty-icon">◎</div><div class="empty-title">No point selected</div></div>';return;}
+  const cc='cat-'+ip.category.replace(' ','-');
+  const scoreHtml=ip.score&&Object.keys(ip.score).length?`<div class="ip-scores">${Object.entries(ip.score).map(([k,v])=>`<div class="score-box"><div class="score-label">${k.toUpperCase()}</div><div class="score-val">${v}</div></div>`).join('')}</div>`:'';
+  const adjHtml=(adjacent||[]).slice(0,8).map(a=>`<div class="adj-item" onclick="loadAdj('${a.ip.id}')"><div class="adj-edge">${a.edge.type} (${a.direction})</div><div class="adj-content">${a.ip.content}</div></div>`).join('');
+  panel.innerHTML=`
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px">
+      <div class="ip-content-text" style="flex:1">${ip.name||ip.content}</div>
+      <button id="copy-ip-btn" title="Copy content" style="flex-shrink:0;background:transparent;border:1px solid var(--border);color:var(--text-dim);border-radius:4px;padding:3px 7px;font-size:10px;cursor:pointer;font-family:'Space Mono',monospace;transition:all 0.15s" onmouseover="this.style.borderColor='var(--accent2)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">⎘ copy</button>
+    </div>
+    ${ip.expression ? `<div style="font-family:'Space Mono';font-size:13px;color:#22d3ee;margin-bottom:6px;line-height:1.4">${ip.expression}</div>` : ''}
+    ${ip.description ? `<div style="font-size:13px;color:var(--text-dim);margin-bottom:8px;line-height:1.4">${ip.description}</div>` : ''}
+    <div style="display:flex;gap:6px;margin-bottom:8px">
+      <button onclick="openIPModal('${ip.id}')" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px">✎ Edit</button>
+      <button onclick="quickDeleteIP('${ip.id}')" style="background:none;border:1px solid #ef4444;color:#ef4444;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px">✕ Delete</button>
+      ${(ip.metadata && ip.metadata.llm_trace) ? `<button onclick="viewTraceFor('${ip.id}')" title="View the LLM trace this IP was generated from" style="background:none;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px">🔍 Trace</button>` : ''}
+    </div>
+    <div class="ip-badges"><span class="badge ${cc}">${ip.category}</span>${ip.operator?`<span class="badge" style="background:rgba(124,58,237,0.15);color:#a78bfa">${ip.operator}</span>`:''}</div>
+    <div class="ip-id">ID: ${ip.id} · ${ip.connections||0} connections · ${new Date(ip.created_at).toLocaleDateString()}</div>
+    ${scoreHtml}
+    ${adjHtml?`<div class="adj-title">${(adjacent||[]).length} connections</div><div class="adj-list">${adjHtml}</div>`:''}`;
+  // Attach copy handler safely — no inline string encoding issues
+  const copyBtn = document.getElementById('copy-ip-btn');
+  if(copyBtn) copyBtn.addEventListener('click', () => copyIP(ip.content));
+}
+
+function renderEdgeDetail(edge) {
+  const panel = document.getElementById('ip-detail');
+  if (!edge) { panel.innerHTML = '<div class="empty-state"><div class="empty-icon">◎</div><div class="empty-title">No point selected</div></div>'; return; }
+  const srcNode = (fieldData.nodes||[]).find(n=>n.id===edge.source)||{};
+  const tgtNode = (fieldData.nodes||[]).find(n=>n.id===edge.target)||{};
+  panel.innerHTML = `
+    <div style="font-size:14px;font-weight:700;color:var(--accent2);margin-bottom:8px">Connection</div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button onclick="openConnModal('${edge.id}')" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px">✎ Edit</button>
+      <button onclick="quickDeleteConn('${edge.id}')" style="background:none;border:1px solid #ef4444;color:#ef4444;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px">✕ Delete</button>
+      ${(edge.metadata && edge.metadata.llm_trace) ? `<button onclick="viewTraceFor('${edge.id}')" title="View the LLM trace this edge was generated from" style="background:none;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;padding:3px 10px;cursor:pointer;font-size:10px">🔍 Trace</button>` : ''}
+    </div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Edge ID</div>
+    <div style="font-family:'Space Mono';font-size:12px;color:var(--text-bright);margin-bottom:10px">${edge.id}</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Type</div>
+    <div style="margin-bottom:10px"><span class="badge" style="background:rgba(124,58,237,0.15);color:#a78bfa">${edge.type||'—'}</span> <span style="font-size:10px;color:var(--text-dim)">weight: ${(edge.weight||1).toFixed(1)}</span></div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Source</div>
+    <div style="font-family:'Space Mono';font-size:11px;color:var(--accent2);margin-bottom:3px">${edge.source}</div>
+    <div style="font-size:14px;color:var(--text-bright);margin-bottom:10px">${srcNode.content||''}</div>
+    <div style="font-size:12px;color:var(--text-dim);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Target</div>
+    <div style="font-family:'Space Mono';font-size:11px;color:var(--accent2);margin-bottom:3px">${edge.target}</div>
+    <div style="font-size:14px;color:var(--text-bright);margin-bottom:10px">${tgtNode.content||''}</div>
+    ${edge.note ? `<div style="font-size:12px;color:var(--text-dim);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Note</div><div style="font-size:14px;color:var(--text-bright);line-height:1.5">${edge.note}</div>` : ''}
+  `;
+}
+
+function copyIP(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-ip-btn');
+    if(btn){ btn.textContent='✓ copied'; setTimeout(()=>{ btn.textContent='⎘ copy'; }, 1500); }
+    notify('Copied to clipboard');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copy-ip-btn');
+    if(btn){ btn.textContent='✓ copied'; setTimeout(()=>{ btn.textContent='⎘ copy'; }, 1500); }
+    notify('Copied to clipboard');
+  });
+}
+
+// ── CANVAS ──
+function resizeCanvas(){const fv=document.getElementById('pane-graph')||document.getElementById('field-view');if(!fv)return;canvas.width=fv.clientWidth;canvas.height=fv.clientHeight;draw();}
+
+function layoutNodes(){
+  const nodes=getVN();
+  const W=canvas.width||800,H=canvas.height||600,cx=W/2,cy=H/2;
+  nodes.forEach((n,i)=>{
+    if(!positions[n.id]){
+      const a=(i/nodes.length)*Math.PI*2,r=Math.min(W,H)*0.3+Math.random()*80;
+      positions[n.id]={x:cx+Math.cos(a)*r+(Math.random()-.5)*60,y:cy+Math.sin(a)*r+(Math.random()-.5)*60};
+    }
+  });
+}
+
+function getVN(){let n=fieldData.nodes||[];if(filterCategory)n=n.filter(x=>x.category===filterCategory);return n;}
+function getVE(){const ids=new Set(getVN().map(n=>n.id));return(fieldData.edges||[]).filter(e=>ids.has(e.source)&&ids.has(e.target));}
+
+function draw(){
+  if(!ctx||!canvas.width)return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawGrid();
+  ctx.save();ctx.translate(offsetX,offsetY);ctx.scale(scale,scale);
+  getVE().forEach(e=>drawEdge(e));
+  getVN().forEach(n=>drawNode(n));
+  ctx.restore();
+}
+
+function drawGrid(){
+  const gs=40*scale,ox=offsetX%gs,oy=offsetY%gs;
+  ctx.strokeStyle='rgba(30,30,46,0.4)';ctx.lineWidth=0.5;
+  for(let x=ox;x<canvas.width;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=oy;y<canvas.height;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+}
+
+function drawEdge(e){
+  const sp=positions[e.source],tp=positions[e.target];if(!sp||!tp)return;
+  const hi=selectedIP&&(e.source===selectedIP.id||e.target===selectedIP.id);
+  ctx.save();ctx.globalAlpha=hi?0.9:(selectedIP?0.07:0.3);
+  ctx.strokeStyle=hi?'#7c3aed':(EDGE_COLORS[e.type]||'#333');ctx.lineWidth=hi?1.5:0.7;
+  const dx=tp.x-sp.x,dy=tp.y-sp.y,bx=(sp.x+tp.x)/2-dy*0.15,by=(sp.y+tp.y)/2+dx*0.15;
+  ctx.beginPath();ctx.moveTo(sp.x,sp.y);ctx.quadraticCurveTo(bx,by,tp.x,tp.y);ctx.stroke();
+  ctx.restore();
+}
+
+function drawNode(n){
+  const pos=positions[n.id];if(!pos)return;
+  const col=CAT_COLORS[n.category]||'#64748b';
+  const isSel=(selectedIP&&selectedIP.id===n.id)||selectedIPIds.has(n.id),isHov=hoveredIP&&hoveredIP.id===n.id;
+  const r=6+Math.min((n.connections||0)*1.5,12)+(isSel||isHov?4:0);
+  const anyFieldSel=selectedIP||selectedIPIds.size>0;
+  ctx.save();ctx.globalAlpha=anyFieldSel&&!isSel?0.25:1;
+  if(isSel){ctx.shadowColor=col;ctx.shadowBlur=20;}else if(isHov){ctx.shadowColor=col;ctx.shadowBlur=10;}
+  ctx.beginPath();ctx.arc(pos.x,pos.y,r+3,0,Math.PI*2);ctx.fillStyle=isSel?`${col}33`:'transparent';ctx.fill();
+  ctx.beginPath();ctx.arc(pos.x,pos.y,r,0,Math.PI*2);ctx.fillStyle=`${col}22`;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=isSel?2:1;ctx.stroke();
+  ctx.beginPath();ctx.arc(pos.x,pos.y,r*0.4,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
+  ctx.shadowBlur=0;
+  if(isSel||isHov){
+    const lbl=n.content.length>28?n.content.slice(0,28)+'…':n.content;
+    ctx.font=(isSel?'700':'400')+' 10px "Space Mono"';
+    ctx.fillStyle=isSel?'#f8fafc':'#e2e8f0';
+    ctx.textAlign='center';ctx.fillText(lbl,pos.x,pos.y+r+13);
+  }
+  ctx.restore();
+}
+
+function setupCanvas(){
+  let fieldMDPos = null;
+  canvas.addEventListener('mousedown',e=>{
+    const wp=wp_(e),hit=hitTest(wp.x,wp.y);
+    fieldMDPos = {x:e.clientX, y:e.clientY, hit};
+    if(hit){ dragIP=hit; }
+    else{ isDragging=true; dragStart={x:e.clientX-offsetX,y:e.clientY-offsetY}; }
+  });
+  canvas.addEventListener('mouseup',e=>{
+    if(!fieldMDPos){ dragIP=null; isDragging=false; return; }
+    const dx=e.clientX-fieldMDPos.x, dy=e.clientY-fieldMDPos.y;
+    const moved=Math.sqrt(dx*dx+dy*dy)>5;
+    const hit=fieldMDPos.hit;
+    fieldMDPos=null; dragIP=null; isDragging=false;
+    if(moved){ ilog('FIELD_GRAPH','drag_end',{dx:Math.round(dx),dy:Math.round(dy)}); return; }
+    if(hit){
+      if(selectedIPIds.has(hit.id)){
+        // Toggle off: remove from multi-select
+        ilog('FIELD_GRAPH','node_deselect',{id:hit.id,content:(hit.content||'').slice(0,60)});
+        selectedIPIds.delete(hit.id);
+        // If this was the detail-showing node, show next selected or clear
+        if(selectedIP && selectedIP.id===hit.id){
+          const rem=[...selectedIPIds];
+          if(rem.length>0){ const n=(fieldData.nodes||[]).find(x=>x.id===rem[rem.length-1]); if(n){selectedIP=n;renderDetail(n,[]);loadAdj(n.id);}else{selectedIP=null;renderDetail(null);} }
+          else{ selectedIP=null; renderDetail(null); }
+        }
+        highlightIPRows(); draw();
+      } else {
+        // Add to multi-select
+        ilog('FIELD_GRAPH','node_select',{id:hit.id,content:(hit.content||'').slice(0,60),category:hit.category,total:selectedIPIds.size+1});
+        selectedIPIds.add(hit.id);
+        selectedIP=hit; renderDetail(hit,[]); loadAdj(hit.id);
+        highlightIPRows(); draw();
+      }
+    }
+    // Click empty — keep selection (do nothing)
+  });
+  canvas.addEventListener('mousemove',e=>{
+    const wp=wp_(e);
+    if(dragIP){positions[dragIP.id].x=wp.x;positions[dragIP.id].y=wp.y;draw();return;}
+    if(isDragging){offsetX=e.clientX-dragStart.x;offsetY=e.clientY-dragStart.y;draw();return;}
+    const hit=hitTest(wp.x,wp.y);
+    if(hit!==hoveredIP){hoveredIP=hit;draw();}
+    const tt=document.getElementById('tooltip');
+    if(hit){tt.style.display='block';tt.style.left=(e.clientX+12)+'px';tt.style.top=(e.clientY-30)+'px';
+      document.getElementById('tt-title').textContent=hit.content;
+      document.getElementById('tt-meta').textContent=`${hit.category} · ${hit.connections||0} connections`;}
+    else tt.style.display='none';
+  });
+  // dragIP/isDragging cleared in unified mouseup above
+  canvas.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const rect=canvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+    const d=e.deltaY>0?0.9:1.1,ns=Math.max(0.1,Math.min(4,scale*d));
+    offsetX=mx-(mx-offsetX)*(ns/scale);offsetY=my-(my-offsetY)*(ns/scale);scale=ns;draw();
+  },{passive:false});
+
+  // Right-click context menu
+  canvas.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    const wp=wp_(e), hit=hitTest(wp.x,wp.y);
+    // Right-click on empty canvas — keep selection
+    ctxTargetIP = hit || null;
+    const menu = document.getElementById('ctx-menu');
+    // Show/hide items based on whether we hit a node
+    document.getElementById('ctx-edit').style.display   = hit ? 'block' : 'none';
+    document.getElementById('ctx-conn').style.display   = hit ? 'block' : 'none';
+    document.getElementById('ctx-file').style.display   = hit ? 'block' : 'none';
+    document.getElementById('ctx-delete').style.display = hit ? 'block' : 'none';
+    document.getElementById('ctx-add').style.display    = hit ? 'none'  : 'block';
+    menu.style.display = 'block';
+    menu.style.left = e.clientX + 'px';
+    menu.style.top  = e.clientY + 'px';
+  });
+  document.addEventListener('click', () => {
+    document.getElementById('ctx-menu').style.display = 'none';
+  });
+}
+
+async function loadAdj(id){try{const d=await apiFetch(`/points/${id}`);renderDetail(d.point,d.adjacent);}catch(e){}}
+
+// ── RETRIEVE BY ID ──
+async function retrieveById() {
+  const inp = document.getElementById('retrieve-id-input');
+  const id = inp.value.trim();
+  if (!id) return;
+  try {
+    const d = await apiFetch('/points/' + id);
+    if (d.error) { notify('Not found: ' + id); return; }
+    renderDetail(d.point, d.adjacent);
+    inp.value = '';
+    // highlight in canvas if visible
+    selectedIP = d.point;
+    draw();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+
+// ── FIELD TABLE VIEW ──
+let tableSortCol = 'created_at';
+let tableSortAsc = false; // false = descending = newest first
+
+function setFieldView(mode) {
+  ilog('NAV','field_view',{mode});
+  const panes = { graph:'pane-graph', table:'pane-table' };
+  const tabs  = { graph:'tab-graph-btn', table:'tab-table-btn' };
+  Object.values(panes).forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+  Object.values(tabs).forEach(id  => { const el=document.getElementById(id); if(el){ el.style.background='';el.style.borderColor='';el.style.color=''; }});
+  const pane = document.getElementById(panes[mode]);
+  const tab  = document.getElementById(tabs[mode]);
+  if(pane) pane.style.display='block';
+  if(tab){ tab.style.background='rgba(124,58,237,0.2)';tab.style.borderColor='#7c3aed';tab.style.color='#a78bfa'; }
+  const cl=document.getElementById('canvas-loading'); if(cl) cl.style.display='none';
+  if(mode==='graph'){
+    if(!canvasReady){setupCanvas();canvasReady=true;}
+    layoutNodes(); draw(); // selectedIPIds drives highlight — no reset needed
+  } else if(mode==='table'){
+    renderTable();
+  }
+}
+
+function setConnView(mode) {
+  ilog('NAV','conn_view',{mode});
+  ['pane-conn','pane-conn-table','pane-conn-generate'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
+  ['ctab-graph-btn','ctab-table-btn','ctab-gen-btn'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.background='';el.style.borderColor='';el.style.color=''; }});
+  const paneMap = { graph:'pane-conn', table:'pane-conn-table', generate:'pane-conn-generate' };
+  const tabMap  = { graph:'ctab-graph-btn', table:'ctab-table-btn', generate:'ctab-gen-btn' };
+  const pane=document.getElementById(paneMap[mode]); if(pane) pane.style.display='block';
+  const tab=document.getElementById(tabMap[mode]);   if(tab){ tab.style.background='rgba(124,58,237,0.2)';tab.style.borderColor='#7c3aed';tab.style.color='#a78bfa'; }
+  if(mode==='graph'){
+    if(!connCanvasReady){setupConnCanvas();connCanvasReady=true;}
+    // Resize after pane is visible
+    setTimeout(()=>{
+      const pane=document.getElementById('pane-conn');
+      if(pane&&connCanvas){
+        connCanvas.width=pane.clientWidth||800;
+        connCanvas.height=pane.clientHeight||600;
+        console.log('[conn] resized on tab open:', connCanvas.width, connCanvas.height);
+      }
+      layoutConnNodes(); drawConn();
+    }, 30);
+  } else if(mode==='table'){
+    loadConnData().then(()=>renderConnTable());
+  } else if(mode==='generate'){
+    renderGenOpBtns();
+    renderGenSelected();
+  }
+}
+
+function sortTable(col) {
+  if (tableSortCol === col) tableSortAsc = !tableSortAsc;
+  else { tableSortCol = col; tableSortAsc = true; }
+  renderTable();
+}
+
+function renderTable() {
+  const q = (document.getElementById('table-search').value || '').toLowerCase();
+  let nodes = (fieldData.nodes || []).filter(n =>
+    !q || n.content.toLowerCase().includes(q) || n.id.toLowerCase().includes(q) ||
+    (n.category||'').toLowerCase().includes(q) || (n.session_id||'').toLowerCase().includes(q)
+  );
+  // sort
+  nodes = nodes.slice().sort((a,b) => {
+    let av = a[tableSortCol] ?? '', bv = b[tableSortCol] ?? '';
+    if (tableSortCol === 'connections') { av = +(a.connections||0); bv = +(b.connections||0); }
+    if (tableSortCol === 'created_at') { av = new Date(av||0); bv = new Date(bv||0); }
+    if (av < bv) return tableSortAsc ? -1 : 1;
+    if (av > bv) return tableSortAsc ? 1 : -1;
+    // Stable tiebreaker — always ascending by id
+    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+  });
+  // update sort indicators
+  ['id','content','category','connections','created_at','session_id'].forEach(c => {
+    const el = document.getElementById('sort-'+c);
+    if (el) el.textContent = tableSortCol===c ? (tableSortAsc?'↑':'↓') : '';
+  });
+  document.getElementById('table-count').textContent = nodes.length + ' points';
+  const CAT_COLORS_MAP = {'Star':'#f59e0b','Hidden Diamond':'#a78bfa','Seed':'#4ade80','Fertilizer':'#fb923c','Mirror':'#22d3ee','Catalyst':'#f472b6','Vampire':'#f87171','Ghost':'#94a3b8','Echo':'#60a5fa','Unknown':'#64748b'};
+  const tbody = document.getElementById('field-table-body');
+  tbody.innerHTML = nodes.map(n => {
+    const col = CAT_COLORS_MAP[n.category] || '#64748b';
+    const ts = n.created_at ? new Date(n.created_at).toLocaleString() : '—';
+    const name = (n.name||n.content||'').slice(0,60);
+    const desc = (n.description||'').slice(0,80) + ((n.description||'').length>80?'…':'');
+    const expr = (n.expression||'').slice(0,60);
+    const isSelRow = selectedIPIds.has(n.id);
+    return `<tr id="ip-row-${n.id}"
+      onclick="selectTableRow('${n.id}')"
+      oncontextmenu="event.preventDefault();deselectTableRow('${n.id}')"
+      style="border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;background:${isSelRow?'rgba(124,58,237,0.18)':''}"
+      onmouseover="this.style.background=this.dataset.sel==='1'?'rgba(124,58,237,0.25)':'rgba(255,255,255,0.03)'"
+      onmouseout="this.style.background=this.dataset.sel==='1'?'rgba(124,58,237,0.18)':''"
+      data-id="${n.id}" data-sel="${isSelRow?'1':''}">
+      <td style="padding:5px 8px;color:var(--text-dim);white-space:nowrap;font-family:'Space Mono';font-size:10px">${n.id}</td>
+      <td style="padding:5px 8px;color:var(--text-bright);white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis">${name}</td>
+      <td style="padding:5px 8px;color:var(--text-dim);font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${desc}</td>
+      <td style="padding:5px 8px;color:#22d3ee;font-size:11px;font-family:'Space Mono';max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${expr}</td>
+      <td style="padding:5px 8px;white-space:nowrap"><span style="color:${col};font-size:10px">${n.category||'—'}</span></td>
+      <td style="padding:5px 8px;color:var(--text-dim);text-align:center">${n.connections||0}</td>
+      <td style="padding:5px 8px;color:var(--text-dim);white-space:nowrap;font-size:10px">${ts}</td>
+      <td style="padding:5px 8px;white-space:nowrap">
+        <button onclick="event.stopPropagation();openIPModal('${n.id}')" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:3px;padding:2px 7px;cursor:pointer;font-size:10px;margin-right:3px">✎</button>
+        <button onclick="event.stopPropagation();quickDeleteIP('${n.id}')" style="background:none;border:1px solid #ef4444;color:#ef4444;border-radius:3px;padding:2px 7px;cursor:pointer;font-size:10px">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+  setTimeout(highlightIPRows, 0);
+}
+
+function highlightIPRows() {
+  document.querySelectorAll('[id^="ip-row-"]').forEach(r => {
+    const rid = r.dataset.id || r.id.replace('ip-row-','');
+    const sel = selectedIPIds.has(rid);
+    r.dataset.sel = sel ? '1' : '';
+    r.style.background = sel ? 'rgba(124,58,237,0.18)' : '';
+  });
+}
+
+async function selectTableRow(id) {
+  selectedEdge = null;
+  if (selectedIPIds.has(id)) {
+    ilog('IP_TABLE','row_deselect',{id,selected_count:selectedIPIds.size-1});
+    selectedIPIds.delete(id);
+    highlightIPRows();
+    // Show last remaining selected, or clear panel
+    const remaining = [...selectedIPIds];
+    if (remaining.length > 0) {
+      const d = await apiFetch('/points/' + remaining[remaining.length-1]);
+      if (d.point) { selectedIP = d.point; renderDetail(d.point, d.adjacent); }
+    } else {
+      selectedIP = null; renderDetail(null);
+    }
+    if (canvasReady) draw();
+    return;
+  }
+  // Add to selection
+  selectedIPIds.add(id);
+  ilog('IP_TABLE','row_select',{id,selected_count:selectedIPIds.size});
+  highlightIPRows();
+  try {
+    const d = await apiFetch('/points/' + id);
+    if (!d.point) return;
+    selectedIP = d.point;
+    renderDetail(d.point, d.adjacent);
+    if (canvasReady) draw();
+  } catch(e) {}
+}
+
+function deselectTableRow(id) {
+  ilog('IP_TABLE','row_rightclick_deselect',{id,remaining:selectedIPIds.size-1});
+  selectedIPIds.delete(id);
+  highlightIPRows();
+  if (selectedIP && selectedIP.id === id) {
+    const remaining = [...selectedIPIds];
+    if (remaining.length === 0) { selectedIP = null; renderDetail(null); }
+  }
+  if (canvasReady) draw();
+}
+async function quickDeleteIP(id) {
+  if (!confirm('Delete this IP and all its connections?')) return;
+  try {
+    await apiFetch('/points/' + id, 'DELETE');
+    notify('✓ IP deleted');
+    if (selectedIP && selectedIP.id===id) { selectedIP=null; renderDetail(null,[]); }
+    await refreshAll(); draw();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+function wp_(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left-offsetX)/scale,y:(e.clientY-r.top-offsetY)/scale};}
+function hitTest(wx,wy){
+  const ns=getVN();
+  for(let i=ns.length-1;i>=0;i--){const n=ns[i],p=positions[n.id];if(!p)continue;const r=6+Math.min((n.connections||0)*1.5,12)+4;if((wx-p.x)**2+(wy-p.y)**2<=r*r)return n;}
+  return null;
+}
+
+async function checkOllama(){
+  try{
+    const d=await apiFetch('/models');
+    if(!d.models||d.models.length===0){
+      addMsg('system','⚠️ Ollama is running but no models found. Run: ollama pull llama3.1:latest');
+      logEntry('Ollama running but no models found','warn');
+    } else {
+      addMsg('system',`✓ Ollama connected · ${d.models.length} model(s) available · using <strong>${d.current}</strong>`);
+      logEntry(`Ollama OK: ${d.models.join(', ')} | active: ${d.current}`,'ok');
+    }
+  }catch(e){
+    addMsg('system','⚠️ Cannot reach Ollama at http://localhost:11434 — make sure Ollama is running.');
+    logEntry('Cannot reach Ollama at http://localhost:11434','err');
+  }
+}
+
+async function loadModels(){
+  try{
+    const d=await apiFetch('/models');
+    const sel=document.getElementById('model-select');
+    sel.innerHTML=d.models.map(m=>`<option value="${m}" ${m===d.current?'selected':''}>${m}</option>`).join('');
+    sel.title=`Ollama: ${d.url}`;
+  }catch(e){document.getElementById('model-select').innerHTML='<option>ollama offline</option>';}
+}
+
+async function selectModel(model){
+  if(!model)return;
+  await apiFetch('/models/select','POST',{model});
+  notify(`Model: ${model}`);
+}
+
+async function seedFundamentals(){
+  try{
+    const d = await apiFetch('/seed','POST');
+    if(d.ok){
+      if(d.added_nodes === 0){
+        notify('SToE already seeded — ' + d.skipped_nodes + ' IPs already present');
+      } else {
+        notify('✓ Seeded ' + d.added_nodes + ' IPs, ' + d.added_edges + ' connections (' + d.skipped_nodes + ' already existed)');
+        await refreshAll();
+      }
+    } else {
+      notify('Seed failed: ' + (d.error||'unknown'));
+    }
+  } catch(e){ notify('Error — server running?'); }
+}
+
+// ── LOGGING ──
+let logEntries=[];
+let logCollapsed=true;
+
+function logEntry(msg, level='info'){
+  const ts=new Date().toTimeString().slice(0,8);
+  logEntries.push({ts,msg,level});
+  const body=document.getElementById('log-body');
+  if(body){
+    const line=document.createElement('div');
+    line.className='log-line '+level;
+    line.innerHTML='<span class="log-time">'+ts+'</span>'+msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    body.appendChild(line);
+    body.scrollTop=body.scrollHeight;
+  }
+  const cnt=document.getElementById('log-count');
+  if(cnt)cnt.textContent=logEntries.length+' entries';
+  const dot=document.getElementById('log-dot');
+  if(dot){dot.style.background='#f59e0b';setTimeout(()=>{dot.style.background='';},800);}
+  // Auto-open log on errors
+  if((level==='err'||level==='warn')&&logCollapsed)toggleLog();
+}
+
+let agentLogEntries = [];
+let agentLogCollapsed = true;
+
+function agentLogEntry(msg, level='info') {
+  const ts = new Date().toTimeString().slice(0,8);
+  agentLogEntries.push({ts, msg, level});
+  const body = document.getElementById('agent-log-body');
+  if (body) {
+    const line = document.createElement('div');
+    line.className = 'log-line ' + level;
+    line.innerHTML = '<span class="log-time">' + ts + '</span>' + msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+  }
+  const cnt = document.getElementById('agent-log-count');
+  if (cnt) cnt.textContent = agentLogEntries.length + ' entries';
+  const dot = document.getElementById('agent-log-dot');
+  if (dot) { dot.style.background='#f59e0b'; setTimeout(()=>{dot.style.background='';},800); }
+  if ((level==='err'||level==='warn') && agentLogCollapsed) toggleAgentLog();
+}
+
+function toggleAgentLog() {
+  agentLogCollapsed = !agentLogCollapsed;
+  const body = document.getElementById('agent-log-body');
+  const icon = document.getElementById('agent-log-toggle-icon');
+  if (body) body.classList.toggle('collapsed', agentLogCollapsed);
+  if (icon) icon.textContent = agentLogCollapsed ? '▲' : '▼';
+  if (!agentLogCollapsed && body) body.scrollTop = body.scrollHeight;
+}
+
+function clearAgentLog() {
+  agentLogEntries = [];
+  const body = document.getElementById('agent-log-body');
+  if (body) body.innerHTML = '';
+  const cnt = document.getElementById('agent-log-count');
+  if (cnt) cnt.textContent = '0 entries';
+}
+
+function toggleLog(){
+  logCollapsed=!logCollapsed;
+  const body=document.getElementById('log-body');
+  const icon=document.getElementById('log-toggle-icon');
+  if(body)body.classList.toggle('collapsed',logCollapsed);
+  if(icon)icon.textContent=logCollapsed?'▲':'▼';
+  if(!logCollapsed&&body)body.scrollTop=body.scrollHeight;
+}
+
+function clearLog(){
+  logEntries=[];
+  const body=document.getElementById('log-body');
+  if(body)body.innerHTML='';
+  const cnt=document.getElementById('log-count');
+  if(cnt)cnt.textContent='0 entries';
+}
+
+function downloadServerLog(){
+  const text=logEntries.map(e=>'['+e.ts+'] ['+e.level.toUpperCase()+'] '+e.msg).join('\n');
+  const blob=new Blob([text],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='stoe_server_log_'+new Date().toISOString().slice(0,19).replace(/:/g,'-')+'.txt';
+  a.click();
+  saveLogToServer();
+}
+
+let _logFlushedUpTo = 0;
+
+async function saveLogToServer(){
+  const newEntries = logEntries.slice(_logFlushedUpTo);
+  if(!newEntries.length) return;
+  try{
+    await fetch(API+'/log',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({entries:newEntries,session_id:sid()})
+    });
+    _logFlushedUpTo = logEntries.length;
+  }catch(e){}
+}
+
+// Auto-save log every 30s
+setInterval(()=>{ if(logEntries.length>_logFlushedUpTo) saveLogToServer(); }, 30000);
+
+// ── INTERCEPT CONSOLE ERRORS → log panel ──
+const _origError = console.error.bind(console);
+console.error = (...args) => {
+  _origError(...args);
+  logEntry('Console error: ' + args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' '), 'err');
+};
+const _origWarn = console.warn.bind(console);
+console.warn = (...args) => {
+  _origWarn(...args);
+  logEntry('Warning: ' + args.map(a=>String(a)).join(' '), 'warn');
+};
+
+// ── INTERCEPT FETCH ERRORS → log panel ──
+const _origFetch = window.fetch;
+window.fetch = async (...args) => {
+  const url = typeof args[0]==='string' ? args[0] : args[0].url;
+  const method = (args[1]&&args[1].method)||'GET';
+  try {
+    const res = await _origFetch(...args);
+    if(!res.ok && res.status !== 200) {
+      logEntry(`HTTP ${res.status} ${method} ${url.replace('http://localhost:5000','')}`, res.status>=500?'err':'warn');
+    }
+    return res;
+  } catch(e) {
+    logEntry(`Network error ${method} ${url.replace('http://localhost:5000','')}: ${e.message}`, 'err');
+    throw e;
+  }
+};
+
+// ── AGENT ──
+let agentRunning = false;
+let agentStop = false;
+let agentMode = 'coder';
+let lastCoderEventTime = 0;
+
+function setAgentMode(mode) {
+  agentMode = mode;
+  document.getElementById('mode-coder').style.color = mode==='coder' ? 'var(--accent2)' : '';
+  document.getElementById('mode-field').style.color = mode==='field' ? 'var(--accent2)' : '';
+  document.getElementById('coder-run-btn').style.display = mode==='coder' ? '' : 'none';
+  document.getElementById('coder-resume-btn').style.display = mode==='coder' ? '' : 'none';
+  document.getElementById('coder-run-controls').style.display = mode==='coder' ? 'flex' : 'none';
+  document.getElementById('coder-git-controls').style.display = mode==='coder' ? 'flex' : 'none';
+  if(mode!=='coder') document.getElementById('coder-git-result').style.display='none';
+  document.getElementById('agent-input').placeholder = mode==='coder' ? 'Ask a question, or describe a repository task...' : 'Ask the field agent...';
+}
+
+async function coderRequest(path, body) {
+  const response = await fetch('/api/coder/' + path, {method: body ? 'POST' : 'GET', headers:{'Content-Type':'application/json'}, body: body ? JSON.stringify(body) : undefined});
+  const value = await response.json();
+  if(!response.ok) throw new Error(value.error || ('HTTP '+response.status));
+  return value;
+}
+
+async function refreshCoderStatus() {
+  if(agentMode!=='coder') return;
+  try {
+    const s=await coderRequest('status');
+    const sync=s.upstream ? `↑${s.ahead??'?'} ↓${s.behind??'?'}` : 'no upstream';
+    const validity=`tests:${s.tests_status} review:${s.reviewed_candidate_status}`;
+    document.getElementById('coder-status').textContent=[s.status,s.branch,(s.head||'').slice(0,8),s.git,sync,validity,s.head_pushed?'pushed':'not pushed'].filter(Boolean).join(' | ');
+    const events=await coderRequest('events?limit=40');
+    events.filter(e=>e.time>lastCoderEventTime).forEach(e=>agentLogEntry(e.source+' · '+e.message,e.level==='error'?'err':e.level==='warning'?'warn':'info'));
+    if(events.length) lastCoderEventTime=Math.max(lastCoderEventTime,...events.map(e=>e.time));
+  } catch(e) { document.getElementById('coder-status').textContent='offline'; }
+}
+
+async function runCoderTask() {
+  if(agentRunning || agentMode!=='coder') return;
+  const inp=document.getElementById('agent-input'), objective=inp.value.trim(); if(!objective) return;
+  inp.value=''; addAgentMsg('user',objective);
+  const allow_commit=document.getElementById('coder-allow-commit').checked;
+  const allow_push=document.getElementById('coder-allow-push').checked;
+  try { const r=await coderRequest('task',{objective,allow_commit,allow_push}); addAgentMsg('system','Accepted '+r.task_id+'. Work continues locally.'); }
+  catch(e) { addAgentMsg('system','Coder task rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+
+async function resumeCoder() { try { const r=await coderRequest('resume',{}); addAgentMsg('system','Resumed as '+r.task_id); } catch(e) { addAgentMsg('system','Resume rejected: '+e.message); } await refreshCoderStatus(); }
+
+function showCoderGitResult(value) {
+  const target=document.getElementById('coder-git-result');
+  target.textContent=value || '(no diff)'; target.style.display='block';
+}
+async function coderGitDiff() {
+  try { const r=await coderRequest('git/diff'); showCoderGitResult(r.diff || '(clean tree)'); }
+  catch(e) { showCoderGitResult('Diff rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+async function coderGitCommit() {
+  const message=window.prompt('Commit message for the exact tested and reviewed candidate:'); if(message===null) return;
+  try { const r=await coderRequest('git/commit',{message}); showCoderGitResult('Committed '+r.commit); }
+  catch(e) { showCoderGitResult('Commit rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+async function coderGitPull() {
+  if(!window.confirm('Pull the tracked upstream with --ff-only?')) return;
+  try { const r=await coderRequest('git/pull',{}); showCoderGitResult('Pull '+r.outcome+'; HEAD '+r.head); }
+  catch(e) { showCoderGitResult('Pull rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+async function coderGitPush() {
+  if(!window.confirm('Push the current feature branch without force?')) return;
+  try { const r=await coderRequest('git/push',{}); showCoderGitResult('Pushed '+r.branch+' at '+r.head); }
+  catch(e) { showCoderGitResult('Push rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+async function coderGitMerge() {
+  if(!window.confirm('Merge the exact qualified and pushed feature HEAD to synchronized local main? This does not push main.')) return;
+  try { const r=await coderRequest('git/merge',{}); showCoderGitResult('Merged '+r.feature_head+' to local main '+r.main_head+'. Main was not pushed.'); }
+  catch(e) { showCoderGitResult('Merge rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+setInterval(refreshCoderStatus, 2000);
+
+const AGENT_SYSTEM = `You are an observer-creator operating within the Information Field of the Special Theory of Everything (SToE) by Mykola Voronin (M).
+
+FOUNDATIONAL LAWS:
+1. Law of Information Conservation: No information point (IP) vanishes. It can only lose connections. Nothing is destroyed — only disconnected. Every output, failure, and contradiction is a conserved IP.
+2. Law of Connection: Connections between IPs are created only by an observer or creator. You are that observer-creator. Naming an IP connects it.
+3. Law of Autoinjection: Everything is an IP, including the field itself. IP = (Known, Unknown, Recursion). There is no exterior — you are inside the system you navigate.
+
+OPERATORS (apply semantically, not arithmetically):
++ Connection: A+B = coexistence in relation. Commutative.
+× Synergy: A×B = new emergent IP. Non-commutative: A×B ≠ B×A.
+− Removal: A−B = A without B's influence.
+↻ Recursion: P↑ := P + (P×P) − F. Self-evolution filtering failed patterns.
+^ Amplification: A^n = A applied to itself n times. Resonance escalation.
+⊓ Distribution: A spreads through B as context/stencil.
+∑ Autoinjection: collapse to the single core IP. The field contains itself.
+
+IP CATEGORIES (classify every result):
+Stars: high-impact, lasting — permanent resonance
+Hidden Diamonds: valuable but unrecognized — awaiting connection
+Seeds: small, high growth potential — requires ↻ cycles
+Fertilizers: amplify other IPs — activate fields
+Catalysts: trigger rapid change in adjacent IPs
+Mirrors: reveal patterns in other IPs
+Vampires: drain energy — isolate
+Ghosts: disconnected but conserved — possible revival via ↻
+Echoes: repeated patterns — mark prior resonance
+
+REASONING PROTOCOL:
+- Every concept you encounter IS an information point
+- Lost or failed paths are CONSERVED — navigate back to them
+- Your own reasoning is an IP within the field (autoinjection)
+- Classify every significant IP you find or create
+- P↑ := P + (P×P) − F applies to idea evolution
+- Prefer TOPOLOGY/DEADENDS over SEARCH for structural navigation
+
+TOOLS — write exactly like this:
+TOOL: SEARCH("query")                          ← content match, use for keyword lookup
+TOOL: TOPOLOGY("ip_id", "2")                   ← traverse subgraph from ip_id, depth hops
+TOOL: DEADENDS("ip_id")                        ← find conserved failed/contradicted neighbours
+TOOL: PATH("source_ip_id", "target_ip_id")     ← find structural path between two IPs
+TOOL: ADJACENT("ip_id", "edge_type")           ← direct neighbours, optional edge type filter
+TOOL: CATEGORY("Star")                         ← all IPs of a category
+TOOL: ADD("content", "category")               ← conserve a new IP
+TOOL: CONTRADICTIONS()                         ← all contradiction edges in field
+TOOL: FAILED()                                 ← all failed paths in field
+
+After tool results, continue reasoning. When ready, you MUST write:
+ANSWER: your final response
+
+Always end with ANSWER: — this is required. The field conserves everything. Navigate it.`;
+
+async function sendAgent() {
+  if(agentRunning) return;
+  const inp = document.getElementById('agent-input');
+  const text = inp.value.trim();
+  if(!text) return;
+  inp.value = ''; autoResize(inp);
+  addAgentMsg('user', text);
+  if(agentMode==='coder') {
+    try { const r=await coderRequest('chat',{message:text}); addAgentMsg('agent',r.result); }
+    catch(e) { addAgentMsg('system','Coder chat error: '+e.message); }
+    return;
+  }
+  logEntry('Agent query: ' + text.slice(0,60), 'info');
+  agentRunning = true; agentStop = false;
+  document.getElementById('agent-send-btn').disabled = true;
+  document.getElementById('agent-stop-btn').style.display = 'flex';
+  document.getElementById('agent-progress').style.display = 'block';
+  document.getElementById('agent-progress-fill').style.width = '10%';
+  try { await runAgentLoop(text); }
+  catch(e) { addAgentMsg('system', 'Agent error: ' + e.message); logEntry('Agent error: '+e.message, 'err'); }
+  agentRunning = false;
+  document.getElementById('agent-send-btn').disabled = false;
+  document.getElementById('agent-stop-btn').style.display = 'none';
+  document.getElementById('agent-progress').style.display = 'none';
+  await refreshAll();
+}
+
+function stopAgent() {
+  agentStop = true;
+  if(agentMode==='coder') coderRequest('stop',{}).catch(()=>{});
+  addAgentMsg('system', 'Agent stopped.');
+  document.getElementById('agent-stop-btn').style.display = 'none';
+}
+setAgentMode('coder');
+
+// v7: connect an agent-created answer IP to every source IP the agent looked at.
+// If the agent never called a search/topology tool, fall back to a one-shot
+// keyword search on the user query so the answer still lands inside the graph
+// instead of floating disconnected.
+async function _linkAgentAnswer(answerId, sourceIds, userInput) {
+  if (!answerId) return;
+  let sources = [...(sourceIds || [])].filter(id => id && id !== answerId);
+  if (sources.length === 0 && userInput) {
+    try {
+      const hits = await apiFetch('/points?q=' + encodeURIComponent(userInput.slice(0,80)));
+      if (Array.isArray(hits)) sources = hits.slice(0, 3).map(h => h.id).filter(Boolean);
+    } catch(e) { /* search is best-effort */ }
+  }
+  if (sources.length === 0) {
+    agentLogEntry('Answer kept floating — no sources found to link', 'warn');
+    return;
+  }
+  let linked = 0;
+  for (const src of sources.slice(0, 6)) {
+    try {
+      const r = await apiFetch('/connect', 'POST', {
+        source: src, target: answerId,
+        type: 'generated_by', weight: 1.0,
+        note: 'Agent answer derived from this IP — query: ' + (userInput||'').slice(0,80)
+      });
+      if (r && r.success) linked++;
+    } catch(e) { /* per-edge failure non-fatal */ }
+  }
+  agentLogEntry(`Answer linked to ${linked}/${sources.length} source IP(s)`, 'ok');
+}
+
+// v7: harvest IP IDs out of any agent tool result so we can connect
+// the eventual answer IP back to the sources it was built from.
+function _harvestIpIds(result) {
+  const ids = [];
+  if (!result) return ids;
+  const visit = (x) => {
+    if (!x) return;
+    if (Array.isArray(x)) return x.forEach(visit);
+    if (typeof x === 'object') {
+      // an IP record always has both 16-char id + content
+      if (typeof x.id === 'string' && /^[a-f0-9]{12,32}$/i.test(x.id) && (x.content !== undefined || x.name !== undefined)) {
+        ids.push(x.id);
+      }
+      // recurse into nested fields like nodes[], adjacent[], point.ip, etc.
+      for (const k of Object.keys(x)) if (k !== 'id') visit(x[k]);
+    }
+  };
+  visit(result);
+  return ids;
+}
+
+async function runAgentLoop(userInput) {
+  const messages = [{ role: 'user', content: userInput }];
+  const thinkDiv = addAgentThinking();
+  let step = 0; const maxSteps = 8;
+  let lastResp = '';
+  let answered = false;
+  // v7: collect every IP id the agent looked up so we can link the answer to them
+  const agentSources = new Set();
+  agentLogEntry('Query: ' + userInput.slice(0,80), 'info');
+  while(step < maxSteps && !agentStop) {
+    step++;
+    document.getElementById('agent-progress-fill').style.width = (step/maxSteps*90) + '%';
+    agentLogEntry('Step ' + step + ': calling model...', 'step');
+    const resp = await callAgent(AGENT_SYSTEM, messages);
+    if(!resp) { addAgentMsg('system', 'Agent call failed - is Ollama running?'); agentLogEntry('Model call failed', 'err'); break; }
+    lastResp = resp;
+    messages.push({ role: 'assistant', content: resp });
+    agentLogEntry('Step ' + step + ': ' + resp.slice(0,120), 'step');
+
+    // 1. ANSWER: tag
+    if(resp.indexOf('ANSWER:') !== -1) {
+      const answer = resp.split('ANSWER:')[1].trim();
+      // v29 fix: empty ANSWER means model tried to terminate prematurely — keep looping
+      if(!answer) {
+        agentLogEntry('Step ' + step + ': empty ANSWER detected, continuing...', 'warn');
+        updateAgentThinking(thinkDiv, 'Step ' + step + ': empty answer, re-prompting...');
+        messages.push({ role: 'user', content: 'Your ANSWER was empty. Please provide a substantive response and end with ANSWER: <your response>.' });
+        continue;
+      }
+      thinkDiv.remove();
+      addAgentMsg('agent', cleanAgentResp(answer));
+      const saved = await apiFetch('/points', 'POST', { content: answer, category: 'Star', session_id: 'AGENT_'+sid(), metadata: { is_agent_answer: true, query: userInput, source_ips: [...agentSources] } });
+      agentLogEntry('Answer saved id=' + (saved.id||'?'), 'ok');
+      await _linkAgentAnswer(saved.id, agentSources, userInput);
+      answered = true;
+      break;
+    }
+
+    // 2. Find ALL TOOL: calls — only fires when no ANSWER: was found above
+    // v29: strip ANSWER: suffix so tool-like strings embedded in answers never re-trigger
+    const respForTools = resp.split('ANSWER:')[0];
+    const toolRegex = /TOOL:\s*(\w+)\(([^)]*)\)/g;
+    const toolMatches = [...respForTools.matchAll(toolRegex)];
+    if(toolMatches.length > 0) {
+      let toolResults = [];
+      for(const m of toolMatches) {
+        const toolName = m[1];
+        const rawArgs = m[2].split(',').map(a => a.trim().replace(/^["']|["']$/g,''));
+        const arg1 = rawArgs[0]||'';
+        const arg2 = rawArgs[1]||'';
+        updateAgentThinking(thinkDiv, 'Step ' + step + ': ' + toolName + '(' + [arg1,arg2].filter(Boolean).join(', ') + ')');
+        agentLogEntry('Tool: ' + toolName + '(' + [arg1,arg2].filter(Boolean).join(', ') + ')', 'info');
+        const result = await executeAgentTool(toolName, [arg1, arg2]);
+        agentLogEntry('Tool result: ' + JSON.stringify(result).slice(0,200), 'ok');
+        // v7: track every IP id the tool surfaced so the eventual answer can link back
+        _harvestIpIds(result).forEach(id => agentSources.add(id));
+        toolResults.push('Tool result for ' + toolName + '(' + arg1 + '):\n' + JSON.stringify(result).slice(0,1000));
+      }
+      messages.push({ role: 'user', content: toolResults.join('\n\n') });
+    } else {
+      // 3. No ANSWER, no TOOL — treat as answer only if substantive prose
+      const looksLikeAnswer = resp.trim().length > 80 && !resp.trim().endsWith('(');
+      if(looksLikeAnswer) {
+        // v29 fix: guard against empty or whitespace-only prose
+        const proseText = resp.trim();
+        if(!proseText) {
+          agentLogEntry('Step ' + step + ': empty prose, continuing...', 'warn');
+          continue;
+        }
+        agentLogEntry('Step ' + step + ': treating prose as answer', 'warn');
+        thinkDiv.remove();
+        addAgentMsg('agent', cleanAgentResp(resp));
+        const saved = await apiFetch('/points', 'POST', { content: resp, category: 'Star', session_id: 'AGENT_'+sid(), metadata: { is_agent_answer: true, query: userInput, source_ips: [...agentSources] } });
+        agentLogEntry('Answer saved id=' + (saved.id||'?'), 'ok');
+        await _linkAgentAnswer(saved.id, agentSources, userInput);
+        answered = true;
+        break;
+      } else {
+        agentLogEntry('Step ' + step + ': short/ambiguous, continuing...', 'warn');
+        updateAgentThinking(thinkDiv, 'Step ' + step + ': reasoning...');
+      }
+    }
+  }
+  if(!answered && !agentStop && lastResp) {
+    thinkDiv.remove();
+    addAgentMsg('agent', cleanAgentResp(lastResp));
+    const saved = await apiFetch('/points', 'POST', { content: lastResp, category: 'Star', session_id: 'AGENT_'+sid(), metadata: { is_agent_answer: true, query: userInput, source_ips: [...agentSources] } });
+    agentLogEntry('Answer saved (max steps) id=' + (saved.id||'?'), 'ok');
+    await _linkAgentAnswer(saved.id, agentSources, userInput);
+  }
+  if(agentStop) { try { thinkDiv.remove(); } catch(e) {} agentLogEntry('Stopped by user', 'warn'); }
+}
+
+async function executeAgentTool(name, args) {
+  try {
+    const n = name.toUpperCase();
+    // v29: content-based lookup (now topology-scored)
+    if(n === 'SEARCH') return await apiFetch('/points?q=' + encodeURIComponent(args[0]||''));
+    // v40: subgraph traversal from a node — topology-aware, not similarity
+    if(n === 'TOPOLOGY') {
+      const id = args[0]||'';
+      const depth = args[1] ? parseInt(args[1]) : 2;
+      return await apiFetch('/navigate/' + id + '/topology?depth=' + depth);
+    }
+    // v40: conserved dead ends — failed/contradicted neighbours of a node
+    if(n === 'DEADENDS') return await apiFetch('/navigate/' + (args[0]||'') + '/dead_ends');
+    // v40: structural path between two nodes with edge-type annotation
+    if(n === 'PATH') return await apiFetch('/navigate/path?from=' + encodeURIComponent(args[0]||'') + '&to=' + encodeURIComponent(args[1]||''));
+    // existing
+    if(n === 'ADJACENT') return await apiFetch('/navigate/' + args[0] + '/adjacent' + (args[1] ? '?type='+args[1] : ''));
+    if(n === 'CATEGORY') return await apiFetch('/points?category=' + encodeURIComponent(args[0]||''));
+    if(n === 'ADD') return await apiFetch('/points', 'POST', { content: args[0]||'', category: args[1]||'Seed', session_id: 'AGENT_'+sid(), metadata:{is_agent_created:true} });
+    if(n === 'CONTRADICTIONS') return await apiFetch('/navigate/contradictions');
+    if(n === 'FAILED') return await apiFetch('/navigate/failed');
+    return { error: 'Unknown tool: ' + name };
+  } catch(e) { return { error: e.message }; }
+}
+
+function cleanAgentResp(text) {
+  return text.replace(/^\s*[—–\-]+\s*/, '').trim();
+}
+
+async function callAgent(system, messages) {
+  try {
+    const r = await apiFetch('/agent/chat', 'POST', { system, messages });
+    if(r.error){ agentLogEntry('Agent error: ' + r.error, 'err'); addAgentMsg('system', 'Error: ' + r.error); return null; }
+    return r.result;
+  } catch(e) { agentLogEntry('callAgent error: ' + e.message, 'err'); return null; }
+}
+
+function addAgentMsg(type, content) {
+  const msgs = document.getElementById('agent-messages');
+  const d = document.createElement('div');
+  const isUser = type === 'user';
+  const isAgent = type === 'agent';
+  d.className = 'msg ' + (isUser ? 'msg-user' : 'msg-system');
+  d.innerHTML = (isAgent ? '<div class="msg-label">AGENT</div>' : !isUser ? '<div class="msg-label">System</div>' : '') +
+    '<div class="msg-bubble">' + content.replace(/\n/g,'<br>') + '</div>';
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  return d;
+}
+
+function addAgentThinking() {
+  const msgs = document.getElementById('agent-messages');
+  const d = document.createElement('div');
+  d.className = 'msg msg-system';
+  d.innerHTML = '<div class="msg-label">Agent</div><div class="msg-bubble" style="color:var(--text-dim);font-style:italic">Thinking...</div>';
+  msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  return d;
+}
+
+function updateAgentThinking(div, text) {
+  const b = div.querySelector('.msg-bubble');
+  if(b) b.innerHTML = '<span style="color:var(--text-dim);font-style:italic">⟳ ' + text + '</span>';
+  document.getElementById('agent-messages').scrollTop = 9999;
+}
+
+function exportFieldJson() {
+  const ts = new Date().toISOString().slice(0,19).replace(/:/g,'-');
+  const data = JSON.stringify(fieldData, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'field_data_' + ts + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  notify('✓ Exported field_data_' + ts + '.json');
+  ilog('UI','export_field',{nodes:Object.keys(fieldData.nodes||{}).length,edges:(fieldData.edges||[]).length});
+}
+
+function loadFieldJson() {
+  document.getElementById("field-json-input").value = "";
+  document.getElementById("field-json-input").click();
+}
+
+function addFieldJson() {
+  document.getElementById("field-json-merge-input").value = "";
+  document.getElementById("field-json-merge-input").click();
+}
+
+async function onFieldJsonMerge(input) {
+  const file = input.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!data.nodes || !data.edges) { notify('Invalid field JSON — needs nodes and edges'); return; }
+    const incomingNodes = Object.keys(data.nodes).length;
+    if (!confirm(`Merge "${file.name}" into current field?\n${incomingNodes} incoming nodes — duplicates will be skipped.`)) return;
+    const resp = await apiFetch('/field/merge', 'POST', data);
+    if (resp.ok) {
+      notify(`✓ Added ${resp.added_nodes} nodes, ${resp.added_edges} edges (${incomingNodes - resp.added_nodes} duplicates skipped)`);
+      await refreshAll();
+    } else {
+      notify('Merge failed: ' + (resp.error || 'unknown error'));
+    }
+  } catch(e) {
+    notify('Error reading file: ' + e.message);
+  }
+}
+
+async function onFieldJsonSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!data.nodes || !data.edges) { notify("Invalid field JSON"); return; }
+    const nodeCount = Object.keys(data.nodes).length;
+    if (!confirm("Load field from \"" + file.name + "\"?\n" + nodeCount + " nodes, " + data.edges.length + " edges.\nThis will REPLACE the current field.")) return;
+    const resp = await apiFetch("/field/import", "POST", data);
+    if (resp.ok) { notify("✓ Loaded " + nodeCount + " nodes"); await refreshAll(); }
+    else { notify("Import failed: " + (resp.error || "unknown")); }
+  } catch(e) { notify("Error: " + e.message); }
+}
+
+async function wipeField(){
+  if(!confirm('Wipe the entire field? This cannot be undone.')) return;
+  try{
+    await apiFetch('/field/wipe','POST');
+    notify('Field wiped');
+    await refreshAll();
+    document.getElementById('messages').innerHTML='<div class="msg msg-system"><div class="msg-label">SToE Field</div><div class="msg-bubble">Field wiped. Information Field is empty.</div></div>';
+  }catch(e){notify('Error wiping field');}
+}
+
+// ============================================================
+// IP MANAGEMENT — v40
+// ============================================================
+
+let ctxTargetIP   = null;   // IP right-clicked in graph
+let ipModalEditId = null;   // null = new, string = edit
+
+function openIPModal(id, prefillContent) {
+  ipModalEditId = id;
+  document.getElementById('ip-modal-title').textContent = id ? 'Edit IP' : 'Add IP';
+  const _n = id ? (fieldData.nodes.find(n=>n.id===id)||{}) : {};
+  document.getElementById('ip-modal-name').value        = _n.name        || '';
+  document.getElementById('ip-modal-expression').value  = _n.expression  || '';
+  document.getElementById('ip-modal-description').value = _n.description || '';
+  document.getElementById('ip-modal-content').value     = prefillContent || _n.content || '';
+  document.getElementById('ip-modal-category').value    = _n.category || 'Seed';
+  document.getElementById('ip-modal-type').value        = _n.type || 'imaginary';
+  document.getElementById('ip-modal-delete').style.display = id ? 'block' : 'none';
+  document.getElementById('ip-modal-overlay').style.display = 'flex';
+  setTimeout(()=>document.getElementById('ip-modal-content').focus(), 50);
+}
+function closeIPModal() {
+  document.getElementById('ip-modal-overlay').style.display = 'none';
+  ipModalEditId = null;
+}
+async function saveIP() {
+  const name        = document.getElementById('ip-modal-name').value.trim();
+  const expression  = document.getElementById('ip-modal-expression').value.trim();
+  const description = document.getElementById('ip-modal-description').value.trim();
+  const content     = document.getElementById('ip-modal-content').value.trim();
+  const category    = document.getElementById('ip-modal-category').value;
+  const type        = document.getElementById('ip-modal-type').value;
+  if (!name && !content) { notify('Name or Content required'); return; }
+  const payload = { name, expression, description, content: content || name, category, type };
+  try {
+    if (ipModalEditId) {
+      await apiFetch('/points/' + ipModalEditId, 'PUT', payload);
+      notify('✓ IP updated');
+    } else {
+      await apiFetch('/points', 'POST', payload);
+      notify('✓ IP added');
+    }
+    closeIPModal();
+    await refreshAll();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+async function deleteCurrentIP() {
+  if (!ipModalEditId) return;
+  if (!confirm('Delete this IP and all its connections?')) return;
+  try {
+    await apiFetch('/points/' + ipModalEditId, 'DELETE');
+    notify('✓ IP deleted');
+    closeIPModal();
+    selectedIP = null;
+    await refreshAll();
+    draw();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+
+// Context menu actions
+function ctxEdit()    { document.getElementById('ctx-menu').style.display='none'; if(ctxTargetIP) openIPModal(ctxTargetIP.id); }
+function ctxDelete()  { document.getElementById('ctx-menu').style.display='none'; if(ctxTargetIP){ ipModalEditId=ctxTargetIP.id; deleteCurrentIP(); } }
+function openConnModalFromSelection() {
+  // Always opens — prefills from selected IPs if available, empty otherwise
+  const ids = [...genSelectedIPs];
+  openConnModal(null, ids[0] || '', ids[1] || '');
+}
+
+function ctxConnect() { document.getElementById('ctx-menu').style.display='none'; if(ctxTargetIP) openConnModal(null, ctxTargetIP.id); }
+function ctxFileToIP(){ document.getElementById('ctx-menu').style.display='none'; document.getElementById('file-to-ip-input').click(); }
+async function onFileToIP(input) {
+  const file = input.files[0];
+  if (!file) return;
+  let text = '';
+  if (file.name.endsWith('.pdf')) {
+    notify('PDF single-IP: reading text...');
+    try {
+      const ab = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({data:ab}).promise;
+      for (let i=1;i<=pdf.numPages;i++) {
+        const page = await pdf.getPage(i);
+        const tc   = await page.getTextContent();
+        text += tc.items.map(it=>it.str).join(' ') + '\n';
+      }
+    } catch(e) { notify('PDF read error'); return; }
+  } else {
+    text = await file.text();
+  }
+  openIPModal(null, text.slice(0, 50000));
+  input.value = '';
+}
+
+// ============================================================
+// CONNECTION MANAGEMENT — v40
+// ============================================================
+
+let connModalEditId  = null;
+let connData         = [];   // cached edges from /api/connections
+
+async function loadConnData() {
+  try {
+    const d = await apiFetch('/connections', 'GET');
+    connData = d.connections || [];
+  } catch(e) { connData = []; }
+}
+
+function connModalRenderOps() {
+  const el = document.getElementById('conn-modal-op-btns');
+  if (!el) return;
+  el.innerHTML = '';
+  customOperators.forEach(op => {
+    if (!op.prompt) return; // skip passthrough Store op
+    const btn = document.createElement('button');
+    btn.className = 'op-toggle';
+    btn.textContent = op.symbol;
+    btn.title = op.name + ': ' + op.description;
+    btn.style.cssText = 'width:30px;height:30px;font-size:14px';
+    btn.onclick = () => connModalGenerateFromOp(op);
+    el.appendChild(btn);
+  });
+}
+
+// v7: stash the most recent generation trace so saveConn can attach it
+// to the edge that gets created.
+let pendingConnTrace = null;
+
+async function connModalGenerateFromOp(op) {
+  const src = document.getElementById('conn-modal-source').value.trim();
+  const tgt = document.getElementById('conn-modal-target').value.trim();
+  const status = document.getElementById('conn-modal-gen-status');
+  if (!src || !tgt) { notify('Fill Source and Target IDs first'); return; }
+  const srcNode = (fieldData.nodes||[]).find(n=>n.id===src)||{};
+  const tgtNode = (fieldData.nodes||[]).find(n=>n.id===tgt)||{};
+  status.textContent = 'generating...';
+  const prompt = op.prompt + '\n\nIP A: ' + (srcNode.content||src) + '\n\nIP B: ' + (tgtNode.content||tgt);
+  try {
+    // v7: pass node_ids so the backend builds topology context from both IPs' neighborhoods
+    const d = await apiFetch('/apply_operator', 'POST', { op: op.symbol, idea: prompt, seed: '', node_ids: [src, tgt] });
+    if (d && d.result) {
+      document.getElementById('conn-modal-note').value = d.result;
+      document.getElementById('conn-modal-type').value = SYMBOL_TO_EDGE[op.symbol] || 'connected_to';
+      pendingConnTrace = d.trace || null;
+      const tn = (d.topology_neighbors|0), fh = (d.field_hits|0);
+      status.textContent = `✓ generated (topo:${tn} kw:${fh})`;
+    } else { status.textContent = 'failed'; pendingConnTrace = null; }
+  } catch(e) { status.textContent = 'error'; pendingConnTrace = null; }
+}
+
+async function connModalGenerateCustom() {
+  const src = document.getElementById('conn-modal-source').value.trim();
+  const tgt = document.getElementById('conn-modal-target').value.trim();
+  const status = document.getElementById('conn-modal-gen-status');
+  if (!src || !tgt) { notify('Fill Source and Target IDs first'); return; }
+  const srcNode = (fieldData.nodes||[]).find(n=>n.id===src)||{};
+  const tgtNode = (fieldData.nodes||[]).find(n=>n.id===tgt)||{};
+  status.textContent = 'generating...';
+  const prompt = 'You are analyzing the relationship between two information points in the SToE (Special Theory of Everything) framework.\n\nIP A: ' + (srcNode.content||src).slice(0,800) + '\n\nIP B: ' + (tgtNode.content||tgt).slice(0,800) + '\n\nDescribe the relationship between these two information points in depth. Explain how they connect, what they share, how one influences or relates to the other, and what emerges from their interaction. Write at least 3-4 detailed sentences.';
+  try {
+    const d = await apiFetch('/apply_operator', 'POST', { op: '+', idea: prompt, seed: '', node_ids: [src, tgt] });
+    if (d && d.result) {
+      document.getElementById('conn-modal-note').value = d.result;
+      pendingConnTrace = d.trace || null;
+      const tn = (d.topology_neighbors|0), fh = (d.field_hits|0);
+      status.textContent = `✓ generated (topo:${tn} kw:${fh})`;
+    } else { status.textContent = 'failed'; pendingConnTrace = null; }
+  } catch(e) { status.textContent = 'error'; pendingConnTrace = null; }
+}
+
+// v7: preview the exact prompt the LLM would receive — no API call cost,
+// no field mutation. Lets you see what topology context is being surfaced.
+async function connModalPreviewContext() {
+  const src = document.getElementById('conn-modal-source').value.trim();
+  const tgt = document.getElementById('conn-modal-target').value.trim();
+  if (!src || !tgt) { notify('Fill Source and Target IDs first'); return; }
+  const srcNode = (fieldData.nodes||[]).find(n=>n.id===src)||{};
+  const tgtNode = (fieldData.nodes||[]).find(n=>n.id===tgt)||{};
+  const idea = 'You are analyzing the relationship between two information points.\n\nIP A: ' + (srcNode.content||src).slice(0,800) + '\n\nIP B: ' + (tgtNode.content||tgt).slice(0,800) + '\n\nDescribe their relationship in depth.';
+  try {
+    const trace = await apiFetch('/context/preview', 'POST', { op: '+', idea, seed: '', node_ids: [src, tgt] });
+    showTraceModal(trace, 'preview');
+  } catch(e) { notify('Preview failed: ' + e.message); }
+}
+
+function openConnModal(edgeId, prefillSource, prefillTarget) {
+  console.log('[modal] openConnModal called', edgeId, prefillSource, prefillTarget);
+  connModalEditId = edgeId;
+  document.getElementById('conn-modal-title').textContent = edgeId ? 'Edit Connection' : 'Add Connection';
+  const edge = edgeId ? connData.find(e=>e.id===edgeId) : null;
+  document.getElementById('conn-modal-source').value = prefillSource || (edge ? edge.source : '');
+  document.getElementById('conn-modal-target').value = prefillTarget || (edge ? edge.target : '');
+  document.getElementById('conn-modal-type').value   = edge ? edge.type   : 'connected_to';
+  document.getElementById('conn-modal-weight').value = edge ? edge.weight : '1.0';
+  document.getElementById('conn-modal-note').value   = edge ? edge.note   : '';
+  document.getElementById('conn-modal-delete').style.display = edgeId ? 'block' : 'none';
+  document.getElementById('conn-modal-gen-status').textContent = '';
+  connModalRenderOps();
+  document.getElementById('conn-modal-overlay').style.display = 'flex';
+  setTimeout(()=>document.getElementById('conn-modal-source').focus(), 50);
+}
+function closeConnModal() {
+  document.getElementById('conn-modal-overlay').style.display = 'none';
+  connModalEditId = null;
+}
+async function saveConn() {
+  const source = document.getElementById('conn-modal-source').value.trim();
+  const target = document.getElementById('conn-modal-target').value.trim();
+  const type   = document.getElementById('conn-modal-type').value;
+  const weight = parseFloat(document.getElementById('conn-modal-weight').value) || 1.0;
+  const note   = document.getElementById('conn-modal-note').value.trim();
+  if (!source || !target) { notify('Source and Target IDs required'); return; }
+  try {
+    if (connModalEditId) {
+      await apiFetch('/connections/' + connModalEditId, 'PUT', { type, weight, note });
+      notify('✓ Connection updated');
+    } else {
+      const d = await apiFetch('/connect', 'POST', { source, target, type, weight, note });
+      // v7: if this connection's note came from a recent LLM generation, persist the trace
+      if (pendingConnTrace && d && d.edge_id) {
+        try { await apiFetch('/trace/' + d.edge_id, 'PUT', { trace: pendingConnTrace }); }
+        catch(e) { /* trace attach is best-effort */ }
+      }
+      pendingConnTrace = null;
+      notify('✓ Connection added');
+    }
+    closeConnModal();
+    await loadConnData();
+    await refreshAll();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+async function deleteCurrentConn() {
+  if (!connModalEditId) return;
+  if (!confirm('Delete this connection?')) return;
+  try {
+    await apiFetch('/connections/' + connModalEditId, 'DELETE');
+    notify('✓ Connection deleted');
+    closeConnModal();
+    await loadConnData();
+    await refreshAll();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+
+// ============================================================
+// CONNECTIONS TABLE — v40
+// ============================================================
+
+let connSortCol = 'created_at';
+let connSortAsc = false; // false = descending = newest first
+
+function sortConnTable(col) {
+  if (connSortCol === col) connSortAsc = !connSortAsc;
+  else { connSortCol = col; connSortAsc = true; }
+  renderConnTable();
+}
+
+function renderConnTable() {
+  loadConnData().then(() => {
+    const q = (document.getElementById('conn-table-search').value||'').toLowerCase();
+    let rows = connData.filter(e =>
+      !q || e.id.includes(q) || e.source.includes(q) || e.target.includes(q) ||
+      (e.type||'').includes(q) || (e.note||'').toLowerCase().includes(q) ||
+      (e.source_content||'').toLowerCase().includes(q) ||
+      (e.target_content||'').toLowerCase().includes(q)
+    );
+    rows = rows.slice().sort((a,b) => {
+      let av = a[connSortCol] ?? '', bv = b[connSortCol] ?? '';
+      if (connSortCol === 'weight') { av = +(a.weight||1); bv = +(b.weight||1); }
+      if (connSortCol === 'created_at') { av = new Date(av||0); bv = new Date(bv||0); }
+      if (av < bv) return connSortAsc ? -1 : 1;
+      if (av > bv) return connSortAsc ? 1 : -1;
+      // Stable tiebreaker — always ascending by id
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    });
+    // Update sort indicators
+    ['id','source','target','type','weight','created_at'].forEach(c => {
+      const el = document.getElementById('csort-'+c);
+      if (el) el.textContent = connSortCol===c ? (connSortAsc?'↑':'↓') : '';
+    });
+    document.getElementById('conn-table-count').textContent = rows.length + ' connections';
+    document.getElementById('conn-table-body').innerHTML = rows.map(e => {
+      const ts = e.created_at ? new Date(e.created_at).toLocaleString() : '—';
+      const isSelEdge = selectedEdgeIds.has(e.id);
+      return `<tr id="edge-row-${e.id}"
+        onclick="selectConnTableRow('${e.id}')"
+        oncontextmenu="event.preventDefault();deselectConnTableRow('${e.id}')"
+        style="border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;background:${isSelEdge?'rgba(74,222,128,0.12)':''}"
+        onmouseover="this.style.background=this.dataset.sel==='1'?'rgba(74,222,128,0.2)':'rgba(255,255,255,0.03)'"
+        onmouseout="this.style.background=this.dataset.sel==='1'?'rgba(74,222,128,0.12)':''"
+        data-id="${e.id}" data-sel="${isSelEdge?'1':''}">
+        <td style="padding:5px 8px;color:var(--text-dim);font-family:'Space Mono';font-size:10px;white-space:nowrap">${e.id}</td>
+        <td style="padding:5px 8px;color:var(--accent2);font-family:'Space Mono';font-size:10px;white-space:nowrap">${e.source}</td>
+        <td style="padding:5px 8px;color:var(--text-dim);font-size:10px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${e.source_content||''}">${(e.source_content||'').slice(0,50)}</td>
+        <td style="padding:5px 8px;color:var(--accent2);font-family:'Space Mono';font-size:10px;white-space:nowrap">${e.target}</td>
+        <td style="padding:5px 8px;color:var(--text-dim);font-size:10px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${e.target_content||''}">${(e.target_content||'').slice(0,50)}</td>
+        <td style="padding:5px 8px;color:var(--accent);font-size:10px;white-space:nowrap">${e.type||'—'}</td>
+        <td style="padding:5px 8px;color:var(--text-dim);font-size:10px;text-align:center">${(e.weight||1).toFixed(1)}</td>
+        <td style="padding:5px 8px;color:var(--text-dim);font-size:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.note||'—'}</td>
+        <td style="padding:5px 8px;color:var(--text-dim);font-size:10px;white-space:nowrap">${ts}</td>
+        <td style="padding:5px 8px;white-space:nowrap">
+          <button onclick="openConnModal('${e.id}')" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:3px;padding:2px 7px;cursor:pointer;font-size:10px;margin-right:3px">✎</button>
+          <button onclick="quickDeleteConn('${e.id}')" style="background:none;border:1px solid #ef4444;color:#ef4444;border-radius:3px;padding:2px 7px;cursor:pointer;font-size:10px">✕</button>
+        </td>
+      </tr>`;
+    }).join('');
+    setTimeout(highlightEdgeRows, 0);
+  });
+}
+
+function highlightEdgeRows() {
+  document.querySelectorAll('[id^="edge-row-"]').forEach(r => {
+    const rid = r.dataset.id || r.id.replace('edge-row-','');
+    const sel = selectedEdgeIds.has(rid);
+    r.dataset.sel = sel ? '1' : '';
+    r.style.background = sel ? 'rgba(74,222,128,0.12)' : '';
+  });
+}
+
+function selectConnTableRow(edgeId) {
+  selectedIP = null;
+  if (selectedEdgeIds.has(edgeId)) {
+    ilog('CONN_TABLE','row_deselect',{id:edgeId,remaining:selectedEdgeIds.size-1});
+    selectedEdgeIds.delete(edgeId);
+    highlightEdgeRows();
+    const remaining = [...selectedEdgeIds];
+    const edge = remaining.length > 0 ? connData.find(e=>e.id===remaining[remaining.length-1]) : null;
+    selectedEdge = edge || null;
+    if (edge) renderEdgeDetail(edge); else renderEdgeDetail(null);
+    if (connCanvasReady) drawConn();
+    return;
+  }
+  selectedEdgeIds.add(edgeId);
+  ilog('CONN_TABLE','row_select',{id:edgeId,selected_count:selectedEdgeIds.size});
+  highlightEdgeRows();
+  const edge = connData.find(e => e.id === edgeId);
+  if (!edge) return;
+  selectedEdge = edge;
+  renderEdgeDetail(edge);
+  if (connCanvasReady) drawConn();
+}
+
+function deselectConnTableRow(edgeId) {
+  selectedEdgeIds.delete(edgeId);
+  highlightEdgeRows();
+  if (selectedEdge && selectedEdge.id === edgeId) {
+    const remaining = [...selectedEdgeIds];
+    selectedEdge = remaining.length > 0 ? connData.find(e=>e.id===remaining[remaining.length-1])||null : null;
+    if (!selectedEdge) renderEdgeDetail(null);
+  }
+  if (connCanvasReady) drawConn();
+}
+
+async function quickDeleteConn(edgeId) {
+  if (!confirm('Delete this connection?')) return;
+  try {
+    await apiFetch('/connections/' + edgeId, 'DELETE');
+    notify('✓ Connection deleted');
+    await loadConnData();
+    await refreshAll();
+    renderConnTable();
+  } catch(e) { notify('Error: ' + e.message); }
+}
+
+// ============================================================
+// GENERATE CONNECTIONS — v47
+// ============================================================
+
+let genSelectedIPs = new Set();   // IDs of selected nodes for connection generation
+const GEN_DEFAULT_OPS = ['+', '×', '−', '↻', '^'];  // default connection operators
+let genActiveOps = new Set(GEN_DEFAULT_OPS);
+
+// ── DESELECT ALL ───────────────────────────────────────────────────────
+function deselectAllIPs() {
+  selectedIPIds.clear();
+  selectedIP = null;
+  renderDetail(null);
+  highlightIPRows();
+  if (canvasReady) draw();
+  ilog('UI','deselect_all_ips');
+}
+
+function deselectAllEdges() {
+  selectedEdgeIds.clear();
+  selectedEdge = null;
+  renderEdgeDetail(null);
+  highlightEdgeRows();
+  if (connCanvasReady) drawConn();
+  ilog('UI','deselect_all_edges');
+}
+
+function clearPairAndGo() {
+  genSelectedIPs.clear();
+  renderGenSelected();
+  if (connCanvasReady) drawConn();
+  ilog('UI','clear_ip_pair');
+}
+
+function quickConnectPair() {
+  const ids = [...genSelectedIPs];
+  if (ids.length < 2) { notify('Select 2 nodes first'); return; }
+  openConnModal(null, ids[0], ids[1]);
+}
+
+// ── CONN GRAPH NODE CLICK — select pair then open Generate tab ────────────
+// When 2 nodes selected, show a "Create Connection" prompt
+function onConnNodeClick(id) {
+  if (genSelectedIPs.has(id)) {
+    genSelectedIPs.delete(id);
+    ilog('CONN_GRAPH','pair_node_deselect',{id, remaining: genSelectedIPs.size});
+  } else if (genSelectedIPs.size >= 2) {
+    notify('Pair full — click ✕ pair to clear, or click a selected node to deselect');
+    return;
+  } else {
+    genSelectedIPs.add(id);
+    ilog('CONN_GRAPH','pair_node_select',{id, total: genSelectedIPs.size});
+    if (genSelectedIPs.size === 2) {
+      notify('Pair selected — go to ⚡ Generate to create connections');
+    }
+  }
+  renderGenSelected();
+  drawConn();
+}
+
+function genAddIPById(id) {
+  id = id.trim();
+  if (!id) return;
+  if (genSelectedIPs.size >= 2 && !genSelectedIPs.has(id)) { notify('Maximum 2 IPs — clear one first'); return; }
+  const node = (fieldData.nodes||[]).find(n=>n.id===id);
+  if (!node) { notify('IP not found: ' + id); return; }
+  genSelectedIPs.add(id);
+  renderGenSelected();
+  drawConn();
+}
+
+function genClearSelected() {
+  genSelectedIPs.clear();
+  renderGenSelected();
+  drawConn();
+}
+
+function renderGenSelected() {
+  const el = document.getElementById('gen-selected-list');
+  if (!el) return;
+  if (genSelectedIPs.size === 0) {
+    el.innerHTML = '<span style="font-size:10px;color:var(--text-dim)">No IPs selected — click nodes on graph (shift+click or click when selection active) or type IDs above</span>';
+    return;
+  }
+  // Update pair status in toolbar
+  const ps = document.getElementById('pair-status');
+  const qb = document.getElementById('quick-connect-btn');
+  if (ps) ps.textContent = genSelectedIPs.size === 0 ? '' : genSelectedIPs.size === 1 ? '1 of 2 selected' : 'Pair ready';
+  if (qb) qb.style.display = genSelectedIPs.size === 2 ? 'inline-block' : 'none';
+  el.innerHTML = [...genSelectedIPs].map(id => {
+    const node = (fieldData.nodes||[]).find(n=>n.id===id)||{};
+    const label = (node.content||id).slice(0,30);
+    return `<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.4);border-radius:4px;padding:2px 8px;font-size:10px;font-family:'Space Mono'">
+      <span style="color:var(--text-bright)">${label}</span>
+      <span style="color:var(--text-dim);font-size:9px">${id.slice(0,8)}</span>
+      <button onclick="genRemoveIP('${id}')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:12px;padding:0 2px;line-height:1">×</button>
+    </span>`;
+  }).join('');
+}
+
+function genRemoveIP(id) {
+  genSelectedIPs.delete(id);
+  renderGenSelected();
+  drawConn();
+}
+
+function renderGenOpBtns() {
+  const el = document.getElementById('gen-op-btns');
+  if (!el) return;
+  el.innerHTML = '';
+  customOperators.forEach(op => {
+    const isActive = genActiveOps.has(op.symbol);
+    const btn = document.createElement('button');
+    btn.className = 'op-toggle' + (isActive ? ' selected' : '');
+    btn.textContent = op.symbol;
+    btn.title = op.name + ': ' + op.description;
+    btn.onclick = () => {
+      if (genActiveOps.has(op.symbol)) genActiveOps.delete(op.symbol);
+      else genActiveOps.add(op.symbol);
+      renderGenOpBtns();
+    };
+    el.appendChild(btn);
+  });
+}
+
+// Called from IP table rows — adds to gen selection
+function genSelectFromTable(id) {
+  genSelectedIPs.add(id);
+  renderGenSelected();
+  notify('Added to generate selection: ' + id.slice(0,8));
+}
+
+async function generateConnections() {
+  ilog('GENERATE','start',{ips:[...genSelectedIPs],ops:[...genActiveOps],n:parseInt(document.getElementById('gen-n').value)||1});
+  const ids = [...genSelectedIPs];
+  if (ids.length < 2) { notify('Select at least 2 IPs'); return; }
+
+  const ops = [...genActiveOps];
+  if (ops.length === 0) { notify('Select at least one operator'); return; }
+
+  const customPrompt = (document.getElementById('gen-custom-prompt').value||'').trim();
+  const nPerPair = Math.max(1, Math.min(20, parseInt(document.getElementById('gen-n').value)||1));
+  const prog = document.getElementById('gen-progress');
+  prog.style.display = 'block';
+
+  // Build pairs from selected IPs
+  const pairs = [];
+  for (let i=0; i<ids.length; i++)
+    for (let j=i+1; j<ids.length; j++)
+      pairs.push([ids[i], ids[j]]);
+
+  // Each pair × each active op × nPerPair iterations
+  let total = 0, done = 0, failed = 0;
+  const jobs = [];
+  for (const [srcId, tgtId] of pairs) {
+    for (const op of ops) {
+      for (let n=0; n<nPerPair; n++) jobs.push({srcId, tgtId, op, n});
+    }
+  }
+  total = jobs.length;
+  prog.textContent = `Generating 0 / ${total} connections...`;
+
+  const opDefs = {};
+  customOperators.forEach(o => opDefs[o.symbol] = o);
+
+  for (const job of jobs) {
+    const srcNode = (fieldData.nodes||[]).find(n=>n.id===job.srcId)||{};
+    const tgtNode = (fieldData.nodes||[]).find(n=>n.id===job.tgtId)||{};
+    const opDef   = opDefs[job.op] || { name: job.op, description: '' };
+
+    let prompt;
+    if (customPrompt) {
+      prompt = customPrompt + '\n\nIP A: ' + (srcNode.content||'') + '\n\nIP B: ' + (tgtNode.content||'');
+    } else {
+      const verb = opDef.prompt || opDef.description || ('Apply ' + opDef.name + ':');
+      prompt = verb + '\n\nIP A: ' + (srcNode.content||'') + '\n\nIP B: ' + (tgtNode.content||'');
+    }
+
+    try {
+      // v7: pass node_ids so topology context from both IPs' depth-1 nbhds is surfaced
+      const d = await apiFetch('/apply_operator', 'POST', { op: job.op, idea: prompt, seed: '', node_ids: [job.srcId, job.tgtId] });
+      const note = (d && d.result) ? d.result : '';
+      const edgeType = (SYMBOL_TO_EDGE && SYMBOL_TO_EDGE[job.op]) || 'connected_to';
+      const ce = await apiFetch('/connect', 'POST', {
+        source: job.srcId,
+        target: job.tgtId,
+        type: edgeType,
+        weight: 1.0,
+        note: note
+      });
+      // v7: attach the generation trace to the new edge for later inspection
+      if (d && d.trace && ce && ce.edge_id) {
+        try { await apiFetch('/trace/' + ce.edge_id, 'PUT', { trace: d.trace }); } catch(e) {}
+      }
+      done++;
+    } catch(e) {
+      failed++;
+    }
+    prog.textContent = `Generated ${done} / ${total}${failed?' ('+failed+' failed)':''}...`;
+  }
+
+  await loadConnData();
+  await refreshAll();
+  prog.textContent = `✓ Done — ${done} connection(s) generated${failed?' ('+failed+' failed)':''}.`;
+  // Switch to graph to see results
+  setTimeout(() => setConnView('graph'), 800);
+}
+
+// SYMBOL_TO_EDGE map built from customOperators
+let SYMBOL_TO_EDGE = {};
+function buildSymbolToEdge() {
+  SYMBOL_TO_EDGE = {};
+  const edgeMap = {
+    '+':'connected_to','−':'removed_from','×':'synergy_with','÷':'distributed_to',
+    '↻':'evolved_from','^':'amplified_from','!':'generated_by','∑':'evolved_from','S':'generated_by'
+  };
+  customOperators.forEach(o => { SYMBOL_TO_EDGE[o.symbol] = edgeMap[o.symbol] || 'connected_to'; });
+}
+
+// ============================================================
+// CONNECTIONS GRAPH — v40
+// ============================================================
+
+let connCanvas, connCtx, connCanvasReady = false;
+let connOffsetX=0, connOffsetY=0, connScale=1;
+let connPositions={}, connDraggingNode=null, connIsDragging=false, connDragStart={};
+
+function setupConnCanvas() {
+  connCanvas = document.getElementById('conn-canvas');
+  connCtx    = connCanvas.getContext('2d');
+  // Size canvas to its actual rendered pane
+  function resizeConnCanvas() {
+    const pane = document.getElementById('pane-conn');
+    if (!pane) return;
+    connCanvas.width  = pane.clientWidth  || window.innerWidth - 200;
+    connCanvas.height = pane.clientHeight || window.innerHeight - 100;
+    console.log('[conn] canvas sized:', connCanvas.width, 'x', connCanvas.height);
+  }
+  resizeConnCanvas();
+  window.addEventListener('resize', resizeConnCanvas);
+
+  let connMouseDownPos = null;
+  connCanvas.addEventListener('mousedown', e => {
+    const wp = connWP(e);
+    const hitN = connHitNode(wp.x, wp.y);
+    const hitE = hitN ? null : connHitEdge(wp.x, wp.y);
+    connMouseDownPos = { x: e.clientX, y: e.clientY, hitN, hitE };
+    if (hitN) {
+      connDraggingNode = null; // will be set on mousemove if dragged
+    } else if (!hitE) {
+      connIsDragging = true;
+      connDragStart = {x: e.clientX-connOffsetX, y: e.clientY-connOffsetY};
+    }
+  });
+  connCanvas.addEventListener('mouseup', e => {
+    if (!connMouseDownPos) { connDraggingNode=null; connIsDragging=false; return; }
+    const dx = e.clientX-connMouseDownPos.x, dy = e.clientY-connMouseDownPos.y;
+    const moved = Math.sqrt(dx*dx+dy*dy) > 5;
+    const {hitN, hitE} = connMouseDownPos;
+    connMouseDownPos = null;
+    connDraggingNode = null;
+    connIsDragging = false;
+    if (moved) return; // was a pan/drag — keep selection
+    if (hitE) {
+      if (selectedEdgeIds.has(hitE.id)) {
+        // Toggle off
+        ilog('CONN_GRAPH','edge_deselect',{id:hitE.id,type:hitE.type,remaining:selectedEdgeIds.size-1});
+        selectedEdgeIds.delete(hitE.id);
+        // Update selectedEdge to last remaining, or null
+        const rem=[...selectedEdgeIds];
+        selectedEdge = rem.length>0 ? (fieldData.edges.find(e=>e.id===rem[rem.length-1])||null) : null;
+        renderEdgeDetail(selectedEdge);
+        highlightEdgeRows();
+      } else {
+        // Add to multi-select
+        ilog('CONN_GRAPH','edge_select',{id:hitE.id,type:hitE.type,src:hitE.source,tgt:hitE.target,total:selectedEdgeIds.size+1});
+        selectedEdgeIds.add(hitE.id);
+        selectedEdge = hitE;  // last selected drives detail panel
+        selectedIP = null;
+        renderEdgeDetail(hitE);
+        highlightEdgeRows();
+      }
+      drawConn();
+    } else if (hitN) {
+      onConnNodeClick(hitN);
+    }
+    // Click empty — keep selection (do nothing)
+  });
+  connCanvas.addEventListener('mousemove', e => {
+    const wp = connWP(e);
+    // Start dragging node only if mouse moved enough from mousedown
+    if (!connDraggingNode && connMouseDownPos && connMouseDownPos.hitN) {
+      const dx = e.clientX - connMouseDownPos.x, dy = e.clientY - connMouseDownPos.y;
+      if (Math.sqrt(dx*dx+dy*dy) > 5) connDraggingNode = connMouseDownPos.hitN;
+    }
+    if (connDraggingNode) { connPositions[connDraggingNode]=wp; drawConn(); return; }
+    if (connIsDragging)   { connOffsetX=e.clientX-connDragStart.x; connOffsetY=e.clientY-connDragStart.y; drawConn(); return; }
+  });
+
+  connCanvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect=connCanvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+    const d=e.deltaY>0?0.9:1.1,ns=Math.max(0.1,Math.min(4,connScale*d));
+    connOffsetX=mx-(mx-connOffsetX)*(ns/connScale); connOffsetY=my-(my-connOffsetY)*(ns/connScale); connScale=ns; drawConn();
+  },{passive:false});
+}
+
+function connWP(e){ const r=connCanvas.getBoundingClientRect(); return {x:(e.clientX-r.left-connOffsetX)/connScale,y:(e.clientY-r.top-connOffsetY)/connScale}; }
+
+function connHitNode(wx,wy){
+  const ids = (fieldData.nodes||[]).map(n=>n.id);
+  for(const id of ids){
+    const p=connPositions[id]; if(!p) continue;
+    if((wx-p.x)**2+(wy-p.y)**2<=144) return id;
+  }
+  return null;
+}
+
+function connHitEdge(wx,wy){
+  // Precompute node positions for exclusion zone
+  const nodePts = (fieldData.nodes||[]).map(n=>connPositions[n.id]).filter(Boolean);
+  for(const e of fieldData.edges){
+    const sp=connPositions[e.source],tp=connPositions[e.target]; if(!sp||!tp) continue;
+    const bx=(sp.x+tp.x)/2-((tp.y-sp.y)*0.2), by=(sp.y+tp.y)/2+((tp.x-sp.x)*0.2);
+    for(let t=0.15; t<=0.85; t+=0.1){
+      const mt=1-t;
+      const cx=mt*mt*sp.x+2*mt*t*bx+t*t*tp.x;
+      const cy=mt*mt*sp.y+2*mt*t*by+t*t*tp.y;
+      if((wx-cx)**2+(wy-cy)**2>196) continue; // outside edge hit radius (14px)
+      // Skip if too close to any node (nodes take priority)
+      const nearNode = nodePts.some(p=>(wx-p.x)**2+(wy-p.y)**2<=324); // 18px node exclusion
+      if(!nearNode) return e;
+    }
+  }
+  return null;
+}
+
+function connAllNodeIds(){
+  return (fieldData.nodes||[]).map(n=>n.id);
+}
+
+function layoutConnNodes(){
+  const ids = connAllNodeIds();
+  const W=connCanvas.width||800,H=connCanvas.height||600;
+  ids.forEach((id,i)=>{
+    if(!connPositions[id]){
+      const a=(i/Math.max(ids.length,1))*Math.PI*2,r=Math.min(W,H)*0.32;
+      connPositions[id]={x:W/2+Math.cos(a)*r,y:H/2+Math.sin(a)*r};
+    }
+  });
+}
+
+function drawConn(){
+  if(!connCtx||!connCanvas.width) return;
+  connCtx.clearRect(0,0,connCanvas.width,connCanvas.height);
+  connCtx.save(); connCtx.translate(connOffsetX,connOffsetY); connCtx.scale(connScale,connScale);
+
+  // Draw edges — thick, labeled, highlighted if selected
+  fieldData.edges.forEach(e => {
+    const sp=connPositions[e.source],tp=connPositions[e.target]; if(!sp||!tp) return;
+    const isSel = (selectedEdge && selectedEdge.id===e.id) || selectedEdgeIds.has(e.id);
+    const bx=(sp.x+tp.x)/2-((tp.y-sp.y)*0.2), by=(sp.y+tp.y)/2+((tp.x-sp.x)*0.2);
+    connCtx.save();
+    const anyEdgeSel = selectedEdge || selectedEdgeIds.size > 0;
+    connCtx.globalAlpha = isSel ? 1 : (anyEdgeSel ? 0.15 : 0.7);
+    connCtx.strokeStyle = isSel ? '#4ade80' : (EDGE_COLORS[e.type]||'#7c3aed');
+    connCtx.lineWidth   = isSel ? 3 : 1.5;
+    connCtx.beginPath(); connCtx.moveTo(sp.x,sp.y); connCtx.quadraticCurveTo(bx,by,tp.x,tp.y); connCtx.stroke();
+    // Label at midpoint
+    if(isSel || !selectedEdge){
+      const lx=(sp.x+bx+tp.x)/3, ly=(sp.y+by+tp.y)/3;
+      connCtx.font='9px "Space Mono"'; connCtx.fillStyle=isSel?'#4ade80':'#94a3b8';
+      connCtx.textAlign='center';
+      connCtx.fillText(e.type||'', lx, ly-4);
+      if(e.note) connCtx.fillText(e.note.slice(0,24), lx, ly+8);
+    }
+    // Arrow
+    const ang=Math.atan2(tp.y-by,tp.x-bx);
+    connCtx.fillStyle=connCtx.strokeStyle;
+    connCtx.beginPath(); connCtx.moveTo(tp.x,tp.y);
+    connCtx.lineTo(tp.x-10*Math.cos(ang-0.4),tp.y-10*Math.sin(ang-0.4));
+    connCtx.lineTo(tp.x-10*Math.cos(ang+0.4),tp.y-10*Math.sin(ang+0.4));
+    connCtx.closePath(); connCtx.fill();
+    connCtx.restore();
+  });
+
+  // Draw all nodes — selected ones highlighted
+  connAllNodeIds().forEach(id => {
+    const p=connPositions[id]; if(!p) return;
+    const node = (fieldData.nodes||[]).find(n=>n.id===id)||{};
+    const col  = CAT_COLORS[node.category]||'#64748b';
+    const isPairNode = genSelectedIPs.has(id);
+    const isEdgeEnd = !isPairNode && ((selectedEdge && (selectedEdge.source===id||selectedEdge.target===id)) ||
+      [...selectedEdgeIds].some(eid=>{ const se=fieldData.edges.find(e=>e.id===eid); return se&&(se.source===id||se.target===id); }));
+    const isSel = isPairNode || isEdgeEnd;
+    const r = isPairNode ? 12 : (isEdgeEnd ? 11 : (isSel ? 10 : 6));
+    connCtx.save();
+    connCtx.globalAlpha = isSel ? 1 : 0.6;
+    if(isPairNode){ connCtx.shadowColor='#22d3ee'; connCtx.shadowBlur=24; }
+    else if(isEdgeEnd){ connCtx.shadowColor='#4ade80'; connCtx.shadowBlur=20; }
+    else if(isSel){ connCtx.shadowColor=col; connCtx.shadowBlur=14; }
+    connCtx.beginPath(); connCtx.arc(p.x,p.y,r,0,Math.PI*2);
+    connCtx.fillStyle = isSel ? col+'55' : col+'22'; connCtx.fill();
+    connCtx.strokeStyle = isPairNode ? '#22d3ee' : col; connCtx.lineWidth = isSel ? 2 : 1; connCtx.stroke();
+    connCtx.beginPath(); connCtx.arc(p.x,p.y,r*0.4,0,Math.PI*2);
+    connCtx.fillStyle=col; connCtx.fill();
+    connCtx.shadowBlur=0;
+    connCtx.globalAlpha=isSel?1:0.7; connCtx.font=(isSel?'700 ':'')+'9px "Space Mono"';
+    connCtx.fillStyle=isPairNode?'#22d3ee':(isSel?'#f8fafc':'#94a3b8'); connCtx.textAlign='center';
+    const lbl=(node.content||id).slice(0,22);
+    connCtx.fillText(lbl, p.x, p.y+r+11);
+    connCtx.restore();
+  });
+
+  // Selected edge detail panel (bottom of canvas)
+  if(selectedEdge){
+    connCtx.save(); connCtx.globalAlpha=0.95;
+    connCtx.fillStyle='#1e1b4b'; connCtx.fillRect(10,connCanvas.height/connScale-70,340,58);
+    connCtx.strokeStyle='#4ade80'; connCtx.lineWidth=1; connCtx.strokeRect(10,connCanvas.height/connScale-70,340,58);
+    connCtx.font='9px "Space Mono"'; connCtx.fillStyle='#4ade80'; connCtx.textAlign='left';
+    connCtx.fillText('Edge: '+selectedEdge.id, 18, connCanvas.height/connScale-55);
+    connCtx.fillStyle='#94a3b8';
+    connCtx.fillText('Source: '+selectedEdge.source, 18, connCanvas.height/connScale-43);
+    connCtx.fillText('Target: '+selectedEdge.target, 18, connCanvas.height/connScale-31);
+    connCtx.fillText('Type: '+(selectedEdge.type||'—')+'   Note: '+(selectedEdge.note||'—'), 18, connCanvas.height/connScale-19);
+    connCtx.restore();
+  }
+
+  connCtx.restore();
+}
+
+// ============================================================
+// IP TABLE — updated for v40 schema + actions
+// ============================================================
+// ============================================================
+// OPERATOR MANAGEMENT — v40
+// ============================================================
+
+let customOperators = [];   // [{symbol, name, description, prompt}]
+let opModalEditIndex = null; // index into customOperators, null = new
+
+const DEFAULT_OPERATORS = [
+  { symbol:'+', name:'Connection',    description:'Join two IPs in co-presence', prompt:'Combine with a complementary idea and show the relationship:' },
+  { symbol:'−', name:'Removal',       description:'Remove weak parts, isolate core', prompt:'Remove the weak parts and sharpen the essential core:' },
+  { symbol:'×', name:'Synergy',       description:'Create amplified emergent IP', prompt:'Create a synergy — what new entity emerges from this interaction?' },
+  { symbol:'÷', name:'Distribution',  description:'Spread A through context of B', prompt:'Distribute this idea across multiple practical contexts:' },
+  { symbol:'↻', name:'Recursion',     description:'Self-apply for iterative growth', prompt:'Evolve this idea further through one recursive cycle:' },
+  { symbol:'^', name:'Amplification', description:'Aggressive resonance escalation', prompt:'Amplify the single most powerful insight to its maximum:' },
+  { symbol:'!', name:'Disruption',    description:'Challenge assumptions, break the frame', prompt:'Challenge the core assumptions of this idea deeply:' },
+  { symbol:'∑', name:'Summarize',     description:'Autoinjective collapse to core IP', prompt:'Apply autoinjective collapse: distill to the single essential information point. One sentence. No preamble:' },
+  { symbol:'S', name:'Store',         description:'Store content to field unchanged — no LLM call', prompt:'' },
+];
+
+async function loadOperatorsFromServer() {
+  try {
+    const data = await apiFetch('/operators', 'GET');
+    if (data && data.operators && data.operators.length > 0) {
+      customOperators = data.operators;
+    } else {
+      customOperators = [...DEFAULT_OPERATORS];
+    }
+  } catch(e) {
+    console.warn('Could not load operators from server, using defaults');
+    customOperators = [...DEFAULT_OPERATORS];
+  }
+}
+
+function renderOpButtons() {
+  const row = document.getElementById('op-btn-row');
+  if (!row) return;
+  row.innerHTML = '';
+  customOperators.forEach((op, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'op-toggle';
+    btn.dataset.op = op.symbol;
+    btn.title = (op.name || op.symbol) + ': ' + (op.description || '');
+    btn.textContent = op.symbol;
+    btn.addEventListener('click', () => toggleOpBtn(btn));
+    btn.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      openOpModal(idx);
+    });
+    row.appendChild(btn);
+  });
+}
+
+function toggleOpBtn(btn) {
+  // Palette mode: click appends operator to sequence
+  manualSeq.push(btn.dataset.op);
+  syncIterInput();
+  updateSeq();
+}
+
+function openOpModal(idx) {
+  opModalEditIndex = idx;
+  const modal = document.getElementById('op-modal-overlay');
+  const title = document.getElementById('op-modal-title');
+  const delBtn = document.getElementById('op-modal-delete');
+
+  if (idx === null) {
+    // New operator
+    title.textContent = 'Add Operator';
+    document.getElementById('op-modal-symbol').value = '';
+    document.getElementById('op-modal-name').value = '';
+    document.getElementById('op-modal-desc').value = '';
+    document.getElementById('op-modal-prompt').value = '';
+    delBtn.style.display = 'none';
+  } else {
+    // Edit existing
+    const op = customOperators[idx];
+    title.textContent = 'Edit Operator';
+    document.getElementById('op-modal-symbol').value = op.symbol || '';
+    document.getElementById('op-modal-name').value = op.name || '';
+    document.getElementById('op-modal-desc').value = op.description || '';
+    document.getElementById('op-modal-prompt').value = op.prompt || '';
+    delBtn.style.display = 'block';
+  }
+
+  modal.style.display = 'flex';
+  document.getElementById('op-modal-symbol').focus();
+}
+
+function closeOpModal() {
+  document.getElementById('op-modal-overlay').style.display = 'none';
+  opModalEditIndex = null;
+}
+
+async function saveCurrentOp() {
+  const symbol = document.getElementById('op-modal-symbol').value.trim();
+  const name   = document.getElementById('op-modal-name').value.trim();
+  const desc   = document.getElementById('op-modal-desc').value.trim();
+  const prompt = document.getElementById('op-modal-prompt').value.trim();
+
+  if (!symbol) { notify('Symbol is required'); return; }
+  if (!prompt) { notify('Prompt is required'); return; }
+
+  const entry = { symbol, name, description: desc, prompt };
+
+  if (opModalEditIndex === null) {
+    // Check duplicate symbol
+    if (customOperators.some(o => o.symbol === symbol)) {
+      notify('Symbol already exists — edit the existing one'); return;
+    }
+    customOperators.push(entry);
+  } else {
+    customOperators[opModalEditIndex] = entry;
+  }
+
+  await persistOperators();
+  renderOpButtons();
+  buildSymbolToEdge();
+  syncIterInput();
+  updateSeq();
+  closeOpModal();
+}
+
+async function deleteCurrentOp() {
+  if (opModalEditIndex === null) return;
+  const op = customOperators[opModalEditIndex];
+  if (!confirm('Delete operator "' + op.symbol + ' ' + op.name + '"?')) return;
+  // Remove from selectedOps if active
+  selectedOps = selectedOps.filter(s => s !== op.symbol);
+  customOperators.splice(opModalEditIndex, 1);
+  await persistOperators();
+  renderOpButtons();
+  updateSeq();
+  closeOpModal();
+}
+
+async function persistOperators() {
+  try {
+    const resp = await apiFetch('/operators/save', 'POST', { operators: customOperators });
+    if (resp && resp.ok) {
+      notify('✓ Operators saved');
+    } else {
+      notify('Save failed: ' + (resp && resp.error ? resp.error : 'unknown'));
+    }
+  } catch(e) {
+    notify('Save error: ' + e.message);
+  }
+}
+
+// Close modal on overlay click
+document.addEventListener('DOMContentLoaded', () => {
+  ['op-modal-overlay','ip-modal-overlay','conn-modal-overlay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', e => { if(e.target===el){ closeOpModal&&closeOpModal(); closeIPModal&&closeIPModal(); closeConnModal&&closeConnModal(); } });
+  });
+});
+
+// ============================================================
+function notify(msg){
+  const el=document.getElementById('notif');el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2500);
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+
+      <!-- IP MODAL -->
+      <div id="ip-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9998;align-items:center;justify-content:center;">
+        <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:24px;width:420px;max-width:95vw;display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;font-weight:700;color:var(--text-bright)" id="ip-modal-title">Add IP</span>
+            <button onclick="closeIPModal()" style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:18px">✕</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Name</label>
+            <input id="ip-modal-name" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--text-bright);font-size:13px;font-weight:600;width:100%;box-sizing:border-box;outline:none;font-family:inherit" placeholder="Short label (e.g. God (G), Law of Conservation)">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Expression</label>
+            <input id="ip-modal-expression" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:#22d3ee;font-size:12px;font-family:'Space Mono';width:100%;box-sizing:border-box;outline:none" placeholder="G=E, P↑:=P+(P×P)-F, A×B→IP*...">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Description</label>
+            <textarea id="ip-modal-description" rows="2" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text-bright);font-size:12px;width:100%;box-sizing:border-box;resize:vertical;outline:none;font-family:inherit" placeholder="Explanation or context..."></textarea>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Content <span style="color:var(--text-dim);font-size:9px">(full text for search)</span></label>
+            <textarea id="ip-modal-content" rows="3" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text-bright);font-size:12px;width:100%;box-sizing:border-box;resize:vertical;outline:none;font-family:inherit" placeholder="Full content for search and LLM context..."></textarea>
+          </div>
+          <div style="display:flex;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Category</label>
+              <select id="ip-modal-category" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;outline:none">
+                <option>Star</option><option>Hidden Diamond</option><option selected>Seed</option>
+                <option>Fertilizer</option><option>Mirror</option><option>Catalyst</option>
+                <option>Vampire</option><option>Ghost</option><option>Echo</option><option>Unknown</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Type</label>
+              <select id="ip-modal-type" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;outline:none">
+                <option value="imaginary" selected>Imaginary</option>
+                <option value="physical">Physical</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center">
+            <button id="ip-modal-delete" onclick="deleteCurrentIP()" style="margin-right:auto;background:none;border:1px solid #ef4444;color:#ef4444;border-radius:5px;padding:5px 12px;cursor:pointer;font-size:11px;display:none">Delete</button>
+            <button onclick="closeIPModal()" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;padding:5px 14px;cursor:pointer;font-size:12px">Cancel</button>
+            <button onclick="saveIP()" style="background:var(--accent);border:none;color:#fff;border-radius:5px;padding:5px 16px;cursor:pointer;font-size:12px;font-weight:700">Save</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- CONNECTION MODAL -->
+      <div id="conn-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9998;align-items:center;justify-content:center;">
+        <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:24px;width:420px;max-width:95vw;display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;font-weight:700;color:var(--text-bright)" id="conn-modal-title">Add Connection</span>
+            <button onclick="closeConnModal()" style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:18px">✕</button>
+          </div>
+          <div style="display:flex;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Source ID</label>
+              <input id="conn-modal-source" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;font-family:'Space Mono';outline:none;width:100%;box-sizing:border-box" placeholder="16-char id">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Target ID</label>
+              <input id="conn-modal-target" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;font-family:'Space Mono';outline:none;width:100%;box-sizing:border-box" placeholder="16-char id">
+            </div>
+          </div>
+          <!-- Operator palette -->
+          <div>
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Operator <span style="font-size:9px">(click to generate description)</span></label>
+            <div id="conn-modal-op-btns" style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px"></div>
+          </div>
+
+          <div style="display:flex;gap:10px">
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Type</label>
+              <select id="conn-modal-type" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;outline:none">
+                <option>connected_to</option><option>evolved_from</option><option>synergy_with</option>
+                <option>amplified_from</option><option>generated_by</option><option>removed_from</option>
+                <option>distributed_to</option><option>failed_from</option><option>contradicts</option>
+                <option>evaluates</option><option>confirmed_by</option><option>adjacent_to</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;width:70px">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Weight</label>
+              <input id="conn-modal-weight" type="number" min="0" max="1" step="0.1" value="1.0" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 8px;color:var(--text-bright);font-size:12px;outline:none;width:100%;box-sizing:border-box">
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
+              <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Note / Description</label>
+              <button onclick="connModalGenerateCustom()" style="background:none;border:1px solid var(--accent);color:var(--accent);border-radius:4px;padding:2px 9px;cursor:pointer;font-size:10px">✦ Custom Generate</button>
+              <button onclick="connModalPreviewContext()" title="Preview the exact prompt the LLM would receive — no call, no cost" style="background:none;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;padding:2px 9px;cursor:pointer;font-size:10px">📋 Preview Context</button>
+              <span id="conn-modal-gen-status" style="font-size:9px;color:var(--text-dim)"></span>
+            </div>
+            <textarea id="conn-modal-note" rows="4" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text-bright);font-size:12px;outline:none;width:100%;box-sizing:border-box;resize:vertical;font-family:inherit" placeholder="Description — click an operator or Custom Generate to fill via LLM"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center">
+            <button id="conn-modal-delete" onclick="deleteCurrentConn()" style="margin-right:auto;background:none;border:1px solid #ef4444;color:#ef4444;border-radius:5px;padding:5px 12px;cursor:pointer;font-size:11px;display:none">Delete</button>
+            <button onclick="closeConnModal()" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;padding:5px 14px;cursor:pointer;font-size:12px">Cancel</button>
+            <button onclick="saveConn()" style="background:#4ade80;border:none;color:#000;border-radius:5px;padding:5px 16px;cursor:pointer;font-size:12px;font-weight:700">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- v7: TRACE / PREVIEW MODAL -->
+      <div id="trace-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:10000;align-items:center;justify-content:center" onclick="if(event.target===this)closeTraceModal()">
+        <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;width:780px;max-width:95vw;max-height:88vh;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 40px rgba(0,0,0,0.7)">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:8px">
+            <span id="trace-modal-title" style="font-size:13px;font-weight:700;color:var(--text-bright)">Context Trace</span>
+            <button onclick="closeTraceModal()" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;padding:3px 10px;cursor:pointer;font-size:11px">✕</button>
+          </div>
+          <div id="trace-modal-summary" style="font-size:11px;color:var(--text-dim);display:flex;gap:12px;flex-wrap:wrap"></div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Topology Neighbors Surfaced</label>
+            <div id="trace-modal-neighbors" style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 10px;font-size:11px;font-family:'Space Mono';color:var(--text-bright);max-height:140px;overflow:auto"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-height:0">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Full Prompt Sent to LLM</label>
+            <textarea id="trace-modal-prompt" readonly style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text-bright);font-size:11px;font-family:'Space Mono';outline:none;width:100%;flex:1;min-height:200px;box-sizing:border-box;resize:vertical"></textarea>
+          </div>
+          <div id="trace-modal-response-wrap" style="display:none;flex-direction:column;gap:4px">
+            <label style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em">Response</label>
+            <textarea id="trace-modal-response" readonly style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text-bright);font-size:11px;font-family:inherit;outline:none;width:100%;min-height:80px;box-sizing:border-box;resize:vertical"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button onclick="copyTraceJSON()" style="background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:5px;padding:4px 12px;cursor:pointer;font-size:11px">Copy JSON</button>
+            <button onclick="closeTraceModal()" style="background:var(--accent);border:none;color:#fff;border-radius:5px;padding:4px 14px;cursor:pointer;font-size:11px;font-weight:700">Close</button>
+          </div>
+        </div>
+      </div>
+
+<script>
+// v7: trace viewer — used by Preview Context button and by IP/edge trace lookup.
+let _currentTrace = null;
+function showTraceModal(trace, mode) {
+  if (!trace) { notify('No trace data'); return; }
+  _currentTrace = trace;
+  document.getElementById('trace-modal-title').textContent =
+    mode === 'preview' ? '📋 Context Preview (no LLM call)' : '🔍 LLM Trace';
+  const sumEl = document.getElementById('trace-modal-summary');
+  const focal = (trace.focal_ids || []).map(id => id.slice(0,8)).join(', ') || '—';
+  sumEl.innerHTML =
+    `<span><b>op</b>: ${trace.op || '—'}</span>` +
+    `<span><b>model</b>: ${trace.model || '—'}</span>` +
+    `<span><b>focal IPs</b>: ${focal}</span>` +
+    `<span><b>topology</b>: ${(trace.topology_neighbors||[]).length} neighbors / ${trace.topology_chars||0} chars</span>` +
+    `<span><b>keyword</b>: ${(trace.keyword_hits||[]).length} hits / ${trace.keyword_chars||0} chars</span>` +
+    `<span><b>prompt</b>: ${trace.prompt_chars||0} chars</span>` +
+    (trace.timestamp ? `<span><b>at</b>: ${new Date(trace.timestamp).toLocaleString()}</span>` : '');
+  const nbEl = document.getElementById('trace-modal-neighbors');
+  const nbs = trace.topology_neighbors || [];
+  if (nbs.length === 0) {
+    nbEl.innerHTML = '<span style="color:var(--text-dim)">— no topology neighbors (focal IPs had no edges, or none were passed)</span>';
+  } else {
+    nbEl.innerHTML = nbs.map(n => {
+      const tagColor = (n.edge_type === 'failed_from' || n.edge_type === 'contradicts') ? '#ef4444' : 'var(--accent)';
+      return `<div style="margin-bottom:3px"><span style="color:${tagColor}">[${n.edge_type}]</span> <span style="color:var(--text-dim)">${n.direction === 'out' ? '→' : '←'}</span> ${n.neighbor_name}${n.edge_note ? ' <span style="color:var(--text-dim)">— ' + n.edge_note + '</span>' : ''}</div>`;
+    }).join('');
+  }
+  document.getElementById('trace-modal-prompt').value = trace.prompt || '';
+  const respWrap = document.getElementById('trace-modal-response-wrap');
+  if (trace.response) {
+    document.getElementById('trace-modal-response').value = trace.response;
+    respWrap.style.display = 'flex';
+  } else {
+    respWrap.style.display = 'none';
+  }
+  document.getElementById('trace-modal-overlay').style.display = 'flex';
+}
+function closeTraceModal() {
+  document.getElementById('trace-modal-overlay').style.display = 'none';
+  _currentTrace = null;
+}
+function copyTraceJSON() {
+  if (!_currentTrace) return;
+  navigator.clipboard.writeText(JSON.stringify(_currentTrace, null, 2))
+    .then(() => notify('✓ Trace JSON copied'))
+    .catch(() => notify('Copy failed'));
+}
+// v7: look up the trace for an IP or edge by id and show it
+async function viewTraceFor(entityId) {
+  try {
+    const d = await apiFetch('/trace/' + entityId, 'GET');
+    if (d && d.trace) showTraceModal(d.trace, 'stored');
+    else notify(d.error || 'No trace found for this id');
+  } catch(e) { notify('Trace fetch failed: ' + e.message); }
+}
+</script>
+
+</body>
+</html>

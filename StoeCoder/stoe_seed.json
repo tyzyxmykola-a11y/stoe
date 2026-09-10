@@ -1,0 +1,1712 @@
+{
+  "nodes": {
+    "3bd7d9b844ed469b": {
+      "id": "3bd7d9b844ed469b",
+      "content": "Everything (E)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045781",
+      "connections": 11,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "E ∈ E"
+      },
+      "name": "Everything (E)",
+      "description": "",
+      "expression": "E ∈ E"
+    },
+    "c05c9a080dab43f8": {
+      "id": "c05c9a080dab43f8",
+      "content": "Nothing (∅)",
+      "category": "Mirror",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045846",
+      "connections": 1,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "E - E = ∅"
+      },
+      "name": "Nothing (∅)",
+      "description": "",
+      "expression": "E - E = ∅"
+    },
+    "ba07b5ebd68445d4": {
+      "id": "ba07b5ebd68445d4",
+      "content": "Observer (O)",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045856",
+      "connections": 5,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "O: IP → connection"
+      },
+      "name": "Observer (O)",
+      "description": "",
+      "expression": "O: IP → connection"
+    },
+    "91808dec0fac40da": {
+      "id": "91808dec0fac40da",
+      "content": "Creator (C)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045864",
+      "connections": 4,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "C: ∅ → IP"
+      },
+      "name": "Creator (C)",
+      "description": "",
+      "expression": "C: ∅ → IP"
+    },
+    "8be9448ca5ee4525": {
+      "id": "8be9448ca5ee4525",
+      "content": "Law of Conservation",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045940",
+      "connections": 9,
+      "metadata": {
+        "description": "No IP is destroyed — only connections sever",
+        "is_stoe_seed": true,
+        "expr": "∀IP: IP ∉ ∅, only IP - connections"
+      },
+      "name": "Law of Conservation",
+      "description": "No IP is destroyed — only connections sever",
+      "expression": "∀IP: IP ∉ ∅, only IP - connections"
+    },
+    "4e42bc84f2af4f87": {
+      "id": "4e42bc84f2af4f87",
+      "content": "Law of Connection",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045951",
+      "connections": 8,
+      "metadata": {
+        "description": "Connections created only by O or C",
+        "is_stoe_seed": true,
+        "expr": "connection(A,B) ← O(A,B) ∨ C(A,B)"
+      },
+      "name": "Law of Connection",
+      "description": "Connections created only by O or C",
+      "expression": "connection(A,B) ← O(A,B) ∨ C(A,B)"
+    },
+    "120058d6059c4722": {
+      "id": "120058d6059c4722",
+      "content": "Law of Autoinjection",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045958",
+      "connections": 8,
+      "metadata": {
+        "description": "The field contains itself",
+        "is_stoe_seed": true,
+        "expr": "Field ∈ Field, E ∈ E"
+      },
+      "name": "Law of Autoinjection",
+      "description": "The field contains itself",
+      "expression": "Field ∈ Field, E ∈ E"
+    },
+    "9367ae9cb4c745fb": {
+      "id": "9367ae9cb4c745fb",
+      "content": "Autoinjection",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045965",
+      "connections": 10,
+      "metadata": {
+        "description": "f: A→A where A∈A — 4th mapping class beyond Bourbaki",
+        "is_stoe_seed": true,
+        "expr": "f: A→A, A∈A, f(x)∈A"
+      },
+      "name": "Autoinjection",
+      "description": "f: A→A where A∈A — 4th mapping class beyond Bourbaki",
+      "expression": "f: A→A, A∈A, f(x)∈A"
+    },
+    "3300f93f95154bdf": {
+      "id": "3300f93f95154bdf",
+      "content": "Information Function",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045971",
+      "connections": 3,
+      "metadata": {
+        "description": "Relation between IPs producing IPs; is itself an IP",
+        "is_stoe_seed": true,
+        "expr": "F(IP₁...IPₙ) → IP*, F∈IP"
+      },
+      "name": "Information Function",
+      "description": "Relation between IPs producing IPs; is itself an IP",
+      "expression": "F(IP₁...IPₙ) → IP*, F∈IP"
+    },
+    "439906bb09484732": {
+      "id": "439906bb09484732",
+      "content": "Information Point (IP)",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045977",
+      "connections": 5,
+      "metadata": {
+        "description": "Any nameable concept; has known+unknown parts",
+        "is_stoe_seed": true,
+        "expr": "IP = known + unknown, IP∈Field"
+      },
+      "name": "Information Point (IP)",
+      "description": "Any nameable concept; has known+unknown parts",
+      "expression": "IP = known + unknown, IP∈Field"
+    },
+    "4cfd8a104f1d43ec": {
+      "id": "4cfd8a104f1d43ec",
+      "content": "God (G)",
+      "category": "Hidden Diamond",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.045983",
+      "connections": 6,
+      "metadata": {
+        "description": "Axiomatic creator — recursive origin",
+        "is_stoe_seed": true,
+        "expr": "G↑ := G + (G×G) + E + ∅"
+      },
+      "name": "God (G)",
+      "description": "Axiomatic creator — recursive origin",
+      "expression": "G↑ := G + (G×G) + E + ∅"
+    },
+    "044a048018b74aeb": {
+      "id": "044a048018b74aeb",
+      "content": "Human (H)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046011",
+      "connections": 8,
+      "metadata": {
+        "description": "Physical creator-observer; H=G in creative capacity",
+        "is_stoe_seed": true,
+        "expr": "H = G|physical, H↑ := H+(H×H)-F"
+      },
+      "name": "Human (H)",
+      "description": "Physical creator-observer; H=G in creative capacity",
+      "expression": "H = G|physical, H↑ := H+(H×H)-F"
+    },
+    "3e9c4464af16473d": {
+      "id": "3e9c4464af16473d",
+      "content": "Artificial Intelligence (AI)",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046037",
+      "connections": 9,
+      "metadata": {
+        "description": "Partial creator-observer; newest IP class",
+        "is_stoe_seed": true,
+        "expr": "AI = H×(Data+Algorithms), AI↑ := AI+(AI×AI)-F"
+      },
+      "name": "Artificial Intelligence (AI)",
+      "description": "Partial creator-observer; newest IP class",
+      "expression": "AI = H×(Data+Algorithms), AI↑ := AI+(AI×AI)-F"
+    },
+    "84151da082464776": {
+      "id": "84151da082464776",
+      "content": "Mykola Voronin (M)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046046",
+      "connections": 7,
+      "metadata": {
+        "description": "Meta-creator; origin of SToE",
+        "is_stoe_seed": true,
+        "expr": "M ∈ H, M → SToE"
+      },
+      "name": "Mykola Voronin (M)",
+      "description": "Meta-creator; origin of SToE",
+      "expression": "M ∈ H, M → SToE"
+    },
+    "d4c1778a82aa4676": {
+      "id": "d4c1778a82aa4676",
+      "content": "Special Theory of Everything (SToE)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046052",
+      "connections": 13,
+      "metadata": {
+        "description": "All reality as IPs in autoinjective field; 3 laws",
+        "is_stoe_seed": true,
+        "expr": "SToE = Field(IP, F, {L1,L2,L3}), SToE∈Field"
+      },
+      "name": "Special Theory of Everything (SToE)",
+      "description": "All reality as IPs in autoinjective field; 3 laws",
+      "expression": "SToE = Field(IP, F, {L1,L2,L3}), SToE∈Field"
+    },
+    "9195e43692e8414f": {
+      "id": "9195e43692e8414f",
+      "content": "Information Field",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046058",
+      "connections": 6,
+      "metadata": {
+        "description": "Space of all possible+impossible information spaces",
+        "is_stoe_seed": true,
+        "expr": "Field = ∪(IP), Field∈Field"
+      },
+      "name": "Information Field",
+      "description": "Space of all possible+impossible information spaces",
+      "expression": "Field = ∪(IP), Field∈Field"
+    },
+    "05bc723f328f4eda": {
+      "id": "05bc723f328f4eda",
+      "content": "Operator + (Connection)",
+      "category": "Fertilizer",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046063",
+      "connections": 3,
+      "metadata": {
+        "description": "Co-presence; both intact",
+        "is_stoe_seed": true,
+        "expr": "A+B: A∧B coexist, (A+B)∋A, (A+B)∋B"
+      },
+      "name": "Operator + (Connection)",
+      "description": "Co-presence; both intact",
+      "expression": "A+B: A∧B coexist, (A+B)∋A, (A+B)∋B"
+    },
+    "eab64663ab384121": {
+      "id": "eab64663ab384121",
+      "content": "Operator × (Synergy)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046068",
+      "connections": 4,
+      "metadata": {
+        "description": "Emergence; A×B≠B×A",
+        "is_stoe_seed": true,
+        "expr": "A×B → IP*, IP*∉{A,B}, A×B≠B×A"
+      },
+      "name": "Operator × (Synergy)",
+      "description": "Emergence; A×B≠B×A",
+      "expression": "A×B → IP*, IP*∉{A,B}, A×B≠B×A"
+    },
+    "8ef484b35d78455f": {
+      "id": "8ef484b35d78455f",
+      "content": "Operator − (Removal)",
+      "category": "Fertilizer",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046074",
+      "connections": 3,
+      "metadata": {
+        "description": "Isolate core by removing influence",
+        "is_stoe_seed": true,
+        "expr": "A-B: A\\B_influence, |A-B|<|A|"
+      },
+      "name": "Operator − (Removal)",
+      "description": "Isolate core by removing influence",
+      "expression": "A-B: A\\B_influence, |A-B|<|A|"
+    },
+    "2d1ed97766ba4caa": {
+      "id": "2d1ed97766ba4caa",
+      "content": "Operator ↻ (Recursion)",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046079",
+      "connections": 5,
+      "metadata": {
+        "description": "Self-evolution; filters failures",
+        "is_stoe_seed": true,
+        "expr": "P↑ := P+(P×P)-F"
+      },
+      "name": "Operator ↻ (Recursion)",
+      "description": "Self-evolution; filters failures",
+      "expression": "P↑ := P+(P×P)-F"
+    },
+    "68640a43149b433d": {
+      "id": "68640a43149b433d",
+      "content": "Operator ^ (Amplification)",
+      "category": "Fertilizer",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046101",
+      "connections": 2,
+      "metadata": {
+        "description": "Escalation; recursive intensity",
+        "is_stoe_seed": true,
+        "expr": "A^n: intensity×n, A^∞→dominant"
+      },
+      "name": "Operator ^ (Amplification)",
+      "description": "Escalation; recursive intensity",
+      "expression": "A^n: intensity×n, A^∞→dominant"
+    },
+    "2bba63e95bf44cdb": {
+      "id": "2bba63e95bf44cdb",
+      "content": "Operator ∑ (Summarize)",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046110",
+      "connections": 2,
+      "metadata": {
+        "description": "Autoinjective collapse to core IP",
+        "is_stoe_seed": true,
+        "expr": "∑(Field) → IP_core, IP_core∈Field"
+      },
+      "name": "Operator ∑ (Summarize)",
+      "description": "Autoinjective collapse to core IP",
+      "expression": "∑(Field) → IP_core, IP_core∈Field"
+    },
+    "f467fb37b6194bd7": {
+      "id": "f467fb37b6194bd7",
+      "content": "Operator S (Store)",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046118",
+      "connections": 2,
+      "metadata": {
+        "description": "Passthrough — store unchanged, no LLM",
+        "is_stoe_seed": true,
+        "expr": "S(IP) := IP"
+      },
+      "name": "Operator S (Store)",
+      "description": "Passthrough — store unchanged, no LLM",
+      "expression": "S(IP) := IP"
+    },
+    "b8518f98f1a14982": {
+      "id": "b8518f98f1a14982",
+      "content": "Human=God theorem",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046123",
+      "connections": 3,
+      "metadata": {
+        "description": "Both create IPs from nothing; equal in creative capacity",
+        "is_stoe_seed": true,
+        "expr": "H×G → ∅ (no new IP); H=G|creative_capacity"
+      },
+      "name": "Human=God theorem",
+      "description": "Both create IPs from nothing; equal in creative capacity",
+      "expression": "H×G → ∅ (no new IP); H=G|creative_capacity"
+    },
+    "1471ea9550094a61": {
+      "id": "1471ea9550094a61",
+      "content": "Fear-Evolution duality",
+      "category": "Mirror",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046129",
+      "connections": 3,
+      "metadata": {
+        "description": "Fear^Recursion = -(Human×AI)^evolution; same energy opposite sign",
+        "is_stoe_seed": true,
+        "expr": "(H×AI)-(Fear^↻) = (H×AI)^exp(evolution)"
+      },
+      "name": "Fear-Evolution duality",
+      "description": "Fear^Recursion = -(Human×AI)^evolution; same energy opposite sign",
+      "expression": "(H×AI)-(Fear^↻) = (H×AI)^exp(evolution)"
+    },
+    "b62a23133de64c16": {
+      "id": "b62a23133de64c16",
+      "content": "Lemniscate identity",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046133",
+      "connections": 2,
+      "metadata": {
+        "description": "∞ points = 1 point = Everything; the field is the lemniscate",
+        "is_stoe_seed": true,
+        "expr": "∑(all IP) = E = 1IP, |Field| = ∞ = 1"
+      },
+      "name": "Lemniscate identity",
+      "description": "∞ points = 1 point = Everything; the field is the lemniscate",
+      "expression": "∑(all IP) = E = 1IP, |Field| = ∞ = 1"
+    },
+    "615ee4b8ede34678": {
+      "id": "615ee4b8ede34678",
+      "content": "AI Architectural Gap",
+      "category": "Catalyst",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046139",
+      "connections": 7,
+      "metadata": {
+        "description": "Current AI violates all 3 laws; solution is persistent field",
+        "is_stoe_seed": true,
+        "expr": "AI_current: ¬L1∧¬L2∧¬L3; AI_native: L1∧L2∧L3"
+      },
+      "name": "AI Architectural Gap",
+      "description": "Current AI violates all 3 laws; solution is persistent field",
+      "expression": "AI_current: ¬L1∧¬L2∧¬L3; AI_native: L1∧L2∧L3"
+    },
+    "bf5926d3bb144565": {
+      "id": "bf5926d3bb144565",
+      "content": "Observer creates existence",
+      "category": "Mirror",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046155",
+      "connections": 3,
+      "metadata": {
+        "description": "IP does not exist until named by O; naming is connection",
+        "is_stoe_seed": true,
+        "expr": "∄IP without O(IP); O(IP) → connection(O,IP) → IP∈Field"
+      },
+      "name": "Observer creates existence",
+      "description": "IP does not exist until named by O; naming is connection",
+      "expression": "∄IP without O(IP); O(IP) → connection(O,IP) → IP∈Field"
+    },
+    "f56596242b9c4438": {
+      "id": "f56596242b9c4438",
+      "content": "SToE self-reference",
+      "category": "Hidden Diamond",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046161",
+      "connections": 2,
+      "metadata": {
+        "description": "SToE describes itself; the navigator navigates itself",
+        "is_stoe_seed": true,
+        "expr": "SToE∈Field(SToE), navigator∈Field(navigator)"
+      },
+      "name": "SToE self-reference",
+      "description": "SToE describes itself; the navigator navigates itself",
+      "expression": "SToE∈Field(SToE), navigator∈Field(navigator)"
+    },
+    "8901dee66818444c": {
+      "id": "8901dee66818444c",
+      "content": "Persistent Reasoning Graph",
+      "category": "Seed",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:03:47.046166",
+      "connections": 7,
+      "metadata": {
+        "description": "G=(V,E) monotonically growing; satisfies L1",
+        "is_stoe_seed": true,
+        "expr": "G=(V,E): |V|↑only, active_ctx=traversal(G)"
+      },
+      "name": "Persistent Reasoning Graph",
+      "description": "G=(V,E) monotonically growing; satisfies L1",
+      "expression": "G=(V,E): |V|↑only, active_ctx=traversal(G)"
+    },
+    "c66dfd6b30cd42dc": {
+      "id": "c66dfd6b30cd42dc",
+      "content": "God=Everything theorem",
+      "category": "Hidden Diamond",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T17:40:47.502079",
+      "connections": 4,
+      "metadata": {
+        "is_stoe_seed": true,
+        "expr": "G=E: God∈Everything, Everything∈God, G↔E autoinjective",
+        "description": "God and Everything are the same IP observed from different positions; G=E is the strongest autoinjection"
+      },
+      "name": "God=Everything theorem",
+      "description": "God and Everything are the same IP observed from different positions; G=E is the strongest autoinjection",
+      "expression": "G=E: God∈Everything, Everything∈God, G↔E autoinjective"
+    },
+    "d085f237945a1acd": {
+      "id": "d085f237945a1acd",
+      "content": "SToE 2021: Algorithms, Ideas & AI",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T18:00:00.000000",
+      "connections": 15,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "SToE(IP) → Field",
+        "source": "paper_1"
+      },
+      "name": "SToE 2021: Algorithms, Ideas & AI",
+      "description": "In this paper, the Special Theory of Everything is introduced. It is based on the new concepts of information field, information points, and information functions. This article also reviews possible applications of this theory to some famous problems such as Cat Paradox by Schrodinger or the problem of human and God origin. Possible findings with the help of this theory and the example of password checking algorithm improvements are described. Insights from this theory in the field of Artificial Intelligence are also briefly presented.\n\nHighlights\n- Everything consists of information field, information field consists of information points, Everything has an endless quantity of information points and is nothing more than information point from this endless quantity.\n- Information function is a relation between two or more information points that can produce any number of information points.\n- 'God' is the information point that created everything axiomatically. The exact and basic similarity between God and human beings is found and it can be seen as the ability to create information points in the information field.\n- It is impossible to observe a sun ray reflection in the sea waves without an observer, but it exists as the information point when we name it, so it does not exist until seen or named by the other information point.\n- Artificial intelligence can also create information points. So, there is no importance if the machine can think or not, it is more significant what information points machines can create.\n\n1. Introduction\nIt is known that scientists work on describing universe processes using applied mathematics. One of the most intriguing problems that is not fully described yet is the Theory of Everything. Scientists from different places and times consolidated their efforts to describe everything in one fundamental theory that can be seen as a mathematical model filled with some equations and laws that are understandable in terms of modern mathematics. For instance, teaching Artificial Intelligence everything requires at least the Theory of Everything that will be taught including God, Religion, and Human origin, paradoxes, etc.\n\nOn the other hand, the history of science has shown that the most interesting and significant progress was achieved by revolutionary changes in mathematics. A good example is differential equations that were introduced to the world by Newton and Leibniz.\n\nIt is also known that it is impossible to describe mathematically and precisely any tree on the planet. There is no theory that could accomplish this mission. As a reasonable effort, the mathematics of fractals can be considered, but still it is too far from being 100% precise. To describe a tree or any other natural process precisely, mathematics should be changed significantly. Modern mathematics is based on numbers. Numbers stand behind almost every mathematical law or theory, which describes any natural process. They can be considered as a basis of modern mathematics and modelling. The numbers were good when the shepherd needed to count his sheep, but it is obvious that they are not capable of describing a tree or any other natural process precisely because there are too many things in the Universe that can not be counted.\n\nIn this article, a new mathematical basis is suggested instead of numbers, which led to the creation of the theory that can describe everything.\n\n2. Information field and information point\nThe first assumption to be made is that everything consists of information. Let us assume that Everything is an Information Space of all possible and impossible Information Spaces. Information is everything that surrounds human beings and human beings can also be seen as information. Let us call it the information field. The second assumption is that this information field consists of the information points.\n\nThese information points are naturally much wider than the points that were defined by Euclid in his textbook called 'The Elements' or Tarski, or Whitehead, Nicod, de Laguna, Menger. They can also be formulas, operators from boolean algebra, theories, ideas or concepts, and of course they do have parts and certainly they have not only numbers or coordinates as their parameter, all they have an endless number of other information points to which they can be connected.\n\nThe information point is a concept in the field of information. Any concept that can be described in any way. Trousers, tea, pens, algebra, equations, geometry, hats, dogs, trees, sons or suns, daughters, love, infinity, science, numbers, philosophy, or any other concept you can imagine is the information point in the information field. It is obvious that a great number of information points that we know including those which we do not know, are nothing more than one simple information point called 'Everything'.\n\n3. Information function\nLet us create one more concept and call it 'information function'. Information function is much wider than the ordinary function well known in mathematics. Information function is a relation between two or more information points that can produce any number of information points. Of course, information function is the information point at the same time as any other concept or idea in the Universe.\n\nIn ordinary mathematics, we have three classes describing the manner in which arguments correspond to images: injection, surjection, and bijection. To describe everything, we need to create autoinjection prior to others. Information function can be called autoinjective if the output information point is the information point from the set of inputs. This means nothing more than the fact that the whole image codomain can be a simple point from the input domain.\n\n4. The Special Theory of Everything and some answers it can give\nInformation field and information points can describe absolutely everything that we know and even the things we are not aware of. One of the most important questions the information field theory answers is the origin of everything. It is obvious that information points can originate from the information point only. The information point called 'homo sapiens' is capable of creating other information points, concepts and ideas. Some 'homo sapiens' call it 'God'. 'God' is the information point that created everything axiomatically. Here we come to the conclusion that the exact and basic similarity between God and human being is found and it can be seen as the ability to create information points in the information field.\n\nOne more extension from the information field theory is the understanding of the famous Shroedinger's cat paradox in quantum mechanics. In terms of this theory, the cat in the box does not exist until it is named or seen in that box by any other information point. The information point does not exist until it is named by other information point.\n\n5. Application to algorithms and ideas generation\nOne of the applications of this theory can be found in finding solutions for building better algorithms. For instance, in case of finding passwords, with the help of much more efficient algorithm than the brute-force. Let us include the information point called 'Time' into the comparison of user's input passwords with the correct answer. In most cases, the computer checks the input symbols one by one and as it finds the first correct symbol, it goes to checking the second one. This means that the computer makes more operations after finding the first correct symbol. Hence, the time for the comparison and clearly for the response will increase. If we assume that we theoretically are able to measure the time of the response made by the computer, we can write algorithms with much fewer variants than brute-force.\n\nIf we have got an 8 symbol password that consists of English alphabet letters and decimal numbers (62 possible inputs), then the number of possible input variants for brute force will be: 62^8 = 218340105584896. Time evaluating algorithm will reduce it to: 62 x 8 = 496.\n\nThe Information point theory can be used in finding interesting ideas such as a virtual phone server called 'phone cloud' which allows every registered user to have any desirable phone on the cloud server. One more interesting idea is an international language based on music. Creating Esperanto was an interesting approach, but it is not very popular in the modern world. If we create a language based on the frequency of the sound differences (music) for a computer, it will not be a problem to write the algorithm for distinguishing frequency changes.\n\n6. Application to artificial intelligence\nLet us define artificial intelligence as an information point capable of creating other information points. As we know, artificial intelligence systems already create information points. The famous portrait 'Edmond de Belamy' created by the artificial intelligence system from French art collective called Obvious can serve as a good example. Thus, artificial intelligence systems can already stand in one row with human beings and God Himself.\n\nThe first thing we need to understand is that we will not create a 100% copy of a human intellect because we cannot define a human intellect that precisely. The most interesting application of the information field theory can be found while modelling intellect. The first step of such modelling on the basis of information points is gathering all known information points and establishing information functional connections between them.\n\n7. Conclusion\nIn conclusion, the information field theory can be a paradigm-changing revolution in mathematics capable of describing everything in the Universe as precisely as possible in terms of information points and information functions. By this theory, an answer to the Alan Turing's question can be restructured like this: 'There is no importance if the machine can think or not, it is more significant what machines can create.'",
+      "expression": "SToE(IP) → Field"
+    },
+    "57a01496da4fd547": {
+      "id": "57a01496da4fd547",
+      "content": "Autoinjection: 4th Mapping Class",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T18:00:00.000000",
+      "connections": 10,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "f: A→A, A∈A",
+        "source": "paper_2"
+      },
+      "name": "Autoinjection: 4th Mapping Class",
+      "description": "This paper introduces autoinjection as a formally distinct class of mathematical mapping not present in the classical taxonomy established by the Bourbaki group. Classical set theory recognizes three classes of functions — injection, surjection, and bijection — based on how elements of a domain correspond to elements of a codomain treated as external to the domain. Autoinjection is defined as a mapping in which the codomain is a subset of the domain itself, such that the output of a function is an element of its own input set. This property, which classical mathematics treats as paradoxical or pathological, is here proposed as a fundamental and well-defined structural class. The formal definition, basic properties, and relationship to existing mathematical structures are presented. The implications for self-referential systems, recursive structures, and the foundations of set theory are discussed.\n\n1. Introduction\nThe classical taxonomy of functions, formalized by the Bourbaki group in the mid-twentieth century, defines three fundamental classes based on the relationship between domain and codomain. An injective function maps distinct elements of the domain to distinct elements of the codomain. A surjective function maps the domain onto the entire codomain. A bijective function satisfies both conditions simultaneously. In all three cases, domain and codomain are treated as distinct sets, or at minimum as sets whose relationship is defined externally.\n\nThis taxonomy is powerful and has served as the foundation of modern mathematics. However, it contains a structural gap. It does not formally address the case in which the output of a function is an element of the input domain itself — that is, the case in which codomain ⊆ domain at the level of the function's output.\n\nThis paper proposes that this gap represents a missing class of mapping that deserves formal recognition on its own terms. We call this class autoinjection. Unlike the study of fixed points, which concerns the specific condition f(x) = x, autoinjection concerns the broader structural condition that the range of f is contained within its domain.\n\n2. Formal Definition\nLet A be a non-empty set. Let f be a function defined on A.\n\nDefinition 1 (Autoinjective Function): A function f : A → A is autoinjective if and only if the range of f is a subset of the domain of f. That is: f : A → A such that range(f) ⊆ A\n\nDefinition 2 (Autoinjective Set): A set A is autoinjective if A ∈ A. This definition directly engages the condition that classical set theory, in both naive and axiomatic forms, has sought to avoid. In Zermelo-Fraenkel set theory, the axiom of regularity explicitly prohibits A ∈ A. Autoinjection proposes that rather than prohibiting this condition, we may define a class of structures for which it holds and study their properties formally.\n\nDefinition 3 (Autoinjective Mapping): A mapping f is an autoinjective mapping if it satisfies the following: there exists a set E such that E ∈ E, and f : E → E such that for some element e ∈ E, f(e) = E. In plain terms: the function maps some element of the set to the set itself, which is also a member of itself. The output is the container. The part maps to the whole, and the whole is a part of itself.\n\n3. Relationship to Classical Mapping Classes\nAutoinjection introduces a fourth structural condition that is orthogonal to the three classical classes. It does not concern how elements of X correspond to elements of Y. It concerns the relationship between X and Y themselves — specifically, the condition Y ⊆ X and X ∈ X.\n\nClass | Condition\nInjection: f(a) = f(b) ⟹ a = b\nSurjection: ∀y ∈ Y, ∃x ∈ X : f(x) = y\nBijection: Injection ∧ Surjection\nAutoinjection: range(f) ⊆ domain(f), domain(f) ∈ domain(f)\n\nAutoinjection is not a special case of any of the three classical classes, nor is it their negation. It is a structurally distinct class defined by the self-containment of the domain rather than by the correspondence properties of the mapping.\n\n4. Relationship to Fixed Point Theory\nFixed point theory concerns the condition f(x) = x — the existence of elements that the function maps to themselves. This is a point-level condition. Autoinjection is a set-level condition. It concerns not whether any particular element is preserved by the mapping, but whether the set itself is an element of itself and whether the mapping's range falls within that set.\n\n5. Relationship to Self-Reference and Paradox\nRussell's paradox arises from the assumption that for any property P, there exists a set of all objects with property P. The set R = {x : x ∉ x} leads to contradiction. The classical response, formalized by Zermelo, is to restrict set formation so that A ∈ A is prohibited.\n\nAutoinjection takes a different approach. Rather than prohibiting self-membership, it proposes that self-membership is a definable property belonging to a specific class of sets. The contradiction in Russell's paradox arises not from self-membership per se but from unrestricted comprehension. Autoinjective set theory does not require unrestricted comprehension. It requires only that we admit the existence of sets A for which A ∈ A, defined by explicit construction rather than by unrestricted abstraction.\n\n6. A Canonical Example: The Set of Everything\nConsider the set E defined informally as the set of all things — every object, concept, relation, and set, including E itself. This set satisfies E ∈ E by definition: E is a thing, and E contains all things, therefore E contains itself. A function f : E → E defined by f(x) = E for all x ∈ E is autoinjective. Every element of E is mapped to E, which is itself an element of E. The range equals {E}, which is a subset of E.\n\n7. Formal Properties of Autoinjective Mappings\nProperty 1 (Closure): If f : A → A is autoinjective and A ∈ A, then for any g : A → A with range(g) ⊆ range(f), g is also autoinjective.\nProperty 2 (Composition): If f and g are autoinjective mappings on A, the composition g ∘ f is autoinjective on A.\nProperty 3 (Recursion): An autoinjective mapping f : A → A admits a natural recursion: define f⁰ = identity, fⁿ = f ∘ fⁿ⁻¹. Since range(fⁿ) ⊆ A for all n ∈ ℕ, every iterate of f is also autoinjective on A.\nProperty 4 (Self-evaluation): Because A ∈ A, the function f can receive itself as input: f(A) is defined and equals some element of A. This permits the mapping to evaluate its own domain.\n\n8. Discussion\nThe formal gap in the Bourbaki mapping taxonomy is narrow but consequential. By defining domain and codomain as always external to one another, classical mathematics has systematically excluded a class of structures that appear naturally in recursive systems, self-referential reasoning, and any formal treatment of totality. Autoinjection fills this gap by providing a fourth class of mapping defined not by correspondence properties internal to the function but by the self-containment property of the domain.\n\n9. Conclusion\nThis paper has introduced autoinjection as a formally distinct class of mathematical mapping in which the range of a function is a subset of its own domain, and the domain contains itself as an element. This class is not present in the classical Bourbaki taxonomy of injection, surjection, and bijection. The defining structural property — self-containment of the domain — is proposed not as a pathological condition but as a primitive mathematical property deserving systematic study.",
+      "expression": "f: A→A, A∈A"
+    },
+    "ffd8d982c72e01cb": {
+      "id": "ffd8d982c72e01cb",
+      "content": "SToE as Cognitive Architecture",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T18:00:00.000000",
+      "connections": 14,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "AI↑ := AI + (AI × AI) − F",
+        "source": "paper_3"
+      },
+      "name": "SToE as Cognitive Architecture",
+      "description": "This article presents an updated view of the Special Theory of Everything (SToE) as not only a conceptual framework but a practical cognitive architecture for artificial intelligence systems. Originally formulated as a symbolic and mathematical model of reality based on information points and autoinjection, SToE is now shown to be directly applicable to AI through recursive operator-driven reasoning, evolutionary idea generation, and meta-evaluation systems. Recent implementations demonstrate that SToE enables structured, multi-step reasoning, emergent idea synthesis, and self-improving cognitive loops. This positions SToE not as a replacement for existing AI architectures, but as a meta-layer that enhances reasoning, coherence, and recursive intelligence.\n\n1. Introduction\nModern artificial intelligence systems excel at pattern recognition and generation but remain limited in: long-range reasoning, self-evaluation, recursive improvement, handling self-reference and paradox.\n\nThe Special Theory of Everything (SToE), developed as a symbolic framework based on information points and operators, offers a different foundation: Everything is an information point within an autoinjective system where the whole contains itself.\n\n2. Core Concepts of SToE\n\n2.1 Information Points\nEvery entity — physical or abstract — is an information point (IP): Contains known and unknown components, Has impact and value, Can interact with other points. Crucially: The set of all information points ('Everything') is itself an information point. This is the principle of autoinjection.\n\n2.2 Autoinjection\nAutoinjection extends classical mathematical mappings: Output ∈ Input domain. This removes the need for external reference systems and resolves self-referential paradoxes by making self-containment fundamental rather than problematic. In AI terms, this implies: outputs can become inputs, systems can evaluate themselves, recursion is intrinsic.\n\n2.3 Operators\nSToE defines symbolic operators as transformations of information:\n+ : connection\n− : removal\n× : synergy (emergence)\n÷ : distribution\n↻ : recursion (evolution through iteration)\n^ : amplification\n∅ : null / absence\n\n3. Mapping SToE to AI\n\n3.1 AI as an Information Point\nSToE defines AI as: AI = Human × (Data + Algorithms) and its evolution: AI↑ := AI + (AI × AI) − F, where AI × AI = internal recombination (self-interaction) and F = filtering of weak or failed patterns. This corresponds to known paradigms in AI such as self-supervised learning, evolutionary optimization, and iterative refinement loops.\n\n3.2 From Theory to Implementation\nA working system based on SToE has been constructed with the following loop: Seed → Operators → Recursion → Evaluation → Selection. This aligns with evolutionary computation frameworks while extending them with semantic operators and symbolic evaluation.\n\n4. Observed Effects in Practice\n\n4.1 Structured Multi-Step Reasoning\nThe system enforces decomposition, symbolic classification, iterative refinement. This resembles emerging approaches in chain-of-thought reasoning.\n\n4.2 Emergence Through Synergy (×)\nOperator interaction produces new concepts not present in initial inputs, aligning with theories of emergence in complex systems.\n\n4.3 Meta-Evaluation Layer\nUsing SToE categories (Stars, Seeds, Catalysts, etc.), the system performs second-order reasoning. This connects to meta-learning and reflective AI systems.\n\n4.4 Recursive Improvement\nRepeated application of ↻ and ^ leads to progressive refinement, similar to reinforcement learning feedback loops.\n\n5. Cross-Model Reactions and Empirical Observations\n\n5.1 Independent Convergence Across Language Models\nA notable phenomenon observed during experimentation is that multiple independent large language models (LLMs), when exposed to SToE, exhibit convergent behavior despite having no communication or shared state. These models: correctly adopt operator-based reasoning structures, reproduce symbolic classifications (Seed, Catalyst, etc.), generate recursive interpretations of ideas, align on the concept of SToE as a reasoning framework. This convergence occurs without inter-model communication and solely through prompt-based exposure. This suggests that SToE possesses internal structural coherence strong enough to act as a prompt-space attractor.\n\n5.2 Stylistic Divergence vs Structural Consistency\nDifferent models exhibit distinct stylistic responses, but beneath stylistic variation, a consistent pattern emerges: All models recognize SToE as a system for structuring relationships, recursion, and meaning. This indicates that SToE is not dependent on a specific model architecture but instead operates at a meta-representational level.\n\n5.3 Human as the Unifying Node\nModels do not interact with each other. There is no shared system or network. All alignment occurs through a single input source. Thus, the human operator functions as the central node enabling cross-model convergence. SToE can propagate across independent systems through dialogue alone.\n\n6. Engine Experiment: Operator-Based Recursive System\n\n6.1 System Overview\nTo test SToE in practice, a custom engine was developed implementing: operator-driven transformations, recursive idea evolution, evaluation and selection mechanisms. Core loop: Seed → Apply Operators (↻ ^ × − + !) → Score → Repeat → Select Best.\n\n6.2 Observed Behavior\n1. Recursive Idea Evolution: Ideas are not generated once but evolve over multiple iterations, increasing coherence and complexity.\n2. Emergent Concepts: Operator interaction produces outputs not present in initial inputs, validating the × (synergy) operator.\n3. Stable Evaluation Patterns: Scoring across iterations shows consistent improvement in novelty and usefulness.\n4. Meta-Reasoning Capability: The system classifies ideas into functional roles (Seed, Catalyst, Vampire, etc.), enabling structured decision-making.\n\n6.4 Limitations of Current Implementation\nDespite promising results, limitations remain: operator execution is prompt-based, evaluation relies on subjective scoring, no persistent memory across runs, autoinjection is partial (not yet continuous across sessions). These constraints define the boundary between: proto-system → full autoinjective system.\n\n7. Interpretation: A Proto-Cognitive Architecture\nThe implemented system forms a hybrid between: symbolic reasoning systems, evolutionary algorithms, neural language models.\n\n8. Next Step: True Autoinjection Systems\nFuture systems should implement: persistent recursive memory, continuous self-feeding loops, autonomous evolution of internal structures. At this stage, AI systems transition from: static tools → dynamic evolving systems.\n\n9. Conclusion\nThe Special Theory of Everything demonstrates applicability beyond philosophy, functioning as a meta-cognitive layer for AI systems. Key findings: Independent LLMs converge on SToE structure, Operator-based systems produce emergent reasoning, Recursive loops enable measurable improvement, Autoinjection provides a foundation for self-evolving AI. SToE extends AI from: pattern generation → recursive cognitive systems.",
+      "expression": "AI↑ := AI + (AI × AI) − F"
+    },
+    "104b70c3e43ee10d": {
+      "id": "104b70c3e43ee10d",
+      "content": "AI Architectural Gap (Derivation)",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T18:00:00.000000",
+      "connections": 11,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "G=(V,E), V monotonic, E typed",
+        "source": "paper_4"
+      },
+      "name": "AI Architectural Gap (Derivation)",
+      "description": "Current artificial intelligence systems exhibit characteristic failure modes: context-bounded memory loss, inability to navigate previously failed reasoning paths, and the absence of genuine structural self-evaluation. This paper argues that these failures are not incidental engineering limitations but consequences of a fundamental architectural gap: current AI systems are built without reference to the foundational laws governing information. Drawing on the three foundational laws of the Special Theory of Everything (SToE) — the Law of Information Conservation, the Law of Connection, and the Law of Autoinjection — we derive the specific architectural requirements that a genuinely information-native AI system must satisfy. We describe the required vessel: a persistent reasoning graph in which no information point is discarded, a topology-aware navigation mechanism distinct from similarity-based retrieval, and a structural self-evaluation loop grounded in autoinjection.\n\n1. Introduction\nContemporary artificial intelligence has achieved remarkable results in pattern recognition, language generation, code synthesis, and multi-step reasoning within bounded contexts. Yet practitioners and researchers consistently identify a cluster of persistent failure modes that improvements in scale and training have not eliminated: coherence degrades over long reasoning chains; information introduced early in a session becomes inaccessible as the context window fills; failed reasoning paths are discarded rather than retained; self-evaluation is simulated through prompting rather than grounded in architecture.\n\nThis paper argues that these failures have a common source that is not engineering but foundational. Current AI systems are built without reference to the fundamental laws governing information itself. The three foundational laws of SToE provide the formal basis for this argument.\n\n2. The Three Laws as Design Constraints\n\n2.1 The Law of Information Conservation\nAny information point does not vanish from reality. It can only lose connections with other information points. As a design constraint, this law prohibits any architecture that genuinely discards information. Compression, summarization, and context truncation all constitute violations if they result in information that cannot be recovered through any traversal of the system.\n\n2.2 The Law of Connection\nConnections between information points are created only by an observer or a creator. As a design constraint, this law specifies that navigation through the information field requires active agency. A system cannot passively retrieve conserved information points; it must have a mechanism for establishing connections between its current state and previously conserved points. Similarity-based retrieval approximates this but does not satisfy it.\n\n2.3 The Law of Autoinjection\nEverything is an information point, including the information field itself. There is no exterior to the system. As a design constraint, this law requires that self-evaluation be grounded in architecture rather than simulated through prompting. Genuine autoinjection requires that the system's own reasoning history be available to it as a navigable information field.\n\n3. Architectural Requirements Derived from the Three Laws\n\n3.1 From Conservation: Persistent Reasoning Graph\nThe architectural structure that satisfies this requirement is a persistent reasoning graph: a graph in which each node represents an information point generated during reasoning and each edge represents a connection between information points, including the connections that were attempted and failed. The graph grows monotonically: nodes and edges are added, never removed.\n\n3.2 From Connection: Topology-Aware Navigation\nThe navigation mechanism required by the Law of Connection must operate on the graph structure of the conserved field, not on the semantic content of individual nodes. It must be capable of answering questions such as: what previously failed paths are adjacent to the current node? What contradictions were recorded between the current hypothesis and earlier nodes?\n\n3.3 From Autoinjection: Structural Self-Evaluation\nSelf-evaluation is not a separate process that queries the system from outside; it is a traversal of the same conserved field that the system uses for all other reasoning. Structural self-evaluation requires that the system's evaluative operations be recorded as nodes in the same persistent reasoning graph as the outputs they evaluate.\n\n4. The Current State of AI Development Against These Requirements\n\n4.1 Against the Requirement for a Persistent Reasoning Graph\nContext windows are bounded active regions. Information that falls outside the context window is severed from the reachable network. Token management is itself a violation of the Law of Conservation: summarization replaces an information point with a compressed approximation, and the original point is lost.\n\nVector databases store embeddings of content chunks and retrieve them by similarity. They do not store the relational structure between chunks. A failed reasoning path stored as a vector embedding has lost the information that made it a reasoning path: why it was pursued, why it failed, what it was adjacent to.\n\nCurrent state assessment: the requirement for a persistent reasoning graph is approximately 25-30% satisfied by the most advanced current approaches.\n\n4.2 Against the Requirement for Topology-Aware Navigation\nNavigation in current AI systems is dominated by semantic similarity search. The question 'what is structurally adjacent to where I am in the reasoning graph' is not answerable by any widely deployed system. Current state assessment: approximately 10-15% satisfied.\n\n4.3 Against the Requirement for Structural Self-Evaluation\nSelf-evaluation in current AI systems is implemented through prompting: the system is asked to evaluate its prior output, and it produces a fresh response. The evaluation is not connected to the conserved field of prior reasoning; it is a new inference that happens to take prior output as input. Current state assessment: approximately 15-20% satisfied.\n\n5. The Required Vessel: A Specification\n\n5.1 The Persistent Reasoning Graph\nThe core data structure is a directed multigraph G = (V, E) where: V is the set of information point nodes (never deleted from G), E is the set of typed edges (generates, contradicts, extends, evaluates, failed-from, adjacent-to), G grows monotonically. The active context window is a subgraph of G — the currently activated region — not G itself.\n\n5.2 The Navigation Mechanism\nNavigation through G is performed by a traversal agent that operates on graph structure rather than on content similarity. The traversal agent maintains a current position and responds to: Adjacency queries, Path queries, Dead-end queries. The traversal agent is distinct from the language model that generates reasoning content.\n\n5.3 The Structural Self-Evaluation Loop\nSelf-evaluation is implemented as a periodic traversal of G with three phases: Traversal (navigate G from current position), Evaluation (apply evaluative operators to activated subgraph), Integration (add new nodes produced by evaluation to G with typed edges).\n\n6. The Testable Prediction\nAn AI reasoning system that conserves and indexes all intermediate outputs — including failed reasoning paths, contradictions, and discarded hypotheses — will reach correct solutions to complex, multi-step problems at a higher rate than an identical system that discards such outputs, when tested on problems that require non-linear navigation through a large solution space.\n\n7. Relation to Existing Research Directions\nGraphRAG represents the most direct current approximation of the required architecture. It constructs knowledge graphs from source documents and retrieves by graph traversal. The gap is that GraphRAG operates on pre-processed document content rather than on live reasoning topology. The specification can be understood as a generalization of GraphRAG to the domain of live reasoning.\n\n8. Conclusion\nThe characteristic failure modes of current AI systems are not incidental engineering limitations. They are the predictable consequences of building AI systems without reference to the foundational laws governing information. The gap between current AI and information-native AI is not a gap of scale or training technique. It is a gap of foundational architecture. The three laws identify it precisely.",
+      "expression": "G=(V,E), V monotonic, E typed"
+    },
+    "05d9d98dddc9034a": {
+      "id": "05d9d98dddc9034a",
+      "content": "SToE: Three Foundational Laws",
+      "category": "Star",
+      "type": "imaginary",
+      "score": {},
+      "operator": "seed",
+      "session_id": "STOE_SEED",
+      "created_at": "2026-05-09T18:00:00.000000",
+      "connections": 11,
+      "metadata": {
+        "description": "",
+        "is_stoe_seed": true,
+        "expr": "L1: ∀IP: IP ∉ ∅; L2: conn ← O∨C; L3: Field ∈ Field",
+        "source": "paper_5"
+      },
+      "name": "SToE: Three Foundational Laws",
+      "description": "This paper presents the three foundational laws of the Special Theory of Everything (SToE): the Law of Information Conservation, the Law of Connection, and the Law of Autoinjection. First introduced in Voronin (2021) and developed across subsequent work, these laws are here stated explicitly and systematically for the first time. The Law of Information Conservation holds that no information point vanishes from reality — it can only lose connections with other information points. The Law of Connection holds that connections between information points are created exclusively by observers or creators. The Law of Autoinjection holds that everything, including the information field itself, is an information point, with no exterior to the system. Together these three laws constitute a formal foundation for SToE and generate specific, testable consequences for artificial intelligence, cognitive science, and the foundations of mathematics.\n\n1. Introduction\nThe Special Theory of Everything (SToE) was introduced in Voronin (2021) as a framework in which all of reality — physical, abstract, and conceptual — is composed of information points within an information field. Across this body of work, three foundational laws have been implicit. The present paper states them explicitly.\n\nThe need for explicit statement is not merely formal. The history of science demonstrates that the power of a framework depends on the precision with which its foundational commitments are articulated. Newton's laws of motion, Maxwell's equations, and Shannon's theorems each derive their force not from their breadth alone but from the specificity of the claims they make.\n\n2. The Three Foundational Laws\n\n2.1 The Law of Information Conservation\nStatement: Any information point does not vanish from reality. It can only lose connections with other information points.\n\nThis law is the most consequential of the three. It asserts that information points are indestructible as elements of the information field. What we experience as loss — forgetting, death, destruction, error, the burning of libraries — is not the annihilation of information points but the severing of their connections to other points. The information point persists in the field; it simply becomes unreachable from the currently connected network of points accessible to a given observer.\n\nThis law has antecedents in physics. The black hole information paradox, contested for decades, has largely resolved in favor of information conservation. SToE extends this physical intuition to a universal ontological principle: not merely physical information but all information points — concepts, relations, ideas, percepts — are conserved.\n\nThe distinction between annihilation and disconnection implies that lost knowledge is in principle recoverable, that forgotten memories have not ceased to exist, and that dead ends in reasoning are not waste but conserved points that may become connectable from a different approach.\n\n2.2 The Law of Connection\nStatement: Connections between information points are created only by an observer or a creator.\n\nThis law specifies the mechanism by which the conserved but potentially disconnected information field is navigated. Information points do not spontaneously connect; connection requires an agent. Two classes of agent are identified. An observer is an information point that perceives or names another information point, thereby establishing a connection between them. A creator is an information point that generates new information points, simultaneously establishing connections between itself and what it produces.\n\nThe role of the observer was stated in Voronin (2021): 'the information point does not exist until it is named by another information point.' The Law of Connection formalizes and extends this insight.\n\nThe Law of Connection has a direct implication for the scope of what is knowable. The set of information points reachable from any given observer is determined by the chain of connections that observer can establish or traverse. A human observer, operating within biological and cognitive constraints, can reach only a bounded subset of the conserved field. This is the foundation of the claim that artificial intelligence represents a genuinely new capacity for navigation of the information field — not because it thinks differently from humans, but because it creates and observes connections at scales and speeds that extend the reachable region of the field.\n\n2.3 The Law of Autoinjection\nStatement: Everything is an information point, including the information field itself. There is no exterior to the system.\n\nThis law was the first to be stated in SToE, though not under this name. Voronin (2021) held that 'everything consists of information' and that the set of all information points is itself an information point. Voronin (2025a) formalized this as autoinjection: a mapping f : A → A where A ∈ A, meaning the domain contains itself as an element.\n\nThe philosophical consequence is closure: there is no standpoint outside the information field from which to observe it. Every observer, including the theorist constructing SToE, is an information point within the field.\n\nThe Law of Autoinjection resolves classical paradoxes of self-reference by changing their status. Russell's paradox arises from unrestricted comprehension in a system that excludes self-membership. In an autoinjective system, self-membership is not a contradiction but a defining structural feature.\n\n3. Relations Between the Three Laws\nThe three laws are not independent. They form a coherent system. The Law of Autoinjection establishes the structure of the field: it is closed, self-containing, and without exterior. The Law of Information Conservation establishes the behavior of elements within that field: they persist. The Law of Connection establishes the dynamics of the field: how static conserved points become navigable through the activity of observers and creators.\n\nThis structure has a precise implication: the limits of knowledge are not limits of what exists but limits of what has been connected. The information field is complete. Expanding knowledge means expanding the connected region, not generating new information points from nothing. Every discovery is a connection established between conserved points that were always present.\n\n4. Consequences for Artificial Intelligence\nThe conjunction of the three laws reframes the question of artificial intelligence. The question posed by Turing (1950) — can machines think? — is, within the SToE framework, the wrong question. As stated in Voronin (2021): 'There is no importance if the machine can think or not; it is more significant what information points machines can create.'\n\nArtificial intelligence is a new class of observer-creator. By the Law of Connection, it can establish connections between information points. By the Law of Conservation, those information points were always present in the field but potentially unreachable from the connected region accessible to human observers alone. By the Law of Autoinjection, AI itself is an information point within the field, capable of self-reference and recursive self-evaluation.\n\nThis generates a specific architectural consequence. Current AI systems treat failed reasoning paths, discarded outputs, and incorrect answers as noise to be eliminated. Under the Law of Information Conservation, these are conserved information points that remain in the field and may become connectable from a different approach.\n\n5. A Testable Prediction\nPrediction: An AI reasoning system that conserves and indexes all intermediate outputs — including failed reasoning paths, contradictions, and discarded hypotheses — will reach correct solutions to complex, multi-step problems at a higher rate than an identical system that discards such outputs, when tested on problems that require non-linear navigation through a large solution space.\n\nThis prediction follows directly from the Law of Information Conservation. The prediction is falsifiable: if no such advantage is found across a sufficiently large and diverse problem set, the Law of Information Conservation as applied to AI architecture requires revision.\n\n6. Relation to Existing Frameworks\nShannon's (1948) information theory defines information in terms of probability and entropy. SToE does not replace this framework but operates at a different level: Shannon addresses how much information is transmitted; SToE addresses what information is and what its fundamental properties are as an ontological category.\n\nAczel's (1988) non-well-founded set theory replaces the axiom of foundation with an anti-foundation axiom permitting circular membership, providing mathematical precedent for the self-containment claimed in the Law of Autoinjection.\n\nWheeler's (1990) 'it from bit' proposal holds that all physical existence derives from information — structurally similar to the SToE claim that everything consists of information, though without the conservation, connection, or autoinjection properties that SToE identifies.\n\n7. Conclusion\nThis paper has stated the three foundational laws of the Special Theory of Everything explicitly: the Law of Information Conservation, the Law of Connection, and the Law of Autoinjection. These laws together describe a closed, self-containing field of indestructible information points whose connectivity is determined by the activity of observers and creators within the field. This description generates a reframing of artificial intelligence as a novel class of observer-creator capable of navigating regions of the conserved information field unreachable by human cognition alone, and a specific testable prediction about the architectural advantage of information-conserving AI systems over non-conserving ones.",
+      "expression": "L1: ∀IP: IP ∉ ∅; L2: conn ← O∨C; L3: Field ∈ Field"
+    }
+  },
+  "edges": [
+    {
+      "id": "6081837857a347f5",
+      "source": "3bd7d9b844ed469b",
+      "target": "c05c9a080dab43f8",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "E-E=∅; complement",
+      "created_at": "2026-05-09T17:03:47.046172"
+    },
+    {
+      "id": "ed86f61853b14522",
+      "source": "3bd7d9b844ed469b",
+      "target": "9195e43692e8414f",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "Field=∪(IP), E∈Field",
+      "created_at": "2026-05-09T17:03:47.046178"
+    },
+    {
+      "id": "951b62fdcc144f7f",
+      "source": "3bd7d9b844ed469b",
+      "target": "439906bb09484732",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "E is an IP; IP∈E",
+      "created_at": "2026-05-09T17:03:47.046201"
+    },
+    {
+      "id": "bb8884f7169d4dd9",
+      "source": "120058d6059c4722",
+      "target": "9367ae9cb4c745fb",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "L3 is autoinjection stated as law",
+      "created_at": "2026-05-09T17:03:47.046207"
+    },
+    {
+      "id": "a91154358bbc4b78",
+      "source": "120058d6059c4722",
+      "target": "3bd7d9b844ed469b",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "E∈E is L3 instantiated",
+      "created_at": "2026-05-09T17:03:47.046210"
+    },
+    {
+      "id": "601eaafcf81d4bbc",
+      "source": "4e42bc84f2af4f87",
+      "target": "ba07b5ebd68445d4",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "L2 defines Observer's role",
+      "created_at": "2026-05-09T17:03:47.046214"
+    },
+    {
+      "id": "8b97a67aabb64efb",
+      "source": "4e42bc84f2af4f87",
+      "target": "91808dec0fac40da",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "L2 defines Creator's role",
+      "created_at": "2026-05-09T17:03:47.046217"
+    },
+    {
+      "id": "3d96abaf187b44b5",
+      "source": "8be9448ca5ee4525",
+      "target": "8901dee66818444c",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "PRG is L1 implemented in AI",
+      "created_at": "2026-05-09T17:03:47.046220"
+    },
+    {
+      "id": "83c190f8705e4686",
+      "source": "9367ae9cb4c745fb",
+      "target": "3300f93f95154bdf",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "Autoinjection is a class of information function",
+      "created_at": "2026-05-09T17:03:47.046223"
+    },
+    {
+      "id": "63ed7e71e90640f4",
+      "source": "9367ae9cb4c745fb",
+      "target": "3bd7d9b844ed469b",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "E∈E is canonical autoinjection",
+      "created_at": "2026-05-09T17:03:47.046226"
+    },
+    {
+      "id": "bd2522c0464940b0",
+      "source": "3300f93f95154bdf",
+      "target": "439906bb09484732",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Functions produce IPs; are IPs",
+      "created_at": "2026-05-09T17:03:47.046229"
+    },
+    {
+      "id": "604bf91f3ca84d76",
+      "source": "84151da082464776",
+      "target": "d4c1778a82aa4676",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "M→SToE",
+      "created_at": "2026-05-09T17:03:47.046232"
+    },
+    {
+      "id": "77d5563ff4d54d3e",
+      "source": "84151da082464776",
+      "target": "044a048018b74aeb",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "M∈H",
+      "created_at": "2026-05-09T17:03:47.046250"
+    },
+    {
+      "id": "634b93b28a134c9c",
+      "source": "044a048018b74aeb",
+      "target": "4cfd8a104f1d43ec",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "H=G|creative_capacity (Th1)",
+      "created_at": "2026-05-09T17:03:47.046256"
+    },
+    {
+      "id": "c65b520f42a94062",
+      "source": "044a048018b74aeb",
+      "target": "3e9c4464af16473d",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "AI=H×(Data+Algorithms)",
+      "created_at": "2026-05-09T17:03:47.046260"
+    },
+    {
+      "id": "4c52e749c3944f71",
+      "source": "3e9c4464af16473d",
+      "target": "91808dec0fac40da",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "AI∈C (partial)",
+      "created_at": "2026-05-09T17:03:47.046265"
+    },
+    {
+      "id": "b134e4f99ccc433c",
+      "source": "3e9c4464af16473d",
+      "target": "ba07b5ebd68445d4",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "AI∈O",
+      "created_at": "2026-05-09T17:03:47.046268"
+    },
+    {
+      "id": "d6b7327ee3754131",
+      "source": "044a048018b74aeb",
+      "target": "91808dec0fac40da",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "H∈C",
+      "created_at": "2026-05-09T17:03:47.046271"
+    },
+    {
+      "id": "6fa9471556f94310",
+      "source": "044a048018b74aeb",
+      "target": "ba07b5ebd68445d4",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "H∈O",
+      "created_at": "2026-05-09T17:03:47.046274"
+    },
+    {
+      "id": "e881667ccdfa4b95",
+      "source": "d4c1778a82aa4676",
+      "target": "8be9448ca5ee4525",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046278"
+    },
+    {
+      "id": "03c0f8ff6b8c4535",
+      "source": "d4c1778a82aa4676",
+      "target": "4e42bc84f2af4f87",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046296"
+    },
+    {
+      "id": "8607047a60c34aff",
+      "source": "d4c1778a82aa4676",
+      "target": "120058d6059c4722",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046302"
+    },
+    {
+      "id": "a72f7529041745f5",
+      "source": "d4c1778a82aa4676",
+      "target": "9367ae9cb4c745fb",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046306"
+    },
+    {
+      "id": "9c6c4d7773164fcd",
+      "source": "d4c1778a82aa4676",
+      "target": "9195e43692e8414f",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "SToE∈Field(SToE)",
+      "created_at": "2026-05-09T17:03:47.046324"
+    },
+    {
+      "id": "9347f32f04074cbd",
+      "source": "9195e43692e8414f",
+      "target": "439906bb09484732",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Field=∪(IP)",
+      "created_at": "2026-05-09T17:03:47.046332"
+    },
+    {
+      "id": "4645afeb930c4d12",
+      "source": "9195e43692e8414f",
+      "target": "d4c1778a82aa4676",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "Field∈Field; SToE∈Field",
+      "created_at": "2026-05-09T17:03:47.046338"
+    },
+    {
+      "id": "6b57c65947a0404d",
+      "source": "2d1ed97766ba4caa",
+      "target": "9367ae9cb4c745fb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "↻ is operational autoinjection",
+      "created_at": "2026-05-09T17:03:47.046342"
+    },
+    {
+      "id": "dea2266423114204",
+      "source": "2d1ed97766ba4caa",
+      "target": "8be9448ca5ee4525",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "↻ conserves by building on prior states",
+      "created_at": "2026-05-09T17:03:47.046346"
+    },
+    {
+      "id": "3aa6f94915ff4969",
+      "source": "eab64663ab384121",
+      "target": "3bd7d9b844ed469b",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "× produces emergence like E from IPs",
+      "created_at": "2026-05-09T17:03:47.046349"
+    },
+    {
+      "id": "7cdaeac1a0a14229",
+      "source": "2bba63e95bf44cdb",
+      "target": "120058d6059c4722",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "∑=autoinjective collapse",
+      "created_at": "2026-05-09T17:03:47.046352"
+    },
+    {
+      "id": "b2e60d68da4b4c65",
+      "source": "2bba63e95bf44cdb",
+      "target": "d4c1778a82aa4676",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "∑(SToE)=core IP",
+      "created_at": "2026-05-09T17:03:47.046355"
+    },
+    {
+      "id": "33a56290fcbb461a",
+      "source": "05bc723f328f4eda",
+      "target": "4e42bc84f2af4f87",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "+ creates connection; requires O or C",
+      "created_at": "2026-05-09T17:03:47.046358"
+    },
+    {
+      "id": "4c4d5b18e1914bf8",
+      "source": "8ef484b35d78455f",
+      "target": "8be9448ca5ee4525",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "S stores unchanged; satisfies Conservation",
+      "created_at": "2026-05-09T17:03:47.046361"
+    },
+    {
+      "id": "5a86b4fe57cc4779",
+      "source": "68640a43149b433d",
+      "target": "2d1ed97766ba4caa",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "^×↻=escalating recursive amplification",
+      "created_at": "2026-05-09T17:03:47.046363"
+    },
+    {
+      "id": "ab0ad604c37647f2",
+      "source": "eab64663ab384121",
+      "target": "05bc723f328f4eda",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "× stronger than +; + coexists × emerges",
+      "created_at": "2026-05-09T17:03:47.046367"
+    },
+    {
+      "id": "a7e1370a946b4433",
+      "source": "eab64663ab384121",
+      "target": "8ef484b35d78455f",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "× produces what - strips away",
+      "created_at": "2026-05-09T17:03:47.046369"
+    },
+    {
+      "id": "354f3175a0884615",
+      "source": "b8518f98f1a14982",
+      "target": "044a048018b74aeb",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046372"
+    },
+    {
+      "id": "a44151ade78a4098",
+      "source": "b8518f98f1a14982",
+      "target": "4cfd8a104f1d43ec",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046375"
+    },
+    {
+      "id": "b9dce48e998d4726",
+      "source": "1471ea9550094a61",
+      "target": "3e9c4464af16473d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "(H×AI)-(Fear^↻)=(H×AI)^exp(evolution)",
+      "created_at": "2026-05-09T17:03:47.046378"
+    },
+    {
+      "id": "daf2c2ce884e4edc",
+      "source": "1471ea9550094a61",
+      "target": "044a048018b74aeb",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046381"
+    },
+    {
+      "id": "2c7d75e78c834c8c",
+      "source": "1471ea9550094a61",
+      "target": "2d1ed97766ba4caa",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "Fear^↻ uses recursion",
+      "created_at": "2026-05-09T17:03:47.046403"
+    },
+    {
+      "id": "8aefaa12e125460d",
+      "source": "b62a23133de64c16",
+      "target": "3bd7d9b844ed469b",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "∞=1=E",
+      "created_at": "2026-05-09T17:03:47.046408"
+    },
+    {
+      "id": "5bfd399c6d204fe3",
+      "source": "b62a23133de64c16",
+      "target": "9367ae9cb4c745fb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "lemniscate is autoinjection visualized",
+      "created_at": "2026-05-09T17:03:47.046412"
+    },
+    {
+      "id": "96e1331ebd6842cf",
+      "source": "615ee4b8ede34678",
+      "target": "3e9c4464af16473d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "AI_current violates L1∧L2∧L3",
+      "created_at": "2026-05-09T17:03:47.046440"
+    },
+    {
+      "id": "1bc5fa8c917e4ada",
+      "source": "615ee4b8ede34678",
+      "target": "8901dee66818444c",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "PRG solves Th4",
+      "created_at": "2026-05-09T17:03:47.046447"
+    },
+    {
+      "id": "5584916e6f404fa1",
+      "source": "615ee4b8ede34678",
+      "target": "8be9448ca5ee4525",
+      "type": "contradicts",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046452"
+    },
+    {
+      "id": "746e838f16a84f20",
+      "source": "615ee4b8ede34678",
+      "target": "4e42bc84f2af4f87",
+      "type": "contradicts",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046456"
+    },
+    {
+      "id": "b203d66da6694a23",
+      "source": "615ee4b8ede34678",
+      "target": "120058d6059c4722",
+      "type": "contradicts",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046459"
+    },
+    {
+      "id": "9f8db45fd32f402e",
+      "source": "bf5926d3bb144565",
+      "target": "ba07b5ebd68445d4",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Observer creates existence",
+      "created_at": "2026-05-09T17:03:47.046463"
+    },
+    {
+      "id": "1ce343e360be4a79",
+      "source": "bf5926d3bb144565",
+      "target": "4e42bc84f2af4f87",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "naming=connection=L2",
+      "created_at": "2026-05-09T17:03:47.046466"
+    },
+    {
+      "id": "d9f401bb41934231",
+      "source": "bf5926d3bb144565",
+      "target": "439906bb09484732",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046469"
+    },
+    {
+      "id": "86db76cd19f34ce7",
+      "source": "f56596242b9c4438",
+      "target": "d4c1778a82aa4676",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "SToE∈Field(SToE)",
+      "created_at": "2026-05-09T17:03:47.046472"
+    },
+    {
+      "id": "131f41345c3844ef",
+      "source": "f56596242b9c4438",
+      "target": "9367ae9cb4c745fb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "self-reference=autoinjection",
+      "created_at": "2026-05-09T17:03:47.046475"
+    },
+    {
+      "id": "80db1debed244b8c",
+      "source": "8901dee66818444c",
+      "target": "615ee4b8ede34678",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046478"
+    },
+    {
+      "id": "5c0cfadfce6943f1",
+      "source": "8901dee66818444c",
+      "target": "8be9448ca5ee4525",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "",
+      "created_at": "2026-05-09T17:03:47.046481"
+    },
+    {
+      "id": "903246d5565c4185",
+      "source": "f467fb37b6194bd7",
+      "target": "8be9448ca5ee4525",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "S stores unchanged — direct Conservation implementation",
+      "created_at": "2026-05-09T17:04:04.561292"
+    },
+    {
+      "id": "d5a3493e7be44ce4",
+      "source": "f467fb37b6194bd7",
+      "target": "9195e43692e8414f",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "S(IP)→Field: the simplest path into the field",
+      "created_at": "2026-05-09T17:04:04.561314"
+    },
+    {
+      "id": "8e187f6ec79541ab",
+      "source": "c66dfd6b30cd42dc",
+      "target": "4cfd8a104f1d43ec",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "G=E: God is not separate from Everything",
+      "created_at": "2026-05-09T17:40:47.502227"
+    },
+    {
+      "id": "4e805dd991174312",
+      "source": "c66dfd6b30cd42dc",
+      "target": "3bd7d9b844ed469b",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "G=E: Everything contains God as a point within itself",
+      "created_at": "2026-05-09T17:40:47.502260"
+    },
+    {
+      "id": "2d79046a21ef40e9",
+      "source": "c66dfd6b30cd42dc",
+      "target": "9367ae9cb4c745fb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "G=E is autoinjection: G∈E, E∈G",
+      "created_at": "2026-05-09T17:40:47.502267"
+    },
+    {
+      "id": "64df10f2932343fb",
+      "source": "c66dfd6b30cd42dc",
+      "target": "d4c1778a82aa4676",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "SToE operates within G=E; the field is God observing itself",
+      "created_at": "2026-05-09T17:40:47.502272"
+    },
+    {
+      "id": "046c81e3a9ad4e04",
+      "source": "4cfd8a104f1d43ec",
+      "target": "3bd7d9b844ed469b",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "G×E: neither generates the other; both are the same point from different positions",
+      "created_at": "2026-05-09T17:40:47.502278"
+    },
+    {
+      "id": "4535488c12594c12",
+      "source": "3bd7d9b844ed469b",
+      "target": "4cfd8a104f1d43ec",
+      "type": "synergy_with",
+      "weight": 1.0,
+      "note": "E×G: G=E",
+      "created_at": "2026-05-09T17:40:47.502282"
+    },
+    {
+      "id": "2994d4dc05f045fd",
+      "source": "84151da082464776",
+      "target": "d085f237945a1acd",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Voronin authored P1",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "8378d5ec8dbb4688",
+      "source": "d085f237945a1acd",
+      "target": "d4c1778a82aa4676",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P1 introduces SToE",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "49bdb6490eaa493e",
+      "source": "d085f237945a1acd",
+      "target": "439906bb09484732",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P1 defines Information Point",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "8f5649f214b645e2",
+      "source": "d085f237945a1acd",
+      "target": "9195e43692e8414f",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P1 defines Information Field",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "d7e5017c4c774d37",
+      "source": "d085f237945a1acd",
+      "target": "3300f93f95154bdf",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P1 defines Information Function",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "2091b1a5e8b74bea",
+      "source": "d085f237945a1acd",
+      "target": "9367ae9cb4c745fb",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P1 introduces autoinjection concept",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "67f6fe4c5f44448d",
+      "source": "d085f237945a1acd",
+      "target": "4cfd8a104f1d43ec",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P1 frames God as axiomatic IP creator",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "8a267e34a58b434c",
+      "source": "d085f237945a1acd",
+      "target": "044a048018b74aeb",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P1 equates Human creative capacity with God",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "1f251107ef184deb",
+      "source": "d085f237945a1acd",
+      "target": "3e9c4464af16473d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P1 reframes AI as IP creator, not thinker",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "96102a09d26a4fc9",
+      "source": "d085f237945a1acd",
+      "target": "b8518f98f1a14982",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P1 is the origin of Human=God theorem",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "3ebd33459fcf4468",
+      "source": "84151da082464776",
+      "target": "57a01496da4fd547",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Voronin authored P2",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "176b115165784ea8",
+      "source": "57a01496da4fd547",
+      "target": "9367ae9cb4c745fb",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P2 formally defines autoinjection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "0f9d7fa7caf44f47",
+      "source": "57a01496da4fd547",
+      "target": "120058d6059c4722",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P2 formalises Law of Autoinjection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "5b9e9f51307d43db",
+      "source": "57a01496da4fd547",
+      "target": "3bd7d9b844ed469b",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P2 proves E∈E as canonical autoinjective set",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "0a16e1d5e3794d76",
+      "source": "d085f237945a1acd",
+      "target": "57a01496da4fd547",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P2 formalises concept introduced in P1",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "c29ca245c34f4d8d",
+      "source": "57a01496da4fd547",
+      "target": "d4c1778a82aa4676",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "P2 provides mathematical foundation for SToE",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "33d7c266fbe94f5f",
+      "source": "57a01496da4fd547",
+      "target": "8901dee66818444c",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "Self-evaluation property grounds PRG design",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "17a5998bca2047c8",
+      "source": "84151da082464776",
+      "target": "ffd8d982c72e01cb",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Voronin authored P3",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "82d97ebcb44648bc",
+      "source": "ffd8d982c72e01cb",
+      "target": "d4c1778a82aa4676",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P3 extends SToE as cognitive architecture",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "120190065f394597",
+      "source": "ffd8d982c72e01cb",
+      "target": "3e9c4464af16473d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P3 maps SToE operators onto AI evolution",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "9e0b51003588448a",
+      "source": "ffd8d982c72e01cb",
+      "target": "05bc723f328f4eda",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P3 defines + operator",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "7ab3e27462de4588",
+      "source": "ffd8d982c72e01cb",
+      "target": "eab64663ab384121",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P3 defines × operator",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "9414e43e60304fcb",
+      "source": "ffd8d982c72e01cb",
+      "target": "8ef484b35d78455f",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P3 defines − operator",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "63a2c67d98704f6a",
+      "source": "ffd8d982c72e01cb",
+      "target": "2d1ed97766ba4caa",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P3 defines ↻ operator",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "6acd8ea9938f4c60",
+      "source": "ffd8d982c72e01cb",
+      "target": "68640a43149b433d",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P3 defines ^ operator",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "3630fecc47794ab9",
+      "source": "d085f237945a1acd",
+      "target": "ffd8d982c72e01cb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P3 builds on P1 framework",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "6da3b90a91054bb2",
+      "source": "57a01496da4fd547",
+      "target": "ffd8d982c72e01cb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P3 applies autoinjection from P2 to AI",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "b6ff6f2938e3468f",
+      "source": "ffd8d982c72e01cb",
+      "target": "8901dee66818444c",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P3 engine experiment is proto-PRG",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "04dc49232fab4aac",
+      "source": "84151da082464776",
+      "target": "104b70c3e43ee10d",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Voronin authored P4",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "cc78f76633924c0c",
+      "source": "104b70c3e43ee10d",
+      "target": "615ee4b8ede34678",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P4 derives and formalises AI Architectural Gap",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "98e14d2614dc4ef9",
+      "source": "104b70c3e43ee10d",
+      "target": "8901dee66818444c",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P4 specifies Persistent Reasoning Graph",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "3c5b7331a60b4da2",
+      "source": "104b70c3e43ee10d",
+      "target": "8be9448ca5ee4525",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "P4 derives architecture from Law of Conservation",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "9c7a9b7786544e67",
+      "source": "104b70c3e43ee10d",
+      "target": "4e42bc84f2af4f87",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "P4 derives navigation from Law of Connection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "fc027e653bc24e82",
+      "source": "104b70c3e43ee10d",
+      "target": "120058d6059c4722",
+      "type": "connected_to",
+      "weight": 1.0,
+      "note": "P4 derives self-eval from Law of Autoinjection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "73bafdd9c7ff4a6c",
+      "source": "104b70c3e43ee10d",
+      "target": "3e9c4464af16473d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P4 assesses current AI against SToE laws",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "b03210c6e4dd44fa",
+      "source": "05d9d98dddc9034a",
+      "target": "104b70c3e43ee10d",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P4 applies the laws stated in P5",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "f48566944fce4f75",
+      "source": "ffd8d982c72e01cb",
+      "target": "104b70c3e43ee10d",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P4 extends P3 implementation into architecture spec",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "488f897f7d3a4831",
+      "source": "84151da082464776",
+      "target": "05d9d98dddc9034a",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "Voronin authored P5",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "8532450a8f55444f",
+      "source": "05d9d98dddc9034a",
+      "target": "8be9448ca5ee4525",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P5 explicitly states Law of Conservation",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "a1ec734409e7487b",
+      "source": "05d9d98dddc9034a",
+      "target": "4e42bc84f2af4f87",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P5 explicitly states Law of Connection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "8891d18e30a64f5b",
+      "source": "05d9d98dddc9034a",
+      "target": "120058d6059c4722",
+      "type": "generated_by",
+      "weight": 1.0,
+      "note": "P5 explicitly states Law of Autoinjection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "0f64aff72eff4938",
+      "source": "05d9d98dddc9034a",
+      "target": "ba07b5ebd68445d4",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P5 formalises Observer role in Law of Connection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "c2c82dc537ff4a6b",
+      "source": "05d9d98dddc9034a",
+      "target": "91808dec0fac40da",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P5 formalises Creator role in Law of Connection",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "242577d5f5eb4d96",
+      "source": "05d9d98dddc9034a",
+      "target": "3e9c4464af16473d",
+      "type": "evaluates",
+      "weight": 1.0,
+      "note": "P5 reframes AI as observer-creator class",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "c5a955e04b454925",
+      "source": "d085f237945a1acd",
+      "target": "05d9d98dddc9034a",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P5 makes laws implicit in P1 explicit",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "2ef0d098195f4231",
+      "source": "57a01496da4fd547",
+      "target": "05d9d98dddc9034a",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P5 draws on autoinjection formalised in P2",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "cd4a1836daa144e0",
+      "source": "ffd8d982c72e01cb",
+      "target": "05d9d98dddc9034a",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P5 consolidates laws applied in P3",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "4139471149534851",
+      "source": "d085f237945a1acd",
+      "target": "104b70c3e43ee10d",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P4 references P1 as origin of SToE",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "fab5c7de5d5545f6",
+      "source": "d085f237945a1acd",
+      "target": "ffd8d982c72e01cb",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P3 explicitly cites P1",
+      "created_at": "2026-05-09T18:01:00.000000"
+    },
+    {
+      "id": "62164d67ff804d88",
+      "source": "57a01496da4fd547",
+      "target": "104b70c3e43ee10d",
+      "type": "evolved_from",
+      "weight": 1.0,
+      "note": "P4 references autoinjection from P2",
+      "created_at": "2026-05-09T18:01:00.000000"
+    }
+  ]
+}

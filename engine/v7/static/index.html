@@ -2053,6 +2053,7 @@ window.fetch = async (...args) => {
 let agentRunning = false;
 let agentStop = false;
 let agentMode = 'coder';
+let lastCoderEventTime = 0;
 
 function setAgentMode(mode) {
   agentMode = mode;
@@ -2075,6 +2076,9 @@ async function refreshCoderStatus() {
   try {
     const s=await coderRequest('status');
     document.getElementById('coder-status').textContent=[s.status,s.branch,(s.head||'').slice(0,8),s.git,s.tests].filter(Boolean).join(' | ');
+    const events=await coderRequest('events?limit=40');
+    events.filter(e=>e.time>lastCoderEventTime).forEach(e=>agentLogEntry(e.source+' · '+e.message,e.level==='error'?'err':e.level==='warning'?'warn':'info'));
+    if(events.length) lastCoderEventTime=Math.max(lastCoderEventTime,...events.map(e=>e.time));
   } catch(e) { document.getElementById('coder-status').textContent='offline'; }
 }
 

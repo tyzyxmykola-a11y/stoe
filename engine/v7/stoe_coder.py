@@ -259,6 +259,15 @@ class OllamaWorker:
             if value.get("done_reason") in {"length", "error"}:
                 failed_model = str(value.get("model", ""))
                 failures[failed_model] = failures.get(failed_model, 0) + 1
+        state_path = self.artifact_root.parent / "state.json"
+        try:
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            last = state.get("last_result") or {}
+            if "exhausted tool-step budget" in str(last.get("error", "")) and last.get("metrics"):
+                failed_model = str(last["metrics"][-1].get("model", ""))
+                failures[failed_model] = failures.get(failed_model, 0) + 2
+        except (OSError, json.JSONDecodeError, KeyError, TypeError):
+            pass
         preferences = (
             ["qwen3-coder:latest", "gemma4:26b", "gemma3:27b", "gemma4:12b"]
             if role in {"coder", "debugger"}

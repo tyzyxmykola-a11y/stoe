@@ -105,6 +105,17 @@ class StoeCoderTests(unittest.TestCase):
         ]
         self.assertEqual("gemma4:26b", worker.choose("coder")[0])
 
+    def test_tool_budget_exhaustion_routes_away_from_model(self):
+        root = self.runtime_root / "exhausted" / "artifacts"
+        root.mkdir(parents=True)
+        (root.parent / "state.json").write_text(json.dumps({"last_result": {"error": "local worker exhausted tool-step budget", "metrics": [{"model": "qwen3-coder:latest"}]}}), encoding="utf-8")
+        worker = OllamaWorker(artifact_root=root)
+        worker.models = lambda: [
+            {"name": "qwen3-coder:latest", "digest": "q", "size": 20},
+            {"name": "gemma4:26b", "digest": "g", "size": 19},
+        ]
+        self.assertEqual("gemma4:26b", worker.choose("coder")[0])
+
     def test_runner_preserves_bounded_output_and_denies_destructive_git(self):
         runner = FullLocalRunner(self.runtime_root / "commands")
         result = runner.run(action_id="output", command=[sys.executable, "-c", "print('ok')"], cwd=self.repo)

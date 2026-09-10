@@ -9,6 +9,7 @@ import os
 import sys
 sys.path.insert(0, os.path.dirname(__file__))
 from field import InformationField, CATEGORIES, EDGE_TYPES, OPERATORS
+from stoe_coder import get_runtime
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 VERSION = os.getenv("VERSION", "v7")
@@ -17,11 +18,22 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
 
 app = Flask(__name__, static_folder="static")
 field = InformationField(storage_path=os.path.join(os.path.dirname(__file__), "field_data.json"))
+coder = get_runtime()
+
+def _coder_local_request():
+    origin = request.headers.get("Origin", "")
+    local_origin = not origin or origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost")
+    return request.remote_addr in {"127.0.0.1", "::1"} and local_origin
 
 # ---- CORS — global handler ----
 @app.after_request
 def add_cors(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"
+    if request.path.startswith("/api/coder/"):
+        origin = request.headers.get("Origin", "")
+        if not origin or origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost"):
+            response.headers["Access-Control-Allow-Origin"] = origin or "http://127.0.0.1:5000"
+    else:
+        response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
@@ -30,12 +42,73 @@ def add_cors(response):
 def handle_options():
     if request.method == "OPTIONS":
         response = app.make_default_options_response()
-        response.headers["Access-Control-Allow-Origin"] = "*"
+        if request.path.startswith("/api/coder/") and not _coder_local_request():
+            return jsonify({"error": "SToE Coder is localhost-only"}), 403
+        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", "*")
         response.headers["Access-Control-Allow-Headers"] = "Content-Type"
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
         return response
 
 # ---- FIELD ----
+
+def _coder_call(operation):
+    if not _coder_local_request():
+        return jsonify({"error": "SToE Coder is localhost-only"}), 403
+    try:
+        return jsonify(operation())
+    except (ValueError, RuntimeError, PermissionError) as exc:
+        return jsonify({"error": str(exc)}), 400
+
+@app.route("/api/coder/status", methods=["GET"])
+def coder_status():
+    return _coder_call(coder.status)
+
+@app.route("/api/coder/events", methods=["GET"])
+def coder_events():
+    return _coder_call(lambda: coder.events(int(request.args.get("limit", 100))))
+
+@app.route("/api/coder/models", methods=["GET"])
+def coder_models():
+    return _coder_call(coder.models)
+
+@app.route("/api/coder/chat", methods=["POST"])
+def coder_chat():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.chat(data.get("message", "")))
+
+@app.route("/api/coder/task", methods=["POST"])
+def coder_task():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.submit_task(data.get("objective", ""), allow_commit=bool(data.get("allow_commit")), allow_push=bool(data.get("allow_push")), allowed_paths=data.get("allowed_paths")))
+
+@app.route("/api/coder/git/diff", methods=["GET"])
+def coder_git_diff():
+    return _coder_call(coder.git_diff)
+
+@app.route("/api/coder/git/commit", methods=["POST"])
+def coder_git_commit():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.git_commit(data.get("message", "")))
+
+@app.route("/api/coder/git/pull", methods=["POST"])
+def coder_git_pull():
+    return _coder_call(coder.git_pull)
+
+@app.route("/api/coder/git/push", methods=["POST"])
+def coder_git_push():
+    return _coder_call(coder.git_push)
+
+@app.route("/api/coder/git/merge", methods=["POST"])
+def coder_git_merge():
+    return _coder_call(coder.git_merge)
+
+@app.route("/api/coder/stop", methods=["POST"])
+def coder_stop():
+    return _coder_call(coder.stop)
+
+@app.route("/api/coder/resume", methods=["POST"])
+def coder_resume():
+    return _coder_call(coder.resume)
 
 @app.route("/api/field", methods=["GET"])
 def get_field():
@@ -846,4 +919,4 @@ if __name__ == "__main__":
         print(f"Available models: {', '.join(models)}")
     else:
         print("Warning: Ollama not responding at", OLLAMA_URL)
-    app.run(debug=False, port=5000, host="0.0.0.0")
+    app.run(debug=False, port=5000, host="127.0.0.1")

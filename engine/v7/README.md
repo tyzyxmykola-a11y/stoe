@@ -21,11 +21,14 @@ Open `http://127.0.0.1:5000`. Ollama defaults to `http://localhost:11434` and th
 model defaults to `llama3`. `OLLAMA_URL` and `OLLAMA_MODEL` can be set in the
 environment or in a local `.env` file, which is excluded from Git.
 
-The old `python server.py` / `python start.py` startup path binds the API to
-`0.0.0.0`. Prefer the loopback command above. No login protects graph mutations,
-field wipe/import, model operations, or log endpoints. CORS permits all origins;
-loopback binding alone does not provide complete protection from browser-based
-requests. Use only in a trusted local environment.
+`python server.py` and `python start.py` also bind to loopback. The Agent area
+contains the original Field Agent and a default SToE Coder mode. Coder questions
+use `/api/coder/chat` without repository mutation; explicit Run actions use the
+server-side FULL LOCAL executive, an isolated Git worktree, local Ollama workers,
+deterministic checks, and an independent local review. Its privileged routes
+reject non-loopback clients and non-local browser origins. There is intentionally
+no generic browser `/api/shell` endpoint. This is still a trusted-user local
+development tool, not a hostile-code sandbox.
 
 The author's runtime `field_data.json` and custom operator state are not shipped.
 The field starts empty. The `/api/seed` endpoint imports the supplied

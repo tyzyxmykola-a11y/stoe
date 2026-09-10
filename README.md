@@ -43,6 +43,52 @@ separate runtimes. They do not automatically share state merely because they are
 in one repository. See the [snapshot history](docs/snapshot-history.md) for their
 development paths and the limits of the version labels.
 
+## StoeCoder
+
+[`StoeCoder/`](StoeCoder/README.md) is now the active standalone development environment for SToE Coder. The earlier Coder integrated into [`engine/v7`](engine/v7/README.md) is preserved as the Navigator baseline and should not be modified merely to evolve the standalone Coder.
+
+SToE Coder is a localhost-only trusted-user development executive. It coordinates local Ollama workers inside isolated Git worktrees, applies deterministic verification, performs an independent local review, integrates only the reviewed candidate, records SToE Memory provenance when available, and exposes explicit operator Git controls.
+
+The current governed development path is:
+
+```text
+operator objective
+→ observer/context state
+→ isolated candidate worktree
+→ local Ollama worker
+→ deterministic verification
+→ independent review
+→ trusted integration
+→ deterministic verification again
+→ SToE conservation
+→ optional explicitly-authorized commit/push
+```
+
+The browser UI exposes separate Run permissions and operator Git controls:
+
+```text
+Run options:  [ ] allow commit   [ ] allow push
+Git:          Diff | Commit | Pull | Push | Merge to main
+```
+
+Commit/push authority is never inferred from words inside the objective. Generic Push is feature-branch-only and refuses main/master. Pull is fast-forward-only. Merge to main is a separate explicit operator action and currently changes local main only; it does not implicitly push main.
+
+To run StoeCoder on Windows after cloning or updating the repository:
+
+```powershell
+cd StoeCoder
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python server.py
+```
+
+Then open `http://127.0.0.1:5000`. On later starts, reuse the existing `.venv` and run `python server.py`. Ollama must be running for model-backed development work.
+
+The standalone project deliberately keeps trusted authority in the executive rather than in model role names or prompts. Models do not receive credential material, destructive Git operations remain outside ordinary worker authority, and worktree/process separation is not claimed to be a hostile-code security sandbox.
+
+Current self-development direction is for Coder to build bounded successors of itself under `StoeCoder/`. The next planned milestone is a persistent configurable worker-role registry with editable contracts, Auto/manual Ollama model selection, persistent enable/disable checkboxes, deliberate deletion, task-start role/model logging, a distinct task-finished event with metrics, and a stage-based progress indicator. See the [StoeCoder README](StoeCoder/README.md) for the detailed runtime, Git, testing, security, and self-development documentation.
+
 ## SToE Memory
 
 The [SToE Memory plugin](plugins/stoe-memory/README.md) stores information points

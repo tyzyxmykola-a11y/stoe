@@ -20,8 +20,25 @@ passes parent-relative validation and the pre-existing withheld focused behavior
 check, but remains inactive pending Mykola's explicit approval. See
 [HERMES_AB_SUCCESSION_V2_2.md](HERMES_AB_SUCCESSION_V2_2.md).
 
+The [activation-failure attribution](HERMES_ACTIVATION_FAILURE_ATTRIBUTION.md)
+preserves bounded stdout/stderr, identifies the stripped-`PATH` health-harness
+defect, and requalifies the unchanged candidate layout without promoting it.
+
+The subsequent [protected promotion v3](HERMES_V2_2_PROMOTION_V3.md) activated
+that exact candidate after fresh-process resolver health and the full 41-test
+suite passed under the corrected bounded harness. Hermes A remains the rollback
+release.
+
 ## Isolation boundary
 
 Separate directories and a sanitized process environment prevent intentional inheritance of Hermes profiles, `.env`, credentials, sessions, memories, and production gateways. Resource monitoring bounds time, output, process-tree size, RAM, and disk growth. On this Windows host it is still an ordinary subprocess under the invoking user identity: it is **not** an OS security sandbox and cannot prove network/filesystem denial against arbitrary native code. For that reason generated source is additionally constrained by a small static capability allowlist and remains inactive pending review.
 
 Later stages may investigate a native SToE memory provider or context engine only after this adapter is qualified.
+
+## SToE Hermes Development Governor v1
+
+The SToE Hermes Development Governor v1 enforces deterministic authority through TaskScope, which defines allowed and forbidden capabilities for all models. Models operate under strict limits: they cannot apply Git operations, execute processes, or modify protected trust boundaries. Existing evidence and verification remain unchanged regardless of model activity. SToE Memory continuity is maintained only when qualified adapters are present before any native provider use. Documentation must not claim unrestricted autonomy; instead, it explicitly states that all actions are bounded by the current TaskScope configuration. Trusted verification relies on these fixed constraints to ensure system integrity without overstepping defined roles.
+
+## Standalone Hermes Development Runtime v1
+
+The Hermes environment operates within a defined lifecycle to ensure stability. Each session utilizes SToE Memory to maintain state across valid transitions. The TaskScope defines the specific boundaries for all model interactions. A restart procedure is available if the system enters an invalid state. Only trusted executors are permitted to modify core configuration parameters. The model remains bound by the current configuration at all times.

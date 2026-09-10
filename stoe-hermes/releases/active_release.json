@@ -1,27 +1,9 @@
 {
-  "activation_status": "active",
-  "candidate_status": "active",
-  "commit_sha": "bb924730743cc05934bf0dfd188abdfdb46c03c2",
-  "configuration_hash": "1cd7a8c9c38812b6cfe47b2085dd796ceb4e93f65ac2a2b8339ac33831200b80",
-  "creation_action_id": "checkpoint:hermes-ab-succession-v1",
-  "environment_fingerprint": "7e69ccd855ad7d815a7b62d9ae9b31bb0d53033781b3af516370547ad4c065fd",
-  "hermes_version": "0.20.3 (2026.8.16.2)",
-  "integration_plugin_version": "0.1.0",
-  "model_configuration": {
-    "digest": "08ae7ec1744bd7f451c4a530afb39d2673ad9d07a8369b8a33a3613b41212a68",
-    "model": "gemma4:26b",
-    "provider": "custom"
-  },
-  "parent_release": null,
-  "release_id": "hermes-a-bb924730743c",
+  "artifact_path": "releases/hermes-b-fc16fd510289/context_renderer.py",
+  "authorization_policy_id": "standing:bounded-qualified-succession-v1",
+  "editable_path": "stoe-hermes/src/stoe_hermes/context_renderer.py",
+  "environment_fingerprint": "6f9fbc0ef709d4e37c0ba228c7147d8fa5cf12bd9b5e0f0e119a38815e558fef",
+  "release_id": "hermes-b-fc16fd510289",
   "rollback_target": "hermes-a-bb924730743c",
-  "source_repository": "external local Hermes managed checkout",
-  "stoe_field_ids": [
-    "IP_997e93b6fcea4b8a",
-    "IP_9d49039cde004b2d",
-    "IP_53cdd56bf8144246"
-  ],
-  "test_results": [],
-  "upstream_state": "divergent",
-  "working_tree_state": "dirty"
+  "source_sha256": "fc16fd51028967cd9972332ec671f8a3bb0c72815343a495df502cafd5d052ff"
 }

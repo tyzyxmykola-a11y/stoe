@@ -5,6 +5,14 @@ Local bounded Ollama delegation for development is documented in
 and SToE Reasoning while keeping workers non-authoritative and preserving
 interactive machine resources.
 
+The [Local Development v2 checkpoint](LOCAL_DEVELOPMENT_V2_CHECKPOINT.md)
+records the first compact-routing failure and the exact no-repeat continuation
+needed to move routine planning, coding, and review onto local Ollama workers.
+Its canonical [architecture](local_development/ARCHITECTURE_V2.md) and
+[worker contract](local_development/WORKER_CONTRACT_V2.md) are versioned local
+instruction artifacts loaded by trusted code. The planned `stoe-agent develop`
+stage runner and CLI entry point are not available yet.
+
 This directory adds one bounded self-rebuild capability to the existing SToE
 repository. It does not alter model weights or provider infrastructure. It can
 inspect, revise, test, activate, and roll back an agent-owned selection policy.

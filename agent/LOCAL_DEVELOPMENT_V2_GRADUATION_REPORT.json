@@ -1,0 +1,43 @@
+{
+  "accepted_candidate": {
+    "artifact_ref": "LDC_24205ebe0e1eda13",
+    "candidate_sha256": "f48f02d9c3e2d72a6dba2b95af76ee71c5d4e29effe620d6db2325e53c92c92b",
+    "coder_result_ref": "LDR_22b4a405f02b4ebd",
+    "format": "stoe.report_dedup_ir"
+  },
+  "applied": true,
+  "branch": "feature/hermes-promotion-policy-v1",
+  "commit": "7b647e170eb2240913572da1ffe33175705f305e",
+  "feature_push": "succeeded",
+  "local_actions": {
+    "accepted_planner": "LDR_c35db8e77852421d",
+    "coder_chain": [
+      "LDR_1be0fd75c1044423",
+      "LDR_c2eefd1dcfcb57c5",
+      "LDR_a81b8a6c001619ab",
+      "LDR_9dc21216fefa12cc",
+      "LDR_22b4a405f02b4ebd"
+    ],
+    "independent_reviewer": {
+      "model": "llama3.1:latest",
+      "result_ref": "LDR_80520178450d3ada"
+    }
+  },
+  "outcome": "Local Development v2 completed one real plan-code-review-test-apply-commit-push cycle and is operationally qualified for v1 use.",
+  "parent_sha256": "cd31b0dd4ce7a2c8fdfec4553c02171b2510527fddf251fee901ea5c0279dce7",
+  "semantics": [
+    "canonical payload content emitted once by payload_sha256",
+    "every connection and path remains visible",
+    "canonical and collapsed counts reported",
+    "unhashed records remain distinct",
+    "input order, immutability, and character budget preserved"
+  ],
+  "tests": {
+    "focused_local_development": "32 passed",
+    "full_agent": "136 passed",
+    "git_diff_check": "passed",
+    "immutable_cli_sha256": "fca641b2bc136e01441f2f22b36fa493cd662da082ece5ec38d3cfae306567e7"
+  },
+  "trusted_apply": "active development_report.py exactly matched candidate SHA-256 before tests and commit",
+  "unresolved_next_action": "SToE Hermes Development Governor v1: Hermes B governs the qualified local-worker development loop instead of Codex initiating each stage."
+}

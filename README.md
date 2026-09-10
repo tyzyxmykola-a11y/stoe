@@ -29,10 +29,10 @@ runtime:
   reasoning field over MCP.
 - [`skills/stoe-reasoning`](skills/stoe-reasoning) defines the bounded reasoning
   protocol used with that field.
-- [`agent`](agent) implements supervised research-agent continuity and bounded
-  self-development.
-- [`stoe-hermes`](stoe-hermes) implements a separately supervised Hermes A/B
-  succession path.
+- [`agent`](agent) implements supervised research-agent continuity, Local
+  Development v2, and measured delegation to local Ollama workers.
+- [`stoe-hermes`](stoe-hermes) implements Hermes A/B succession, the bounded
+  Development Governor, and a standalone local-development runtime.
 
 The v3, v7, v9.1, memory-plugin, research-agent, and Hermes packages are separate
 runtimes. They do not automatically share state merely because they are in one
@@ -59,6 +59,21 @@ system. Its [milestone report](agent/SELF_REBUILD_MILESTONE_REPORT.md) records t
 implemented lifecycle, preserved failures, evaluation boundary, rollback, and
 current evidence.
 
+[Local Development v2](agent/LOCAL_DEVELOPMENT_V2_CHECKPOINT.md) uses versioned,
+hashed role instructions and sequential local Ollama workers for planning,
+coding, review, and bounded diagnosis. Trusted code retains responsibility for
+artifact validation, resource limits, tests, repository mutation, and evidence
+conservation. Its [graduation record](agent/LOCAL_DEVELOPMENT_V2_GRADUATION_REPORT.json)
+documents one completed plan-code-review-test-apply-commit-push cycle. Identical
+artifact payloads can be deduplicated by SHA-256 without discarding their
+distinct SToE connections, provenance paths, or observer relationships.
+
+Failures, corrections, evaluations, and successor states are conserved in
+[SToE Memory](plugins/stoe-memory/README.md) as typed relations, while large
+source, model, and command artifacts remain path-and-hash referenced. This is
+the project’s persistent development architecture rather than a claim that
+every local-model proposal is correct.
+
 Self-development is limited to explicitly allowlisted agent-owned components.
 Future selection-policy candidates are inert bounded data interpreted by trusted
 code. Model-proposed source changes are validated and evaluated outside the
@@ -69,18 +84,33 @@ This demonstrates bounded, supervised modification machinery. It does **not**
 demonstrate unrestricted recursive self-improvement, autonomous authority
 expansion, AGI, or reliable improvement from every generated successor.
 
-## SToE-Hermes A/B succession
+## SToE-Hermes development and A/B succession
 
 The [SToE-Hermes package](stoe-hermes/README.md) connects a pinned Hermes ancestor
 to a test SToE field and supplies a protected A/B supervisor. Candidate Hermes B
 uses separate checkout, home, profile, memory, sessions, temporary storage, and
 virtual environment. It cannot promote itself.
 
-The [latest succession report](stoe-hermes/HERMES_AB_SUCCESSION_V2_1.md) records
-the split-model v2.1 attempt. Gemma produced a valid fixed-table plan, while the
-code proposal was deterministically rejected before application because the
-validator also rejected syntax inherited unchanged from the trusted parent. No
-candidate was executed or activated; Hermes A remained unchanged.
+The later [Hermes v2.2 promotion record](stoe-hermes/HERMES_V2_2_PROMOTION_V3.md)
+documents activation of the exact qualified adapter candidate after protected
+health passed, with Hermes A retained as the rollback target. The standing
+bounded-succession policy permits supervised promotion only when identity,
+qualification, protected evaluation, authority, and rollback prerequisites all
+remain satisfied; authority expansion still requires explicit approval.
+
+The [Hermes Development Governor v1 evidence](stoe-hermes/HERMES_DEVELOPMENT_GOVERNOR_V1_REPORT.json)
+records local Ollama planning, coding, corrective successors, independent
+review, deterministic tests, trusted application, commit, and feature-branch
+push. The standalone runtime can repeat that bounded workflow from an ordinary
+terminal and uses the operator’s existing Git authentication for normal
+feature-branch pushes without placing credential material in model context.
+
+These results establish a qualified, supervised local-development baseline.
+They do not establish production readiness, unrestricted autonomous
+self-modification, or general autonomous successor promotion. The next
+development stage is **SToE Coder**: a persistent local development executive
+integrated with the existing Information Field Navigator; it is not implemented
+in this baseline.
 
 ## Reproducible experiments
 

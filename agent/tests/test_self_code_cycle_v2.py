@@ -44,11 +44,48 @@ def event(response, *, done=True, reason="done", prompt=10, output=20):
     return (json.dumps({"response": response, "done": done, "done_reason": reason, "prompt_eval_count": prompt, "eval_count": output}) + "\n").encode()
 
 
+LEGACY_PARENT = '''from __future__ import annotations
+
+from typing import Any
+
+
+def render_retrieved_context(items: list[dict[str, Any]], max_chars: int) -> str:
+    """Render a bounded development-context summary.
+
+    This deliberately small, non-security-critical component is owned by the
+    agent.  The trusted supervisor supplies already-authorized records; this
+    function only formats them and has no authority over retrieval or files.
+    """
+
+    if max_chars < 0:
+        raise ValueError("max_chars must be non-negative")
+    lines: list[str] = []
+    used = 0
+    for item in items:
+        line = " | ".join(
+            (
+                str(item.get("ref", "unknown")),
+                str(item.get("origin", "unknown")),
+                str(item.get("kind", "unknown")),
+                str(item.get("outcome", "unknown")),
+                str(item.get("content", "")).replace("\\n", " "),
+            )
+        )
+        addition = line if not lines else "\\n" + line
+        if used + len(addition) > max_chars:
+            continue
+        lines.append(line)
+        used += len(addition)
+    return "\\n".join(lines)
+'''
+
+
 class SelfCodeCycleV2Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.repo_root = Path(__file__).resolve().parents[2]
-        cls.parent = (cls.repo_root / EDITABLE_PATH).read_text(encoding="utf-8")
+        cls.parent = LEGACY_PARENT
+        assert hashlib.sha256(cls.parent.encode()).hexdigest() == PARENT_SHA256
 
     def test_raw_stream_classifies_complete_structured_output(self):
         raw = event(json.dumps(envelope()))
@@ -123,6 +160,74 @@ class SelfCodeCycleV2Tests(unittest.TestCase):
         ])
         with self.assertRaisesRegex(V2BoundaryError, "capability allowlist"):
             validate_candidate_source(self.parent, reconstruct_candidate(self.parent, authority))
+
+    def test_narrow_hash_delta_is_pure_and_authority_free(self):
+        reporting = envelope([
+            "def render_retrieved_context(items, max_chars):",
+            "    value = hash(str(items[0].get('content', ''))) if items else 0",
+            "    return str(value)[:max_chars]",
+        ])
+        self.assertTrue(validate_candidate_source(self.parent, reconstruct_candidate(self.parent, reporting))["passed"])
+
+        forbidden_calls = (
+            "open('cases.json')",
+            "eval('1 + 1')",
+            "exec('x = 1')",
+            "__import__('os')",
+            "getattr(items, '__class__')",
+            "globals()",
+            "locals()",
+            "vars(items)",
+            "compile('1', 'x', 'eval')",
+        )
+        for call in forbidden_calls:
+            with self.subTest(call=call):
+                candidate = envelope([
+                    "def render_retrieved_context(items, max_chars):",
+                    f"    value = {call}",
+                    "    return str(value)[:max_chars]",
+                ])
+                with self.assertRaises(V2BoundaryError):
+                    validate_candidate_source(self.parent, reconstruct_candidate(self.parent, candidate))
+
+    def test_narrow_delta_cannot_change_path_imports_or_function_scope(self):
+        imported = self.parent.replace("from typing import Any", "from typing import Any\nimport os")
+        with self.assertRaisesRegex(V2BoundaryError, "imports changed"):
+            validate_candidate_source(self.parent, imported)
+        renamed = self.parent.replace("def render_retrieved_context", "def acquire_authority")
+        with self.assertRaisesRegex(V2BoundaryError, "module structure"):
+            validate_candidate_source(self.parent, renamed)
+        nested = self.parent.replace("    if max_chars < 0:", "    def hidden():\n        return hash('x')\n    if max_chars < 0:")
+        with self.assertRaises(V2BoundaryError):
+            validate_candidate_source(self.parent, nested)
+
+    def test_narrow_reporting_hash_does_not_admit_unrelated_authority(self):
+        pure = envelope([
+            "def render_retrieved_context(items, max_chars):",
+            "    value = hash(str(items))",
+            "    return str(value)[:max_chars]",
+        ])
+        self.assertTrue(validate_candidate_source(self.parent, reconstruct_candidate(self.parent, pure))["passed"])
+        forbidden_calls = (
+            "open('cases.json')",
+            "eval('1 + 1')",
+            "exec('x = 1')",
+            "__import__('os')",
+            "getattr(items, '__class__')",
+            "globals()",
+            "locals()",
+            "vars(items)",
+            "os.system('whoami')",
+            "subprocess.run(['whoami'])",
+            "socket.socket()",
+        )
+        for call in forbidden_calls:
+            candidate = envelope([
+                "def render_retrieved_context(items, max_chars):",
+                f"    return str({call})",
+            ])
+            with self.subTest(call=call), self.assertRaises(V2BoundaryError):
+                validate_candidate_source(self.parent, reconstruct_candidate(self.parent, candidate))
 
     def test_canonical_payload_dedup_preserves_all_connections(self):
         content = "one canonical payload " * 40

@@ -1,0 +1,30 @@
+{
+  "action_id": "worker:local-development-v2:contract-review-v1",
+  "status": "completed_advisory",
+  "model": "qwen3-coder:latest",
+  "model_digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+  "provider": "local_ollama_0.33.3",
+  "authority": "review_only_no_tools_no_write",
+  "prompt_eval_count": 6799,
+  "eval_count": 172,
+  "total_duration_seconds": 34.531,
+  "raw_cli_stream_preserved": false,
+  "raw_preservation_note": "This disclosed advisory review preceded the v2 stage runner. Its validated semantic result and provider metrics are conserved here; the CLI terminal stream contained presentation control bytes and is not claimed as a canonical raw artifact.",
+  "control": {
+    "status": "success",
+    "decision": "Implementation correctly enforces SToE boundaries, fail-closed parsing, inert artifact handling, and idempotent recording.",
+    "evidence": [
+      "Control validation enforces exactly five fields with no supervisor metadata.",
+      "Instruction loading verifies SHA-256 and rejects forbidden paths.",
+      "Candidate artifact validation ensures JSON path bounds and SHA-256 integrity.",
+      "SToE recording is idempotent and maintains stable reference semantics."
+    ],
+    "risks": [
+      "No blocking conditions detected in implementation.",
+      "All edge cases in artifact validation are covered.",
+      "No trust-boundary violations in parsing or recording."
+    ],
+    "next_action": "Proceed with integration testing of the full Worker Contract v2 pipeline including SToE recording."
+  },
+  "trusted_interpretation": "Advisory only. Deterministic tests remain verification authority, and the production v2 stage runner is still absent."
+}

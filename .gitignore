@@ -21,6 +21,7 @@ tmp/
 .tmp/
 mock-results.json*
 /agent/runtime*/
+/stoe-hermes/releases/*/promotion_*/artifacts/
 
 # Restored archives (tracked copies use lossless .json.gz)
 /experiments/stoe_v9_1_experiment/V9_1_COUNTERFACTUAL_RESULTS.json

@@ -1,0 +1,96 @@
+{
+  "parent_head": "4deb02e10bfec02a7e6a1496e372faffc43d3e3d",
+  "status": "coder_recovery_exhausted",
+  "stage_runner": {
+    "entry_point": "python agent/tools/local_development_v2.py planner",
+    "installed_cli_status": "deferred because agent/src/stoe_agent/cli.py is protected by the frozen v3 manifest and was restored byte-for-byte",
+    "stable_action_recovery": true,
+    "closed_action_retry": false,
+    "raw_preservation": true,
+    "fixed_context_tokens": 8192,
+    "generation_reserve_tokens": 1200,
+    "interactive_governor": true,
+    "qualified_tests": 44,
+    "full_agent_tests": 121
+  },
+  "model_free_preflight_failure": {
+    "action_id": "worker:local-development-v2:architecture-plan-v2",
+    "model_called": false,
+    "cause": "The 1119-character source item exceeded the 1000-character per-item cap.",
+    "failure_ref": "IP_374e3b0ebb7a490b",
+    "correction_ref": "IP_ff81630a976d4e94",
+    "correction": "Deterministically chunk source without widening any budget."
+  },
+  "planner": {
+    "action_id": "worker:local-development-v2:architecture-plan-v2-recovery-1",
+    "model": "llama3.2:latest",
+    "digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+    "ollama_version": "0.33.3",
+    "duration_seconds": 2.937,
+    "prompt_tokens": 1054,
+    "output_tokens": 126,
+    "raw_sha256": "dcabd73575f0fa6145bae34b014ce99341e36ef3ebe25cac61ce5a07c4ac85b4",
+    "validated_envelope_sha256": "7ffc2af75488f16a5a3b83b01cc5ad8a50d42681ebdf9d4f7b273e76e96f7048",
+    "retrieval_run_id": "RETRIEVAL_fb34a9ee19764b3a",
+    "field_action_ref": "LDA_96857e34b4b7b95f",
+    "field_result_ref": "LDR_ecc7fc09970a3b88",
+    "field_evaluation_ref": "LDE_57ebaab660c43954",
+    "schema_status": "success",
+    "supervisory_acceptance": "rejected",
+    "rejection_reason": "The plan merely restated the existing renderer and did not address canonical SHA-256 deduplication, connection preservation, or required counts."
+  },
+  "repair_planner": {
+    "action_id": "worker:local-development-v2:architecture-plan-v2-repair-1",
+    "model": "gemma4:12b",
+    "digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "prompt_tokens": 1172,
+    "output_tokens": 256,
+    "raw_sha256": "25692cdc1e7f39f91268b12305e970692ed9d808e0783e8e316db393acafa603",
+    "field_action_ref": "LDA_0bafb604347b97a5",
+    "field_result_ref": "LDR_c35db8e77852421d",
+    "field_evaluation_ref": "LDE_cd60510f0df2d9ff",
+    "accepted": true,
+    "decision": "Use canonical SHA identity, retain distinct connections, and report canonical and collapsed counts."
+  },
+  "independent_local_review": {
+    "model": "qwen3-coder:latest",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "prompt_tokens": 5375,
+    "output_tokens": 174,
+    "duration_seconds": 25.078,
+    "status": "failure",
+    "decision": "SHA deduplication logic was not addressed by the planner; coder was correctly not invoked.",
+    "raw_cli_stream_preserved": false,
+    "authority": "advisory_only_no_tools_no_write"
+  },
+  "coder": {
+    "called": true,
+    "attempt": {
+      "action_id": "worker:local-development-v2:coder-v1",
+      "model": "qwen3.5:2b",
+      "digest": "324d162be6ca5629ae4517c8710434d0bd2d665bc94dbad46e9af8fbf8a2f0df",
+      "raw_sha256": "fc4f137257fe454f8976bdf529a3c1d0f1f7165b07b64efb77091cf9c2eb64a0",
+      "failure": "Structured output was placed in thinking while response was empty."
+    },
+    "repair_child": {
+      "action_id": "worker:local-development-v2:coder-v1-recovery-1",
+      "model": "qwen3-coder:latest",
+      "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "prompt_tokens": 734,
+      "output_tokens": 1038,
+      "raw_sha256": "c05ceb721bbf1fb928b78c843a07f656870bf5c302b7a3aca600f3a83b2167b6",
+      "failure": "Replacement lines incorrectly contained module imports, causing an invalid __future__ placement."
+    },
+    "candidate_materialized": false,
+    "recovery_limit_exhausted": true
+  },
+  "reviewer_pipeline_stage": {
+    "called": false,
+    "reason": "No candidate existed; the independent local review diagnosed the planner failure only."
+  },
+  "accepted_work": {
+    "stage_runner": true,
+    "development_report_candidate": null
+  },
+  "next_action": "In a new cycle, constrain coder replacement_lines to begin with the target function and forbid module imports; retain think=false and never retry the closed coder actions."
+}

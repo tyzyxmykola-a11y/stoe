@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from .context_renderer import render_retrieved_context
+from .promotion import render_active_context
 
 
 PLUGIN_NAME = "stoe-hermes"
@@ -80,7 +80,7 @@ class SToEHermesAdapter:
         session_id = self._session_id(kwargs)
         if session_id not in self._states:
             self.on_session_start(**kwargs)
-        content = render_retrieved_context(self._retrieved.get(session_id, []), SESSION_CONTEXT_CHARS)
+        content = render_active_context(self._retrieved.get(session_id, []), SESSION_CONTEXT_CHARS)
         return {"context": content} if content else None
 
     def retrieve(self, params: dict[str, Any], **kwargs: Any) -> str:
@@ -107,7 +107,7 @@ class SToEHermesAdapter:
             {
                 "observer_state_ref": self._states[session_id],
                 "retrieval_run_id": retrieval.get("run_id"),
-                "context": render_retrieved_context(items, SESSION_CONTEXT_CHARS),
+                "context": render_active_context(items, SESSION_CONTEXT_CHARS),
             },
             ensure_ascii=False,
             sort_keys=True,

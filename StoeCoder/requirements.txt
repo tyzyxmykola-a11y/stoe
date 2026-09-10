@@ -2,3 +2,4 @@ Flask
 requests
 python-dotenv
 networkx
+psutil>=7.0

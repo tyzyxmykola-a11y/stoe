@@ -20,6 +20,7 @@ StoeCoder/
 ├─ stoe_coder.py
 ├─ coder_intent.py
 ├─ field.py
+├─ operators.py
 ├─ stoe_seed.json
 ├─ requirements.txt
 ├─ static/
@@ -38,7 +39,7 @@ StoeCoder/
 - at least one suitable local Ollama model
 - Windows PowerShell commands below assume the repository is already cloned
 
-Python dependencies are listed in `requirements.txt` (`Flask`, `requests`, `python-dotenv`, and `networkx`).
+Python dependencies are listed in `requirements.txt` (`Flask`, `requests`, `python-dotenv`, `networkx`, and `psutil`).
 
 ## First start on Windows
 
@@ -131,7 +132,7 @@ Uses the tracked upstream with `git pull --ff-only`. Dirty trees and diverged hi
 
 ### Push
 
-The generic operator Push is limited to the current `feature/*` branch and does not force. Main/master are deliberately refused by this generic action.
+Development Runs and generic operator Push accept the dedicated `stoecoder` branch or a `feature/*` branch. Push never forces. Main/master are deliberately refused by this generic action.
 
 ### Merge to main
 
@@ -141,7 +142,7 @@ Merge is an explicit operator action, separate from Run commit/push permission. 
 
 When the SToE Memory plugin is available, Coder records development and Git transitions as connected information points rather than treating successful output as the only history worth retaining.
 
-The lifecycle conserves useful evidence including objectives, worker actions, evaluations, commits, pushes, Git transitions, successor observer state, and exact failure conditions. Failed development paths remain available as history and can become relevant again when the rejecting condition changes.
+The lifecycle conserves useful evidence including objectives, worker actions, evaluations, commits, pushes, Git transitions, successor observer state, and exact failure conditions. Failed development paths remain available as history and can become relevant again when the rejecting condition changes. Each development task creates a current observer state and retrieves up to four prior artifacts through the memory navigator, with 600 content characters per artifact and 2,400 total. The selected references and retrieval run identity are saved alongside the model-visible context. A failure being retrieved does not itself establish that its rejecting condition changed or that retrieval improved the result.
 
 The runtime database is local and is not intended for publication. Large raw artifacts are referenced by path/hash rather than injected wholesale into model context.
 
@@ -161,11 +162,15 @@ python -m unittest discover -s StoeCoder/tests -q
 
 The deterministic Coder suite exercises candidate isolation/integration, local-boundary behavior, explicit model Git permissions, operator Diff/Commit/Pull/Push/Merge behavior, stale review/test rejection, and failure recording.
 
+Standalone edits dispatch this suite during candidate and integrated-tree verification, and GitHub CI runs it separately. A failing standalone test rejects candidate verification. Qualification is tied to both the parent commit and the current diff. Test subprocess environments are isolated from the server environment.
+
 ## Security and trust boundary
 
 SToE Coder is a trusted-user local development tool, not a hostile-code sandbox and not an authenticated multi-user service.
 
-The browser API is loopback-only. Models are not given credential material. Destructive Git actions such as force push and history rewriting remain outside the normal worker authority. Separate process/worktree boundaries reduce accidental coupling but should not be treated as OS-level sandboxing.
+Coder routes require a loopback client and a parsed local HTTP browser origin. The executive does not intentionally include credentials in worker prompts. Direct Git guards reject common destructive operations, global-option variants, and protected branch refspecs, but arbitrary worker programs and interpreters inherit the user's host authority. These guards do not enforce isolation against hostile commands or indirect credential access.
+
+Command stdout/stderr artifacts share a one-megabyte retention cap enforced while draining the process pipes. Exceeding the cap fails verification. Cancellation and timeout terminate the command and observed descendants; this is process cleanup, not an OS security boundary.
 
 Do not expose the service to an untrusted network without adding a real authentication and isolation boundary.
 

@@ -2138,7 +2138,7 @@ async function coderGitPull() {
   await refreshCoderStatus();
 }
 async function coderGitPush() {
-  if(!window.confirm('Push the current feature branch without force?')) return;
+  if(!window.confirm('Push the current development branch without force?')) return;
   try { const r=await coderRequest('git/push',{}); showCoderGitResult('Pushed '+r.branch+' at '+r.head); }
   catch(e) { showCoderGitResult('Push rejected: '+e.message); }
   await refreshCoderStatus();

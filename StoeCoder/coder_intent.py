@@ -27,6 +27,11 @@ def classify_operator_intent(text):
     # Get text without quoted parts
     unquoted_text = remove_quotes(text)
 
+    if '?' in unquoted_text or re.match(r"\s*(how|what|why|when|where|who|can|could|would|should|is|are|do|does|explain|show|status)\b", unquoted_text, re.IGNORECASE):
+        return 'conversation'
+    if not re.match(r"\s*(?:please\s+)?(?:fix|implement|add|edit|delete|commit|push)\b", unquoted_text, re.IGNORECASE):
+        return 'conversation'
+
     # Check if any mutation command appears as a whole word in the unquoted text
     for cmd in mutation_commands:
         # Use word boundary matching to ensure whole-word match

@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "governed_objective": "Add a concise operational SToE Hermes Development Governor v1 section to stoe-hermes/README.md.",
+  "task_scope_ref": "IP_hermes_taskscope_4169d3aaf028",
+  "task_scope_format": "stoe.hermes.task_scope.v1",
+  "model": "qwen3.5:4b",
+  "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "local_actions": {
+    "governor": [
+      "worker:hermes-governor-v1:scope-1",
+      "worker:hermes-governor-v1:scope-2"
+    ],
+    "planner": [
+      "worker:hermes-governor-v1:planner-1"
+    ],
+    "coder": [
+      "worker:hermes-governor-v1:coder-1",
+      "worker:hermes-governor-v1:coder-2",
+      "worker:hermes-governor-v1:coder-3"
+    ],
+    "reviewer": [
+      "worker:hermes-governor-v1:reviewer-1"
+    ]
+  },
+  "recovery": [
+    "Both governor controls repeated trusted metadata; the identical exact TaskScope was accepted only through deterministic validation.",
+    "Coder 1 omitted a required concept and ended incompletely.",
+    "Coder 2 repeated the heading inside its body.",
+    "Coder 3 passed the corrected artifact grammar; no closed action was retried."
+  ],
+  "parent_readme_sha256": "68cb4dbb4b2f3fe0db2c62dc5f56335756b0afb8014a2b3c929db74a78fa51cb",
+  "candidate_readme_sha256": "d0743b25d80dc4fbcbce5f751b3f883e3b50c47e83b24e5c2667bd8b1385844b",
+  "patch_artifact_sha256": "bcfd697928380e80cce417b843fcd7fbf3504eca1faa26e4485f9b791e12d542",
+  "implementation_commit": "a4c3878b7cc4c6cf89582fcc1cbba42983035144",
+  "branch": "feature/hermes-promotion-policy-v1",
+  "push": "passed",
+  "tests": {
+    "hermes": "46/46 passed",
+    "agent": "136/136 passed",
+    "frozen_cli_sha256": "fca641b2bc136e01441f2f22b36fa493cd662da082ece5ec38d3cfae306567e7",
+    "git_diff_check": "passed"
+  },
+  "limitations": [
+    "The independent reviewer was a separate action but dynamic routing selected the same local model as the other roles.",
+    "Hermes governs a bounded staged task; models still have no trusted apply, Git, activation, or SToE-write authority."
+  ],
+  "next_objective": "Let Hermes B select and initiate the next bounded unresolved repository objective from the SToE field under TaskScope, without Codex initiating each stage."
+}

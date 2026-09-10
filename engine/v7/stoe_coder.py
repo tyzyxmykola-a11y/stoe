@@ -585,7 +585,10 @@ class StoeCoderRuntime:
             return {"ok": True, "from": relative, "to": destination_relative}
         if kind == "run":
             cwd = _safe_repo_path(worktree, request.get("cwd") or ".")
-            result = self._runner.run(action_id=f"{task_id}:tool:{step}:run", command=request.get("command") or [], cwd=cwd, timeout=300)
+            command = request.get("command") or []
+            if not command:
+                return {"ok": False, "error": "run requires a non-empty argv command"}
+            result = self._runner.run(action_id=f"{task_id}:tool:{step}:run", command=command, cwd=cwd, timeout=300)
             return result.compact()
         if kind == "finish":
             return {"ok": True, "summary": request.get("summary", "")}

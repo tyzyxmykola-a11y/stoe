@@ -128,6 +128,12 @@ class StoeCoderTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             runner.run(action_id="bad", command=["git", "reset", "--hard"], cwd=self.repo)
 
+    def test_missing_run_command_is_worker_feedback_not_task_abort(self):
+        runtime = StoeCoderRuntime(self.repo, ollama=FakeOllama([]), runtime_root=self.runtime_root)
+        feedback = runtime._execute_tool("TASK_test", 1, self.repo, action("run"), None)
+        self.assertFalse(feedback["ok"])
+        self.assertIn("non-empty", feedback["error"])
+
     def test_navigator_exposes_coder_routes_and_rejects_remote_clients(self):
         try:
             import flask  # noqa: F401

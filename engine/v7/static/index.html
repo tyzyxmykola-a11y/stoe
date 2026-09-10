@@ -416,6 +416,11 @@ canvas:active { cursor: grabbing; }
 
     <!-- AGENT VIEW -->
     <div class="dialog-view" id="agent-view" style="display:none">
+      <div style="display:flex;gap:6px;padding:10px 14px 0;align-items:center">
+        <button class="btn-ghost btn-sm" id="mode-coder" onclick="setAgentMode('coder')">SToE Coder</button>
+        <button class="btn-ghost btn-sm" id="mode-field" onclick="setAgentMode('field')">Field Agent</button>
+        <span id="coder-status" style="margin-left:auto;color:var(--text-dim);font-size:10px">idle</span>
+      </div>
       <div class="messages" id="agent-messages">
         <div class="msg msg-system">
           <div class="msg-label">SToE Agent</div>
@@ -446,7 +451,9 @@ canvas:active { cursor: grabbing; }
           <textarea class="main-textarea" id="agent-input" placeholder="Ask the agent anything about the field..." rows="1"
             onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAgent();}"
             oninput="autoResize(this)"></textarea>
-          <button class="send-btn" id="agent-send-btn" onclick="sendAgent()">↑</button>
+          <button class="send-btn" id="agent-send-btn" title="Ask" onclick="sendAgent()">↑</button>
+          <button class="btn-ghost btn-sm" id="coder-run-btn" onclick="runCoderTask()">Run</button>
+          <button class="btn-ghost btn-sm" id="coder-resume-btn" onclick="resumeCoder()">Resume</button>
           <button class="send-btn" id="agent-stop-btn" onclick="stopAgent()" style="display:none;background:#ef4444">✕</button>
         </div>
       </div>
@@ -2045,6 +2052,43 @@ window.fetch = async (...args) => {
 // ── AGENT ──
 let agentRunning = false;
 let agentStop = false;
+let agentMode = 'coder';
+
+function setAgentMode(mode) {
+  agentMode = mode;
+  document.getElementById('mode-coder').style.color = mode==='coder' ? 'var(--accent2)' : '';
+  document.getElementById('mode-field').style.color = mode==='field' ? 'var(--accent2)' : '';
+  document.getElementById('coder-run-btn').style.display = mode==='coder' ? '' : 'none';
+  document.getElementById('coder-resume-btn').style.display = mode==='coder' ? '' : 'none';
+  document.getElementById('agent-input').placeholder = mode==='coder' ? 'Ask a question, or describe a repository task...' : 'Ask the field agent...';
+}
+
+async function coderRequest(path, body) {
+  const response = await fetch('/api/coder/' + path, {method: body ? 'POST' : 'GET', headers:{'Content-Type':'application/json'}, body: body ? JSON.stringify(body) : undefined});
+  const value = await response.json();
+  if(!response.ok) throw new Error(value.error || ('HTTP '+response.status));
+  return value;
+}
+
+async function refreshCoderStatus() {
+  if(agentMode!=='coder') return;
+  try {
+    const s=await coderRequest('status');
+    document.getElementById('coder-status').textContent=[s.status,s.branch,(s.head||'').slice(0,8),s.git,s.tests].filter(Boolean).join(' | ');
+  } catch(e) { document.getElementById('coder-status').textContent='offline'; }
+}
+
+async function runCoderTask() {
+  if(agentRunning || agentMode!=='coder') return;
+  const inp=document.getElementById('agent-input'), objective=inp.value.trim(); if(!objective) return;
+  inp.value=''; addAgentMsg('user',objective);
+  try { const r=await coderRequest('task',{objective,commit:/\bcommit\b/i.test(objective),push:/\bpush\b/i.test(objective)}); addAgentMsg('system','Accepted '+r.task_id+'. Work continues locally.'); }
+  catch(e) { addAgentMsg('system','Coder task rejected: '+e.message); }
+  await refreshCoderStatus();
+}
+
+async function resumeCoder() { try { const r=await coderRequest('resume',{}); addAgentMsg('system','Resumed as '+r.task_id); } catch(e) { addAgentMsg('system','Resume rejected: '+e.message); } await refreshCoderStatus(); }
+setInterval(refreshCoderStatus, 2000);
 
 const AGENT_SYSTEM = `You are an observer-creator operating within the Information Field of the Special Theory of Everything (SToE) by Mykola Voronin (M).
 
@@ -2104,6 +2148,11 @@ async function sendAgent() {
   if(!text) return;
   inp.value = ''; autoResize(inp);
   addAgentMsg('user', text);
+  if(agentMode==='coder') {
+    try { const r=await coderRequest('chat',{message:text}); addAgentMsg('agent',r.result); }
+    catch(e) { addAgentMsg('system','Coder chat error: '+e.message); }
+    return;
+  }
   logEntry('Agent query: ' + text.slice(0,60), 'info');
   agentRunning = true; agentStop = false;
   document.getElementById('agent-send-btn').disabled = true;
@@ -2121,9 +2170,11 @@ async function sendAgent() {
 
 function stopAgent() {
   agentStop = true;
+  if(agentMode==='coder') coderRequest('stop',{}).catch(()=>{});
   addAgentMsg('system', 'Agent stopped.');
   document.getElementById('agent-stop-btn').style.display = 'none';
 }
+setAgentMode('coder');
 
 // v7: connect an agent-created answer IP to every source IP the agent looked at.
 // If the agent never called a search/topology tool, fall back to a one-shot

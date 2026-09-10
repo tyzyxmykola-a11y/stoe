@@ -82,6 +82,14 @@ class StoeCoderTests(unittest.TestCase):
         self.assertEqual(source, (self.repo / "sample.py").read_text(encoding="utf-8"))
         self.assertTrue(accepted["task_id"].startswith("TASK_"))
 
+    def test_trusted_integration_accounts_for_new_untracked_file(self):
+        runtime = StoeCoderRuntime(self.repo, ollama=FakeOllama([]), runtime_root=self.runtime_root)
+        candidate = self.test_root / "candidate"
+        candidate.mkdir()
+        (candidate / "new.py").write_text("VALUE = 1\n", encoding="utf-8")
+        runtime._integrate("TASK_new", _git(self.repo, "rev-parse", "HEAD").stdout.strip(), candidate, ["new.py"])
+        self.assertTrue((self.repo / "new.py").is_file())
+
     def test_resume_gets_linked_new_identity(self):
         first = StoeCoderRuntime.task_identity("x", "h", "s")
         second = StoeCoderRuntime.task_identity("x", "h", "s", first)

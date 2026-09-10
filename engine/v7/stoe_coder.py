@@ -650,7 +650,13 @@ class StoeCoderRuntime:
                 shutil.copyfile(source, target)
             elif target.is_file():
                 target.unlink()
-        actual = [line for line in _git(self.repo_root, "diff", "--name-only").stdout.splitlines() if line]
+        actual = []
+        for line in _git(self.repo_root, "status", "--porcelain=v1", "--untracked-files=all").stdout.splitlines():
+            path = line[3:].strip()
+            if " -> " in path:
+                path = path.split(" -> ", 1)[1]
+            if path:
+                actual.append(path.replace("\\", "/"))
         if sorted(actual) != sorted(touched):
             self._rollback(parent_head, touched)
             raise RuntimeError("integrated path set differs from reviewed candidate")

@@ -340,7 +340,19 @@ def develop(objective_arg: str | None) -> dict:
     for attempt in range(1, 4):
         action_id = f"worker:hermes-standalone-v1:{task_key}:coder-{attempt}"
         prompt = {"task_scope": scope, "accepted_plan": planned, "source_tail": parent[-2200:], "artifact_contract": "Return 4-7 plain sentences, 55-240 chars each. Across them include Hermes, SToE Memory, TaskScope, restart, trusted, model. No Markdown, paths, hashes, test counts, or authority claims.", "prior_exact_defects": defects}
-        coded, coder_manifest = run_model(action_id, "coder", prompt, patch_schema(parent_sha), 900)
+        try:
+            coded, coder_manifest = run_model(action_id, "coder", prompt, patch_schema(parent_sha), 900)
+        except Exception as exc:
+            manifest_path = gov.action_dir(action_id) / "manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+            exact_defect = manifest.get("failure") or str(exc)
+            defects.append(exact_defect)
+            failure_ref = f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}"
+            failure_content = f"Closed coder action failed before artifact validation: {exact_defect}"
+            failure_metadata = {"action_id": action_id, "raw_sha256": manifest.get("raw_sha256")}
+            _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": exact_defect, "session_id": SESSION, "metadata": failure_metadata, "visible": True})
+            state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
+            continue
         try:
             patch = validate_patch(coded["patch"], parent_sha)
             body = " ".join(sentence.strip() for sentence in patch["sentences"])

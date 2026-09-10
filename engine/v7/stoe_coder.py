@@ -259,6 +259,18 @@ class OllamaWorker:
             if value.get("done_reason") in {"length", "error"}:
                 failed_model = str(value.get("model", ""))
                 failures[failed_model] = failures.get(failed_model, 0) + 1
+        task_models: dict[tuple[str, str], int] = {}
+        for path in self.artifact_root.glob("TASK_*_coder_*/raw_response.json"):
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            task_prefix = path.parent.name.split("_coder_", 1)[0]
+            key = (task_prefix, str(value.get("model", "")))
+            task_models[key] = task_models.get(key, 0) + 1
+        for (_, failed_model), count in task_models.items():
+            if count >= MAX_TOOL_STEPS:
+                failures[failed_model] = failures.get(failed_model, 0) + 2
         state_path = self.artifact_root.parent / "state.json"
         try:
             state = json.loads(state_path.read_text(encoding="utf-8"))

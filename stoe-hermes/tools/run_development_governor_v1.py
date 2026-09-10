@@ -62,7 +62,7 @@ def model_call(*, action_id: str, role: str, prompt_value: dict, schema: dict, d
             raise RuntimeError("stable action identity mismatch")
         if manifest.get("status") == "completed":
             return json.loads(parsed_path.read_text(encoding="utf-8")), manifest, {"recovered": True}
-        if manifest.get("status") in {"failed", "uncertain"}:
+        if manifest.get("status") in {"failed", "uncertain", "deferred"}:
             raise RuntimeError("closed stable action cannot be retried")
         if manifest.get("status") != "started" or not raw_path.is_file():
             manifest.update({"status": "uncertain", "failure": "interrupted before raw preservation"})
@@ -81,7 +81,29 @@ def model_call(*, action_id: str, role: str, prompt_value: dict, schema: dict, d
         route = route_model(task, discovery["models"], snapshot)
         governor = govern_dispatch(task, route, snapshot, ResourcePolicy(mode="interactive"))
         if not governor["allowed"]:
-            return {"status": "deferred"}, {"status": "deferred", "action_id": action_id, "role": role}, {"route": route, "governor": governor}
+            ranked_names = list(route.get("fallback_models", []))
+            ranked_names.extend(model["model"] for model in discovery["models"] if model["model"] != route["selected_model"] and model["model"] not in ranked_names)
+            inventory = {model["model"]: model for model in discovery["models"]}
+            for name in ranked_names:
+                model = inventory[name]
+                alternate = {
+                    "selected_model": name,
+                    "selected_digest": model["digest"],
+                    "reason": "ranked fallback selected because the preferred model breached the interactive resource reserve",
+                    "fallback_models": [],
+                    "capability_evidence": list(model.get("observations") or []),
+                    "expected_resource_use": {"model_size_bytes": model.get("size_bytes"), "loaded": model.get("loaded")},
+                    "action": "REUSE_LOADED_MODEL" if model.get("loaded") else "RUN_SMALLER_MODEL",
+                }
+                alternate_governor = govern_dispatch(task, alternate, snapshot, ResourcePolicy(mode="interactive"))
+                if alternate_governor["allowed"]:
+                    route, governor = alternate, alternate_governor
+                    break
+        if not governor["allowed"]:
+            run_dir.mkdir(parents=True, exist_ok=False)
+            deferred = {"status": "deferred", "action_id": action_id, "role": role, "route": route, "governor": governor}
+            atomic_json(manifest_path, deferred)
+            return {"status": "deferred"}, deferred, {"route": route, "governor": governor}
         run_dir.mkdir(parents=True, exist_ok=False)
         system, _ = model_instructions(role)
         system += "\n\nReturn only the schema-conforming inert object. You have no tools, filesystem, network, process, Git, SToE-write, apply, or activation authority."

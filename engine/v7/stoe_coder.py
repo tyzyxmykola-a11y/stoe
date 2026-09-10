@@ -187,37 +187,37 @@ class FullLocalRunner:
         stdout_path, stderr_path = run_dir / "stdout.bin", run_dir / "stderr.bin"
         started = time.monotonic()
         timed_out = cancelled = False
+        process: subprocess.Popen[bytes] | None = None
         with stdout_path.open("wb") as stdout_file, stderr_path.open("wb") as stderr_file:
             environment = os.environ.copy()
             environment["PYTHONDONTWRITEBYTECODE"] = "1"
-            process = subprocess.Popen(command, cwd=cwd, env=environment, stdin=subprocess.DEVNULL, stdout=stdout_file, stderr=stderr_file)
-            with self._lock:
-                self._process = process
-            deadline = started + max(1, min(timeout, 3_600))
-            while process.poll() is None:
-                if self.stop_event.is_set():
-                    cancelled = True
-                    process.terminate()
-                    break
-                if time.monotonic() >= deadline:
-                    timed_out = True
-                    process.terminate()
-                    break
-                time.sleep(0.05)
             try:
-                process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait(timeout=5)
-            with self._lock:
-                self._process = None
+                process = subprocess.Popen(command, cwd=cwd, env=environment, stdin=subprocess.DEVNULL, stdout=stdout_file, stderr=stderr_file)
+            except OSError as exc:
+                stderr_file.write((f"command launch failed: {exc}\n").encode("utf-8", "replace"))
+            if process is not None:
+                with self._lock:
+                    self._process = process
+                deadline = started + max(1, min(timeout, 3_600))
+                while process.poll() is None:
+                    if self.stop_event.is_set():
+                        cancelled = True; process.terminate(); break
+                    if time.monotonic() >= deadline:
+                        timed_out = True; process.terminate(); break
+                    time.sleep(0.05)
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill(); process.wait(timeout=5)
+                with self._lock:
+                    self._process = None
         stdout_data, stderr_data = stdout_path.read_bytes(), stderr_path.read_bytes()
         if len(stdout_data) + len(stderr_data) > MAX_OUTPUT_BYTES:
             timed_out = True
         visible_out = stdout_data[:MAX_VISIBLE_OUTPUT].decode("utf-8", "replace")
         visible_err = stderr_data[:MAX_VISIBLE_OUTPUT].decode("utf-8", "replace")
         result = CommandResult(
-            action_id, str(cwd), command, process.returncode if process.returncode is not None else -1,
+            action_id, str(cwd), command, process.returncode if process is not None and process.returncode is not None else -1,
             round(time.monotonic() - started, 3), visible_out, visible_err,
             str(stdout_path), str(stderr_path), _sha256(stdout_data), _sha256(stderr_data),
             len(stdout_data) > MAX_VISIBLE_OUTPUT or len(stderr_data) > MAX_VISIBLE_OUTPUT,

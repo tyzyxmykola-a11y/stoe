@@ -111,6 +111,9 @@ class StoeCoderTests(unittest.TestCase):
         self.assertEqual(0, result.exit_code)
         self.assertIn("ok", result.stdout)
         self.assertTrue(Path(result.stdout_artifact).is_file())
+        missing = runner.run(action_id="missing", command=["definitely-not-a-real-command"], cwd=self.repo)
+        self.assertEqual(-1, missing.exit_code)
+        self.assertIn("command launch failed", missing.stderr)
         with self.assertRaises(PermissionError):
             runner.run(action_id="bad", command=["git", "reset", "--hard"], cwd=self.repo)
 

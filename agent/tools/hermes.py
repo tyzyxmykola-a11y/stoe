@@ -354,6 +354,12 @@ def develop(objective_arg: str | None) -> dict:
             _ensure_ip(store, ref=failure_ref, identity={"content": str(exc), "kind": "FailureIP", "metadata": {"action_id": action_id}}, create={"content": f"Closed coder action failed deterministic validation: {exc}", "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": {"action_id": action_id, "raw_sha256": coder_manifest.get("raw_sha256")}, "visible": True})
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
     if candidate is None or coder_refs is None or coder_manifest is None:
+        state.update({"status": "failed", "pending_next": "successor_format_correction", "failure": f"coder recovery exhausted: {defects}"})
+        atomic_json(STATE_PATH, state)
+        failure_ref = "IP_hermes_standalone_coder_exhausted01"
+        _ensure_ip(store, ref=failure_ref, identity={"content": state["failure"], "kind": "FailureIP", "metadata": {"task_id": task_id}}, create={"content": state["failure"], "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": "All three closed coder artifacts repeated a Markdown heading inside the body.", "session_id": SESSION, "metadata": {"task_id": task_id, "closed_actions": state["closed_actions"]}, "visible": True})
+        for attempt in range(1, 4):
+            _ensure_relation(store, source_ref=failure_ref, target_ref=f"IP_hermes_standalone_coder_failure{attempt:02d}", relation="summarizes", note="Recovery exhaustion conserves each exact closed coder defect.")
         raise RuntimeError(f"coder recovery exhausted: {defects}")
     state["closed_actions"].append(coder_manifest["action_id"]); state["active_action"] = coder_manifest["action_id"]; state["pending_next"] = "reviewer"; atomic_json(STATE_PATH, state)
     reviewed, reviewer_manifest = run_model(f"worker:hermes-standalone-v1:{task_key}:reviewer-1", "reviewer", {"task_scope": scope, "plan": planned, "candidate_append": candidate[len(parent.rstrip()):], "deterministic": {"identity": "passed", "grammar": "passed", "authority": "unchanged"}}, control_schema(), 600)

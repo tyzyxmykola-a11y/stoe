@@ -400,7 +400,7 @@ def develop(objective_arg: str | None) -> dict:
     if candidate is None or coder_refs is None or coder_manifest is None:
         state.update({"status": "failed", "pending_next": "successor_format_correction", "failure": f"coder recovery exhausted: {defects}"})
         atomic_json(STATE_PATH, state)
-        failure_ref = f"IP_hermes_standalone_exhausted_{task_key}"
+        failure_ref = f"IP_hermes_standalone_exhausted_{task_key}_{sha256(state['failure'].encode())[:8]}"
         failure_metadata = {"task_id": task_id, "closed_actions": state["closed_actions"]}
         _ensure_ip(store, ref=failure_ref, identity={"content": state["failure"], "kind": "FailureIP", "metadata": failure_metadata}, create={"content": state["failure"], "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": "; ".join(defects), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
         for coder_failure_ref in coder_failure_refs:

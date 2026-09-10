@@ -34,3 +34,7 @@ release.
 Separate directories and a sanitized process environment prevent intentional inheritance of Hermes profiles, `.env`, credentials, sessions, memories, and production gateways. Resource monitoring bounds time, output, process-tree size, RAM, and disk growth. On this Windows host it is still an ordinary subprocess under the invoking user identity: it is **not** an OS security sandbox and cannot prove network/filesystem denial against arbitrary native code. For that reason generated source is additionally constrained by a small static capability allowlist and remains inactive pending review.
 
 Later stages may investigate a native SToE memory provider or context engine only after this adapter is qualified.
+
+## SToE Hermes Development Governor v1
+
+The SToE Hermes Development Governor v1 enforces deterministic authority through TaskScope, which defines allowed and forbidden capabilities for all models. Models operate under strict limits: they cannot apply Git operations, execute processes, or modify protected trust boundaries. Existing evidence and verification remain unchanged regardless of model activity. SToE Memory continuity is maintained only when qualified adapters are present before any native provider use. Documentation must not claim unrestricted autonomy; instead, it explicitly states that all actions are bounded by the current TaskScope configuration. Trusted verification relies on these fixed constraints to ensure system integrity without overstepping defined roles.

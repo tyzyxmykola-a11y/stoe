@@ -611,7 +611,9 @@ class StoeCoderRuntime:
         for index, command in enumerate(self._verification_commands(touched), 1):
             env_path = os.pathsep.join([str(workspace / "agent" / "src"), str(workspace / "stoe-hermes" / "src"), str(workspace / "engine" / "v7"), os.environ.get("PYTHONPATH", "")])
             previous = os.environ.get("PYTHONPATH")
+            previous_scratch = os.environ.get("STOE_TEST_SCRATCH")
             os.environ["PYTHONPATH"] = env_path
+            os.environ["STOE_TEST_SCRATCH"] = str(self.runtime_root / "test_scratch")
             try:
                 result = self._runner.run(action_id=f"{task_id}:verify:{index}", command=command, cwd=workspace, timeout=600)
             finally:
@@ -619,6 +621,10 @@ class StoeCoderRuntime:
                     os.environ.pop("PYTHONPATH", None)
                 else:
                     os.environ["PYTHONPATH"] = previous
+                if previous_scratch is None:
+                    os.environ.pop("STOE_TEST_SCRATCH", None)
+                else:
+                    os.environ["STOE_TEST_SCRATCH"] = previous_scratch
             results.append(result.compact())
             self._event("Tests", "PASS" if result.exit_code == 0 else "FAIL", command=command, exit_code=result.exit_code)
             if result.exit_code or result.timed_out or result.cancelled:

@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -38,7 +39,7 @@ def action(kind, **values):
 
 class StoeCoderTests(unittest.TestCase):
     def setUp(self):
-        scratch = Path(__file__).resolve().parents[3] / "agent" / "runtime" / "stoe_coder_tests"
+        scratch = Path(os.environ.get("STOE_TEST_SCRATCH", Path(__file__).resolve().parents[3] / "agent" / "runtime" / "stoe_coder_tests"))
         scratch.mkdir(parents=True, exist_ok=True)
         self.test_root = scratch / uuid.uuid4().hex
         self.test_root.mkdir()

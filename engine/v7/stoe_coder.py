@@ -403,7 +403,7 @@ class StoeCoderRuntime:
             task_id = self.task_identity(objective, head, state["observer"], predecessor)
             if task_id in state.get("closed_actions", []):
                 raise RuntimeError("task identity is already closed")
-            state.update({"status": "queued", "objective": objective, "task_id": task_id, "active_action": None, "branch": branch, "head": head, "git": "clean", "tests": "not_run", "stop_requested": False, "last_result": None, "next_action": "worker_inspection"})
+            state.update({"status": "queued", "objective": objective, "task_id": task_id, "active_action": None, "branch": branch, "head": head, "git": "clean", "tests": "not_run", "stop_requested": False, "last_result": None, "next_action": "worker_inspection", "task_options": {"commit": commit, "push": push, "allowed_paths": allowed_paths}})
             self._save_state(state)
             self._stop.clear()
             self._thread = threading.Thread(target=self._task_main, args=(task_id, objective, commit, push, allowed_paths), daemon=True)
@@ -427,7 +427,8 @@ class StoeCoderRuntime:
                 raise RuntimeError("no stopped or failed task is resumable")
             old_task = state.get("task_id")
             objective = state["objective"]
-        result = self.submit_task(objective, commit=False, push=False, predecessor=old_task)
+            options = state.get("task_options") or {}
+        result = self.submit_task(objective, commit=bool(options.get("commit")), push=bool(options.get("push")), allowed_paths=options.get("allowed_paths"), predecessor=old_task)
         self._event("Coder", "task resumed as a fresh action lineage", prior_task=old_task, task_id=result["task_id"])
         return result
 

@@ -17,7 +17,7 @@ HERMES_SRC = ROOT / "stoe-hermes" / "src"
 sys.path[:0] = [str(AGENT_SRC), str(HERMES_SRC)]
 
 from stoe_agent.local_development import LocalDevelopmentError, _ensure_ip, _ensure_relation, control_schema  # noqa: E402
-from stoe_agent.local_development_pipeline import field_store  # noqa: E402
+from stoe_agent.local_development_pipeline import field_store, record_routing_evidence  # noqa: E402
 from stoe_hermes.development_governor import task_scope_schema, validate_task_scope  # noqa: E402
 
 
@@ -351,6 +351,8 @@ def develop(objective_arg: str | None) -> dict:
             failure_content = f"Closed coder action failed before artifact validation: {exact_defect}"
             failure_metadata = {"action_id": action_id, "raw_sha256": manifest.get("raw_sha256")}
             _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": exact_defect, "session_id": SESSION, "metadata": failure_metadata, "visible": True})
+            if manifest.get("model") and manifest.get("digest"):
+                record_routing_evidence(model=manifest["model"], digest=manifest["digest"], role="coder", score=0.1, observation=f"Standalone sentence-table coder failed before validation: {exact_defect}")
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
             continue
         try:

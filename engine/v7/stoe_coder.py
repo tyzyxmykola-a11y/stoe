@@ -250,13 +250,22 @@ class OllamaWorker:
     def choose(self, role: str) -> tuple[str, str]:
         models = self.models()
         names = {str(item.get("name")): str(item.get("digest")) for item in models}
+        failures: dict[str, int] = {}
+        for path in list(self.artifact_root.glob("*/raw_response.json"))[-50:]:
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            if value.get("done_reason") in {"length", "error"}:
+                failed_model = str(value.get("model", ""))
+                failures[failed_model] = failures.get(failed_model, 0) + 1
         preferences = (
             ["qwen3-coder:latest", "gemma4:26b", "gemma3:27b", "gemma4:12b"]
             if role in {"coder", "debugger"}
             else ["gemma4:26b", "gemma3:27b", "maverick:latest", "llama3.1:latest"]
         )
         for name in preferences:
-            if name in names:
+            if name in names and failures.get(name, 0) < 2:
                 return name, names[name]
         candidates = [item for item in models if "embed" not in str(item.get("name", "")).lower()]
         if not candidates:

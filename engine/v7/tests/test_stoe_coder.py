@@ -9,7 +9,7 @@ import shutil
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from stoe_coder import FullLocalRunner, StoeCoderRuntime, _git, _ollama_schema, _validate_bounds
+from stoe_coder import FullLocalRunner, OllamaWorker, StoeCoderRuntime, _git, _ollama_schema, _validate_bounds
 
 
 class FakeOllama:
@@ -91,6 +91,19 @@ class StoeCoderTests(unittest.TestCase):
         self.assertNotIn("maxLength", _ollama_schema(schema)["properties"]["x"])
         with self.assertRaises(ValueError):
             _validate_bounds({"x": "too long"}, schema)
+
+    def test_repeated_length_failures_route_away_from_model(self):
+        root = self.runtime_root / "routing"
+        for index in range(2):
+            path = root / str(index)
+            path.mkdir(parents=True)
+            (path / "raw_response.json").write_text(json.dumps({"model": "qwen3-coder:latest", "done_reason": "length"}), encoding="utf-8")
+        worker = OllamaWorker(artifact_root=root)
+        worker.models = lambda: [
+            {"name": "qwen3-coder:latest", "digest": "q", "size": 20},
+            {"name": "gemma4:26b", "digest": "g", "size": 19},
+        ]
+        self.assertEqual("gemma4:26b", worker.choose("coder")[0])
 
     def test_runner_preserves_bounded_output_and_denies_destructive_git(self):
         runner = FullLocalRunner(self.runtime_root / "commands")

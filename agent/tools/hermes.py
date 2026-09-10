@@ -354,6 +354,7 @@ def develop(objective_arg: str | None) -> dict:
     planner_refs = record_worker("planner", planner_manifest["action_id"], planner_manifest, planned, objective)
     state["closed_actions"].append(planner_manifest["action_id"]); state["active_action"] = planner_manifest["action_id"]; state["pending_next"] = "coder"; atomic_json(STATE_PATH, state)
     defects: list[str] = []
+    coder_failure_refs: list[str] = []
     coder_refs = None
     candidate = None
     coder_manifest = None
@@ -367,10 +368,11 @@ def develop(objective_arg: str | None) -> dict:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
             exact_defect = manifest.get("failure") or str(exc)
             defects.append(exact_defect)
-            failure_ref = f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}"
+            failure_ref = f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}_{sha256(exact_defect.encode())[:8]}"
             failure_content = f"Closed coder action failed before artifact validation: {exact_defect}"
             failure_metadata = {"action_id": action_id, "raw_sha256": manifest.get("raw_sha256")}
             _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": exact_defect, "session_id": SESSION, "metadata": failure_metadata, "visible": True})
+            coder_failure_refs.append(failure_ref)
             if manifest.get("model") and manifest.get("digest"):
                 record_routing_evidence(model=manifest["model"], digest=manifest["digest"], role="coder", score=0.1, observation=f"Standalone sentence-table coder failed before validation: {exact_defect}")
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
@@ -388,10 +390,11 @@ def develop(objective_arg: str | None) -> dict:
             break
         except (ValueError, LocalDevelopmentError) as exc:
             defects.append(str(exc))
-            failure_ref = f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}"
+            failure_ref = f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}_{sha256(str(exc).encode())[:8]}"
             failure_content = f"Closed coder action failed deterministic validation: {exc}"
             failure_metadata = {"action_id": action_id, "raw_sha256": coder_manifest.get("raw_sha256")}
             _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
+            coder_failure_refs.append(failure_ref)
             record_routing_evidence(model=coder_manifest["model"], digest=coder_manifest["digest"], role="coder", score=0.25, observation=f"Standalone sentence-table candidate failed deterministic semantics: {exc}")
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
     if candidate is None or coder_refs is None or coder_manifest is None:
@@ -400,8 +403,8 @@ def develop(objective_arg: str | None) -> dict:
         failure_ref = f"IP_hermes_standalone_exhausted_{task_key}"
         failure_metadata = {"task_id": task_id, "closed_actions": state["closed_actions"]}
         _ensure_ip(store, ref=failure_ref, identity={"content": state["failure"], "kind": "FailureIP", "metadata": failure_metadata}, create={"content": state["failure"], "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": "; ".join(defects), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
-        for attempt in range(1, 4):
-            _ensure_relation(store, source_ref=failure_ref, target_ref=f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}", relation="summarizes", note="Recovery exhaustion conserves each exact closed coder defect.")
+        for coder_failure_ref in coder_failure_refs:
+            _ensure_relation(store, source_ref=failure_ref, target_ref=coder_failure_ref, relation="summarizes", note="Recovery exhaustion conserves each exact closed coder defect.")
         raise RuntimeError(f"coder recovery exhausted: {defects}")
     state["closed_actions"].append(coder_manifest["action_id"]); state["active_action"] = coder_manifest["action_id"]; state["pending_next"] = "reviewer"; atomic_json(STATE_PATH, state)
     reviewed, reviewer_manifest = run_model(f"worker:hermes-standalone-v1:{task_key}:reviewer-1", "reviewer", {"task_scope": scope, "plan": planned, "candidate_append": candidate[len(parent.rstrip()):], "deterministic": {"identity": "passed", "grammar": "passed", "authority": "unchanged"}}, control_schema(), 600)

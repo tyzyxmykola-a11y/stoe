@@ -33,10 +33,14 @@ runtime:
   Development v2, and measured delegation to local Ollama workers.
 - [`stoe-hermes`](stoe-hermes) implements Hermes A/B succession, the bounded
   Development Governor, and a standalone local-development runtime.
+- [`StoeCoder`](StoeCoder/README.md) is the root-level development line for the
+  local SToE Coder executive. It starts from the qualified v1 implementation and
+  is the location for future Coder evolution; the Navigator integration under
+  `engine/v7` is retained as a preserved baseline.
 
-The v3, v7, v9.1, memory-plugin, research-agent, and Hermes packages are separate
-runtimes. They do not automatically share state merely because they are in one
-repository. See the [snapshot history](docs/snapshot-history.md) for their
+The v3, v7, v9.1, memory-plugin, research-agent, Hermes, and StoeCoder packages are
+separate runtimes. They do not automatically share state merely because they are
+in one repository. See the [snapshot history](docs/snapshot-history.md) for their
 development paths and the limits of the version labels.
 
 ## SToE Memory
@@ -107,10 +111,11 @@ feature-branch pushes without placing credential material in model context.
 
 These results establish a qualified, supervised local-development baseline.
 They do not establish production readiness, unrestricted autonomous
-self-modification, or general autonomous successor promotion. The next
-development stage is **SToE Coder**: a persistent local development executive
-integrated with the existing Information Field Navigator; it is not implemented
-in this baseline.
+self-modification, or general autonomous successor promotion. SToE Coder v1 is
+now implemented and preserved with the Information Field Navigator under
+[`engine/v7`](engine/v7/README.md); continued Coder development moves to the
+separate root-level [`StoeCoder`](StoeCoder/README.md) project so the Navigator
+baseline can remain untouched.
 
 ## Reproducible experiments
 

@@ -34,6 +34,10 @@ class StandaloneHermesTests(unittest.TestCase):
             changed = dict(patch); changed["sentences"] = sentences[:-1] + [sentences[-1] + " " + mutation]
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):
                 hermes.validate_patch(changed, parent)
+        missing = dict(patch)
+        missing["sentences"] = [item.replace("Restart", "Recovery") for item in sentences]
+        with self.assertRaisesRegex(ValueError, "restart"):
+            hermes.validate_patch(missing, parent)
 
     def test_scope_is_single_file_and_preserves_forbidden_authority(self):
         scope = hermes.exact_scope(hermes.DEFAULT_OBJECTIVE, "hermes:standalone-v1:123456789abc")

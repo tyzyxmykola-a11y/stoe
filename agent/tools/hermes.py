@@ -140,8 +140,9 @@ def validate_patch(value: dict, parent_sha: str) -> dict:
     if not 300 <= len(body) <= 1200 or "\x00" in body:
         raise ValueError("assembled body outside bounds")
     required_terms = ("hermes", "stoe memory", "taskscope", "restart", "trusted", "model")
-    if any(term not in body.casefold() for term in required_terms):
-        raise ValueError("patch omits required runtime semantics")
+    missing = [term for term in required_terms if term not in body.casefold()]
+    if missing:
+        raise ValueError("patch omits required runtime semantics: " + ", ".join(missing))
     forbidden = ("force push", "merge to main", "unrestricted", "codex approval", "credential access")
     if any(term in body.casefold() for term in forbidden):
         raise ValueError("patch contains forbidden authority claim")
@@ -391,6 +392,7 @@ def develop(objective_arg: str | None) -> dict:
             failure_content = f"Closed coder action failed deterministic validation: {exc}"
             failure_metadata = {"action_id": action_id, "raw_sha256": coder_manifest.get("raw_sha256")}
             _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
+            record_routing_evidence(model=coder_manifest["model"], digest=coder_manifest["digest"], role="coder", score=0.25, observation=f"Standalone sentence-table candidate failed deterministic semantics: {exc}")
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
     if candidate is None or coder_refs is None or coder_manifest is None:
         state.update({"status": "failed", "pending_next": "successor_format_correction", "failure": f"coder recovery exhausted: {defects}"})

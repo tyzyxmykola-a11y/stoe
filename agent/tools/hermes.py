@@ -321,7 +321,8 @@ def develop(objective_arg: str | None) -> dict:
         governor_refs = record_worker("governor", governor_manifest["action_id"], governor_manifest, governed["control"], objective)
     except LocalDevelopmentError as exc:
         failure_ref = "IP_hermes_standalone_governor_control_failure01"
-        _ensure_ip(store, ref=failure_ref, identity={"content": str(exc), "kind": "FailureIP", "metadata": {"action_id": governor_manifest["action_id"]}}, create={"content": f"Governor TaskScope validated but compact control failed: {exc}", "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": {"action_id": governor_manifest["action_id"]}, "visible": True})
+        failure_content = f"Governor TaskScope validated but compact control failed: {exc}"
+        _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": {"action_id": governor_manifest["action_id"]}}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": {"action_id": governor_manifest["action_id"]}, "visible": True})
         governor_refs = {"result": failure_ref}
     state.update({"active_action": governor_manifest["action_id"], "closed_actions": [governor_manifest["action_id"]], "pending_next": "planner", "task_scope_ref": scope_ref})
     atomic_json(STATE_PATH, state)
@@ -351,7 +352,9 @@ def develop(objective_arg: str | None) -> dict:
         except (ValueError, LocalDevelopmentError) as exc:
             defects.append(str(exc))
             failure_ref = f"IP_hermes_standalone_coder_failure{attempt:02d}"
-            _ensure_ip(store, ref=failure_ref, identity={"content": str(exc), "kind": "FailureIP", "metadata": {"action_id": action_id}}, create={"content": f"Closed coder action failed deterministic validation: {exc}", "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": {"action_id": action_id, "raw_sha256": coder_manifest.get("raw_sha256")}, "visible": True})
+            failure_content = f"Closed coder action failed deterministic validation: {exc}"
+            failure_metadata = {"action_id": action_id, "raw_sha256": coder_manifest.get("raw_sha256")}
+            _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
     if candidate is None or coder_refs is None or coder_manifest is None:
         state.update({"status": "failed", "pending_next": "successor_format_correction", "failure": f"coder recovery exhausted: {defects}"})

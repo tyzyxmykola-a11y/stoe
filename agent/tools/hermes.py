@@ -377,7 +377,8 @@ def develop(objective_arg: str | None) -> dict:
         state.update({"status": "failed", "pending_next": "successor_format_correction", "failure": f"coder recovery exhausted: {defects}"})
         atomic_json(STATE_PATH, state)
         failure_ref = f"IP_hermes_standalone_exhausted_{task_key}"
-        _ensure_ip(store, ref=failure_ref, identity={"content": state["failure"], "kind": "FailureIP", "metadata": {"task_id": task_id}}, create={"content": state["failure"], "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": "All three closed coder artifacts repeated a Markdown heading inside the body.", "session_id": SESSION, "metadata": {"task_id": task_id, "closed_actions": state["closed_actions"]}, "visible": True})
+        failure_metadata = {"task_id": task_id, "closed_actions": state["closed_actions"]}
+        _ensure_ip(store, ref=failure_ref, identity={"content": state["failure"], "kind": "FailureIP", "metadata": failure_metadata}, create={"content": state["failure"], "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": "; ".join(defects), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
         for attempt in range(1, 4):
             _ensure_relation(store, source_ref=failure_ref, target_ref=f"IP_hermes_standalone_coder_{task_key}_{attempt:02d}", relation="summarizes", note="Recovery exhaustion conserves each exact closed coder defect.")
         raise RuntimeError(f"coder recovery exhausted: {defects}")

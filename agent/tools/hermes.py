@@ -374,7 +374,7 @@ def develop(objective_arg: str | None) -> dict:
             _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": exact_defect, "session_id": SESSION, "metadata": failure_metadata, "visible": True})
             coder_failure_refs.append(failure_ref)
             if manifest.get("model") and manifest.get("digest"):
-                record_routing_evidence(model=manifest["model"], digest=manifest["digest"], role="coder", score=0.1, observation=f"Standalone sentence-table coder failed before validation: {exact_defect}")
+                record_routing_evidence(model=manifest["model"], digest=manifest["digest"], role="coder", score=0.0, observation=f"Standalone sentence-table coder failed before validation: {exact_defect}")
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
             continue
         try:
@@ -395,7 +395,7 @@ def develop(objective_arg: str | None) -> dict:
             failure_metadata = {"action_id": action_id, "raw_sha256": coder_manifest.get("raw_sha256")}
             _ensure_ip(store, ref=failure_ref, identity={"content": failure_content, "kind": "FailureIP", "metadata": failure_metadata}, create={"content": failure_content, "kind": "FailureIP", "origin": "failure_history", "outcome": "failed", "failure_condition": str(exc), "session_id": SESSION, "metadata": failure_metadata, "visible": True})
             coder_failure_refs.append(failure_ref)
-            record_routing_evidence(model=coder_manifest["model"], digest=coder_manifest["digest"], role="coder", score=0.25, observation=f"Standalone sentence-table candidate failed deterministic semantics: {exc}")
+            record_routing_evidence(model=coder_manifest["model"], digest=coder_manifest["digest"], role="coder", score=0.0, observation=f"Standalone sentence-table candidate failed deterministic semantics: {exc}")
             state["closed_actions"].append(action_id); state["active_action"] = action_id; state["pending_next"] = "coder_correction"; atomic_json(STATE_PATH, state)
     if candidate is None or coder_refs is None or coder_manifest is None:
         state.update({"status": "failed", "pending_next": "successor_format_correction", "failure": f"coder recovery exhausted: {defects}"})

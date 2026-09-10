@@ -79,7 +79,28 @@ def coder_chat():
 @app.route("/api/coder/task", methods=["POST"])
 def coder_task():
     data = request.get_json(silent=True) or {}
-    return _coder_call(lambda: coder.submit_task(data.get("objective", ""), commit=bool(data.get("commit")), push=bool(data.get("push")), allowed_paths=data.get("allowed_paths")))
+    return _coder_call(lambda: coder.submit_task(data.get("objective", ""), allow_commit=bool(data.get("allow_commit")), allow_push=bool(data.get("allow_push")), allowed_paths=data.get("allowed_paths")))
+
+@app.route("/api/coder/git/diff", methods=["GET"])
+def coder_git_diff():
+    return _coder_call(coder.git_diff)
+
+@app.route("/api/coder/git/commit", methods=["POST"])
+def coder_git_commit():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.git_commit(data.get("message", "")))
+
+@app.route("/api/coder/git/pull", methods=["POST"])
+def coder_git_pull():
+    return _coder_call(coder.git_pull)
+
+@app.route("/api/coder/git/push", methods=["POST"])
+def coder_git_push():
+    return _coder_call(coder.git_push)
+
+@app.route("/api/coder/git/merge", methods=["POST"])
+def coder_git_merge():
+    return _coder_call(coder.git_merge)
 
 @app.route("/api/coder/stop", methods=["POST"])
 def coder_stop():

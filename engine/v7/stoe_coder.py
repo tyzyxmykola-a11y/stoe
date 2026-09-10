@@ -80,8 +80,12 @@ def _default_state() -> dict[str, Any]:
         "orchestration": "AUTO", "status": "idle", "observer": DEFAULT_OBSERVER,
         "objective": "", "task_id": None, "active_action": None,
         "closed_actions": [], "branch": None, "head": None, "git": "unknown",
-        "tests": "not_run", "worker": None, "model": None, "stop_requested": False,
-        "last_result": None, "next_action": "operator_intent",
+        "tests": "not_run", "tests_head": None, "tests_fingerprint": None,
+        "review_status": "not_reviewed", "review_head": None,
+        "review_fingerprint": None, "reviewed_paths": [],
+        "worker": None, "model": None, "stop_requested": False,
+        "last_result": None, "last_git_snapshot": None, "last_git_ip": None,
+        "next_action": "operator_intent",
     }
 
 
@@ -373,19 +377,127 @@ class StoeCoderRuntime:
     def _save_state(self, value: dict[str, Any]) -> None:
         _atomic_json(self.state_path, value)
 
-    def _event(self, source: str, message: str, level: str = "info", **metadata: Any) -> None:
+    def _event(self, source: str, message: str, level: str = "info", **metadata: Any) -> str:
         event = {"id": uuid.uuid4().hex[:16], "time": time.time(), "source": source, "message": message[:500], "level": level, "metadata": metadata}
         self.events_path.parent.mkdir(parents=True, exist_ok=True)
         with self.events_path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(event, ensure_ascii=False, sort_keys=True) + "\n")
+        return event["id"]
 
-    def status(self) -> dict[str, Any]:
-        with self._state_lock:
-            state = self._load_state()
+    def _changed_paths(self) -> list[str]:
+        paths: list[str] = []
+        tracked = _git(self.repo_root, "diff", "--name-only", "-z", "HEAD")
+        untracked = _git(self.repo_root, "ls-files", "--others", "--exclude-standard", "-z")
+        for value in (tracked.stdout + untracked.stdout).split("\x00"):
+            if value:
+                paths.append(value.replace("\\", "/"))
+        return sorted(dict.fromkeys(paths))
+
+    def _working_fingerprint(self) -> str:
+        tracked_diff = _git(self.repo_root, "diff", "--binary", "--no-ext-diff", "HEAD").stdout.encode("utf-8")
+        entries: list[dict[str, Any]] = [{"tracked_diff_sha256": _sha256(tracked_diff)}]
+        for relative in self._changed_paths():
+            path = _safe_repo_path(self.repo_root, relative)
+            untracked = _git(self.repo_root, "ls-files", "--others", "--exclude-standard", "--", relative, check=False)
+            if untracked.returncode == 0 and untracked.stdout.strip():
+                entries.append({"untracked_path": relative, "sha256": _sha256(path.read_bytes()) if path.is_file() else None})
+        return _sha256(json.dumps(entries, sort_keys=True).encode("utf-8"))
+
+    def _git_snapshot(self) -> dict[str, Any]:
         branch = _git(self.repo_root, "branch", "--show-current").stdout.strip()
         head = _git(self.repo_root, "rev-parse", "HEAD").stdout.strip()
-        porcelain = _git(self.repo_root, "status", "--porcelain=v1").stdout.splitlines()
-        return {**state, "branch": branch, "head": head, "git": "clean" if not porcelain else f"{len(porcelain)} changed", "event_count": len(self.events())}
+        changed = self._changed_paths()
+        upstream_name = upstream_head = remote = None
+        ahead = behind = None
+        upstream = _git(self.repo_root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}", check=False)
+        if upstream.returncode == 0:
+            upstream_name = upstream.stdout.strip()
+            upstream_head_result = _git(self.repo_root, "rev-parse", "@{upstream}", check=False)
+            upstream_head = upstream_head_result.stdout.strip() if upstream_head_result.returncode == 0 else None
+            counts = _git(self.repo_root, "rev-list", "--left-right", "--count", "HEAD...@{upstream}", check=False)
+            if counts.returncode == 0:
+                values = counts.stdout.split()
+                if len(values) == 2:
+                    ahead, behind = int(values[0]), int(values[1])
+            remote_result = _git(self.repo_root, "config", "--get", f"branch.{branch}.remote", check=False)
+            remote = remote_result.stdout.strip() if remote_result.returncode == 0 else None
+        return {
+            "branch": branch, "head": head, "clean": not changed,
+            "dirty_count": len(changed), "changed_paths": changed,
+            "upstream": upstream_name, "upstream_head": upstream_head,
+            "remote": remote, "ahead": ahead, "behind": behind,
+            "head_pushed": bool(upstream_head and upstream_head == head),
+        }
+
+    def _validity(self, state: dict[str, Any], snapshot: dict[str, Any]) -> dict[str, Any]:
+        if snapshot["clean"]:
+            tests_current = state.get("tests_head") == snapshot["head"]
+            review_current = state.get("review_status") == "accepted" and state.get("review_head") == snapshot["head"]
+        else:
+            fingerprint = self._working_fingerprint()
+            tests_current = state.get("tests_fingerprint") == fingerprint
+            review_current = state.get("review_status") == "accepted" and state.get("review_fingerprint") == fingerprint
+        return {
+            "tests_current": tests_current,
+            "review_current": review_current,
+            "tests_status": "passed" if tests_current else ("stale" if state.get("tests") == "passed" else state.get("tests", "not_run")),
+            "reviewed_candidate_status": "accepted" if review_current else ("stale" if state.get("review_status") == "accepted" else state.get("review_status", "not_reviewed")),
+        }
+
+    def _refresh_snapshot(self, cause: str) -> tuple[dict[str, Any], dict[str, Any]]:
+        snapshot = self._git_snapshot()
+        with self._state_lock:
+            state = self._load_state()
+            prior = state.get("last_git_snapshot") or {}
+            transition_keys = ("branch", "head", "upstream", "upstream_head")
+            changes = {key: {"from": prior.get(key), "to": snapshot.get(key)} for key in transition_keys if prior.get(key) not in {None, snapshot.get(key)}}
+            state["last_git_snapshot"] = {key: snapshot.get(key) for key in transition_keys}
+            self._save_state(state)
+        if changes:
+            self._event("Git", "repository identity changed", cause=cause, changes=changes)
+        return snapshot, state
+
+    def _record_git_transition(self, action: str, outcome: str, *, condition: str = "", before: dict[str, Any] | None = None, after: dict[str, Any] | None = None, **metadata: Any) -> str:
+        level = "error" if outcome == "failed" else "info"
+        event_id = self._event("Git", f"{action} {outcome}" + (f": {condition}" if condition else ""), level=level, action=action, outcome=outcome, before=before, after=after, **metadata)
+        ref = f"IP_git_{event_id}"
+        try:
+            store = self._field_store()
+            if store is not None:
+                with self._state_lock:
+                    state = self._load_state()
+                    predecessor = state.get("last_git_ip")
+                store.add_ip(
+                    ref=ref,
+                    content=f"Operator Git {action} {outcome}." + (f" Condition: {condition}" if condition else ""),
+                    kind="GitTransitionIP", origin="failure_history" if outcome == "failed" else "runtime_reasoning",
+                    outcome="failed" if outcome == "failed" else "supported",
+                    failure_condition=condition if outcome == "failed" else "",
+                    session_id="development:stoe-coder-git-lifecycle",
+                    metadata={"action": action, "outcome": outcome, "before": before, "after": after, **metadata},
+                )
+                if predecessor:
+                    store.add_relation(source_ref=ref, target_ref=predecessor, relation="follows", note="Git lifecycle succession")
+                with self._state_lock:
+                    state = self._load_state(); state["last_git_ip"] = ref; self._save_state(state)
+        except Exception as exc:
+            self._event("SToE", "Git transition persistence failed", level="warning", action=action, error=str(exc)[:300])
+        return ref
+
+    def _operator_idle(self) -> None:
+        with self._state_lock:
+            state = self._load_state()
+        if (self._thread is not None and self._thread.is_alive()) or state.get("status") in {"queued", "active", "stopping"}:
+            raise RuntimeError("operator Git mutation is unavailable while a development task is active")
+
+    def status(self) -> dict[str, Any]:
+        snapshot, state = self._refresh_snapshot("status")
+        validity = self._validity(state, snapshot)
+        return {
+            **state, **snapshot, **validity,
+            "git": "clean" if snapshot["clean"] else f"{snapshot['dirty_count']} changed",
+            "event_count": len(self.events()),
+        }
 
     def events(self, limit: int = 100) -> list[dict[str, Any]]:
         if not self.events_path.exists():
@@ -395,6 +507,223 @@ class StoeCoderRuntime:
 
     def models(self) -> list[dict[str, Any]]:
         return [{"name": item.get("name"), "digest": item.get("digest"), "size": item.get("size")} for item in self.ollama.models()]
+
+    def git_diff(self) -> dict[str, Any]:
+        before = self._git_snapshot()
+        tracked = _git(self.repo_root, "diff", "--binary", "--no-ext-diff", "HEAD", check=False)
+        if tracked.returncode:
+            condition = tracked.stderr.strip() or tracked.stdout.strip() or "git diff failed"
+            self._record_git_transition("diff", "failed", condition=condition, before=before)
+            raise RuntimeError(condition)
+        parts = [tracked.stdout]
+        for relative in before["changed_paths"]:
+            untracked = _git(self.repo_root, "ls-files", "--others", "--exclude-standard", "--", relative, check=False)
+            if untracked.returncode == 0 and untracked.stdout.strip():
+                value = _git(self.repo_root, "diff", "--no-index", "--binary", "--", "/dev/null", relative, check=False)
+                if value.returncode not in {0, 1}:
+                    condition = value.stderr.strip() or f"unable to render untracked diff for {relative}"
+                    self._record_git_transition("diff", "failed", condition=condition, before=before)
+                    raise RuntimeError(condition)
+                parts.append(value.stdout)
+        content = "".join(parts)
+        action_id = "operator_diff_" + uuid.uuid4().hex[:16]
+        artifact = self.artifact_root / action_id / "diff.patch"
+        artifact.parent.mkdir(parents=True)
+        artifact.write_text(content, encoding="utf-8", newline="\n")
+        after = self._git_snapshot()
+        if (before["head"], before["changed_paths"]) != (after["head"], after["changed_paths"]):
+            condition = "read-only diff changed repository identity"
+            self._record_git_transition("diff", "failed", condition=condition, before=before, after=after)
+            raise RuntimeError(condition)
+        self._record_git_transition("diff", "viewed", before=before, after=after, artifact=str(artifact), sha256=_sha256(content.encode("utf-8")))
+        visible = content[:60_000]
+        return {
+            "diff": visible, "truncated": len(content) > len(visible),
+            "artifact": str(artifact), "artifact_sha256": _sha256(content.encode("utf-8")),
+            **after,
+        }
+
+    def git_commit(self, message: str) -> dict[str, Any]:
+        self._operator_idle()
+        before = self._git_snapshot()
+        try:
+            message = str(message or "").strip()
+            if not message or len(message) > 200 or any(character in message for character in "\r\n\x00"):
+                raise ValueError("commit message must be a single line of 1..200 characters")
+            if before["clean"]:
+                raise RuntimeError("nothing to commit")
+            with self._state_lock:
+                state = self._load_state()
+            validity = self._validity(state, before)
+            if not validity["tests_current"] or not validity["review_current"]:
+                raise RuntimeError("current dirty tree is not the exact tested and reviewed integrated candidate")
+            reviewed_paths = sorted(state.get("reviewed_paths") or [])
+            if not reviewed_paths or before["changed_paths"] != reviewed_paths:
+                raise RuntimeError("dirty path set differs from reviewed candidate lineage")
+            _git(self.repo_root, "add", "-A", "--", *reviewed_paths)
+            _git(self.repo_root, "commit", "-m", message)
+            after = self._git_snapshot()
+            if not after["clean"]:
+                raise RuntimeError("commit completed but reviewed working tree is still dirty")
+            with self._state_lock:
+                state = self._load_state()
+                state.update({
+                    "head": after["head"], "tests": "passed", "tests_head": after["head"],
+                    "tests_fingerprint": None, "review_status": "accepted",
+                    "review_head": after["head"], "review_fingerprint": None,
+                })
+                self._save_state(state)
+            ref = self._record_git_transition("commit", "succeeded", before=before, after=after, commit=after["head"], commit_message=message)
+            return {"commit": after["head"], "stoe_ref": ref, **after}
+        except Exception as exc:
+            self._record_git_transition("commit", "failed", condition=str(exc), before=before, after=self._git_snapshot())
+            raise
+
+    def git_pull(self) -> dict[str, Any]:
+        self._operator_idle()
+        before = self._git_snapshot()
+        try:
+            if not before["clean"]:
+                raise RuntimeError("pull requires a clean working tree")
+            if not before["branch"] or not before["upstream"]:
+                raise RuntimeError("pull requires a current branch with a configured tracked upstream")
+            if before["ahead"] and before["behind"]:
+                raise RuntimeError("pull rejected because local and upstream histories are diverged")
+            result = _git(self.repo_root, "pull", "--ff-only", check=False, timeout=300)
+            if result.returncode:
+                raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "git pull --ff-only failed")
+            after = self._git_snapshot()
+            moved = after["head"] != before["head"]
+            if moved:
+                with self._state_lock:
+                    state = self._load_state()
+                    state.update({"tests": "stale", "tests_head": None, "tests_fingerprint": None, "review_status": "stale", "review_head": None, "review_fingerprint": None})
+                    self._save_state(state)
+            outcome = "succeeded" if moved else "no_op"
+            ref = self._record_git_transition("pull", outcome, before=before, after=after, stdout=result.stdout[-2000:])
+            return {"outcome": outcome, "stoe_ref": ref, **after}
+        except Exception as exc:
+            self._record_git_transition("pull", "failed", condition=str(exc), before=before, after=self._git_snapshot())
+            raise
+
+    def git_push(self) -> dict[str, Any]:
+        self._operator_idle()
+        before = self._git_snapshot()
+        try:
+            branch = before["branch"]
+            if not branch or branch in {"main", "master"}:
+                raise PermissionError("generic Push refuses main/master")
+            if not branch.startswith("feature/"):
+                raise PermissionError("generic Push is limited to the current feature branch")
+            if before["upstream"]:
+                command = ["git", "push"]
+            else:
+                remote = _git(self.repo_root, "remote", "get-url", "origin", check=False)
+                if remote.returncode:
+                    raise RuntimeError("push requires a configured upstream or origin remote")
+                command = ["git", "push", "--set-upstream", "origin", branch]
+            action_id = "operator_push_" + uuid.uuid4().hex[:16]
+            result = FullLocalRunner(self.artifact_root / "operator_git").run(action_id=action_id, command=command, cwd=self.repo_root, timeout=300)
+            if result.exit_code:
+                raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "git push failed")
+            after = self._git_snapshot()
+            if not after["head_pushed"]:
+                raise RuntimeError("push returned success but remote-tracking identity does not confirm current HEAD")
+            ref = self._record_git_transition("push", "succeeded", before=before, after=after, stdout=result.stdout[-2000:], stderr=result.stderr[-2000:])
+            return {"outcome": "succeeded", "stoe_ref": ref, **after}
+        except Exception as exc:
+            self._record_git_transition("push", "failed", condition=str(exc), before=before, after=self._git_snapshot())
+            raise
+
+    def _main_worktree(self) -> Path | None:
+        result = _git(self.repo_root, "worktree", "list", "--porcelain")
+        path: Path | None = None
+        for line in result.stdout.splitlines():
+            if line.startswith("worktree "):
+                path = Path(line[9:]).resolve()
+            elif line == "branch refs/heads/main" and path is not None:
+                return path
+        return None
+
+    def git_merge(self) -> dict[str, Any]:
+        self._operator_idle()
+        before = self._git_snapshot()
+        temporary: Path | None = None
+        created_main_worktree: Path | None = None
+        try:
+            branch, feature_head = before["branch"], before["head"]
+            if not branch or branch in {"main", "master"} or not branch.startswith("feature/"):
+                raise PermissionError("Merge to main requires a known current feature branch")
+            if not before["clean"]:
+                raise RuntimeError("Merge to main requires a clean feature working tree")
+            with self._state_lock:
+                state = self._load_state()
+            validity = self._validity(state, before)
+            if not validity["tests_current"] or not validity["review_current"]:
+                raise RuntimeError("Merge to main requires passed tests and accepted review for the exact feature HEAD")
+            if state.get("status") in {"failed", "stopped", "queued", "active", "stopping"}:
+                raise RuntimeError("an unresolved development action invalidates merge eligibility")
+            if not before["upstream"] or not before["remote"]:
+                raise RuntimeError("feature branch upstream identity is not configured")
+            fetch = _git(self.repo_root, "fetch", before["remote"], check=False, timeout=300)
+            if fetch.returncode:
+                raise RuntimeError(fetch.stderr.strip() or "remote-state check failed")
+            refreshed = self._git_snapshot()
+            if not refreshed["head_pushed"]:
+                raise RuntimeError("feature HEAD is not confirmed at its tracked remote")
+            remote_main = f"refs/remotes/{before['remote']}/main"
+            remote_main_result = _git(self.repo_root, "rev-parse", "--verify", remote_main, check=False)
+            if remote_main_result.returncode:
+                raise RuntimeError("remote main identity is unavailable")
+            main_head = _git(self.repo_root, "rev-parse", "--verify", "refs/heads/main", check=False)
+            if main_head.returncode:
+                raise RuntimeError("local main branch identity is unavailable")
+            old_main = main_head.stdout.strip()
+            main_remote_head = remote_main_result.stdout.strip()
+            if old_main != main_remote_head:
+                raise RuntimeError("local main is not synchronized with remote main")
+
+            temporary = self.worktree_root / ("operator_merge_check_" + uuid.uuid4().hex[:12])
+            _git(self.repo_root, "worktree", "add", "--detach", str(temporary), old_main, timeout=180)
+            trial = _git(temporary, "merge", "--no-ff", "--no-edit", feature_head, check=False, timeout=300)
+            if trial.returncode:
+                _git(temporary, "merge", "--abort", check=False)
+                raise RuntimeError(trial.stderr.strip() or trial.stdout.strip() or "merge conflict or trial merge failure")
+            for index, command in enumerate(self._verification_commands(state.get("reviewed_paths") or []), 1):
+                result = FullLocalRunner(self.artifact_root / "operator_git").run(action_id=f"operator_merge_trial_{uuid.uuid4().hex[:12]}_{index}", command=command, cwd=temporary, timeout=600)
+                if result.exit_code or result.timed_out or result.cancelled:
+                    raise RuntimeError(f"post-merge deterministic verification failed: {' '.join(command)}")
+            _git(self.repo_root, "worktree", "remove", "--force", str(temporary), timeout=180)
+            temporary = None
+
+            main_worktree = self._main_worktree()
+            if main_worktree is None:
+                main_worktree = self.worktree_root / ("operator_main_" + uuid.uuid4().hex[:12])
+                _git(self.repo_root, "worktree", "add", str(main_worktree), "main", timeout=180)
+                created_main_worktree = main_worktree
+            if _git(main_worktree, "status", "--porcelain=v1").stdout.strip():
+                raise RuntimeError("main worktree is dirty")
+            actual = _git(main_worktree, "merge", "--no-ff", "--no-edit", feature_head, check=False, timeout=300)
+            if actual.returncode:
+                _git(main_worktree, "merge", "--abort", check=False)
+                raise RuntimeError(actual.stderr.strip() or actual.stdout.strip() or "merge to main failed")
+            new_main = _git(main_worktree, "rev-parse", "HEAD").stdout.strip()
+            if _git(main_worktree, "merge-base", "--is-ancestor", old_main, new_main, check=False).returncode or _git(main_worktree, "merge-base", "--is-ancestor", feature_head, new_main, check=False).returncode:
+                raise RuntimeError("resulting main commit does not preserve both parent histories")
+            if created_main_worktree is not None:
+                _git(self.repo_root, "worktree", "remove", str(main_worktree), timeout=180)
+                created_main_worktree = None
+            after = self._git_snapshot()
+            ref = self._record_git_transition("merge_to_main", "succeeded", before=before, after=after, old_main=old_main, main_head=new_main, feature_head=feature_head, feature_branch=branch)
+            return {"outcome": "succeeded", "main_head": new_main, "feature_head": feature_head, "feature_branch": branch, "stoe_ref": ref, **after}
+        except Exception as exc:
+            self._record_git_transition("merge_to_main", "failed", condition=str(exc), before=before, after=self._git_snapshot())
+            raise
+        finally:
+            if temporary is not None and temporary.exists():
+                _git(self.repo_root, "worktree", "remove", "--force", str(temporary), timeout=180, check=False)
+            if created_main_worktree is not None and created_main_worktree.exists():
+                _git(self.repo_root, "worktree", "remove", "--force", str(created_main_worktree), timeout=180, check=False)
 
     def chat(self, message: str) -> dict[str, Any]:
         message = str(message or "").strip()
@@ -416,7 +745,7 @@ class StoeCoderRuntime:
         payload = {"objective": objective, "parent_head": parent_head, "observer": observer, "predecessor": predecessor}
         return "TASK_" + _sha256(json.dumps(payload, sort_keys=True).encode())[:16]
 
-    def submit_task(self, objective: str, *, commit: bool = False, push: bool = False, allowed_paths: list[str] | None = None, predecessor: str | None = None) -> dict[str, Any]:
+    def submit_task(self, objective: str, *, allow_commit: bool = False, allow_push: bool = False, allowed_paths: list[str] | None = None, predecessor: str | None = None) -> dict[str, Any]:
         objective = str(objective or "").strip()
         if not objective or len(objective) > 4_000:
             raise ValueError("objective must contain 1..4000 characters")
@@ -433,10 +762,10 @@ class StoeCoderRuntime:
             task_id = self.task_identity(objective, head, state["observer"], predecessor)
             if task_id in state.get("closed_actions", []):
                 raise RuntimeError("task identity is already closed")
-            state.update({"status": "queued", "objective": objective, "task_id": task_id, "active_action": None, "branch": branch, "head": head, "git": "clean", "tests": "not_run", "stop_requested": False, "last_result": None, "next_action": "worker_inspection", "task_options": {"commit": commit, "push": push, "allowed_paths": allowed_paths}})
+            state.update({"status": "queued", "objective": objective, "task_id": task_id, "active_action": None, "branch": branch, "head": head, "git": "clean", "tests": "not_run", "stop_requested": False, "last_result": None, "next_action": "worker_inspection", "task_options": {"allow_commit": bool(allow_commit), "allow_push": bool(allow_push), "allowed_paths": allowed_paths}})
             self._save_state(state)
             self._stop.clear()
-            self._thread = threading.Thread(target=self._task_main, args=(task_id, objective, commit, push, allowed_paths), daemon=True)
+            self._thread = threading.Thread(target=self._task_main, args=(task_id, objective, bool(allow_commit), bool(allow_push), allowed_paths), daemon=True)
             self._thread.start()
         self._event("Coder", "objective accepted", task_id=task_id, branch=branch, head=head)
         return {"accepted": True, "task_id": task_id, "status": "queued"}
@@ -458,7 +787,7 @@ class StoeCoderRuntime:
             old_task = state.get("task_id")
             objective = state["objective"]
             options = state.get("task_options") or {}
-        result = self.submit_task(objective, commit=bool(options.get("commit")), push=bool(options.get("push")), allowed_paths=options.get("allowed_paths"), predecessor=old_task)
+        result = self.submit_task(objective, allow_commit=bool(options.get("allow_commit", options.get("commit"))), allow_push=bool(options.get("allow_push", options.get("push"))), allowed_paths=options.get("allowed_paths"), predecessor=old_task)
         self._event("Coder", "task resumed as a fresh action lineage", prior_task=old_task, task_id=result["task_id"])
         return result
 
@@ -510,23 +839,39 @@ class StoeCoderRuntime:
             self._integrate(task_id, parent_head, worktree, touched)
             integrated = True
             active_tests = self._verify_candidate(task_id + ":active", self.repo_root, touched)
+            integrated_fingerprint = self._working_fingerprint()
+            with self._state_lock:
+                state = self._load_state()
+                state.update({
+                    "tests": "passed", "tests_head": None,
+                    "tests_fingerprint": integrated_fingerprint,
+                    "review_status": "accepted", "review_head": None,
+                    "review_fingerprint": integrated_fingerprint,
+                    "reviewed_paths": sorted(touched),
+                })
+                self._save_state(state)
             commit_sha = push_result = None
             if commit_requested or push_requested:
                 _git(self.repo_root, "add", "--", *touched)
                 message = "SToE Coder: " + re.sub(r"\s+", " ", objective).strip()[:68]
                 _git(self.repo_root, "commit", "-m", message)
                 commit_sha = _git(self.repo_root, "rev-parse", "HEAD").stdout.strip()
-                self._event("Git", f"commit {commit_sha[:12]}", commit=commit_sha)
+                with self._state_lock:
+                    state = self._load_state()
+                    state.update({"tests_head": commit_sha, "tests_fingerprint": None, "review_head": commit_sha, "review_fingerprint": None})
+                    self._save_state(state)
+                self._record_git_transition("model_commit", "succeeded", before={"head": parent_head}, after=self._git_snapshot(), commit=commit_sha, task_id=task_id)
             if push_requested:
                 branch = _git(self.repo_root, "branch", "--show-current").stdout.strip()
                 push = self._runner.run(action_id=f"{task_id}:push", command=["git", "push", "origin", branch], cwd=self.repo_root, timeout=300)
                 if push.exit_code:
+                    self._record_git_transition("model_push", "failed", condition=push.stderr[-500:], before=self._git_snapshot(), task_id=task_id)
                     raise RuntimeError("authenticated git push failed: " + push.stderr[-500:])
                 push_result = "passed"
-                self._event("Git", "pushed", branch=branch, commit=commit_sha)
+                self._record_git_transition("model_push", "succeeded", before={"head": commit_sha}, after=self._git_snapshot(), branch=branch, commit=commit_sha, task_id=task_id)
             observer = self._conserve(task_id, objective, parent_head, touched, tests, commit_sha, push_result, metrics)
             with self._state_lock:
-                state = self._load_state(); state["closed_actions"] = list(dict.fromkeys(state.get("closed_actions", []) + [task_id] + [item["action_id"] for item in metrics])); state.update({"status": "completed", "observer": observer, "active_action": None, "tests": "passed", "worker": None, "model": None, "stop_requested": False, "last_result": {"touched": touched, "tests": active_tests, "review": review, "commit": commit_sha, "push": push_result, "metrics": metrics}, "next_action": "operator_intent"}); self._save_state(state)
+                state = self._load_state(); state["closed_actions"] = list(dict.fromkeys(state.get("closed_actions", []) + [task_id] + [item["action_id"] for item in metrics])); state.update({"status": "completed", "observer": observer, "active_action": None, "head": _git(self.repo_root, "rev-parse", "HEAD").stdout.strip(), "tests": "passed", "worker": None, "model": None, "stop_requested": False, "last_result": {"touched": touched, "tests": active_tests, "review": review, "commit": commit_sha, "push": push_result, "metrics": metrics}, "next_action": "operator_intent"}); self._save_state(state)
             self._event("SToE", f"{observer}", observer=observer)
         except InterruptedError as exc:
             if integrated and _git(self.repo_root, "rev-parse", "HEAD").stdout.strip() == parent_head:

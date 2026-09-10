@@ -224,7 +224,7 @@ def finish_applied(state: dict) -> dict:
     if sha256(target.read_bytes()) != state["candidate_sha256"]:
         raise RuntimeError("applied candidate identity mismatch")
     changed = [line for line in git("status", "--porcelain=v1").splitlines() if line]
-    if changed != [f" M {TARGET}"]:
+    if changed != [f"M {TARGET}"]:
         raise RuntimeError(f"trusted scope violation before tests: {changed}")
     evaluation = run_tests()
     if git("diff", "--check", check=False):

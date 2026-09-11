@@ -6,6 +6,7 @@ reusing its current UI/API surface from the StoeCoder project directory.
 
 from ui_server import app, coder, _coder_local_request
 from event_logging import install_event_logging
+from tool_contracts import install_tool_contracts
 from role_config_isolation import install_role_config_isolation
 from repository_navigation import install_repository_navigation
 from inspection_navigation import install_inspection_navigation
@@ -18,6 +19,9 @@ from diagnostic_logging import install_diagnostic_logging
 from model_io import install_model_io_capture, install_model_io_ui
 
 install_event_logging(coder)
+# Install the canonical model-facing tool contract innermost so later adapters
+# may add runtime behavior without being able to discard the final guidance.
+install_tool_contracts(coder)
 install_role_config_isolation(coder)
 install_repository_navigation(coder)
 install_inspection_navigation(coder)

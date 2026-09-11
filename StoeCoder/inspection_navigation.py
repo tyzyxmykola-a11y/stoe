@@ -23,6 +23,7 @@ from repository_navigation import _query_terms
 _MAX_CONTENT_CHARS = 16_000
 _MAX_MATCH_LINES = 8
 _CONTEXT_LINES = 7
+_GENERIC_ANCHOR_TERMS = {"def", "class", "async", "return", "self", "str", "int", "bool", "none"}
 
 
 def _safe_target(worktree: Any, value: Any) -> tuple[Path, str]:
@@ -67,8 +68,34 @@ def _canonicalize_tool_request(value: Any) -> Any:
     return normalized
 
 
+def _strong_code_anchor(query: str) -> re.Pattern[str] | None:
+    """Return a declaration/symbol pattern that must match strongly.
+
+    Code-shaped anchors should never degrade into weak keyword matches such as
+    matching every ``def`` line when the requested symbol does not exist.
+    """
+
+    stripped = query.strip()
+    function = re.match(r"^(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)", stripped)
+    if function:
+        name = re.escape(function.group(1))
+        return re.compile(rf"^\s*(?:async\s+)?def\s+{name}\s*\(")
+    klass = re.match(r"^class\s+([A-Za-z_][A-Za-z0-9_]*)", stripped)
+    if klass:
+        name = re.escape(klass.group(1))
+        return re.compile(rf"^\s*class\s+{name}\b")
+    if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", stripped):
+        return re.compile(rf"\b{re.escape(stripped)}\b")
+    return None
+
+
 def _match_lines(lines: list[str], query: str) -> tuple[str, list[int]]:
-    """Return exact-regex matches or ranked natural-language keyword matches."""
+    """Return strong symbol matches, exact regex matches, or confident keyword matches."""
+
+    strong = _strong_code_anchor(query)
+    if strong is not None:
+        matches = [index for index, line in enumerate(lines) if strong.search(line)][:_MAX_MATCH_LINES]
+        return ("symbol", matches) if matches else ("none", [])
 
     exact: list[int] = []
     try:
@@ -83,14 +110,15 @@ def _match_lines(lines: list[str], query: str) -> tuple[str, list[int]]:
     if exact:
         return "exact", exact
 
-    terms = _query_terms(query)
+    terms = [term for term in _query_terms(query) if term not in _GENERIC_ANCHOR_TERMS]
     if not terms:
         return "none", []
+    minimum_score = 1 if len(terms) == 1 else max(2, (len(terms) + 1) // 2)
     scored: list[tuple[int, int]] = []
     for index, line in enumerate(lines):
         lowered = line.lower()
         score = sum(1 for term in terms if term in lowered)
-        if score:
+        if score >= minimum_score:
             scored.append((-score, index))
     scored.sort()
     selected = sorted(index for _, index in scored[:_MAX_MATCH_LINES])
@@ -179,7 +207,7 @@ def install_inspection_navigation(coder: Any) -> None:
                 "query_mode": mode,
                 "match_count": 0,
                 "error": "inspect anchor produced no matching lines",
-                "required_next_action": "use the compact repository search to locate a better identifier or inspect another relevant file",
+                "required_next_action": "the requested anchor is absent; use compact repository search to locate the real symbol or inspect another relevant file instead of repeating this anchor",
             }
 
         windows = _merge_windows(matches, len(lines))
@@ -206,7 +234,7 @@ def install_inspection_navigation(coder: Any) -> None:
             prompt = dict(prompt)
             tools = dict(prompt.get("available_tools") or {})
             tools["inspect"] = (
-                "read one repository-relative file; for a large/truncated file, set optional query to an identifier or phrase to receive bounded matching line windows from anywhere in that file; do not repeat the same unanchored inspect"
+                "read one repository-relative file; for a large/truncated file, set optional query to an identifier or phrase to receive bounded matching line windows from anywhere in that file; code-shaped anchors require the requested symbol to exist and do not fall back to generic keyword matches; do not repeat the same anchor"
             )
             tools["search"] = (
                 str(tools.get("search") or "repository search")

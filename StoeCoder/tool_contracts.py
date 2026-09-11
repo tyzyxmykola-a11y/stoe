@@ -15,15 +15,17 @@ _SEARCH_CONTRACT = (
     "trusted compact repository search under an optional repository-relative path; "
     "natural-language multi-term queries may fall back to ranked keyword coverage and missing bases may fall back to repository root; "
     "results expose bounded matched_files/excerpts and trusted feedback normalizes them into typed evidence_items with source_kind, polarity, path/span and stable identity; "
-    "source_kind is provenance rather than truth; new evidence is conserved, but only novel evidence connected to the operator objective or an already connected evidence path counts as exploration progress; "
-    "changing query wording without changing the evidence set is not progress"
+    "source_kind is provenance rather than truth; objective-directed search establishes the connected candidate-path frontier; "
+    "new evidence is conserved, but lexical similarity or an invented symbol does not by itself create a connection; "
+    "prefer unexpanded connected candidates before deepening one path; changing query wording without changing the evidence set is not progress"
 )
 
 _INSPECT_CONTRACT = (
     "read one repository-relative file; for a large/truncated file, optional query requests bounded matching line windows from anywhere in that file; "
     "declaration-shaped anchors such as 'def name' or 'class Name' require that declaration to exist while plain identifiers may navigate to longer related identifiers; "
     "trusted feedback normalizes positive and negative observations into typed evidence_items; negative evidence is conserved; "
-    "only novel evidence connected to the operator objective or an already connected evidence path counts as exploration progress, so do not deepen an unrelated file merely because each read is technically new"
+    "inspection extends progress only when its path was established by connected search and any follow-up anchor is grounded in trusted evidence already observed for that path; "
+    "do not deepen an unrelated file or invent a plausible-looking symbol merely because its words resemble the objective"
 )
 
 

@@ -48,6 +48,17 @@ class WorkflowControlsTests(unittest.TestCase):
         self.assertNotIn("content", visible[1]["feedback"])
         self.assertTrue(visible[1]["feedback"]["content_omitted"])
 
+    def test_stoecoder_change_surfaces_exact_unittest_command(self):
+        history = [
+            {"request": {"kind": "write", "path": "StoeCoder/README.md"}, "feedback": {"ok": True, "candidate_changed": True, "path": "StoeCoder/README.md"}},
+        ]
+        state = workflow_state(history)
+        self.assertEqual("candidate_changed", state["stage"])
+        self.assertEqual(
+            ["python", "-m", "unittest", "discover", "-s", "StoeCoder/tests", "-q"],
+            state["required_next_command"],
+        )
+
     def test_generic_successful_run_does_not_count_as_tests(self):
         history = [
             {"request": {"kind": "write", "path": "README.md"}, "feedback": {"ok": True, "candidate_changed": True, "path": "README.md"}},
@@ -79,6 +90,18 @@ class WorkflowControlsTests(unittest.TestCase):
         self.assertTrue(state["inspect_same_file_allowed"])
         self.assertTrue(state["last_run_failed"])
 
+    def test_failed_run_keeps_latest_reinspection_content_visible(self):
+        history = [
+            {"request": {"kind": "write", "path": "StoeCoder/README.md"}, "feedback": {"ok": True, "candidate_changed": True, "path": "StoeCoder/README.md"}},
+            {"request": {"kind": "run", "command": ["python", "-m", "unittest", "discover", "-s", "StoeCoder/tests", "-q"]}, "feedback": {"exit_code": 1, "timed_out": False, "cancelled": False, "workflow_run_kind": "tests"}},
+            {"request": {"kind": "inspect", "path": "StoeCoder/README.md"}, "feedback": {"ok": True, "content": "FULL FILE CONTENT", "chars": 17}},
+        ]
+        visible = compact_observation(history)
+        self.assertEqual("run_failed", visible[0]["workflow_state"]["stage"])
+        inspect_feedback = visible[-1]["feedback"]
+        self.assertEqual("FULL FILE CONTENT", inspect_feedback["content"])
+        self.assertNotIn("content_omitted", inspect_feedback)
+
     def test_generate_prompt_uses_runtime_state_after_history_window_moves_on(self):
         coder = DummyCoder()
         install_workflow_controls(coder)
@@ -105,6 +128,27 @@ class WorkflowControlsTests(unittest.TestCase):
         self.assertIn("Do not re-inspect", sent["instruction"])
         self.assertIn("git diff", sent["available_tools"]["run"])
         self.assertEqual("tests_passed", sent["recent_tool_feedback"][0]["workflow_state"]["stage"])
+
+    def test_generate_prompt_candidate_changed_names_exact_stoecoder_test_command(self):
+        coder = DummyCoder()
+        install_workflow_controls(coder)
+        coder._stoe_workflow_state["TASK_x"] = {
+            "candidate_changed": True,
+            "last_changed_path": "StoeCoder/README.md",
+            "tests_run": False,
+            "diff_inspected": False,
+            "last_run_failed": False,
+        }
+        prompt = {
+            "recent_tool_feedback": [{"workflow_state": workflow_state([])}],
+            "available_tools": {"run": "execute argv"},
+        }
+        coder._generate_role(action_id="TASK_x:coder:4", role="coder", prompt=prompt, schema={}, output_tokens=10, seed=1)
+        sent = coder.generated[-1]["prompt"]
+        exact = ["python", "-m", "unittest", "discover", "-s", "StoeCoder/tests", "-q"]
+        self.assertEqual(exact, sent["workflow_state"]["required_next_command"])
+        self.assertIn(repr(exact), sent["instruction"])
+        self.assertIn("required_next_command", sent["available_tools"]["run"])
 
     def test_generate_prompt_after_diff_directs_finish(self):
         coder = DummyCoder()

@@ -13,6 +13,8 @@ from pathlib import Path
 from types import MethodType
 from typing import Any
 
+from anti_loop import _capture_candidate_evidence
+
 _MUTATIONS = {"write", "delete", "move"}
 
 
@@ -121,6 +123,14 @@ def _state_from_prompt(prompt: dict[str, Any]) -> dict[str, Any]:
             "required_next_actions": ["inspect only what is necessary, then make the smallest correct edit"]}
 
 
+def _task_id_from_action(action_id: str) -> str | None:
+    marker = ":coder:"
+    if not isinstance(action_id, str) or marker not in action_id:
+        return None
+    task_id = action_id.split(marker, 1)[0]
+    return task_id if task_id.startswith("TASK_") else None
+
+
 def install_workflow_controls(coder: Any) -> None:
     """Install compact observations and explicit post-edit workflow state."""
 
@@ -161,7 +171,15 @@ def install_workflow_controls(coder: Any) -> None:
                     "After a real mutation, run relevant tests, inspect the final Git diff with run, and finish. "
                     "Use ordinary file mechanics; no patch serialization."
                 )
-        return original_generate(action_id=action_id, role=role, prompt=prompt, **kwargs)
+        try:
+            return original_generate(action_id=action_id, role=role, prompt=prompt, **kwargs)
+        except Exception:
+            if role == "coder":
+                task_id = _task_id_from_action(action_id)
+                worktree_root = getattr(self, "worktree_root", None)
+                if task_id and worktree_root is not None:
+                    _capture_candidate_evidence(self, Path(worktree_root) / task_id)
+            raise
 
     coder._worker_observation = MethodType(controlled_observation, coder)
     coder._generate_role = MethodType(controlled_generate, coder)

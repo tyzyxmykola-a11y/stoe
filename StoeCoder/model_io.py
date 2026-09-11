@@ -21,6 +21,7 @@ from flask import jsonify, request
 
 _MAX_ARTIFACT_BYTES = 8 * 1024 * 1024
 _SAFE_ACTION = re.compile(r"^[A-Za-z0-9_.:-]{1,200}$")
+_MODEL_IO_UI_VERSION = "20260911-2"
 
 
 def _safe_name(action_id: str) -> str:
@@ -144,8 +145,9 @@ def install_model_io_ui(app: Any, coder: Any, local_request_check: Callable[[], 
         try:
             response.direct_passthrough = False
             body = response.get_data(as_text=True)
-            marker = '<script src="/static/model_io.js"></script>'
-            if marker not in body:
+            marker_prefix = '<script src="/static/model_io.js'
+            marker = f'<script src="/static/model_io.js?v={_MODEL_IO_UI_VERSION}"></script>'
+            if marker_prefix not in body:
                 insertion = marker + "\n"
                 body = body.replace("</body>", insertion + "</body>") if "</body>" in body else body + insertion
                 response.set_data(body)

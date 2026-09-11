@@ -189,6 +189,8 @@ Coder_n
 → active Coder_n+1
 ```
 
+The standalone Coder can evolve its own implementation through bounded reviewed development runs.
+
 ## Worker roles and task observability
 
 `roles.json` is Git-visible configuration. First initialization seeds planner, coder, reviewer, debugger, and test-analyst. Saved configuration is authoritative, including an empty registry. Disabled roles retain their contracts and model settings; deletion removes the active definition without deleting its SToE history. A local initialization marker prevents silently reseeding a removed registry file.

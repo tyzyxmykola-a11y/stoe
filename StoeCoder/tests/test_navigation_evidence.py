@@ -205,34 +205,44 @@ class NavigationEvidenceTests(unittest.TestCase):
         self.assertTrue(first["information_gain"])
         self.assertFalse(second["information_gain"])
 
-    def test_objective_connected_search_opens_candidate_path(self):
+    def test_objective_search_opens_and_ranks_candidate_frontier(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         task = "TASK_ui"
         self.prime_objective(coder, task, "Show terminal task_report results in the conversation UI")
         coder.search_feedback["task_report"] = search_feedback(
-            ["StoeCoder/static/roles.js", "StoeCoder/stoe_coder.py"],
+            ["StoeCoder/stoe_coder.py", "StoeCoder/static/roles.js"],
             [{"path": "StoeCoder/static/roles.js", "line": 70, "text": "const report=state.task_report;"}],
         )
         search = coder._execute_tool(
             task, 1, root,
             {"kind": "search", "path": ".", "query": "task_report"}, None,
         )
+        self.assertTrue(search["connected_progress"])
+        self.assertEqual("objective_search", search["connection_basis"])
+        self.assertEqual("StoeCoder/static/roles.js", search["matched_files"][0])
+        self.assertEqual(
+            ["StoeCoder/static/roles.js", "StoeCoder/stoe_coder.py"],
+            search["connected_frontier"],
+        )
+
         inspect = coder._execute_tool(
             task, 2, root,
             {"kind": "inspect", "path": "StoeCoder/stoe_coder.py"}, None,
         )
-        self.assertTrue(search["connected_progress"])
-        self.assertEqual("objective_overlap", search["connection_basis"])
         self.assertTrue(inspect["connected_progress"])
         self.assertEqual("connected_path_first_inspect", inspect["connection_basis"])
+        self.assertEqual(["StoeCoder/static/roles.js"], inspect["connected_frontier"])
 
-    def test_new_but_unrelated_read_does_not_reset_stagnation(self):
+    def test_new_but_ungrounded_anchor_does_not_reset_stagnation(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         task = "TASK_ui"
         self.prime_objective(coder, task, "Show terminal task_report results in the conversation UI")
-        coder.search_feedback["task_report"] = search_feedback(["StoeCoder/stoe_coder.py"])
+        coder.search_feedback["task_report"] = search_feedback(
+            ["StoeCoder/stoe_coder.py", "StoeCoder/static/roles.js"],
+            [{"path": "StoeCoder/static/roles.js", "line": 70, "text": "const report=state.task_report;"}],
+        )
         coder._execute_tool(task, 1, root, {"kind": "search", "path": ".", "query": "task_report"}, None)
         coder._execute_tool(task, 2, root, {"kind": "inspect", "path": "StoeCoder/stoe_coder.py"}, None)
         unrelated = coder._execute_tool(
@@ -241,25 +251,62 @@ class NavigationEvidenceTests(unittest.TestCase):
         )
         self.assertTrue(unrelated["information_gain"])
         self.assertFalse(unrelated["connected_progress"])
-        self.assertEqual("unconnected_novelty", unrelated["connection_basis"])
+        self.assertEqual("ungrounded_anchor", unrelated["connection_basis"])
         self.assertEqual(1, coder._stoe_workflow_state[task]["consecutive_exploration"])
-        self.assertIn("did not extend an objective-connected path", unrelated["required_next_action"])
+        self.assertIn("StoeCoder/static/roles.js", unrelated["required_next_action"])
 
-    def test_related_hypothesis_on_connected_path_can_progress(self):
+    def test_invented_objective_like_symbol_does_not_create_connection(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         task = "TASK_ui"
-        self.prime_objective(coder, task, "Show terminal task_report results in the conversation UI")
-        coder.search_feedback["task_report"] = search_feedback(["StoeCoder/stoe_coder.py"])
+        self.prime_objective(coder, task, "Append task_report as one SYSTEM message in the conversation UI")
+        coder.search_feedback["task_report"] = search_feedback(
+            ["StoeCoder/stoe_coder.py", "StoeCoder/static/roles.js"],
+            [{"path": "StoeCoder/static/roles.js", "line": 70, "text": "const report=state.task_report;"}],
+        )
         coder._execute_tool(task, 1, root, {"kind": "search", "path": ".", "query": "task_report"}, None)
         coder._execute_tool(task, 2, root, {"kind": "inspect", "path": "StoeCoder/stoe_coder.py"}, None)
-        related = coder._execute_tool(
+
+        invented = coder._execute_tool(
             task, 3, root,
             {"kind": "inspect", "path": "StoeCoder/stoe_coder.py", "query": "def _add_task_report_message"}, None,
         )
-        self.assertTrue(related["connected_progress"])
-        self.assertIn(related["connection_basis"], {"objective_overlap", "connected_terms"})
-        self.assertEqual(0, coder._stoe_workflow_state[task]["consecutive_exploration"])
+        self.assertTrue(invented["information_gain"])
+        self.assertFalse(invented["connected_progress"])
+        self.assertEqual("ungrounded_anchor", invented["connection_basis"])
+        self.assertIn("StoeCoder/static/roles.js", invented["required_next_action"])
+
+        coder.search_feedback["_add_task_report_message"] = search_feedback(["StoeCoder/stoe_coder.py"])
+        invented_search = coder._execute_tool(
+            task, 4, root,
+            {"kind": "search", "path": ".", "query": "_add_task_report_message"}, None,
+        )
+        self.assertFalse(invented_search["connected_progress"])
+        self.assertEqual("ungrounded_search", invented_search["connection_basis"])
+
+    def test_search_excerpt_can_ground_later_anchor(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        task = "TASK_ui"
+        self.prime_objective(coder, task, "Render task_report in the conversation UI")
+        coder.search_feedback["task_report"] = search_feedback(
+            ["StoeCoder/static/roles.js"],
+            [{"path": "StoeCoder/static/roles.js", "line": 70, "text": "function renderTaskReport(state) {"}],
+        )
+        coder._execute_tool(task, 1, root, {"kind": "search", "path": ".", "query": "task_report"}, None)
+        coder._execute_tool(task, 2, root, {"kind": "inspect", "path": "StoeCoder/static/roles.js"}, None)
+        coder.inspect_feedback[("StoeCoder/static/roles.js", "renderTaskReport")] = {
+            "ok": True, "kind": "inspect", "executed": True,
+            "path": "StoeCoder/static/roles.js", "query": "renderTaskReport",
+            "content": "function renderTaskReport(state) { return state.task_report; }",
+            "chars": 61, "truncated": False,
+        }
+        grounded = coder._execute_tool(
+            task, 3, root,
+            {"kind": "inspect", "path": "StoeCoder/static/roles.js", "query": "renderTaskReport"}, None,
+        )
+        self.assertTrue(grounded["connected_progress"])
+        self.assertEqual("grounded_path_extension", grounded["connection_basis"])
 
     def test_mutation_advances_epoch_and_reactivates_prior_evidence(self):
         coder = self.runtime()

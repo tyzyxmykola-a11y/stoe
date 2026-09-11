@@ -1,8 +1,7 @@
 (() => {
   'use strict';
 
-  const pendingByText = new Map();
-  const seenEventIds = new Set();
+  const eventByAction = new Map();
 
   const style = document.createElement('style');
   style.textContent = `
@@ -27,30 +26,6 @@
     .model-io-error { padding: 8px 9px; color: #fca5a5; font-size: 10px; }
   `;
   document.head.appendChild(style);
-
-  function renderedText(event) {
-    return (event?.metadata?.event_type === 'task_finished' ? '★ ' : '') + event.source + ' · ' + event.message;
-  }
-
-  function queueEvent(event) {
-    const actionId = event?.metadata?.action_id;
-    const eventType = event?.metadata?.event_type;
-    if (!actionId || !['model_call_complete', 'model_call_failed'].includes(eventType)) return;
-    if (event.id && seenEventIds.has(event.id)) return;
-    if (event.id) seenEventIds.add(event.id);
-    const key = renderedText(event);
-    const queue = pendingByText.get(key) || [];
-    queue.push({ actionId, event });
-    pendingByText.set(key, queue);
-  }
-
-  function takeEvent(text) {
-    const queue = pendingByText.get(text);
-    if (!queue || !queue.length) return null;
-    const item = queue.shift();
-    if (!queue.length) pendingByText.delete(text);
-    return item;
-  }
 
   function pretty(value) {
     if (value === null || value === undefined) return '(not available)';
@@ -80,6 +55,7 @@
   function buildPanel(snapshot) {
     const wrap = document.createElement('div');
     wrap.className = 'model-io-wrap';
+    wrap.dataset.actionId = snapshot.action_id;
 
     const head = document.createElement('div');
     head.className = 'model-io-head';
@@ -97,10 +73,10 @@
   }
 
   async function toggleModelIo(button, actionId, line) {
-    const existing = line.nextElementSibling;
-    if (existing && existing.classList.contains('model-io-wrap') && existing.dataset.actionId === actionId) {
-      const hidden = existing.style.display === 'none';
-      existing.style.display = hidden ? '' : 'none';
+    const next = line.nextElementSibling;
+    if (next && next.classList.contains('model-io-wrap') && next.dataset.actionId === actionId) {
+      const hidden = next.style.display === 'none';
+      next.style.display = hidden ? '' : 'none';
       button.textContent = hidden ? 'Model I/O ▾' : 'Model I/O ▸';
       return;
     }
@@ -111,9 +87,7 @@
       const response = await fetch('/api/coder/model-io/' + encodeURIComponent(actionId), { credentials: 'same-origin' });
       const value = await response.json();
       if (!response.ok) throw new Error(value.error || ('HTTP ' + response.status));
-      const panel = buildPanel(value);
-      panel.dataset.actionId = actionId;
-      line.insertAdjacentElement('afterend', panel);
+      line.insertAdjacentElement('afterend', buildPanel(value));
       button.textContent = 'Model I/O ▾';
     } catch (error) {
       const panel = document.createElement('div');
@@ -130,8 +104,9 @@
     }
   }
 
-  function attachButton(line, item) {
-    if (!line || !item || line.querySelector('.model-io-btn')) return;
+  function attachButton(line, actionId) {
+    if (!line || !actionId || line.querySelector('.model-io-btn')) return;
+    line.dataset.modelIoAction = actionId;
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'model-io-btn';
@@ -139,40 +114,61 @@
     button.title = 'Show exact local model request and response artifacts';
     button.addEventListener('click', (event) => {
       event.stopPropagation();
-      toggleModelIo(button, item.actionId, line);
+      toggleModelIo(button, actionId, line);
     });
     line.appendChild(button);
   }
 
-  function installHooks() {
-    if (typeof window.coderRequest !== 'function' || typeof window.agentLogEntry !== 'function') {
-      setTimeout(installHooks, 50);
-      return;
-    }
-    if (window.__stoeModelIoHooksInstalled) return;
-    window.__stoeModelIoHooksInstalled = true;
-
-    const originalCoderRequest = window.coderRequest;
-    window.coderRequest = async function(path, payload) {
-      const value = await originalCoderRequest.apply(this, arguments);
-      if (typeof path === 'string' && path.startsWith('events?') && Array.isArray(value)) {
-        value.forEach(queueEvent);
-      }
-      return value;
-    };
-
-    const originalAgentLogEntry = window.agentLogEntry;
-    window.agentLogEntry = function(msg, level = 'info') {
-      const body = document.getElementById('agent-log-body');
-      const before = body ? body.children.length : 0;
-      const result = originalAgentLogEntry.apply(this, arguments);
-      const item = takeEvent(msg);
-      if (item && body && body.children.length > before) {
-        attachButton(body.lastElementChild, item);
-      }
-      return result;
-    };
+  function renderedText(event) {
+    return (event?.metadata?.event_type === 'task_finished' ? '★ ' : '') + event.source + ' · ' + event.message;
   }
 
-  installHooks();
+  function scanLog() {
+    const body = document.getElementById('agent-log-body');
+    if (!body) return;
+    const lines = Array.from(body.children);
+    for (const event of eventByAction.values()) {
+      const expected = renderedText(event);
+      for (const line of lines) {
+        if (line.dataset.modelIoAction) continue;
+        const text = line.textContent || '';
+        if (text.includes(expected)) {
+          attachButton(line, event.metadata.action_id);
+          break;
+        }
+      }
+    }
+  }
+
+  async function refreshEvents() {
+    try {
+      const response = await fetch('/api/coder/events?limit=200', { credentials: 'same-origin' });
+      const events = await response.json();
+      if (!response.ok || !Array.isArray(events)) return;
+      for (const event of events) {
+        const actionId = event?.metadata?.action_id;
+        const eventType = event?.metadata?.event_type;
+        if (actionId && ['model_call_complete', 'model_call_failed'].includes(eventType)) {
+          eventByAction.set(actionId, event);
+        }
+      }
+      scanLog();
+    } catch (_) {
+      // Model I/O UI is diagnostic-only and must never disturb the main UI.
+    }
+  }
+
+  const observer = new MutationObserver(() => scanLog());
+  function installObserver() {
+    const body = document.getElementById('agent-log-body');
+    if (!body) {
+      setTimeout(installObserver, 100);
+      return;
+    }
+    observer.observe(body, { childList: true });
+    refreshEvents();
+    setInterval(refreshEvents, 1000);
+  }
+
+  installObserver();
 })();

@@ -85,9 +85,37 @@ class InspectionNavigationTests(unittest.TestCase):
         )
         self.assertTrue(result["ok"])
         self.assertTrue(result["anchored"])
+        self.assertEqual("symbol", result["query_mode"])
         self.assertIn("manual_model_selection_eligibility", result["content"])
         self.assertIn(1801, result["match_lines"])
         self.assertLess(result["chars"], 16_001)
+
+    def test_code_signature_anchor_matches_declaration_strongly(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        self.large_file(root)
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "inspect", "path": "StoeCoder/large.py", "query": "def manual_model_selection_eligibility(self):"},
+            None,
+        )
+        self.assertTrue(result["ok"])
+        self.assertEqual("symbol", result["query_mode"])
+        self.assertIn("manual_model_selection_eligibility", result["content"])
+
+    def test_missing_code_symbol_does_not_fall_back_to_generic_def_lines(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        self.large_file(root)
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "inspect", "path": "StoeCoder/large.py", "query": "def is_generation_model"},
+            None,
+        )
+        self.assertFalse(result["ok"])
+        self.assertEqual("none", result["query_mode"])
+        self.assertEqual(0, result["match_count"])
+        self.assertIn("anchor is absent", result["required_next_action"])
 
     def test_natural_language_anchor_falls_back_to_keywords(self):
         coder = self.runtime()
@@ -176,6 +204,7 @@ class InspectionNavigationTests(unittest.TestCase):
         prompt = coder.generated[-1]["prompt"]
         self.assertIn("optional query", prompt["available_tools"]["inspect"])
         self.assertIn("matching line windows", prompt["available_tools"]["inspect"])
+        self.assertIn("require the requested symbol to exist", prompt["available_tools"]["inspect"])
 
 
 if __name__ == "__main__":

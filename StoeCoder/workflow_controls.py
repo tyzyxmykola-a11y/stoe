@@ -1,9 +1,9 @@
 """Trusted workflow-state controls for the standalone StoeCoder worker loop.
 
 This adapter keeps the core executive authority unchanged while making the
-model-visible workflow explicit: retain only the file content needed for the
-next edit, surface the current stage, and direct post-edit work toward tests,
-Git diff, and finish rather than repeated inspection.
+model-visible workflow explicit. Verification commands are derived from the
+same repository-aware policy used by the trusted final verifier, so the model
+executes a plan instead of choosing a test framework.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from types import MethodType
 from typing import Any
 
 from anti_loop import _capture_candidate_evidence
-from workflow_guard import required_test_command
+from verification_policy import worker_verification_commands
 
 _MUTATIONS = {"write", "delete", "move"}
 
@@ -35,7 +35,19 @@ def _successful_run(item: dict[str, Any]) -> bool:
     if _request_kind(item) != "run":
         return False
     feedback = item.get("feedback") or {}
-    return feedback.get("exit_code") == 0 and not feedback.get("timed_out") and not feedback.get("cancelled")
+    return (
+        feedback.get("executed", True) is not False
+        and feedback.get("exit_code") == 0
+        and not feedback.get("timed_out")
+        and not feedback.get("cancelled")
+    )
+
+
+def _failed_executed_run(item: dict[str, Any]) -> bool:
+    if _request_kind(item) != "run":
+        return False
+    feedback = item.get("feedback") or {}
+    return feedback.get("executed", True) is not False and not _successful_run(item)
 
 
 def _run_kind(item: dict[str, Any]) -> str | None:
@@ -66,6 +78,20 @@ def _mutation_path(item: dict[str, Any]) -> str | None:
     return str(feedback.get("path") or request.get("path") or "") or None
 
 
+def _command(item: dict[str, Any]) -> list[str]:
+    return [str(arg) for arg in ((item.get("request") or {}).get("command") or [])]
+
+
+def _verification_progress(after: list[dict[str, Any]], commands: list[list[str]]) -> int:
+    index = 0
+    for item in after:
+        if index >= len(commands):
+            break
+        if _successful_run(item) and _command(item) == commands[index]:
+            index += 1
+    return index
+
+
 def workflow_state(history: list[dict[str, Any]]) -> dict[str, Any]:
     mutation_indices = [index for index, item in enumerate(history) if _successful_mutation(item)]
     if not mutation_indices:
@@ -77,6 +103,9 @@ def workflow_state(history: list[dict[str, Any]]) -> dict[str, Any]:
             "tests_seen_after_last_change": False,
             "diff_seen_after_last_change": False,
             "last_run_failed": False,
+            "verification_commands": [],
+            "verification_index": 0,
+            "verification_total": 0,
             "required_next_actions": ["inspect only what is necessary, then make the smallest correct edit"],
             "required_next_command": None,
         }
@@ -84,21 +113,23 @@ def workflow_state(history: list[dict[str, Any]]) -> dict[str, Any]:
     last_mutation = mutation_indices[-1]
     mutation = history[last_mutation]
     after = history[last_mutation + 1 :]
-    successful_tests = any(_successful_run(item) and _run_kind(item) == "tests" for item in after)
+    changed_path = _mutation_path(mutation)
+    commands = worker_verification_commands([changed_path] if changed_path else [])
+    verification_index = _verification_progress(after, commands)
+    verification_complete = verification_index >= len(commands)
     successful_diff = any(_successful_run(item) and _run_kind(item) == "diff" for item in after)
     last_run = next((item for item in reversed(after) if _request_kind(item) == "run"), None)
-    last_run_failed = bool(last_run is not None and not _successful_run(last_run))
-    changed_path = _mutation_path(mutation)
+    last_run_failed = bool(last_run is not None and _failed_executed_run(last_run))
 
     if last_run_failed:
         stage = "run_failed"
-        required = ["use the trusted failed-run output to diagnose and make only a necessary corrective change or rerun"]
+        required = ["use the trusted failed-run output to diagnose and make only a necessary corrective change before rerunning verification"]
         command = None
         inspect_allowed = True
-    elif not successful_tests:
+    elif not verification_complete:
         stage = "candidate_changed"
-        required = ["run relevant deterministic tests", "run git diff for the final candidate", "finish"]
-        command = required_test_command(changed_path)
+        required = ["run the next trusted verification command", "run git diff for the final candidate", "finish"]
+        command = commands[verification_index]
         inspect_allowed = False
     elif not successful_diff:
         stage = "tests_passed"
@@ -116,9 +147,12 @@ def workflow_state(history: list[dict[str, Any]]) -> dict[str, Any]:
         "candidate_changed": True,
         "last_changed_path": changed_path,
         "inspect_same_file_allowed": inspect_allowed,
-        "tests_seen_after_last_change": successful_tests,
+        "tests_seen_after_last_change": verification_complete,
         "diff_seen_after_last_change": successful_diff,
         "last_run_failed": last_run_failed,
+        "verification_commands": commands,
+        "verification_index": verification_index,
+        "verification_total": len(commands),
         "required_next_actions": required,
         "required_next_command": command,
     }
@@ -167,6 +201,15 @@ def _task_id_from_action(action_id: str) -> str | None:
     return task_id if task_id.startswith("TASK_") else None
 
 
+def _runtime_touched_paths(coder: Any, raw: dict[str, Any], fallback: dict[str, Any]) -> list[str]:
+    evidence = getattr(coder, "_task_evidence", None)
+    files = getattr(evidence, "files", None)
+    if isinstance(files, list) and files:
+        return [str(path) for path in files if str(path or "")]
+    changed_path = str(raw.get("last_changed_path") or fallback.get("last_changed_path") or "")
+    return [changed_path] if changed_path else []
+
+
 def _runtime_state(coder: Any, task_id: str | None, fallback: dict[str, Any]) -> dict[str, Any]:
     states = getattr(coder, "_stoe_workflow_state", None)
     raw = states.get(task_id) if isinstance(states, dict) and task_id else None
@@ -175,18 +218,28 @@ def _runtime_state(coder: Any, task_id: str | None, fallback: dict[str, Any]) ->
 
     changed_path = str(raw.get("last_changed_path") or "") or fallback.get("last_changed_path")
     last_run_failed = bool(raw.get("last_run_failed"))
-    tests_run = bool(raw.get("tests_run"))
     diff_inspected = bool(raw.get("diff_inspected"))
+    raw_commands = raw.get("verification_commands")
+    if isinstance(raw_commands, list) and all(isinstance(command, list) for command in raw_commands):
+        commands = [[str(arg) for arg in command] for command in raw_commands]
+    else:
+        commands = worker_verification_commands(_runtime_touched_paths(coder, raw, fallback))
+    try:
+        verification_index = int(raw.get("verification_index", 0))
+    except (TypeError, ValueError):
+        verification_index = 0
+    verification_index = max(0, min(verification_index, len(commands)))
+    tests_run = bool(raw.get("tests_run")) or verification_index >= len(commands)
 
     if last_run_failed:
         stage = "run_failed"
-        required = ["use the trusted failed-run output to diagnose and make only a necessary corrective change or rerun"]
+        required = ["use the trusted failed-run output to diagnose and make only a necessary corrective change before rerunning verification"]
         command = None
         inspect_allowed = True
     elif not tests_run:
         stage = "candidate_changed"
-        required = ["run relevant deterministic tests", "run git diff for the final candidate", "finish"]
-        command = required_test_command(changed_path)
+        required = ["run the next trusted verification command", "run git diff for the final candidate", "finish"]
+        command = commands[verification_index] if verification_index < len(commands) else None
         inspect_allowed = False
     elif not diff_inspected:
         stage = "tests_passed"
@@ -207,6 +260,9 @@ def _runtime_state(coder: Any, task_id: str | None, fallback: dict[str, Any]) ->
         "tests_seen_after_last_change": tests_run,
         "diff_seen_after_last_change": diff_inspected,
         "last_run_failed": last_run_failed,
+        "verification_commands": commands,
+        "verification_index": verification_index,
+        "verification_total": len(commands),
         "required_next_actions": required,
         "required_next_command": command,
     }
@@ -218,30 +274,29 @@ def _instruction(state: dict[str, Any]) -> str:
     if stage == "pre_edit":
         return (
             "Choose exactly one next tool action. Inspect only what is necessary before editing and do not re-inspect the same file without new trusted evidence. "
-            "Prefer targeted search over broad exploration. Then make the smallest real change. After a real mutation, run relevant tests, inspect the final Git diff with run, and finish. "
+            "Prefer targeted search over broad exploration. Then make the smallest real change. After a real mutation, follow the supplied verification plan, inspect the final Git diff with run, and finish. "
             "Use ordinary file mechanics; no patch serialization."
         )
     if stage == "run_failed":
         return (
-            "A trusted run failed after the candidate changed. Use the supplied failure output to diagnose it. Inspect source again only when that failure creates genuinely new evidence that cannot be resolved from the output; otherwise make the smallest corrective mutation and rerun the failed check. "
-            "If you inspect source because of the failure, use the supplied full inspect content when editing; never replace a whole file with only an excerpt. Do not perform confirmation-only reads or no-op rewrites."
+            "A trusted verification command failed after the candidate changed. Use the supplied failure output to diagnose it. Inspect source again only when that failure creates genuinely new evidence that cannot be resolved from the output; otherwise make the smallest corrective mutation. "
+            "Do not improvise a different test framework or rerun commands before a corrective change. If you inspect source because of the failure, use the supplied full inspect content when editing; never replace a whole file with only an excerpt."
         )
     if stage == "candidate_changed":
         command = state.get("required_next_command")
-        exact = f" Use exactly {command!r}." if command else ""
         return (
             "The candidate bytes changed successfully. Do not re-inspect or rewrite the just-written file merely to confirm persistence. "
-            f"Choose run now and execute the relevant deterministic tests.{exact} A write counts as progress only when candidate bytes actually change."
+            f"Choose run now with exactly the trusted next verification command {command!r}. The repository verification policy, not the model, selects this command."
         )
     if stage == "tests_passed":
         command = state.get("required_next_command") or (["git", "diff", "--", path] if path else ["git", "diff"])
         return (
-            f"Relevant deterministic tests passed for the current candidate. Do not re-inspect source files. Choose run now with the exact final-diff command {command!r}. "
+            f"The trusted worker verification plan completed for the current candidate. Do not re-inspect source files. Choose run now with the exact final-diff command {command!r}. "
             "Use that Git diff output as the final change inspection."
         )
     return (
-        "Relevant deterministic tests passed and the final Git diff was inspected for the current candidate. If the diff satisfies the objective, choose finish now. "
-        "Only mutate again if the test or diff output exposed a concrete defect; otherwise do not inspect or rewrite files again."
+        "The trusted worker verification plan completed and the final Git diff was inspected for the current candidate. If the diff satisfies the objective, choose finish now. "
+        "Only mutate again if the verification or diff output exposed a concrete defect; otherwise do not inspect or rewrite files again."
     )
 
 
@@ -272,7 +327,7 @@ def install_workflow_controls(coder: Any) -> None:
             tools = dict(prompt.get("available_tools") or {})
             tools["run"] = (
                 "execute argv list in candidate workspace; when workflow_state.required_next_command is non-null, use that argv exactly; "
-                "otherwise use run for deterministic tests and for final git diff; do not use inspect as a substitute for diff"
+                "verification commands are selected by the trusted repository policy; do not substitute another test framework and do not use inspect as a substitute for diff"
             )
             prompt["available_tools"] = tools
             prompt["instruction"] = _instruction(state)

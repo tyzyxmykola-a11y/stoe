@@ -5,7 +5,7 @@ Historically the live registry was stored in tracked ``StoeCoder/roles.json``
 and copied into every candidate worktree, which could make a pure UI role
 change appear as a worker-authored diff. This adapter migrates the live registry
 to the ignored runtime area and restores the candidate copy to its committed
-HEAD state before the first worker tool action.
+HEAD state before model work or candidate evidence can observe it.
 """
 
 from __future__ import annotations
@@ -65,15 +65,29 @@ def install_role_config_isolation(coder: Any) -> None:
     coder.roles.initialize()
 
     original_execute_tool = coder._execute_tool
+    original_memory_context = getattr(coder, "_memory_context", None)
     normalized_tasks: set[str] = set()
 
-    def isolated_execute_tool(self, task_id: str, step: int, worktree, request: dict[str, Any], allowed_paths):
-        if task_id not in normalized_tasks:
-            _restore_candidate_registry(worktree)
+    def normalize_task_candidate(self, task_id: str, worktree: Any) -> None:
+        if task_id in normalized_tasks:
+            return
+        root = Path(worktree)
+        if root.exists():
+            _restore_candidate_registry(root)
             normalized_tasks.add(task_id)
+
+    def isolated_execute_tool(self, task_id: str, step: int, worktree, request: dict[str, Any], allowed_paths):
+        normalize_task_candidate(self, task_id, worktree)
         return original_execute_tool(task_id, step, worktree, request, allowed_paths)
 
     coder._execute_tool = MethodType(isolated_execute_tool, coder)
+
+    if callable(original_memory_context):
+        def isolated_memory_context(self, task_id: str, objective: str):
+            normalize_task_candidate(self, task_id, Path(self.worktree_root) / task_id)
+            return original_memory_context(task_id, objective)
+        coder._memory_context = MethodType(isolated_memory_context, coder)
+
     coder._stoe_role_config_isolation_installed = True
     coder._stoe_runtime_roles_path = str(runtime_path)
     coder._stoe_legacy_roles_path = str(legacy_path)

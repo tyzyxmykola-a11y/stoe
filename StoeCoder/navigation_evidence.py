@@ -2,9 +2,13 @@
 
 Trusted inspect/search results are conserved as typed evidence. Novel evidence is
 not automatically progress: the anti-loop stagnation counter is reset only when
-new evidence is connected to the operator objective or extends an already
-connected evidence path. This keeps exploration task-agnostic while preventing a
-worker from being rewarded for walking deeper into an unrelated rabbit hole.
+new evidence extends a relation that was established by an objective-directed
+search or by evidence already observed on that path.
+
+Connectivity is causal rather than lexical. Merely inventing a symbol whose words
+resemble the objective does not create a new connected path. Search establishes
+candidate paths; later inspection may extend those paths only from terms grounded
+in trusted search excerpts or already-grounded bounded inspection evidence.
 
 Evidence records provenance (implementation, test, config, docs, runtime, other),
 polarity (positive/negative), path/span, stable identity, and query family. A
@@ -34,6 +38,7 @@ _MUTATIONS = {"write", "delete", "move"}
 _TEST_PARTS = {"test", "tests", "testing", "__tests__"}
 _SOURCE_KINDS = ("implementation", "test", "config", "docs", "runtime", "other")
 _MAX_SEMANTIC_TERMS = 64
+_ANCHOR_SYNTAX_TERMS = {"def", "class", "function", "const", "let", "var", "async", "await"}
 
 
 def _normalized_text(value: Any) -> str:
@@ -54,6 +59,10 @@ def _semantic_terms(value: Any) -> set[str]:
         if len(terms) >= _MAX_SEMANTIC_TERMS:
             break
     return terms
+
+
+def _anchor_terms(value: Any) -> set[str]:
+    return _semantic_terms(value) - _ANCHOR_SYNTAX_TERMS
 
 
 def _query_family(value: Any) -> str:
@@ -243,8 +252,73 @@ def _task_id_from_generate(kwargs: dict[str, Any]) -> str | None:
     return action_id.split(":", 1)[0] or None
 
 
+def _objective_directed_query(query: Any, objective_terms: set[str]) -> bool:
+    """Require the whole search idea to be grounded in the operator objective."""
+
+    terms = _anchor_terms(query)
+    return bool(terms) and terms.issubset(objective_terms)
+
+
+def _match_terms_by_path(feedback: dict[str, Any]) -> dict[str, set[str]]:
+    result: dict[str, set[str]] = {}
+    matches = feedback.get("matches")
+    if not isinstance(matches, list):
+        return result
+    for item in matches:
+        if not isinstance(item, dict):
+            continue
+        path = str(item.get("path") or "")
+        if not path:
+            continue
+        result.setdefault(path, set()).update(_semantic_terms(item.get("text")))
+    return result
+
+
+def _rank_connected_search_feedback(
+    feedback: dict[str, Any], query_terms: set[str], objective_terms: set[str]
+) -> dict[str, Any]:
+    """Rank candidate paths by trusted excerpt relation, never by guessed semantics."""
+
+    files = feedback.get("matched_files")
+    matches = feedback.get("matches")
+    if not isinstance(files, list) or not files:
+        return feedback
+    matches = [item for item in matches if isinstance(item, dict)] if isinstance(matches, list) else []
+    by_path: dict[str, list[dict[str, Any]]] = {}
+    for item in matches:
+        path = str(item.get("path") or "")
+        if path:
+            by_path.setdefault(path, []).append(item)
+
+    original_index = {str(path): index for index, path in enumerate(files)}
+
+    def score(raw_path: Any) -> tuple[int, int, int, int]:
+        path = str(raw_path)
+        excerpts = by_path.get(path, [])
+        excerpt_terms: set[str] = set()
+        for item in excerpts:
+            excerpt_terms.update(_semantic_terms(item.get("text")))
+        return (
+            len(excerpt_terms & query_terms),
+            len(excerpt_terms & objective_terms),
+            1 if excerpts else 0,
+            -original_index.get(path, 10_000),
+        )
+
+    ranked_files = sorted([str(path) for path in files], key=score, reverse=True)
+    rank = {path: index for index, path in enumerate(ranked_files)}
+    ranked_matches = sorted(
+        matches,
+        key=lambda item: (rank.get(str(item.get("path") or ""), len(ranked_files)), int(item.get("line") or 0)),
+    )
+    enriched = dict(feedback)
+    enriched["matched_files"] = ranked_files
+    enriched["matches"] = ranked_matches
+    return enriched
+
+
 def install_navigation_evidence(coder: Any) -> None:
-    """Conserve all evidence while letting only connected novelty count as progress."""
+    """Conserve all evidence while letting only evidence-grounded novelty progress."""
 
     if getattr(coder, "_stoe_navigation_evidence_installed", False):
         return
@@ -255,40 +329,55 @@ def install_navigation_evidence(coder: Any) -> None:
     epoch_by_task: dict[str, int] = {}
     objective_terms_by_task: dict[str, set[str]] = {}
     connected_paths_by_task: dict[str, set[str]] = {}
-    connected_terms_by_task: dict[str, set[str]] = {}
+    path_terms_by_task: dict[str, dict[str, set[str]]] = {}
     expanded_paths_by_task: dict[str, set[str]] = {}
+    frontier_order_by_task: dict[str, list[str]] = {}
 
     def reset_graph(task_id: str) -> int:
         seen_by_task.setdefault(task_id, set()).clear()
         connected_paths_by_task.setdefault(task_id, set()).clear()
-        connected_terms_by_task.setdefault(task_id, set()).clear()
+        path_terms_by_task.setdefault(task_id, {}).clear()
         expanded_paths_by_task.setdefault(task_id, set()).clear()
+        frontier_order_by_task.setdefault(task_id, []).clear()
         epoch_by_task[task_id] = int(epoch_by_task.get(task_id, 0)) + 1
         return epoch_by_task[task_id]
 
-    def connection_for(task_id: str, request: dict[str, Any], items: list[dict[str, Any]]) -> tuple[bool, str]:
+    def current_frontier(task_id: str) -> list[str]:
+        connected = connected_paths_by_task.setdefault(task_id, set())
+        expanded = expanded_paths_by_task.setdefault(task_id, set())
+        order = frontier_order_by_task.setdefault(task_id, [])
+        return [path for path in order if path in connected and path not in expanded]
+
+    def connection_for(
+        task_id: str, request: dict[str, Any], items: list[dict[str, Any]]
+    ) -> tuple[bool, str]:
         objective_terms = objective_terms_by_task.get(task_id, set())
         if not objective_terms:
             return bool(items), "no_objective_context"
 
         kind = str(request.get("kind") or "")
         path = str(request.get("path") or "").replace("\\", "/")
-        query_terms = _semantic_terms(request.get("query"))
-        path_terms = _semantic_terms(path)
-        action_terms = query_terms or path_terms
-        connected_terms = connected_terms_by_task.setdefault(task_id, set())
         connected_paths = connected_paths_by_task.setdefault(task_id, set())
         expanded_paths = expanded_paths_by_task.setdefault(task_id, set())
+        path_terms = path_terms_by_task.setdefault(task_id, {})
 
-        if action_terms & objective_terms:
-            return True, "objective_overlap"
-        if action_terms & connected_terms:
-            return True, "connected_terms"
-        if kind == "inspect" and path in connected_paths and path not in expanded_paths:
-            return True, "connected_path_first_inspect"
-        if kind == "search" and any(str(item.get("path") or "") in connected_paths for item in items):
-            return True, "connected_path_search"
-        return False, "unconnected_novelty"
+        if kind == "search":
+            if _objective_directed_query(request.get("query"), objective_terms):
+                return True, "objective_search"
+            return False, "ungrounded_search"
+
+        if kind == "inspect" and path in connected_paths:
+            query_terms = _anchor_terms(request.get("query"))
+            grounded_terms = path_terms.setdefault(path, set())
+            if path not in expanded_paths:
+                if not query_terms or query_terms.issubset(grounded_terms):
+                    return True, "connected_path_first_inspect"
+                return False, "ungrounded_anchor"
+            if query_terms and query_terms.issubset(grounded_terms):
+                return True, "grounded_path_extension"
+            return False, "ungrounded_anchor" if query_terms else "already_expanded_path"
+
+        return False, "unconnected_path"
 
     def evidence_execute_tool(self, task_id: str, step: int, worktree, request: dict[str, Any], allowed_paths):
         feedback = original_execute_tool(task_id, step, worktree, request, allowed_paths)
@@ -332,6 +421,14 @@ def install_navigation_evidence(coder: Any) -> None:
             return feedback
 
         items = _normalize_evidence(request, feedback)
+        connected, basis = connection_for(task_id, request, items)
+        objective_terms = objective_terms_by_task.get(task_id, set())
+        query_terms = _anchor_terms(request.get("query"))
+
+        if kind == "search" and connected:
+            feedback = _rank_connected_search_feedback(feedback, query_terms, objective_terms)
+            items = _normalize_evidence(request, feedback)
+
         enriched = dict(feedback)
         enriched["evidence_items"] = items
         enriched["evidence_epoch"] = epoch_by_task[task_id]
@@ -341,20 +438,38 @@ def install_navigation_evidence(coder: Any) -> None:
         novel = ids - seen
         if novel:
             seen.update(novel)
-
-        connected, basis = connection_for(task_id, request, items)
         connected_novel = novel if connected else set()
-        request_terms = _semantic_terms(request.get("query")) or _semantic_terms(request.get("path"))
-        if connected_novel:
-            connected_terms_by_task.setdefault(task_id, set()).update(request_terms)
+
+        if connected_novel and kind == "search":
+            match_terms = _match_terms_by_path(feedback)
+            connected_paths = connected_paths_by_task.setdefault(task_id, set())
+            path_terms = path_terms_by_task.setdefault(task_id, {})
+            frontier = frontier_order_by_task.setdefault(task_id, [])
             for item in items:
                 path = str(item.get("path") or "")
-                if path and item.get("polarity") == "positive":
-                    connected_paths_by_task.setdefault(task_id, set()).add(path)
-            if kind == "inspect":
-                path = str(request.get("path") or "").replace("\\", "/")
-                if path:
-                    expanded_paths_by_task.setdefault(task_id, set()).add(path)
+                if not path or item.get("polarity") != "positive":
+                    continue
+                connected_paths.add(path)
+                if path not in frontier:
+                    frontier.append(path)
+                grounded = path_terms.setdefault(path, set())
+                grounded.update(query_terms)
+                grounded.update(match_terms.get(path, set()))
+
+        if connected_novel and kind == "inspect":
+            path = str(request.get("path") or "").replace("\\", "/")
+            if path:
+                expanded_paths_by_task.setdefault(task_id, set()).add(path)
+                grounded = path_terms_by_task.setdefault(task_id, {}).setdefault(path, set())
+                inspect_query_terms = _anchor_terms(request.get("query"))
+                grounded.update(inspect_query_terms)
+                content = feedback.get("content")
+                if isinstance(content, str) and content:
+                    content_terms = _semantic_terms(content)
+                    if inspect_query_terms:
+                        grounded.update(content_terms)
+                    else:
+                        grounded.update(content_terms & objective_terms)
 
         states = getattr(self, "_stoe_workflow_state", None)
         state = states.get(task_id) if isinstance(states, dict) else None
@@ -365,30 +480,51 @@ def install_navigation_evidence(coder: Any) -> None:
         elif isinstance(state, dict):
             state.setdefault("useful_exploration_count", 0)
 
+        frontier = current_frontier(task_id)
         enriched["information_gain"] = bool(novel)
         enriched["novel_evidence_count"] = len(novel)
         enriched["connected_progress"] = bool(connected_novel)
         enriched["connected_novel_evidence_count"] = len(connected_novel)
         enriched["connection_basis"] = basis
         enriched["known_evidence_count"] = len(seen)
-        enriched["objective_term_count"] = len(objective_terms_by_task.get(task_id, set()))
+        enriched["objective_term_count"] = len(objective_terms)
+        enriched["connected_frontier"] = frontier[:8]
         enriched["stagnant_exploration_count"] = int(state.get("consecutive_exploration") or 0) if isinstance(state, dict) else 0
         enriched["useful_exploration_count"] = int(state.get("useful_exploration_count") or 0) if isinstance(state, dict) else 0
 
         summary = _evidence_summary(items)
         progress = f"connected progress: {'yes' if connected_novel else 'no'} ({basis}); novel evidence={len(novel)}"
-        enriched["evidence_summary"] = summary + "; " + progress
+        frontier_text = ""
+        if frontier:
+            frontier_text = "; unexpanded connected frontier: " + ", ".join(frontier[:6])
+        enriched["evidence_summary"] = summary + "; " + progress + frontier_text
         if kind == "search":
             original_stdout = str(feedback.get("stdout") or "").strip()
             enriched["stdout"] = (enriched["evidence_summary"] + ("\n" + original_stdout if original_stdout else ""))[:4_000]
-        elif feedback.get("ok") is False and items:
-            enriched["required_next_action"] = (
-                "preserve this negative evidence for the current repository state; do not repeat the same read unchanged. "
-                "Choose an action likely to expose different evidence connected to the objective or make repository progress."
-            )
+
+        if feedback.get("ok") is False and items:
+            if connected_novel:
+                enriched["required_next_action"] = (
+                    "preserve this grounded negative evidence; do not repeat the same read unchanged. "
+                    "Continue from another evidence-grounded relation or make repository progress."
+                )
+            else:
+                enriched["required_next_action"] = (
+                    "preserve this negative evidence, but it did not extend a grounded relation. "
+                    + (
+                        "Return to an unexpanded connected candidate path: " + ", ".join(frontier[:4])
+                        if frontier else
+                        "Return to an objective-directed search or make repository progress."
+                    )
+                )
         elif novel and not connected_novel:
             enriched["required_next_action"] = (
-                "this observation is conserved as new evidence but did not extend an objective-connected path; return to connected evidence or make repository progress instead of deepening an unrelated branch"
+                "this observation is conserved as new evidence but did not extend an evidence-grounded path; "
+                + (
+                    "inspect an unexpanded connected candidate instead: " + ", ".join(frontier[:4])
+                    if frontier else
+                    "return to an objective-directed search or make repository progress"
+                )
             )
         return enriched
 
@@ -406,3 +542,5 @@ def install_navigation_evidence(coder: Any) -> None:
     coder._stoe_evidence_epoch = epoch_by_task
     coder._stoe_evidence_objective_terms = objective_terms_by_task
     coder._stoe_evidence_connected_paths = connected_paths_by_task
+    coder._stoe_evidence_path_terms = path_terms_by_task
+    coder._stoe_evidence_frontier = frontier_order_by_task

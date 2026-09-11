@@ -2,13 +2,14 @@
 
 This guard does not change model authority. It prevents repeated read-only
 exploration and no-op rewrites from consuming the tool budget without progress,
-returns explicit feedback to the next coder model call, and preserves candidate
-stats before a guard-triggered failure removes the isolated worktree.
+tracks the post-mutation workflow stage, and preserves candidate evidence even
+when the task later fails closed.
 """
 
 from __future__ import annotations
 
 import hashlib
+import os
 import subprocess
 from pathlib import Path
 from types import MethodType
@@ -16,6 +17,7 @@ from typing import Any
 
 _READ_ONLY = {"inspect", "search"}
 _PROGRESS_ACTIONS = {"write", "delete", "move", "run", "finish"}
+_MUTATIONS = {"write", "delete", "move"}
 _MAX_CONSECUTIVE_EXPLORATION = 3
 _MAX_REJECTED_REPEATS = 2
 
@@ -48,9 +50,12 @@ def _candidate_path(worktree: Any, value: Any) -> tuple[Path, str] | None:
         target = (root / value).resolve()
         if target != root and root not in target.parents:
             return None
+        relative = target.relative_to(root).as_posix()
+        if relative == ".git" or relative.startswith(".git/"):
+            return None
         if any(part.lower() in {".env", "credentials.json", "id_rsa", "id_ed25519"} for part in target.parts):
             return None
-        return target, target.relative_to(root).as_posix()
+        return target, relative
     except (OSError, ValueError):
         return None
 
@@ -60,37 +65,52 @@ def _capture_candidate_evidence(coder: Any, worktree: Any) -> None:
 
     evidence = getattr(coder, "_task_evidence", None)
     root = Path(worktree)
-    if evidence is None or getattr(evidence, "files", None) or not root.exists():
+    if evidence is None or not root.exists():
         return
     try:
         subprocess.run(["git", "add", "-N", "."], cwd=root, stdin=subprocess.DEVNULL,
                        capture_output=True, check=False)
-        names = subprocess.run(
+        names_result = subprocess.run(
             ["git", "diff", "--name-only", "-z"], cwd=root, stdin=subprocess.DEVNULL,
             capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
-        ).stdout
-        touched = [path for path in names.split("\x00") if path]
+        )
+        if names_result.returncode:
+            return
+        touched = [path for path in names_result.stdout.split("\x00") if path]
         additions = deletions = binary_files = 0
         numstat = subprocess.run(
             ["git", "diff", "--numstat", "-z"], cwd=root, stdin=subprocess.DEVNULL,
             capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
-        ).stdout
-        for record in numstat.split("\x00"):
-            counts = record.split("\t", 2)
-            if len(counts) != 3:
-                continue
-            if counts[0] == "-" or counts[1] == "-":
-                binary_files += 1
-            else:
-                additions += int(counts[0])
-                deletions += int(counts[1])
+        )
+        if numstat.returncode == 0:
+            for record in numstat.stdout.split("\x00"):
+                counts = record.split("\t", 2)
+                if len(counts) != 3:
+                    continue
+                if counts[0] == "-" or counts[1] == "-":
+                    binary_files += 1
+                else:
+                    additions += int(counts[0])
+                    deletions += int(counts[1])
         evidence.files = touched
         evidence.additions = additions
         evidence.deletions = deletions
         evidence.binary_files = binary_files
     except (OSError, ValueError, subprocess.SubprocessError):
-        # Evidence enrichment must never weaken or mask the original guard failure.
         return
+
+
+def _run_command_kind(command: Any) -> str | None:
+    if not isinstance(command, list) or not command:
+        return None
+    lower = [str(item).lower() for item in command]
+    executable = os.path.basename(lower[0])
+    if executable in {"git", "git.exe"} and "diff" in lower[1:]:
+        return "diff"
+    joined = " ".join(lower)
+    if "unittest" in joined or "pytest" in joined or any("test" in item for item in lower[1:]):
+        return "tests"
+    return "other"
 
 
 def install_anti_loop(coder: Any) -> None:
@@ -101,6 +121,7 @@ def install_anti_loop(coder: Any) -> None:
 
     original_execute_tool = coder._execute_tool
     task_state: dict[str, dict[str, Any]] = {}
+    coder._stoe_workflow_state = task_state
 
     def guarded_execute_tool(self, task_id: str, step: int, worktree, request: dict[str, Any], allowed_paths):
         state = task_state.setdefault(task_id, {
@@ -108,6 +129,13 @@ def install_anti_loop(coder: Any) -> None:
             "consecutive_exploration": 0,
             "duplicate_rejections": 0,
             "exploration_rejections": 0,
+            "noop_write_rejections": 0,
+            "post_write_inspect_rejections": 0,
+            "candidate_changed": False,
+            "last_changed_path": None,
+            "tests_run": False,
+            "diff_inspected": False,
+            "last_run_failed": False,
         })
         kind = str(request.get("kind") or "")
 
@@ -127,6 +155,7 @@ def install_anti_loop(coder: Any) -> None:
                         except OSError:
                             old_bytes = None
                     if old_bytes is not None and old_bytes == proposed:
+                        state["noop_write_rejections"] += 1
                         digest = hashlib.sha256(old_bytes).hexdigest()
                         condition = f"no-op write rejected: {write_relative} already has identical content"
                         self._event(
@@ -134,6 +163,9 @@ def install_anti_loop(coder: Any) -> None:
                             kind="write", path=write_relative,
                             required_next_action="run relevant tests, inspect final git diff, or finish",
                         )
+                        if state["noop_write_rejections"] >= _MAX_REJECTED_REPEATS:
+                            _capture_candidate_evidence(self, worktree)
+                            raise RuntimeError("coder repeated no-op write after trusted rejection")
                         return {
                             "ok": False,
                             "executed": False,
@@ -148,6 +180,31 @@ def install_anti_loop(coder: Any) -> None:
                             "required_next_action": "run relevant tests, inspect final git diff, or finish",
                         }
 
+        if kind == "inspect":
+            requested_path = str(request.get("path") or "")
+            if (
+                state.get("candidate_changed")
+                and requested_path == state.get("last_changed_path")
+                and not state.get("last_run_failed")
+            ):
+                state["post_write_inspect_rejections"] += 1
+                condition = f"post-write confirmation inspect rejected: {_clip(requested_path, 180)}"
+                self._event(
+                    "Guard", condition, level="warning", task_id=task_id, step=step, kind=kind,
+                    path=_clip(requested_path),
+                    required_next_action="run relevant deterministic tests; then inspect final git diff with a Git command",
+                )
+                if state["post_write_inspect_rejections"] >= _MAX_REJECTED_REPEATS:
+                    _capture_candidate_evidence(self, worktree)
+                    raise RuntimeError("coder repeated post-write confirmation inspect after trusted rejection")
+                return {
+                    "ok": False,
+                    "error": condition,
+                    "failure_condition": condition,
+                    "required_next_action": "run relevant deterministic tests; then inspect final git diff with a Git command",
+                    "executed": False,
+                }
+
         if kind in _READ_ONLY:
             signature = _signature(request)
             detail = _describe(request)
@@ -156,21 +213,14 @@ def install_anti_loop(coder: Any) -> None:
                 state["duplicate_rejections"] += 1
                 condition = f"duplicate read-only action rejected: {detail}"
                 self._event(
-                    "Guard",
-                    condition,
-                    level="warning",
-                    task_id=task_id,
-                    step=step,
-                    kind=kind,
+                    "Guard", condition, level="warning", task_id=task_id, step=step, kind=kind,
                     path=_clip(request.get("path") or "."),
                     query=_clip(request.get("query"), 120) if kind == "search" else None,
                     required_next_action="choose a different action; prefer write, run, or finish",
                 )
                 if state["duplicate_rejections"] >= _MAX_REJECTED_REPEATS:
                     _capture_candidate_evidence(self, worktree)
-                    raise RuntimeError(
-                        f"coder repeated identical read-only action after trusted rejection: {detail}"
-                    )
+                    raise RuntimeError(f"coder repeated identical read-only action after trusted rejection: {detail}")
                 return {
                     "ok": False,
                     "error": condition,
@@ -186,19 +236,12 @@ def install_anti_loop(coder: Any) -> None:
                     f"read-only action rejected: {detail}"
                 )
                 self._event(
-                    "Guard",
-                    condition,
-                    level="warning",
-                    task_id=task_id,
-                    step=step,
-                    kind=kind,
+                    "Guard", condition, level="warning", task_id=task_id, step=step, kind=kind,
                     required_next_action="write, run, or finish before more exploration",
                 )
                 if state["exploration_rejections"] >= _MAX_REJECTED_REPEATS:
                     _capture_candidate_evidence(self, worktree)
-                    raise RuntimeError(
-                        "coder exceeded consecutive exploration limit after trusted rejection"
-                    )
+                    raise RuntimeError("coder exceeded consecutive exploration limit after trusted rejection")
                 return {
                     "ok": False,
                     "error": condition,
@@ -223,19 +266,61 @@ def install_anti_loop(coder: Any) -> None:
             _capture_candidate_evidence(self, worktree)
             raise
 
-        if kind == "write" and isinstance(feedback, dict) and feedback.get("ok") and write_target is not None and write_target.is_file():
-            try:
-                new_bytes = write_target.read_bytes()
-            except OSError:
-                new_bytes = b""
+        if kind in _MUTATIONS and isinstance(feedback, dict) and feedback.get("ok") is not False:
+            state["candidate_changed"] = True
+            state["last_changed_path"] = str(
+                feedback.get("to") if kind == "move" else feedback.get("path")
+                or request.get("destination") if kind == "move" else request.get("path")
+                or ""
+            )
+            state["tests_run"] = False
+            state["diff_inspected"] = False
+            state["last_run_failed"] = False
+            state["noop_write_rejections"] = 0
+            state["post_write_inspect_rejections"] = 0
             feedback = dict(feedback)
             feedback.update({
                 "executed": True,
-                "candidate_changed": old_bytes != new_bytes,
-                "old_sha256": hashlib.sha256(old_bytes).hexdigest() if old_bytes is not None else None,
-                "new_sha256": hashlib.sha256(new_bytes).hexdigest(),
+                "candidate_changed": True,
+                "stage": "candidate_changed",
                 "required_next_action": "run relevant deterministic tests, then inspect final git diff with run, then finish",
             })
+            if kind == "write" and write_target is not None and write_target.is_file():
+                try:
+                    new_bytes = write_target.read_bytes()
+                except OSError:
+                    new_bytes = b""
+                feedback.update({
+                    "old_sha256": hashlib.sha256(old_bytes).hexdigest() if old_bytes is not None else None,
+                    "new_sha256": hashlib.sha256(new_bytes).hexdigest(),
+                    "candidate_changed": old_bytes != new_bytes,
+                })
+                if not feedback["candidate_changed"]:
+                    state["candidate_changed"] = False
+            _capture_candidate_evidence(self, worktree)
+
+        if kind == "run" and isinstance(feedback, dict):
+            run_kind = _run_command_kind(request.get("command"))
+            success = (
+                feedback.get("exit_code", 0) == 0
+                and not feedback.get("timed_out")
+                and not feedback.get("cancelled")
+            )
+            state["last_run_failed"] = not success
+            if run_kind == "tests":
+                state["tests_run"] = success
+                if success:
+                    state["diff_inspected"] = False
+            elif run_kind == "diff":
+                state["diff_inspected"] = success
+            feedback = dict(feedback)
+            feedback["workflow_run_kind"] = run_kind
+            feedback["workflow_stage"] = (
+                "run_failed" if not success else
+                "diff_inspected" if run_kind == "diff" else
+                "tests_run" if run_kind == "tests" else
+                "candidate_changed"
+            )
 
         made_progress = kind in _PROGRESS_ACTIONS
         if kind == "write":

@@ -143,7 +143,7 @@ def install_workflow_controls(coder: Any) -> None:
             prompt["workflow_state"] = state
             tools = dict(prompt.get("available_tools") or {})
             tools["run"] = (
-                "execute argv list in candidate workspace; use this for tests and for final diff, "
+                "execute argv list in candidate workspace; use this for tests and for final git diff, "
                 "for example ['git','diff','--','StoeCoder/README.md']"
             )
             prompt["available_tools"] = tools

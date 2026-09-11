@@ -10,6 +10,7 @@ from role_config_isolation import install_role_config_isolation
 from repository_navigation import install_repository_navigation, install_information_gain_tracking
 from inspection_navigation import install_inspection_navigation
 from anti_loop import install_anti_loop
+from navigation_evidence import install_navigation_evidence
 from verification_policy import install_verification_policy
 from workflow_guard import install_workflow_guard
 from workflow_controls import install_workflow_controls
@@ -21,6 +22,7 @@ install_role_config_isolation(coder)
 install_repository_navigation(coder)
 install_inspection_navigation(coder)
 install_anti_loop(coder)
+install_navigation_evidence(coder)
 install_information_gain_tracking(coder)
 install_verification_policy(coder)
 install_workflow_guard(coder)

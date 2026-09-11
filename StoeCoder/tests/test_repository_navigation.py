@@ -6,7 +6,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from anti_loop import install_anti_loop
-from repository_navigation import install_information_gain_tracking, install_repository_navigation
+from repository_navigation import (
+    _keyword_pattern,
+    install_information_gain_tracking,
+    install_repository_navigation,
+)
 
 
 class FakeResult:
@@ -99,12 +103,65 @@ class RepositoryNavigationTests(unittest.TestCase):
         )
 
         self.assertTrue(result["ok"])
+        self.assertEqual("exact", result["query_mode"])
         self.assertEqual(["StoeCoder/roles.py", "StoeCoder/static/roles.js"], result["matched_files"][:2])
         self.assertLessEqual(len(result["matched_files"]), 12)
         self.assertLessEqual(len(result["matches"]), 16)
         self.assertIn("matched files:", result["stdout"])
         self.assertTrue(result["information_gain"])
         self.assertEqual(0, coder._stoe_workflow_state["TASK_x"]["consecutive_exploration"])
+
+    def test_natural_language_query_falls_back_to_ranked_keyword_coverage(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        query = "model selection manual generation eligibility"
+        coder._runner.files_by_query.update({
+            "model": ["docs/model.md", "StoeCoder/ui_server.py", "StoeCoder/roles.py"],
+            "selection": ["StoeCoder/roles.py"],
+            "manual": ["StoeCoder/static/roles.js", "StoeCoder/roles.py"],
+            "generation": ["StoeCoder/stoe_coder.py", "StoeCoder/roles.py"],
+            "eligibility": ["StoeCoder/roles.py"],
+        })
+        pattern = _keyword_pattern(["model", "selection", "manual", "generation", "eligibility"])
+        coder._runner.excerpts_by_query[pattern] = [
+            "StoeCoder/roles.py:44:def resolve(self, requested_roles, chooser):",
+            "StoeCoder/static/roles.js:22:manualModelSelect.appendChild(option);",
+        ]
+
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "search", "path": ".", "query": query},
+            None,
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual("keyword_fallback", result["query_mode"])
+        self.assertEqual(["model", "selection", "manual", "generation", "eligibility"], result["query_terms"])
+        self.assertEqual("StoeCoder/roles.py", result["matched_files"][0])
+        self.assertIn("keywords: model, selection, manual, generation, eligibility", result["stdout"])
+        self.assertTrue(result["information_gain"])
+
+    def test_missing_search_base_falls_back_to_repository_root(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        query = "embedding model"
+        coder._runner.files_by_query.update({
+            "embedding": ["StoeCoder/roles.py"],
+            "model": ["StoeCoder/ui_server.py", "StoeCoder/roles.py"],
+        })
+
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "search", "path": "src", "query": query},
+            None,
+        )
+
+        self.assertTrue(result["ok"])
+        self.assertEqual("src", result["base_fallback_from"])
+        self.assertEqual(".", result["base"])
+        self.assertEqual("StoeCoder/roles.py", result["matched_files"][0])
+        self.assertIn("searched repository root instead", result["stdout"])
+        self.assertTrue(result["information_gain"])
 
     def test_new_search_files_reset_stagnation_but_same_files_do_not(self):
         coder = self.runtime()
@@ -135,6 +192,7 @@ class RepositoryNavigationTests(unittest.TestCase):
         self.assertFalse(missing["information_gain"])
         self.assertEqual(0, missing["useful_exploration_count"])
         self.assertEqual(1, state["consecutive_exploration"])
+        self.assertIn("search from repository root", missing["required_next_action"])
 
         coder._runner.files_by_query["roles"] = ["StoeCoder/roles.py"]
         coder._runner.excerpts_by_query["roles"] = ["StoeCoder/roles.py:1:class RoleRegistry:"]
@@ -171,8 +229,9 @@ class RepositoryNavigationTests(unittest.TestCase):
         prompt = {"available_tools": {"search": "old search description"}}
         coder._generate_role(role="coder", prompt=prompt, action_id="TASK_x:coder:1")
         sent = coder.generated[-1]["prompt"]
-        self.assertIn("ranked matched_files", sent["available_tools"]["search"])
-        self.assertIn("bounded excerpts", sent["available_tools"]["search"])
+        self.assertIn("natural-language multi-term queries", sent["available_tools"]["search"])
+        self.assertIn("missing bases fall back to repository root", sent["available_tools"]["search"])
+        self.assertIn("matched_files/excerpts", sent["available_tools"]["search"])
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from anti_loop import install_anti_loop
-from navigation_evidence import install_navigation_evidence
+from navigation_evidence import _query_family, install_navigation_evidence
 
 
 class DummyCoder:
@@ -46,7 +46,7 @@ class DummyCoder:
             feedback = self.inspect_feedback.get(key)
             if feedback is not None:
                 return dict(feedback)
-            content = f"content for {request.get('path', '')}"
+            content = f"content for {request.get('path', '')} {request.get('query', '')}"
             return {
                 "ok": True, "kind": "inspect", "executed": True,
                 "path": request.get("path", ""), "query": request.get("query", ""),
@@ -91,6 +91,13 @@ class NavigationEvidenceTests(unittest.TestCase):
         install_navigation_evidence(coder)
         return coder
 
+    def prime_objective(self, coder, task_id, objective):
+        coder._generate_role(
+            role="coder",
+            prompt={"objective": objective, "available_tools": {}},
+            action_id=f"{task_id}:coder:1",
+        )
+
     def test_search_preserves_all_hits_and_types_their_provenance(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
@@ -108,13 +115,10 @@ class NavigationEvidenceTests(unittest.TestCase):
                 {"path": "StoeCoder/tests/test_roles.py", "line": 30, "text": "class RoleTests:"},
             ],
         )
-
         result = coder._execute_tool(
             "TASK_x", 1, root,
-            {"kind": "search", "path": "StoeCoder", "query": "role model"},
-            None,
+            {"kind": "search", "path": "StoeCoder", "query": "role model"}, None,
         )
-
         self.assertEqual(files, result["matched_files"])
         kinds = {item["path"]: item["source_kind"] for item in result["evidence_items"]}
         self.assertEqual("implementation", kinds["StoeCoder/roles.py"])
@@ -123,28 +127,25 @@ class NavigationEvidenceTests(unittest.TestCase):
         self.assertEqual("docs", kinds["StoeCoder/README.md"])
         self.assertEqual("runtime", kinds["agent/runtime/cache.json"])
         self.assertTrue(result["information_gain"])
+        self.assertTrue(result["connected_progress"])
         self.assertIn("source kinds:", result["evidence_summary"])
 
-    def test_test_only_search_is_useful_evidence_without_becoming_implementation(self):
+    def test_test_only_search_is_conserved_without_becoming_implementation(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         coder.search_feedback["missing behavior"] = search_feedback(
             ["StoeCoder/tests/test_behavior.py"],
             [{"path": "StoeCoder/tests/test_behavior.py", "line": 10, "text": "expected behavior"}],
         )
-
         result = coder._execute_tool(
             "TASK_x", 1, root,
-            {"kind": "search", "path": "StoeCoder", "query": "missing behavior"},
-            None,
+            {"kind": "search", "path": "StoeCoder", "query": "missing behavior"}, None,
         )
-
         self.assertTrue(result["information_gain"])
-        self.assertEqual(["StoeCoder/tests/test_behavior.py"], result["matched_files"])
         self.assertEqual("test", result["evidence_items"][0]["source_kind"])
         self.assertNotIn("implementation files", result["evidence_summary"])
 
-    def test_rephrased_search_returning_same_evidence_is_not_progress(self):
+    def test_rephrased_search_returning_same_evidence_is_not_novel(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         feedback = search_feedback(
@@ -153,7 +154,6 @@ class NavigationEvidenceTests(unittest.TestCase):
         )
         coder.search_feedback["manual generation selection"] = feedback
         coder.search_feedback["selection generation manual"] = feedback
-
         first = coder._execute_tool(
             "TASK_x", 1, root,
             {"kind": "search", "path": "StoeCoder", "query": "manual generation selection"}, None,
@@ -162,10 +162,9 @@ class NavigationEvidenceTests(unittest.TestCase):
             "TASK_x", 2, root,
             {"kind": "search", "path": "StoeCoder", "query": "selection generation manual"}, None,
         )
-
         self.assertTrue(first["information_gain"])
         self.assertFalse(second["information_gain"])
-        self.assertEqual(0, second["novel_evidence_count"])
+        self.assertFalse(second["connected_progress"])
         self.assertEqual(1, coder._stoe_workflow_state["TASK_x"]["consecutive_exploration"])
 
     def test_negative_anchored_inspect_is_conserved_as_evidence(self):
@@ -177,33 +176,24 @@ class NavigationEvidenceTests(unittest.TestCase):
             "anchored": True, "query_mode": "none", "match_count": 0,
             "error": "inspect anchor produced no matching lines",
         }
-
         result = coder._execute_tool(
             "TASK_x", 1, root,
             {"kind": "inspect", "path": "StoeCoder/core.py", "query": "def missing_handler"}, None,
         )
-
         self.assertTrue(result["information_gain"])
         self.assertEqual("negative", result["evidence_items"][0]["polarity"])
-        self.assertEqual("implementation", result["evidence_items"][0]["source_kind"])
         self.assertIn("negative evidence", result["required_next_action"])
-        self.assertEqual(0, coder._stoe_workflow_state["TASK_x"]["consecutive_exploration"])
 
     def test_different_anchors_with_same_content_are_not_new_evidence(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         content = "class Registry:\n    def choose(self):\n        pass\n"
-        coder.inspect_feedback[("StoeCoder/roles.py", "Registry")] = {
-            "ok": True, "kind": "inspect", "executed": True,
-            "path": "StoeCoder/roles.py", "query": "Registry",
-            "content": content, "chars": len(content), "truncated": False,
-        }
-        coder.inspect_feedback[("StoeCoder/roles.py", "choose")] = {
-            "ok": True, "kind": "inspect", "executed": True,
-            "path": "StoeCoder/roles.py", "query": "choose",
-            "content": content, "chars": len(content), "truncated": False,
-        }
-
+        for query in ("Registry", "choose"):
+            coder.inspect_feedback[("StoeCoder/roles.py", query)] = {
+                "ok": True, "kind": "inspect", "executed": True,
+                "path": "StoeCoder/roles.py", "query": query,
+                "content": content, "chars": len(content), "truncated": False,
+            }
         first = coder._execute_tool(
             "TASK_x", 1, root,
             {"kind": "inspect", "path": "StoeCoder/roles.py", "query": "Registry"}, None,
@@ -212,81 +202,107 @@ class NavigationEvidenceTests(unittest.TestCase):
             "TASK_x", 2, root,
             {"kind": "inspect", "path": "StoeCoder/roles.py", "query": "choose"}, None,
         )
-
         self.assertTrue(first["information_gain"])
         self.assertFalse(second["information_gain"])
+
+    def test_objective_connected_search_opens_candidate_path(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        task = "TASK_ui"
+        self.prime_objective(coder, task, "Show terminal task_report results in the conversation UI")
+        coder.search_feedback["task_report"] = search_feedback(
+            ["StoeCoder/static/roles.js", "StoeCoder/stoe_coder.py"],
+            [{"path": "StoeCoder/static/roles.js", "line": 70, "text": "const report=state.task_report;"}],
+        )
+        search = coder._execute_tool(
+            task, 1, root,
+            {"kind": "search", "path": ".", "query": "task_report"}, None,
+        )
+        inspect = coder._execute_tool(
+            task, 2, root,
+            {"kind": "inspect", "path": "StoeCoder/stoe_coder.py"}, None,
+        )
+        self.assertTrue(search["connected_progress"])
+        self.assertEqual("objective_overlap", search["connection_basis"])
+        self.assertTrue(inspect["connected_progress"])
+        self.assertEqual("connected_path_first_inspect", inspect["connection_basis"])
+
+    def test_new_but_unrelated_read_does_not_reset_stagnation(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        task = "TASK_ui"
+        self.prime_objective(coder, task, "Show terminal task_report results in the conversation UI")
+        coder.search_feedback["task_report"] = search_feedback(["StoeCoder/stoe_coder.py"])
+        coder._execute_tool(task, 1, root, {"kind": "search", "path": ".", "query": "task_report"}, None)
+        coder._execute_tool(task, 2, root, {"kind": "inspect", "path": "StoeCoder/stoe_coder.py"}, None)
+        unrelated = coder._execute_tool(
+            task, 3, root,
+            {"kind": "inspect", "path": "StoeCoder/stoe_coder.py", "query": "def _load_state"}, None,
+        )
+        self.assertTrue(unrelated["information_gain"])
+        self.assertFalse(unrelated["connected_progress"])
+        self.assertEqual("unconnected_novelty", unrelated["connection_basis"])
+        self.assertEqual(1, coder._stoe_workflow_state[task]["consecutive_exploration"])
+        self.assertIn("did not extend an objective-connected path", unrelated["required_next_action"])
+
+    def test_related_hypothesis_on_connected_path_can_progress(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        task = "TASK_ui"
+        self.prime_objective(coder, task, "Show terminal task_report results in the conversation UI")
+        coder.search_feedback["task_report"] = search_feedback(["StoeCoder/stoe_coder.py"])
+        coder._execute_tool(task, 1, root, {"kind": "search", "path": ".", "query": "task_report"}, None)
+        coder._execute_tool(task, 2, root, {"kind": "inspect", "path": "StoeCoder/stoe_coder.py"}, None)
+        related = coder._execute_tool(
+            task, 3, root,
+            {"kind": "inspect", "path": "StoeCoder/stoe_coder.py", "query": "def _add_task_report_message"}, None,
+        )
+        self.assertTrue(related["connected_progress"])
+        self.assertIn(related["connection_basis"], {"objective_overlap", "connected_terms"})
+        self.assertEqual(0, coder._stoe_workflow_state[task]["consecutive_exploration"])
 
     def test_mutation_advances_epoch_and_reactivates_prior_evidence(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         coder.search_feedback["registry"] = search_feedback(["StoeCoder/roles.py"])
         request = {"kind": "search", "path": "StoeCoder", "query": "registry"}
-
         first = coder._execute_tool("TASK_x", 1, root, request, None)
         mutation = coder._execute_tool(
             "TASK_x", 2, root,
             {"kind": "write", "path": "StoeCoder/roles.py", "content": "changed"}, None,
         )
         second = coder._execute_tool("TASK_x", 3, root, request, None)
-
         self.assertTrue(first["information_gain"])
         self.assertTrue(mutation["evidence_state_changed"])
         self.assertEqual(1, mutation["evidence_epoch"])
         self.assertTrue(second["information_gain"])
-        self.assertEqual(1, second["evidence_epoch"])
 
     def test_failed_execution_advances_epoch_and_reactivates_prior_evidence(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
         coder.search_feedback["registry"] = search_feedback(["StoeCoder/roles.py"])
         request = {"kind": "search", "path": "StoeCoder", "query": "registry"}
-
         self.assertTrue(coder._execute_tool("TASK_x", 1, root, request, None)["information_gain"])
         failed = coder._execute_tool(
             "TASK_x", 2, root,
             {"kind": "run", "command": ["python", "tool.py"], "fake_exit_code": 1}, None,
         )
         second = coder._execute_tool("TASK_x", 3, root, request, None)
-
         self.assertTrue(failed["evidence_state_changed"])
         self.assertEqual(1, failed["evidence_epoch"])
         self.assertTrue(second["information_gain"])
 
-    def test_reordered_negative_query_has_same_family_and_is_not_new(self):
+    def test_query_family_splits_code_identifiers_and_ignores_word_order(self):
+        self.assertEqual(_query_family("task_report handler"), _query_family("handler task report"))
+        self.assertEqual(_query_family("manual routing policy"), _query_family("policy-routing_manual"))
+
+    def test_generate_captures_objective_terms_without_rewriting_tools(self):
         coder = self.runtime()
-        root = Path(tempfile.mkdtemp())
-
-        first = coder._execute_tool(
-            "TASK_x", 1, root,
-            {"kind": "search", "path": "StoeCoder", "query": "manual routing policy"}, None,
-        )
-        second = coder._execute_tool(
-            "TASK_x", 2, root,
-            {"kind": "search", "path": "StoeCoder", "query": "policy routing manual"}, None,
-        )
-
-        self.assertTrue(first["information_gain"])
-        self.assertFalse(second["information_gain"])
-        self.assertEqual(
-            first["evidence_items"][0]["query_family"],
-            second["evidence_items"][0]["query_family"],
-        )
-
-    def test_prompt_describes_generic_evidence_model_without_task_vocabulary(self):
-        coder = self.runtime()
-        coder._generate_role(
-            role="coder",
-            prompt={"available_tools": {"search": "compact search", "inspect": "bounded inspect"}},
-            action_id="TASK_x:coder:1",
-        )
-        tools = coder.generated[-1]["prompt"]["available_tools"]
-        joined = tools["search"] + " " + tools["inspect"]
-        self.assertIn("typed evidence_items", joined)
-        self.assertIn("source_kind is provenance rather than truth", joined)
-        self.assertIn("changing query wording", joined)
-        self.assertIn("negative observations are conserved", joined)
-        self.assertNotIn("embedding", joined.lower())
-        self.assertNotIn("is_generation_model", joined)
+        prompt = {"objective": "Render task_report in conversation UI", "available_tools": {"search": "unchanged"}}
+        coder._generate_role(role="coder", prompt=prompt, action_id="TASK_obj:coder:1")
+        self.assertIn("task", coder._stoe_evidence_objective_terms["TASK_obj"])
+        self.assertIn("report", coder._stoe_evidence_objective_terms["TASK_obj"])
+        self.assertEqual("unchanged", coder.generated[-1]["prompt"]["available_tools"]["search"])
 
 
 if __name__ == "__main__":

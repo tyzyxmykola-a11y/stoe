@@ -48,10 +48,10 @@ class WorkflowGuardTests(unittest.TestCase):
         return coder
 
     @staticmethod
-    def write(coder, root, step=1, content="new\n"):
+    def write(coder, root, step=1, content="new\n", path="README.md"):
         return coder._execute_tool(
             "TASK_x", step, root,
-            {"kind": "write", "path": "README.md", "content": content},
+            {"kind": "write", "path": path, "content": content},
             None,
         )
 
@@ -92,6 +92,34 @@ class WorkflowGuardTests(unittest.TestCase):
         diff = self.diff(coder, root, step=4)
         self.assertEqual("diff", diff["workflow_run_kind"])
         self.assertEqual("diff_inspected", diff["stage_guard_after"])
+
+    def test_stoecoder_change_requires_exact_unittest_command(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        target = root / "StoeCoder" / "README.md"
+        target.parent.mkdir(parents=True)
+        target.write_text("old\n", encoding="utf-8", newline="\n")
+        self.write(coder, root, path="StoeCoder/README.md")
+
+        wrong = coder._execute_tool(
+            "TASK_x", 2, root,
+            {"kind": "run", "command": ["python", "-m", "pytest", "tests/", "-v"], "cwd": "."},
+            None,
+        )
+        self.assertFalse(wrong["ok"])
+        self.assertFalse(wrong["executed"])
+        self.assertIn("expected exact deterministic test command", wrong["error"])
+        self.assertEqual(1, len(coder.calls))
+
+        exact_command = ["python", "-m", "unittest", "discover", "-s", "StoeCoder/tests", "-q"]
+        exact = coder._execute_tool(
+            "TASK_x", 3, root,
+            {"kind": "run", "command": exact_command, "cwd": "."},
+            None,
+        )
+        self.assertTrue(exact["ok"])
+        self.assertEqual("tests", exact["workflow_run_kind"])
+        self.assertEqual("tests_passed", exact["stage_guard_after"])
 
     def test_after_tests_only_final_diff_run_is_allowed(self):
         coder = self.runtime()

@@ -73,8 +73,9 @@ def _strong_code_anchor(query: str) -> re.Pattern[str] | None:
 
     Declaration-shaped anchors should never degrade into weak keyword matches
     such as matching every ``def`` line when the requested function does not
-    exist. Plain identifiers remain useful as partial navigation anchors and are
-    handled by the normal exact/keyword path below.
+    exist. Plain identifiers are handled separately so an exact identifier can
+    be reported as a symbol while a shorter identifier can still navigate to a
+    longer related name.
     """
 
     stripped = query.strip()
@@ -90,12 +91,19 @@ def _strong_code_anchor(query: str) -> re.Pattern[str] | None:
 
 
 def _match_lines(lines: list[str], query: str) -> tuple[str, list[int]]:
-    """Return strong declaration matches, exact regex matches, or confident keyword matches."""
+    """Return strong declarations, exact identifiers, partial matches, or confident keywords."""
 
     strong = _strong_code_anchor(query)
     if strong is not None:
         matches = [index for index, line in enumerate(lines) if strong.search(line)][:_MAX_MATCH_LINES]
         return ("symbol", matches) if matches else ("none", [])
+
+    stripped = query.strip()
+    if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", stripped):
+        identifier = re.compile(rf"\b{re.escape(stripped)}\b")
+        symbol_matches = [index for index, line in enumerate(lines) if identifier.search(line)][:_MAX_MATCH_LINES]
+        if symbol_matches:
+            return "symbol", symbol_matches
 
     exact: list[int] = []
     try:
@@ -234,7 +242,7 @@ def install_inspection_navigation(coder: Any) -> None:
             prompt = dict(prompt)
             tools = dict(prompt.get("available_tools") or {})
             tools["inspect"] = (
-                "read one repository-relative file; for a large/truncated file, set optional query to an identifier or phrase to receive bounded matching line windows from anywhere in that file; declaration-shaped anchors such as 'def name' or 'class Name' require that declaration to exist and do not fall back to generic keyword matches; do not repeat the same anchor"
+                "read one repository-relative file; for a large/truncated file, set optional query to an identifier or phrase to receive bounded matching line windows from anywhere in that file; declaration-shaped anchors such as 'def name' or 'class Name' require the requested symbol to exist as that declaration and do not fall back to generic keyword matches; plain identifiers may still match longer related identifiers for navigation; do not repeat the same anchor"
             )
             tools["search"] = (
                 str(tools.get("search") or "repository search")

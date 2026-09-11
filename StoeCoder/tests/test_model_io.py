@@ -25,12 +25,20 @@ class DummyOllama:
             "options": {"seed": seed, "num_predict": output_tokens},
         }
         raw = self._json("/api/generate", payload, timeout=900)
-        return {}, {"action_id": action_id, "model": payload["model"], "raw": raw}
+        return {"kind": "finish", "summary": "done"}, {
+            "action_id": action_id,
+            "model": payload["model"],
+            "raw": raw,
+            "prompt_tokens": 12,
+            "output_tokens": 4,
+        }
 
 
 class DummyCoder:
     def __init__(self, root):
-        self.artifact_root = Path(root)
+        root = Path(root)
+        self.artifact_root = root / "artifacts"
+        self.events_path = root / "events.jsonl"
         self.ollama = DummyOllama()
 
 
@@ -45,7 +53,7 @@ class ModelIoTests(unittest.TestCase):
     def artifact_dir(self, action_id):
         return self.coder.artifact_root / action_id.replace(":", "_")
 
-    def test_capture_persists_exact_generate_payload_without_touching_action_dir(self):
+    def test_capture_persists_exact_generate_payload_and_jsonl_record(self):
         install_model_io_capture(self.coder)
         action_id = "TASK_x:coder:1"
         prompt = {"objective": "change README", "recent_tool_feedback": []}
@@ -66,6 +74,16 @@ class ModelIoTests(unittest.TestCase):
         self.assertEqual(json.loads(saved["payload"]["prompt"]), prompt)
         self.assertFalse(self.artifact_dir(action_id).exists())
 
+        log_path = self.coder.events_path.with_name("model_io.jsonl")
+        records = [json.loads(line) for line in log_path.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(len(records), 1)
+        self.assertEqual(records[0]["action_id"], action_id)
+        self.assertEqual(records[0]["role"], "coder")
+        self.assertEqual(records[0]["model"], "qwen3-coder:latest")
+        self.assertEqual(records[0]["request"]["payload"], self.coder.ollama.seen_payload)
+        self.assertEqual(records[0]["parsed_response"]["kind"], "finish")
+        self.assertEqual(records[0]["metrics"]["output_tokens"], 4)
+
     def test_snapshot_combines_sidecar_and_normal_action_artifacts(self):
         action_id = "TASK_x:coder:2"
         sidecar = self.coder.artifact_root / "_model_io" / "TASK_x_coder_2"
@@ -85,11 +103,14 @@ class ModelIoTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "invalid model action id"):
             model_io_snapshot(self.coder, "../../secret")
 
-    def test_ui_injection_and_local_model_io_endpoint(self):
+    def test_ui_injection_local_endpoint_and_manual_clear(self):
         action_id = "TASK_x:coder:3"
         sidecar = self.coder.artifact_root / "_model_io" / "TASK_x_coder_3"
         sidecar.mkdir(parents=True)
         (sidecar / "request.json").write_text(json.dumps({"payload": {"prompt": "{}"}}), encoding="utf-8")
+        self.coder.events_path.write_text('{"event":1}\n', encoding="utf-8")
+        model_log = self.coder.events_path.with_name("model_io.jsonl")
+        model_log.write_text('{"model":1}\n', encoding="utf-8")
 
         app = Flask(__name__)
 
@@ -101,11 +122,19 @@ class ModelIoTests(unittest.TestCase):
         client = app.test_client()
         page = client.get("/")
         self.assertEqual(page.status_code, 200)
-        self.assertIn('/static/model_io.js', page.get_data(as_text=True))
+        self.assertIn('/static/model_io.js?v=', page.get_data(as_text=True))
 
         response = client.get("/api/coder/model-io/" + action_id)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json()["action_id"], action_id)
+
+        cleared = client.post("/api/coder/logs/clear", json={})
+        self.assertEqual(cleared.status_code, 200)
+        self.assertTrue(cleared.get_json()["ok"])
+        self.assertTrue(cleared.get_json()["artifacts_preserved"])
+        self.assertEqual(self.coder.events_path.read_text(encoding="utf-8"), "")
+        self.assertEqual(model_log.read_text(encoding="utf-8"), "")
+        self.assertTrue(sidecar.exists())
 
 
 if __name__ == "__main__":

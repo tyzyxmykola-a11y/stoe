@@ -14,6 +14,7 @@ from types import MethodType
 from typing import Any
 
 from anti_loop import _capture_candidate_evidence
+from workflow_guard import required_test_command
 
 _MUTATIONS = {"write", "delete", "move"}
 
@@ -97,7 +98,7 @@ def workflow_state(history: list[dict[str, Any]]) -> dict[str, Any]:
     elif not successful_tests:
         stage = "candidate_changed"
         required = ["run relevant deterministic tests", "run git diff for the final candidate", "finish"]
-        command = None
+        command = required_test_command(changed_path)
         inspect_allowed = False
     elif not successful_diff:
         stage = "tests_passed"
@@ -128,7 +129,7 @@ def compact_observation(history: list[dict[str, Any]]) -> list[dict[str, Any]]:
     recent = history[-6:]
     keep_inspect_content_index: int | None = None
 
-    if not state["candidate_changed"]:
+    if not state["candidate_changed"] or state["inspect_same_file_allowed"]:
         for index in range(len(recent) - 1, -1, -1):
             item = recent[index]
             feedback = item.get("feedback") or {}
@@ -185,7 +186,7 @@ def _runtime_state(coder: Any, task_id: str | None, fallback: dict[str, Any]) ->
     elif not tests_run:
         stage = "candidate_changed"
         required = ["run relevant deterministic tests", "run git diff for the final candidate", "finish"]
-        command = None
+        command = required_test_command(changed_path)
         inspect_allowed = False
     elif not diff_inspected:
         stage = "tests_passed"
@@ -223,12 +224,14 @@ def _instruction(state: dict[str, Any]) -> str:
     if stage == "run_failed":
         return (
             "A trusted run failed after the candidate changed. Use the supplied failure output to diagnose it. Inspect source again only when that failure creates genuinely new evidence that cannot be resolved from the output; otherwise make the smallest corrective mutation and rerun the failed check. "
-            "Do not perform confirmation-only reads or no-op rewrites."
+            "If you inspect source because of the failure, use the supplied full inspect content when editing; never replace a whole file with only an excerpt. Do not perform confirmation-only reads or no-op rewrites."
         )
     if stage == "candidate_changed":
+        command = state.get("required_next_command")
+        exact = f" Use exactly {command!r}." if command else ""
         return (
             "The candidate bytes changed successfully. Do not re-inspect or rewrite the just-written file merely to confirm persistence. "
-            "Choose run now and execute the relevant deterministic tests. A write counts as progress only when candidate bytes actually change."
+            f"Choose run now and execute the relevant deterministic tests.{exact} A write counts as progress only when candidate bytes actually change."
         )
     if stage == "tests_passed":
         command = state.get("required_next_command") or (["git", "diff", "--", path] if path else ["git", "diff"])
@@ -268,8 +271,8 @@ def install_workflow_controls(coder: Any) -> None:
             prompt["workflow_state"] = state
             tools = dict(prompt.get("available_tools") or {})
             tools["run"] = (
-                "execute argv list in candidate workspace; use this for deterministic tests and for final git diff, "
-                "for example ['git','diff','--','StoeCoder/README.md']; do not use inspect as a substitute for diff"
+                "execute argv list in candidate workspace; when workflow_state.required_next_command is non-null, use that argv exactly; "
+                "otherwise use run for deterministic tests and for final git diff; do not use inspect as a substitute for diff"
             )
             prompt["available_tools"] = tools
             prompt["instruction"] = _instruction(state)

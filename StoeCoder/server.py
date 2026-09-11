@@ -6,8 +6,10 @@ reusing its current UI/API surface from the StoeCoder project directory.
 
 from ui_server import app, coder
 from event_logging import install_event_logging
+from anti_loop import install_anti_loop
 
 install_event_logging(coder)
+install_anti_loop(coder)
 
 
 if __name__ == "__main__":

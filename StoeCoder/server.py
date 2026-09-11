@@ -7,11 +7,13 @@ reusing its current UI/API surface from the StoeCoder project directory.
 from ui_server import app, coder, _coder_local_request
 from event_logging import install_event_logging
 from anti_loop import install_anti_loop
+from workflow_controls import install_workflow_controls
 from diagnostic_logging import install_diagnostic_logging
 from model_io import install_model_io_capture, install_model_io_ui
 
 install_event_logging(coder)
 install_anti_loop(coder)
+install_workflow_controls(coder)
 install_diagnostic_logging(coder)
 install_model_io_capture(coder)
 install_model_io_ui(app, coder, _coder_local_request)

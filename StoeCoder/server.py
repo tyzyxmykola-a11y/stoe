@@ -7,7 +7,7 @@ reusing its current UI/API surface from the StoeCoder project directory.
 from ui_server import app, coder, _coder_local_request
 from event_logging import install_event_logging
 from role_config_isolation import install_role_config_isolation
-from repository_navigation import install_repository_navigation, install_information_gain_tracking
+from repository_navigation import install_repository_navigation
 from inspection_navigation import install_inspection_navigation
 from anti_loop import install_anti_loop
 from navigation_evidence import install_navigation_evidence
@@ -23,7 +23,6 @@ install_repository_navigation(coder)
 install_inspection_navigation(coder)
 install_anti_loop(coder)
 install_navigation_evidence(coder)
-install_information_gain_tracking(coder)
 install_verification_policy(coder)
 install_workflow_guard(coder)
 install_workflow_controls(coder)

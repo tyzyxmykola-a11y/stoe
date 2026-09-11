@@ -1,24 +1,22 @@
-"""Generic typed evidence model for StoeCoder repository navigation.
+"""Generic typed evidence graph for StoeCoder repository navigation.
 
-The worker should make progress by learning new facts about the candidate, not by
-changing query wording.  This adapter normalizes trusted inspect/search results
-into typed evidence and lets the existing anti-loop counter measure stagnation
-against that evidence set.
+Trusted inspect/search results are conserved as typed evidence. Novel evidence is
+not automatically progress: the anti-loop stagnation counter is reset only when
+new evidence is connected to the operator objective or extends an already
+connected evidence path. This keeps exploration task-agnostic while preventing a
+worker from being rewarded for walking deeper into an unrelated rabbit hole.
 
-Evidence is deliberately task-agnostic.  It records provenance (implementation,
-test, config, docs, runtime, other), polarity (positive/negative), path/span and a
-stable observation digest.  It does not encode objective-specific symbol names or
-special-case a particular failure trajectory.
-
-Install after anti-loop.  The adapter owns information-gain accounting for the
-standalone runtime; repository_navigation.install_information_gain_tracking is
-kept only as a compatibility helper for its focused unit tests.
+Evidence records provenance (implementation, test, config, docs, runtime, other),
+polarity (positive/negative), path/span, stable identity, and query family. A
+repository mutation or failed execution advances the evidence epoch, making old
+observations legitimately discoverable again in the changed state.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 from types import MethodType
 from typing import Any
@@ -27,28 +25,42 @@ from repository_navigation import (
     _CONFIG_EXTENSIONS,
     _DOC_EXTENSIONS,
     _LOW_VALUE_PARTS,
+    _QUERY_STOPWORDS,
     _SOURCE_EXTENSIONS,
-    _query_terms,
 )
 
 _READ_ONLY = {"inspect", "search"}
 _MUTATIONS = {"write", "delete", "move"}
 _TEST_PARTS = {"test", "tests", "testing", "__tests__"}
 _SOURCE_KINDS = ("implementation", "test", "config", "docs", "runtime", "other")
+_MAX_SEMANTIC_TERMS = 64
 
 
 def _normalized_text(value: Any) -> str:
     return " ".join(str(value or "").strip().lower().split())
 
 
-def _query_family(value: Any) -> str:
-    """Canonicalize semantically equivalent word-order variations cheaply."""
+def _semantic_terms(value: Any) -> set[str]:
+    """Extract cheap task-agnostic semantic terms, including code identifiers."""
 
-    text = _normalized_text(value)
-    terms = _query_terms(text)
+    text = str(value or "")
+    text = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", text)
+    text = re.sub(r"[_\-./\\]+", " ", text).lower()
+    terms: set[str] = set()
+    for token in re.findall(r"[a-z0-9]+", text):
+        if len(token) < 3 or token in _QUERY_STOPWORDS:
+            continue
+        terms.add(token)
+        if len(terms) >= _MAX_SEMANTIC_TERMS:
+            break
+    return terms
+
+
+def _query_family(value: Any) -> str:
+    terms = _semantic_terms(value)
     if terms:
-        return "|".join(sorted(set(terms)))
-    return text
+        return "|".join(sorted(terms))
+    return _normalized_text(value)
 
 
 def _source_kind(path: Any) -> str:
@@ -56,7 +68,6 @@ def _source_kind(path: Any) -> str:
     parts = {part.lower() for part in candidate.parts}
     name = candidate.name.lower()
     suffix = candidate.suffix.lower()
-
     if (
         parts & _TEST_PARTS
         or name.startswith("test_")
@@ -100,9 +111,7 @@ def _span_from_feedback(feedback: dict[str, Any]) -> list[int] | None:
     if not isinstance(values, list):
         return None
     lines = [int(value) for value in values if isinstance(value, int) and value > 0]
-    if not lines:
-        return None
-    return [min(lines), max(lines)]
+    return [min(lines), max(lines)] if lines else None
 
 
 def _inspect_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list[dict[str, Any]]:
@@ -110,7 +119,6 @@ def _inspect_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list
     source_kind = _source_kind(path)
     query_family = _query_family(feedback.get("query") or request.get("query"))
     content = feedback.get("content")
-
     if feedback.get("ok") is not False and isinstance(content, str) and content:
         digest = _sha(content)
         item = {
@@ -123,19 +131,12 @@ def _inspect_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list
             "span": _span_from_feedback(feedback),
         }
         item["id"] = _evidence_id(
-            observation="inspect",
-            source_kind=source_kind,
-            path=path,
-            polarity="positive",
-            digest=digest,
+            observation="inspect", source_kind=source_kind, path=path,
+            polarity="positive", digest=digest,
         )
         return [item]
-
     if feedback.get("executed", True) is False:
         return []
-
-    # A trusted failed read is still useful once: it conserves negative evidence
-    # about this path/query in the current repository state.
     reason = _normalized_text(feedback.get("error") or "no matching evidence")
     digest = _sha(f"{query_family}|{reason}")
     item = {
@@ -148,11 +149,8 @@ def _inspect_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list
         "span": None,
     }
     item["id"] = _evidence_id(
-        observation="inspect",
-        source_kind=source_kind,
-        path=path,
-        polarity="negative",
-        digest=digest,
+        observation="inspect", source_kind=source_kind, path=path,
+        polarity="negative", digest=digest,
     )
     return [item]
 
@@ -164,7 +162,6 @@ def _search_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list[
     files = [str(path) for path in files] if isinstance(files, list) else []
     matches = feedback.get("matches")
     matches = [item for item in matches if isinstance(item, dict)] if isinstance(matches, list) else []
-
     if not files:
         if feedback.get("executed", True) is False:
             return []
@@ -179,19 +176,16 @@ def _search_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list[
             "span": None,
         }
         item["id"] = _evidence_id(
-            observation="search",
-            source_kind="other",
-            path=base,
-            polarity="negative",
-            digest=digest,
+            observation="search", source_kind="other", path=base,
+            polarity="negative", digest=digest,
         )
         return [item]
 
     by_path: dict[str, list[dict[str, Any]]] = {}
-    for item in matches:
-        path = str(item.get("path") or "")
+    for match in matches:
+        path = str(match.get("path") or "")
         if path:
-            by_path.setdefault(path, []).append(item)
+            by_path.setdefault(path, []).append(match)
 
     evidence: list[dict[str, Any]] = []
     for path in files:
@@ -199,12 +193,9 @@ def _search_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list[
         excerpt_material = "\n".join(
             f"{item.get('line', '')}:{_normalized_text(item.get('text'))}" for item in excerpts
         )
-        # Query wording is intentionally excluded from positive search identity.
-        # Rephrasing a search that exposes the same file/excerpt is not new evidence.
         digest = _sha(excerpt_material or path.lower())
         source_kind = _source_kind(path)
         span_values = [int(item["line"]) for item in excerpts if isinstance(item.get("line"), int)]
-        span = [min(span_values), max(span_values)] if span_values else None
         item = {
             "observation": "search",
             "source_kind": source_kind,
@@ -212,14 +203,11 @@ def _search_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> list[
             "query_family": query_family,
             "polarity": "positive",
             "digest": digest,
-            "span": span,
+            "span": [min(span_values), max(span_values)] if span_values else None,
         }
         item["id"] = _evidence_id(
-            observation="search",
-            source_kind=source_kind,
-            path=path,
-            polarity="positive",
-            digest=digest,
+            observation="search", source_kind=source_kind, path=path,
+            polarity="positive", digest=digest,
         )
         evidence.append(item)
     return evidence
@@ -235,25 +223,28 @@ def _normalize_evidence(request: dict[str, Any], feedback: dict[str, Any]) -> li
 
 
 def _evidence_summary(items: list[dict[str, Any]]) -> str:
-    source_counts = {kind: 0 for kind in _SOURCE_KINDS}
+    counts = {kind: 0 for kind in _SOURCE_KINDS}
     positive = negative = 0
     for item in items:
-        source_counts[str(item.get("source_kind") or "other")] = source_counts.get(
-            str(item.get("source_kind") or "other"), 0
-        ) + 1
+        kind = str(item.get("source_kind") or "other")
+        counts[kind] = counts.get(kind, 0) + 1
         if item.get("polarity") == "negative":
             negative += 1
         else:
             positive += 1
-    kinds = ", ".join(f"{kind}={source_counts.get(kind, 0)}" for kind in _SOURCE_KINDS)
-    return (
-        f"typed evidence: {len(items)}; source kinds: {kinds}; "
-        f"polarity: positive={positive}, negative={negative}"
-    )
+    kinds = ", ".join(f"{kind}={counts.get(kind, 0)}" for kind in _SOURCE_KINDS)
+    return f"typed evidence: {len(items)}; source kinds: {kinds}; polarity: positive={positive}, negative={negative}"
+
+
+def _task_id_from_generate(kwargs: dict[str, Any]) -> str | None:
+    action_id = str(kwargs.get("action_id") or "")
+    if not action_id:
+        return None
+    return action_id.split(":", 1)[0] or None
 
 
 def install_navigation_evidence(coder: Any) -> None:
-    """Normalize read observations and make novelty the progress criterion."""
+    """Conserve all evidence while letting only connected novelty count as progress."""
 
     if getattr(coder, "_stoe_navigation_evidence_installed", False):
         return
@@ -262,11 +253,42 @@ def install_navigation_evidence(coder: Any) -> None:
     original_generate = coder._generate_role
     seen_by_task: dict[str, set[str]] = {}
     epoch_by_task: dict[str, int] = {}
+    objective_terms_by_task: dict[str, set[str]] = {}
+    connected_paths_by_task: dict[str, set[str]] = {}
+    connected_terms_by_task: dict[str, set[str]] = {}
+    expanded_paths_by_task: dict[str, set[str]] = {}
 
-    def advance_epoch(task_id: str) -> int:
+    def reset_graph(task_id: str) -> int:
         seen_by_task.setdefault(task_id, set()).clear()
+        connected_paths_by_task.setdefault(task_id, set()).clear()
+        connected_terms_by_task.setdefault(task_id, set()).clear()
+        expanded_paths_by_task.setdefault(task_id, set()).clear()
         epoch_by_task[task_id] = int(epoch_by_task.get(task_id, 0)) + 1
         return epoch_by_task[task_id]
+
+    def connection_for(task_id: str, request: dict[str, Any], items: list[dict[str, Any]]) -> tuple[bool, str]:
+        objective_terms = objective_terms_by_task.get(task_id, set())
+        if not objective_terms:
+            return bool(items), "no_objective_context"
+
+        kind = str(request.get("kind") or "")
+        path = str(request.get("path") or "").replace("\\", "/")
+        query_terms = _semantic_terms(request.get("query"))
+        path_terms = _semantic_terms(path)
+        action_terms = query_terms or path_terms
+        connected_terms = connected_terms_by_task.setdefault(task_id, set())
+        connected_paths = connected_paths_by_task.setdefault(task_id, set())
+        expanded_paths = expanded_paths_by_task.setdefault(task_id, set())
+
+        if action_terms & objective_terms:
+            return True, "objective_overlap"
+        if action_terms & connected_terms:
+            return True, "connected_terms"
+        if kind == "inspect" and path in connected_paths and path not in expanded_paths:
+            return True, "connected_path_first_inspect"
+        if kind == "search" and any(str(item.get("path") or "") in connected_paths for item in items):
+            return True, "connected_path_search"
+        return False, "unconnected_novelty"
 
     def evidence_execute_tool(self, task_id: str, step: int, worktree, request: dict[str, Any], allowed_paths):
         feedback = original_execute_tool(task_id, step, worktree, request, allowed_paths)
@@ -282,7 +304,7 @@ def install_navigation_evidence(coder: Any) -> None:
                 changed = changed and bool(feedback.get("candidate_changed"))
             enriched = dict(feedback)
             if changed:
-                enriched["evidence_epoch"] = advance_epoch(task_id)
+                enriched["evidence_epoch"] = reset_graph(task_id)
                 enriched["evidence_state_changed"] = True
             else:
                 enriched["evidence_epoch"] = epoch_by_task[task_id]
@@ -300,7 +322,7 @@ def install_navigation_evidence(coder: Any) -> None:
             )
             enriched = dict(feedback)
             if failed:
-                enriched["evidence_epoch"] = advance_epoch(task_id)
+                enriched["evidence_epoch"] = reset_graph(task_id)
                 enriched["evidence_state_changed"] = True
             else:
                 enriched["evidence_epoch"] = epoch_by_task[task_id]
@@ -310,66 +332,71 @@ def install_navigation_evidence(coder: Any) -> None:
             return feedback
 
         items = _normalize_evidence(request, feedback)
-        summary = _evidence_summary(items)
         enriched = dict(feedback)
         enriched["evidence_items"] = items
-        enriched["evidence_summary"] = summary
         enriched["evidence_epoch"] = epoch_by_task[task_id]
 
-        if kind == "search":
-            original_stdout = str(feedback.get("stdout") or "").strip()
-            enriched["stdout"] = (summary + ("\n" + original_stdout if original_stdout else ""))[:4_000]
-        elif feedback.get("ok") is False and items:
-            enriched["required_next_action"] = (
-                "preserve this negative evidence for the current repository state; do not repeat the same read unchanged. "
-                "Choose an action likely to expose different evidence or make repository progress."
-            )
-
-        states = getattr(self, "_stoe_workflow_state", None)
-        state = states.get(task_id) if isinstance(states, dict) else None
         seen = seen_by_task.setdefault(task_id, set())
         ids = {str(item.get("id") or "") for item in items if str(item.get("id") or "")}
         novel = ids - seen
-
         if novel:
             seen.update(novel)
-            if isinstance(state, dict):
-                state["consecutive_exploration"] = 0
-                state["exploration_rejections"] = 0
-                state["useful_exploration_count"] = int(state.get("useful_exploration_count") or 0) + 1
-            enriched["information_gain"] = True
-            enriched["novel_evidence_count"] = len(novel)
-            enriched["stagnant_exploration_count"] = 0
-        else:
-            if isinstance(state, dict):
-                state.setdefault("useful_exploration_count", 0)
-                stagnant = int(state.get("consecutive_exploration") or 0)
-                useful = int(state.get("useful_exploration_count") or 0)
-            else:
-                stagnant = 0
-                useful = 0
-            enriched["information_gain"] = False
-            enriched["novel_evidence_count"] = 0
-            enriched["stagnant_exploration_count"] = stagnant
-            enriched["useful_exploration_count"] = useful
 
-        if isinstance(state, dict):
-            enriched["useful_exploration_count"] = int(state.get("useful_exploration_count") or 0)
+        connected, basis = connection_for(task_id, request, items)
+        connected_novel = novel if connected else set()
+        request_terms = _semantic_terms(request.get("query")) or _semantic_terms(request.get("path"))
+        if connected_novel:
+            connected_terms_by_task.setdefault(task_id, set()).update(request_terms)
+            for item in items:
+                path = str(item.get("path") or "")
+                if path and item.get("polarity") == "positive":
+                    connected_paths_by_task.setdefault(task_id, set()).add(path)
+            if kind == "inspect":
+                path = str(request.get("path") or "").replace("\\", "/")
+                if path:
+                    expanded_paths_by_task.setdefault(task_id, set()).add(path)
+
+        states = getattr(self, "_stoe_workflow_state", None)
+        state = states.get(task_id) if isinstance(states, dict) else None
+        if connected_novel and isinstance(state, dict):
+            state["consecutive_exploration"] = 0
+            state["exploration_rejections"] = 0
+            state["useful_exploration_count"] = int(state.get("useful_exploration_count") or 0) + 1
+        elif isinstance(state, dict):
+            state.setdefault("useful_exploration_count", 0)
+
+        enriched["information_gain"] = bool(novel)
+        enriched["novel_evidence_count"] = len(novel)
+        enriched["connected_progress"] = bool(connected_novel)
+        enriched["connected_novel_evidence_count"] = len(connected_novel)
+        enriched["connection_basis"] = basis
         enriched["known_evidence_count"] = len(seen)
+        enriched["objective_term_count"] = len(objective_terms_by_task.get(task_id, set()))
+        enriched["stagnant_exploration_count"] = int(state.get("consecutive_exploration") or 0) if isinstance(state, dict) else 0
+        enriched["useful_exploration_count"] = int(state.get("useful_exploration_count") or 0) if isinstance(state, dict) else 0
+
+        summary = _evidence_summary(items)
+        progress = f"connected progress: {'yes' if connected_novel else 'no'} ({basis}); novel evidence={len(novel)}"
+        enriched["evidence_summary"] = summary + "; " + progress
+        if kind == "search":
+            original_stdout = str(feedback.get("stdout") or "").strip()
+            enriched["stdout"] = (enriched["evidence_summary"] + ("\n" + original_stdout if original_stdout else ""))[:4_000]
+        elif feedback.get("ok") is False and items:
+            enriched["required_next_action"] = (
+                "preserve this negative evidence for the current repository state; do not repeat the same read unchanged. "
+                "Choose an action likely to expose different evidence connected to the objective or make repository progress."
+            )
+        elif novel and not connected_novel:
+            enriched["required_next_action"] = (
+                "this observation is conserved as new evidence but did not extend an objective-connected path; return to connected evidence or make repository progress instead of deepening an unrelated branch"
+            )
         return enriched
 
     def evidence_generate(self, *, role: str, prompt: dict[str, Any], **kwargs):
         if role == "coder" and isinstance(prompt, dict):
-            prompt = dict(prompt)
-            tools = dict(prompt.get("available_tools") or {})
-            guidance = (
-                "trusted read feedback is normalized into typed evidence_items with source_kind, polarity, path/span and stable identity; "
-                "source_kind is provenance rather than truth, so implementation/test/config/docs/runtime evidence may play different roles; "
-                "changing query wording without exposing a new evidence set is not progress; negative observations are conserved and may be revisited after a repository mutation or failed execution changes the evidence state"
-            )
-            tools["search"] = str(tools.get("search") or "repository search") + "; " + guidance
-            tools["inspect"] = str(tools.get("inspect") or "file inspection") + "; " + guidance
-            prompt["available_tools"] = tools
+            task_id = _task_id_from_generate(kwargs)
+            if task_id:
+                objective_terms_by_task[task_id] = _semantic_terms(prompt.get("objective"))
         return original_generate(role=role, prompt=prompt, **kwargs)
 
     coder._execute_tool = MethodType(evidence_execute_tool, coder)
@@ -377,3 +404,5 @@ def install_navigation_evidence(coder: Any) -> None:
     coder._stoe_navigation_evidence_installed = True
     coder._stoe_evidence_seen = seen_by_task
     coder._stoe_evidence_epoch = epoch_by_task
+    coder._stoe_evidence_objective_terms = objective_terms_by_task
+    coder._stoe_evidence_connected_paths = connected_paths_by_task

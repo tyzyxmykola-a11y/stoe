@@ -1,10 +1,12 @@
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 from flask import Flask
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from model_io import install_model_io_capture, install_model_io_ui, model_io_snapshot
 
 

@@ -30,7 +30,7 @@ def _clip(value: Any, limit: int = 180) -> str:
 def _signature(request: dict[str, Any]) -> tuple[str, str, str]:
     kind = str(request.get("kind") or "")
     path = str(request.get("path") or ".")
-    query = str(request.get("query") or "") if kind == "search" else ""
+    query = str(request.get("query") or "") if kind in {"inspect", "search"} else ""
     return kind, path, query
 
 
@@ -39,6 +39,8 @@ def _describe(request: dict[str, Any]) -> str:
     path = _clip(request.get("path") or ".")
     if kind == "search":
         return f'search "{_clip(request.get("query"), 120)}" in {path}'
+    if kind == "inspect" and request.get("query"):
+        return f'inspect {path} around "{_clip(request.get("query"), 120)}"'
     return f"{kind} {path}"
 
 
@@ -215,7 +217,7 @@ def install_anti_loop(coder: Any) -> None:
                 self._event(
                     "Guard", condition, level="warning", task_id=task_id, step=step, kind=kind,
                     path=_clip(request.get("path") or "."),
-                    query=_clip(request.get("query"), 120) if kind == "search" else None,
+                    query=_clip(request.get("query"), 120) if kind in {"inspect", "search"} else None,
                     required_next_action="choose a different action; prefer write, run, or finish",
                 )
                 if state["duplicate_rejections"] >= _MAX_REJECTED_REPEATS:

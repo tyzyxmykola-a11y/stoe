@@ -7,7 +7,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from anti_loop import install_anti_loop
 from navigation_evidence import install_navigation_evidence
-from repository_navigation import install_information_gain_tracking
 
 
 class DummyCoder:
@@ -32,10 +31,13 @@ class DummyCoder:
             query = request.get("query", "")
             feedback = self.search_feedback.get(query)
             if feedback is not None:
-                return dict(feedback)
+                result = dict(feedback)
+                result.setdefault("query", query)
+                return result
             return {
                 "ok": True, "kind": "search", "executed": True,
                 "query": query, "query_mode": "exact", "query_terms": [query],
+                "base": request.get("path", "."),
                 "matched_file_count": 0, "matched_files": [], "matches": [],
                 "stdout": "", "exit_code": 1, "timed_out": False, "cancelled": False,
             }
@@ -44,7 +46,7 @@ class DummyCoder:
             feedback = self.inspect_feedback.get(key)
             if feedback is not None:
                 return dict(feedback)
-            content = f"content for {request.get('path', '')} {request.get('query', '')}"
+            content = f"content for {request.get('path', '')}"
             return {
                 "ok": True, "kind": "inspect", "executed": True,
                 "path": request.get("path", ""), "query": request.get("query", ""),
@@ -70,7 +72,8 @@ def search_feedback(files, matches=None):
         "kind": "search",
         "executed": True,
         "query_mode": "exact",
-        "query_terms": ["symbol"],
+        "query_terms": ["term"],
+        "base": "StoeCoder",
         "matched_file_count": len(files),
         "matched_files": list(files),
         "matches": list(matches or []),
@@ -82,142 +85,208 @@ def search_feedback(files, matches=None):
 
 
 class NavigationEvidenceTests(unittest.TestCase):
-    def runtime(self, *, guarded=False, information_gain=False):
+    def runtime(self):
         coder = DummyCoder()
-        if guarded:
-            install_anti_loop(coder)
+        install_anti_loop(coder)
         install_navigation_evidence(coder)
-        if information_gain:
-            install_information_gain_tracking(coder)
         return coder
 
-    def test_test_only_hits_are_not_presented_as_implementation_evidence(self):
-        coder = self.runtime(guarded=True, information_gain=True)
-        root = Path(tempfile.mkdtemp())
-        coder.search_feedback["is_generation_model"] = search_feedback(
-            ["StoeCoder/tests/test_inspection_navigation.py"],
-            [{"path": "StoeCoder/tests/test_inspection_navigation.py", "line": 100, "text": "def is_generation_model"}],
-        )
-
-        result = coder._execute_tool(
-            "TASK_x", 1, root,
-            {"kind": "search", "path": "StoeCoder", "query": "is_generation_model"},
-            None,
-        )
-
-        self.assertTrue(result["test_only"])
-        self.assertFalse(result["source_evidence"])
-        self.assertEqual([], result["matched_files"])
-        self.assertEqual(["StoeCoder/tests/test_inspection_navigation.py"], result["test_files"])
-        self.assertEqual([], result["matches"])
-        self.assertIn("matched only tests", result["stdout"])
-        self.assertIn("broader objective/domain terms", result["required_next_action"])
-        self.assertFalse(result["information_gain"])
-
-    def test_mixed_source_and_test_hits_keep_source_excerpts_only(self):
+    def test_search_preserves_all_hits_and_types_their_provenance(self):
         coder = self.runtime()
-        coder.search_feedback["embedding"] = search_feedback(
-            ["StoeCoder/roles.py", "StoeCoder/tests/test_roles.py"],
+        root = Path(tempfile.mkdtemp())
+        files = [
+            "StoeCoder/roles.py",
+            "StoeCoder/tests/test_roles.py",
+            "StoeCoder/roles.json",
+            "StoeCoder/README.md",
+            "agent/runtime/cache.json",
+        ]
+        coder.search_feedback["role model"] = search_feedback(
+            files,
             [
-                {"path": "StoeCoder/roles.py", "line": 20, "text": "model eligibility"},
-                {"path": "StoeCoder/tests/test_roles.py", "line": 30, "text": "fixture"},
+                {"path": "StoeCoder/roles.py", "line": 20, "text": "class RoleRegistry:"},
+                {"path": "StoeCoder/tests/test_roles.py", "line": 30, "text": "class RoleTests:"},
             ],
         )
 
         result = coder._execute_tool(
-            "TASK_x", 1, Path(tempfile.mkdtemp()),
-            {"kind": "search", "path": "StoeCoder", "query": "embedding"},
+            "TASK_x", 1, root,
+            {"kind": "search", "path": "StoeCoder", "query": "role model"},
             None,
         )
 
-        self.assertTrue(result["source_evidence"])
-        self.assertEqual(["StoeCoder/roles.py"], result["implementation_files"])
-        self.assertEqual(["StoeCoder/tests/test_roles.py"], result["test_files"])
-        self.assertEqual(["StoeCoder/roles.py"], result["matched_files"])
-        self.assertEqual(["StoeCoder/roles.py"], [item["path"] for item in result["matches"]])
+        self.assertEqual(files, result["matched_files"])
+        kinds = {item["path"]: item["source_kind"] for item in result["evidence_items"]}
+        self.assertEqual("implementation", kinds["StoeCoder/roles.py"])
+        self.assertEqual("test", kinds["StoeCoder/tests/test_roles.py"])
+        self.assertEqual("config", kinds["StoeCoder/roles.json"])
+        self.assertEqual("docs", kinds["StoeCoder/README.md"])
+        self.assertEqual("runtime", kinds["agent/runtime/cache.json"])
+        self.assertTrue(result["information_gain"])
+        self.assertIn("source kinds:", result["evidence_summary"])
 
-    def test_failed_strong_anchor_blocks_exact_guessed_symbol_search(self):
+    def test_test_only_search_is_useful_evidence_without_becoming_implementation(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
-        coder.inspect_feedback[("StoeCoder/stoe_coder.py", "def is_generation_model")] = {
+        coder.search_feedback["missing behavior"] = search_feedback(
+            ["StoeCoder/tests/test_behavior.py"],
+            [{"path": "StoeCoder/tests/test_behavior.py", "line": 10, "text": "expected behavior"}],
+        )
+
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "search", "path": "StoeCoder", "query": "missing behavior"},
+            None,
+        )
+
+        self.assertTrue(result["information_gain"])
+        self.assertEqual(["StoeCoder/tests/test_behavior.py"], result["matched_files"])
+        self.assertEqual("test", result["evidence_items"][0]["source_kind"])
+        self.assertNotIn("implementation files", result["evidence_summary"])
+
+    def test_rephrased_search_returning_same_evidence_is_not_progress(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        feedback = search_feedback(
+            ["StoeCoder/roles.py"],
+            [{"path": "StoeCoder/roles.py", "line": 20, "text": "manual model selection"}],
+        )
+        coder.search_feedback["manual generation selection"] = feedback
+        coder.search_feedback["selection generation manual"] = feedback
+
+        first = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "search", "path": "StoeCoder", "query": "manual generation selection"}, None,
+        )
+        second = coder._execute_tool(
+            "TASK_x", 2, root,
+            {"kind": "search", "path": "StoeCoder", "query": "selection generation manual"}, None,
+        )
+
+        self.assertTrue(first["information_gain"])
+        self.assertFalse(second["information_gain"])
+        self.assertEqual(0, second["novel_evidence_count"])
+        self.assertEqual(1, coder._stoe_workflow_state["TASK_x"]["consecutive_exploration"])
+
+    def test_negative_anchored_inspect_is_conserved_as_evidence(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        coder.inspect_feedback[("StoeCoder/core.py", "def missing_handler")] = {
             "ok": False, "kind": "inspect", "executed": True,
-            "path": "StoeCoder/stoe_coder.py", "query": "def is_generation_model",
+            "path": "StoeCoder/core.py", "query": "def missing_handler",
             "anchored": True, "query_mode": "none", "match_count": 0,
             "error": "inspect anchor produced no matching lines",
         }
 
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "inspect", "path": "StoeCoder/core.py", "query": "def missing_handler"}, None,
+        )
+
+        self.assertTrue(result["information_gain"])
+        self.assertEqual("negative", result["evidence_items"][0]["polarity"])
+        self.assertEqual("implementation", result["evidence_items"][0]["source_kind"])
+        self.assertIn("negative evidence", result["required_next_action"])
+        self.assertEqual(0, coder._stoe_workflow_state["TASK_x"]["consecutive_exploration"])
+
+    def test_different_anchors_with_same_content_are_not_new_evidence(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        content = "class Registry:\n    def choose(self):\n        pass\n"
+        coder.inspect_feedback[("StoeCoder/roles.py", "Registry")] = {
+            "ok": True, "kind": "inspect", "executed": True,
+            "path": "StoeCoder/roles.py", "query": "Registry",
+            "content": content, "chars": len(content), "truncated": False,
+        }
+        coder.inspect_feedback[("StoeCoder/roles.py", "choose")] = {
+            "ok": True, "kind": "inspect", "executed": True,
+            "path": "StoeCoder/roles.py", "query": "choose",
+            "content": content, "chars": len(content), "truncated": False,
+        }
+
         first = coder._execute_tool(
             "TASK_x", 1, root,
-            {"kind": "inspect", "path": "StoeCoder/stoe_coder.py", "query": "def is_generation_model"},
-            None,
+            {"kind": "inspect", "path": "StoeCoder/roles.py", "query": "Registry"}, None,
         )
-        blocked = coder._execute_tool(
+        second = coder._execute_tool(
             "TASK_x", 2, root,
-            {"kind": "search", "path": "StoeCoder", "query": "is_generation_model"},
-            None,
+            {"kind": "inspect", "path": "StoeCoder/roles.py", "query": "choose"}, None,
         )
 
-        self.assertEqual("is_generation_model", first["absent_symbol"])
-        self.assertIn("Do not search the exact guessed symbol", first["required_next_action"])
-        self.assertFalse(blocked["ok"])
-        self.assertFalse(blocked["executed"])
-        self.assertIn("guessed absent symbol rejected", blocked["error"])
+        self.assertTrue(first["information_gain"])
+        self.assertFalse(second["information_gain"])
 
-    def test_exact_search_replay_is_blocked_after_intervening_read(self):
+    def test_mutation_advances_epoch_and_reactivates_prior_evidence(self):
         coder = self.runtime()
         root = Path(tempfile.mkdtemp())
-        coder.search_feedback["embedding"] = search_feedback(["StoeCoder/roles.py"])
+        coder.search_feedback["registry"] = search_feedback(["StoeCoder/roles.py"])
+        request = {"kind": "search", "path": "StoeCoder", "query": "registry"}
+
+        first = coder._execute_tool("TASK_x", 1, root, request, None)
+        mutation = coder._execute_tool(
+            "TASK_x", 2, root,
+            {"kind": "write", "path": "StoeCoder/roles.py", "content": "changed"}, None,
+        )
+        second = coder._execute_tool("TASK_x", 3, root, request, None)
+
+        self.assertTrue(first["information_gain"])
+        self.assertTrue(mutation["evidence_state_changed"])
+        self.assertEqual(1, mutation["evidence_epoch"])
+        self.assertTrue(second["information_gain"])
+        self.assertEqual(1, second["evidence_epoch"])
+
+    def test_failed_execution_advances_epoch_and_reactivates_prior_evidence(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        coder.search_feedback["registry"] = search_feedback(["StoeCoder/roles.py"])
+        request = {"kind": "search", "path": "StoeCoder", "query": "registry"}
+
+        self.assertTrue(coder._execute_tool("TASK_x", 1, root, request, None)["information_gain"])
+        failed = coder._execute_tool(
+            "TASK_x", 2, root,
+            {"kind": "run", "command": ["python", "tool.py"], "fake_exit_code": 1}, None,
+        )
+        second = coder._execute_tool("TASK_x", 3, root, request, None)
+
+        self.assertTrue(failed["evidence_state_changed"])
+        self.assertEqual(1, failed["evidence_epoch"])
+        self.assertTrue(second["information_gain"])
+
+    def test_reordered_negative_query_has_same_family_and_is_not_new(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
 
         first = coder._execute_tool(
             "TASK_x", 1, root,
-            {"kind": "search", "path": "StoeCoder", "query": "embedding"}, None,
+            {"kind": "search", "path": "StoeCoder", "query": "manual routing policy"}, None,
         )
-        coder._execute_tool(
+        second = coder._execute_tool(
             "TASK_x", 2, root,
-            {"kind": "inspect", "path": "StoeCoder/roles.py"}, None,
-        )
-        replay = coder._execute_tool(
-            "TASK_x", 3, root,
-            {"kind": "search", "path": "StoeCoder", "query": "embedding"}, None,
+            {"kind": "search", "path": "StoeCoder", "query": "policy routing manual"}, None,
         )
 
-        self.assertTrue(first["ok"])
-        self.assertFalse(replay["ok"])
-        self.assertFalse(replay["executed"])
-        self.assertIn("semantic replay rejected", replay["error"])
+        self.assertTrue(first["information_gain"])
+        self.assertFalse(second["information_gain"])
+        self.assertEqual(
+            first["evidence_items"][0]["query_family"],
+            second["evidence_items"][0]["query_family"],
+        )
 
-    def test_real_mutation_resets_semantic_replay_memory(self):
+    def test_prompt_describes_generic_evidence_model_without_task_vocabulary(self):
         coder = self.runtime()
-        root = Path(tempfile.mkdtemp())
-        coder.search_feedback["embedding"] = search_feedback(["StoeCoder/roles.py"])
-
-        request = {"kind": "search", "path": "StoeCoder", "query": "embedding"}
-        self.assertTrue(coder._execute_tool("TASK_x", 1, root, request, None)["ok"])
-        coder._execute_tool("TASK_x", 2, root, {"kind": "inspect", "path": "StoeCoder/roles.py"}, None)
-        coder._execute_tool("TASK_x", 3, root, {"kind": "write", "path": "StoeCoder/roles.py", "content": "x"}, None)
-        allowed = coder._execute_tool("TASK_x", 4, root, request, None)
-
-        self.assertTrue(allowed["ok"])
-
-    def test_failed_run_resets_semantic_replay_memory(self):
-        coder = self.runtime()
-        root = Path(tempfile.mkdtemp())
-        coder.search_feedback["embedding"] = search_feedback(["StoeCoder/roles.py"])
-
-        request = {"kind": "search", "path": "StoeCoder", "query": "embedding"}
-        self.assertTrue(coder._execute_tool("TASK_x", 1, root, request, None)["ok"])
-        coder._execute_tool("TASK_x", 2, root, {"kind": "inspect", "path": "StoeCoder/roles.py"}, None)
-        coder._execute_tool("TASK_x", 3, root, {"kind": "run", "fake_exit_code": 1}, None)
-        allowed = coder._execute_tool("TASK_x", 4, root, request, None)
-
-        self.assertTrue(allowed["ok"])
-
-    def test_prompt_explains_test_only_and_replay_semantics(self):
-        coder = self.runtime()
-        coder._generate_role(role="coder", prompt={"available_tools": {"search": "compact search"}}, action_id="TASK_x:coder:1")
-        search = coder.generated[-1]["prompt"]["available_tools"]["search"]
-        self.assertIn("test-only hits are not implementation evidence", search)
-        self.assertIn("exact read/search replays remain blocked", search)
+        coder._generate_role(
+            role="coder",
+            prompt={"available_tools": {"search": "compact search", "inspect": "bounded inspect"}},
+            action_id="TASK_x:coder:1",
+        )
+        tools = coder.generated[-1]["prompt"]["available_tools"]
+        joined = tools["search"] + " " + tools["inspect"]
+        self.assertIn("typed evidence_items", joined)
+        self.assertIn("source_kind is provenance rather than truth", joined)
+        self.assertIn("changing query wording", joined)
+        self.assertIn("negative observations are conserved", joined)
+        self.assertNotIn("embedding", joined.lower())
+        self.assertNotIn("is_generation_model", joined)
 
 
 if __name__ == "__main__":

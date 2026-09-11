@@ -21,7 +21,15 @@ class DummyCoder:
 
     def _execute_tool(self, task_id, step, worktree, request, allowed_paths):
         self.calls.append((task_id, step, dict(request)))
-        return {"ok": True, "kind": request["kind"], "path": request.get("path", "")}
+        kind = request["kind"]
+        if kind == "write":
+            target = Path(worktree) / request["path"]
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(request.get("content", ""), encoding="utf-8", newline="\n")
+            return {"ok": True, "kind": kind, "path": request["path"], "bytes": target.stat().st_size}
+        if kind == "run":
+            return {"ok": True, "kind": kind, "exit_code": 0, "timed_out": False, "cancelled": False}
+        return {"ok": True, "kind": kind, "path": request.get("path", "")}
 
 
 class AntiLoopTests(unittest.TestCase):
@@ -96,6 +104,52 @@ class AntiLoopTests(unittest.TestCase):
         self.assertFalse(repeated["ok"])
         self.assertIn("duplicate read-only action rejected", repeated["error"])
         self.assertEqual(len(coder.calls), 1)
+
+    def test_real_write_blocks_immediate_confirmation_inspect(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        target = root / "README.md"
+        target.write_text("old\n", encoding="utf-8", newline="\n")
+        result = coder._execute_tool(
+            "TASK_x", 1, root,
+            {"kind": "write", "path": "README.md", "content": "new\n"},
+            None,
+        )
+        self.assertTrue(result["candidate_changed"])
+        self.assertNotEqual(result["old_sha256"], result["new_sha256"])
+        blocked = coder._execute_tool("TASK_x", 2, root, {"kind": "inspect", "path": "README.md"}, None)
+        self.assertFalse(blocked["ok"])
+        self.assertFalse(blocked["executed"])
+        self.assertIn("post-write confirmation inspect rejected", blocked["error"])
+        self.assertEqual(len(coder.calls), 1)
+
+    def test_test_and_diff_runs_advance_runtime_workflow_state(self):
+        coder = self.runtime()
+        root = Path(tempfile.mkdtemp())
+        target = root / "README.md"
+        target.write_text("old\n", encoding="utf-8", newline="\n")
+        coder._execute_tool("TASK_x", 1, root, {"kind": "write", "path": "README.md", "content": "new\n"}, None)
+        state = coder._stoe_workflow_state["TASK_x"]
+        self.assertTrue(state["candidate_changed"])
+        self.assertFalse(state["tests_run"])
+        self.assertFalse(state["diff_inspected"])
+
+        tests = coder._execute_tool(
+            "TASK_x", 2, root,
+            {"kind": "run", "command": ["python", "-m", "unittest", "discover", "-s", "StoeCoder/tests", "-q"], "cwd": "."},
+            None,
+        )
+        self.assertEqual("tests", tests["workflow_run_kind"])
+        self.assertTrue(state["tests_run"])
+        self.assertFalse(state["diff_inspected"])
+
+        diff = coder._execute_tool(
+            "TASK_x", 3, root,
+            {"kind": "run", "command": ["git", "diff", "--", "README.md"], "cwd": "."},
+            None,
+        )
+        self.assertEqual("diff", diff["workflow_run_kind"])
+        self.assertTrue(state["diff_inspected"])
 
     def test_guard_failure_preserves_candidate_diff_stats(self):
         coder = self.runtime()

@@ -75,7 +75,8 @@ def install_workflow_guard(coder: Any) -> None:
 
     def guarded_execute_tool(self, task_id: str, step: int, worktree, request: dict[str, Any], allowed_paths):
         runtime_states = self._stoe_workflow_state
-        runtime_state = runtime_states.setdefault(task_id, {})
+        existing_state = runtime_states.get(task_id)
+        runtime_state = existing_state if isinstance(existing_state, dict) else {}
         local = guard_state.setdefault(task_id, {
             "last_rejection_signature": None,
             "rejection_count": 0,
@@ -170,6 +171,12 @@ def install_workflow_guard(coder: Any) -> None:
 
         read_progress_before = {key: runtime_state.get(key) for key in _READ_PROGRESS_KEYS}
         feedback = original_execute_tool(task_id, step, worktree, request, allowed_paths)
+
+        # The anti-loop layer owns creation of the per-task runtime state. Do not
+        # pre-seed an empty dict here: doing so bypasses anti-loop initialization
+        # and causes fresh-task reads to fail on missing state keys.
+        refreshed_state = runtime_states.get(task_id)
+        runtime_state = refreshed_state if isinstance(refreshed_state, dict) else {}
         stage_after = _stage(runtime_state)
 
         if kind == "run" and isinstance(feedback, dict):
@@ -188,7 +195,7 @@ def install_workflow_guard(coder: Any) -> None:
                 "stage_guard_after": stage_after,
                 "workflow_transitioned": transitioned,
             })
-            if success and not transitioned:
+            if success and not transitioned and runtime_state:
                 for key, value in read_progress_before.items():
                     runtime_state[key] = value
 

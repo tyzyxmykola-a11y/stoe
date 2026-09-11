@@ -184,6 +184,41 @@
     }
   }
 
+  function clearLocalUi() {
+    eventByAction.clear();
+    document.querySelectorAll('.model-io-wrap').forEach(node => node.remove());
+    const original = window.__stoeOriginalClearAgentLog;
+    if (typeof original === 'function') original();
+    setStatus('I/O ready · 0');
+  }
+
+  function installClearHook() {
+    if (window.__stoeClearHookInstalled) return;
+    if (typeof window.clearAgentLog !== 'function') {
+      setTimeout(installClearHook, 100);
+      return;
+    }
+    window.__stoeClearHookInstalled = true;
+    window.__stoeOriginalClearAgentLog = window.clearAgentLog;
+    window.clearAgentLog = async function() {
+      try {
+        const response = await fetch('/api/coder/logs/clear', {
+          method:'POST',
+          credentials:'same-origin',
+          cache:'no-store',
+          headers:{'Content-Type':'application/json'},
+          body:'{}'
+        });
+        const value = await response.json();
+        if (!response.ok || !value.ok) throw new Error(value.error || ('HTTP ' + response.status));
+        clearLocalUi();
+      } catch (error) {
+        setStatus('clear failed', true);
+        console.error('SToE log clear failed', error);
+      }
+    };
+  }
+
   const observer = new MutationObserver(() => scanLog());
   function installObserver() {
     const body = document.getElementById('agent-log-body');
@@ -194,5 +229,6 @@
     setInterval(refreshEvents, 1000);
   }
 
+  installClearHook();
   installObserver();
 })();

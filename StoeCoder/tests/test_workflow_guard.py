@@ -56,7 +56,7 @@ class WorkflowGuardTests(unittest.TestCase):
         )
 
     @staticmethod
-    def tests(coder, root, step=2, fail=False):
+    def run_tests(coder, root, step=2, fail=False):
         command = ["python", "-m", "unittest", "discover", "-s", "tests", "-q"]
         if fail:
             command.append("--fail")
@@ -86,7 +86,7 @@ class WorkflowGuardTests(unittest.TestCase):
         self.assertIn("premature git diff rejected", blocked["error"])
         self.assertEqual(1, len(coder.calls))
 
-        tests = self.tests(coder, root, step=3)
+        tests = self.run_tests(coder, root, step=3)
         self.assertEqual("tests", tests["workflow_run_kind"])
         self.assertEqual("tests_passed", tests["stage_guard_after"])
         diff = self.diff(coder, root, step=4)
@@ -98,9 +98,9 @@ class WorkflowGuardTests(unittest.TestCase):
         root = Path(tempfile.mkdtemp())
         (root / "README.md").write_text("old\n", encoding="utf-8", newline="\n")
         self.write(coder, root)
-        self.tests(coder, root)
+        self.run_tests(coder, root)
 
-        repeated_tests = self.tests(coder, root, step=3)
+        repeated_tests = self.run_tests(coder, root, step=3)
         self.assertFalse(repeated_tests["ok"])
         self.assertFalse(repeated_tests["executed"])
         self.assertIn("expected final git diff", repeated_tests["error"])
@@ -111,7 +111,7 @@ class WorkflowGuardTests(unittest.TestCase):
         root = Path(tempfile.mkdtemp())
         (root / "README.md").write_text("old\n", encoding="utf-8", newline="\n")
         self.write(coder, root)
-        self.tests(coder, root)
+        self.run_tests(coder, root)
         self.diff(coder, root)
 
         blocked = coder._execute_tool(
@@ -133,7 +133,7 @@ class WorkflowGuardTests(unittest.TestCase):
         before_tests = coder._execute_tool("TASK_x", 2, root, {"kind": "finish"}, None)
         self.assertFalse(before_tests["ok"])
         self.assertIn("finish rejected before workflow gates", before_tests["error"])
-        self.tests(coder, root, step=3)
+        self.run_tests(coder, root, step=3)
         before_diff = coder._execute_tool("TASK_x", 4, root, {"kind": "finish"}, None)
         self.assertFalse(before_diff["ok"])
         self.assertIn("finish rejected before workflow gates", before_diff["error"])
@@ -173,18 +173,18 @@ class WorkflowGuardTests(unittest.TestCase):
         root = Path(tempfile.mkdtemp())
         (root / "README.md").write_text("old\n", encoding="utf-8", newline="\n")
         self.write(coder, root)
-        failed = self.tests(coder, root, step=2, fail=True)
+        failed = self.run_tests(coder, root, step=2, fail=True)
         self.assertEqual(1, failed["exit_code"])
         self.assertEqual("run_failed", failed["stage_guard_after"])
 
-        retry = self.tests(coder, root, step=3, fail=True)
+        retry = self.run_tests(coder, root, step=3, fail=True)
         self.assertFalse(retry["ok"])
         self.assertFalse(retry["executed"])
         self.assertIn("identical failed run rejected", retry["error"])
 
         changed = self.write(coder, root, step=4, content="newer\n")
         self.assertTrue(changed["candidate_changed"])
-        retried_after_change = self.tests(coder, root, step=5, fail=True)
+        retried_after_change = self.run_tests(coder, root, step=5, fail=True)
         self.assertEqual(1, retried_after_change["exit_code"])
 
     def test_second_identical_stage_violation_fails_closed(self):

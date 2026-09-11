@@ -51,9 +51,11 @@ class ToolContractTests(unittest.TestCase):
 
         sent = coder.generated[-1]["prompt"]["available_tools"]
         self.assertIn("typed evidence_items", sent["search"])
-        self.assertIn("operator objective", sent["search"])
+        self.assertIn("objective-directed search establishes", sent["search"])
+        self.assertIn("lexical similarity", sent["search"])
         self.assertIn("changing query wording", sent["search"])
         self.assertIn("negative evidence is conserved", sent["inspect"])
+        self.assertIn("grounded in trusted evidence", sent["inspect"])
         self.assertIn("do not deepen an unrelated file", sent["inspect"])
         self.assertNotEqual("base search", sent["search"])
         self.assertNotEqual("base inspect", sent["inspect"])

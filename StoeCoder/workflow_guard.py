@@ -41,6 +41,15 @@ def _command_signature(command: Any) -> tuple[str, ...]:
     return tuple(str(item) for item in command)
 
 
+def required_test_command(path: Any) -> list[str] | None:
+    """Return the trusted deterministic test command for a known project path."""
+
+    normalized = str(path or "").replace("\\", "/")
+    if normalized == "StoeCoder" or normalized.startswith("StoeCoder/"):
+        return ["python", "-m", "unittest", "discover", "-s", "StoeCoder/tests", "-q"]
+    return None
+
+
 def _run_success(feedback: Any) -> bool:
     return bool(
         isinstance(feedback, dict)
@@ -123,10 +132,21 @@ def install_workflow_guard(coder: Any) -> None:
         run_kind = _run_command_kind(command) if kind == "run" else None
 
         if kind == "run":
+            expected_tests = required_test_command(runtime_state.get("last_changed_path")) if stage_before == "candidate_changed" else None
             if stage_before == "candidate_changed" and run_kind == "diff":
-                required = _required_action(stage_before)
+                required = (
+                    f"run exact deterministic tests command {expected_tests!r} before final git diff"
+                    if expected_tests else _required_action(stage_before)
+                )
                 return reject(
                     "premature git diff rejected: deterministic tests have not passed for the current candidate",
+                    required,
+                    ("run", stage_before, run_signature),
+                )
+            if stage_before == "candidate_changed" and expected_tests is not None and list(command or []) != expected_tests:
+                required = f"run exact deterministic tests command {expected_tests!r}"
+                return reject(
+                    f"stage-invalid run rejected before tests: expected exact deterministic test command {expected_tests!r}",
                     required,
                     ("run", stage_before, run_signature),
                 )

@@ -22,6 +22,9 @@ class FakeOllama:
     def models(self):
         return [{"name": "local-test", "digest": "d" * 64, "size": 1}]
 
+    def choose(self, role):
+        return 'local-test', 'd' * 64
+
     def generate(self, **kwargs):
         self.calls.append(kwargs)
         reply = self.replies.pop(0)
@@ -49,6 +52,11 @@ class StoeCoderTests(unittest.TestCase):
         subprocess.run(["git", "init"], cwd=self.repo, check=True, capture_output=True)
         subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=self.repo, check=True)
         subprocess.run(["git", "config", "user.name", "Test"], cwd=self.repo, check=True)
+        from roles import RoleRegistry
+        config = self.repo / 'StoeCoder'
+        config.mkdir()
+        (config / '.gitignore').write_text('.runtime/\n', encoding='utf-8')
+        RoleRegistry(config / 'roles.json', lambda: [], lambda *args: None).initialize()
         (self.repo / "sample.py").write_text("def value():\n    return 1\n", encoding="utf-8")
         subprocess.run(["git", "add", "."], cwd=self.repo, check=True)
         subprocess.run(["git", "commit", "-m", "base"], cwd=self.repo, check=True, capture_output=True)

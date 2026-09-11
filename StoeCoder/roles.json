@@ -1,0 +1,40 @@
+{
+  "format": "stoe.roles.v1",
+  "roles": [
+    {
+      "name": "planner",
+      "enabled": true,
+      "contract": "Plan tasks and strategies.",
+      "model_mode": "auto",
+      "model": null
+    },
+    {
+      "name": "coder",
+      "enabled": true,
+      "contract": "Write code and implement solutions.",
+      "model_mode": "auto",
+      "model": null
+    },
+    {
+      "name": "reviewer",
+      "enabled": true,
+      "contract": "Review code and suggest improvements.",
+      "model_mode": "auto",
+      "model": null
+    },
+    {
+      "name": "debugger",
+      "enabled": true,
+      "contract": "Debug issues and resolve problems.",
+      "model_mode": "auto",
+      "model": null
+    },
+    {
+      "name": "test-analyst",
+      "enabled": true,
+      "contract": "Analyze test results and suggest improvements.",
+      "model_mode": "auto",
+      "model": null
+    }
+  ]
+}

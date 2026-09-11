@@ -26,6 +26,8 @@ from functools import wraps
 from pathlib import Path
 from typing import Any
 import psutil
+from roles import RoleRegistry
+from task_evidence import TaskEvidence
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -377,8 +379,10 @@ class OllamaWorker:
         candidates.sort(key=lambda item: int(item.get("size", 0)), reverse=True)
         return str(candidates[0]["name"]), str(candidates[0].get("digest", ""))
 
-    def generate(self, *, action_id: str, role: str, prompt: dict[str, Any], schema: dict[str, Any], output_tokens: int, seed: int) -> tuple[dict[str, Any], dict[str, Any]]:
-        model, digest = self.choose(role)
+    def generate(self, *, action_id: str, role: str, prompt: dict[str, Any], schema: dict[str, Any], output_tokens: int, seed: int, resolved_model: tuple[str, str] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
+        model, digest = resolved_model or self.choose(role)
+        if resolved_model and not any(item.get('name') == model and item.get('digest') == digest for item in self.models()):
+            raise RuntimeError(f'Resolved model "{model}" is unavailable or changed for role "{role}"')
         run_dir = self.artifact_root / re.sub(r"[^A-Za-z0-9_.-]", "_", action_id)
         if run_dir.exists():
             raise RuntimeError("closed model action cannot be retried")
@@ -452,6 +456,9 @@ class StoeCoderRuntime:
         self._stop = threading.Event()
         self._thread: threading.Thread | None = None
         self._runner = FullLocalRunner(self.artifact_root, self._stop)
+        self.roles = RoleRegistry(self.repo_root / 'StoeCoder' / 'roles.json', self.ollama.models, self._role_transition)
+        self.roles.initialize()
+        self._task_evidence: TaskEvidence | None = None
         self.runtime_root.mkdir(parents=True, exist_ok=True)
         if not self.state_path.exists():
             _atomic_json(self.state_path, _default_state())
@@ -461,6 +468,50 @@ class StoeCoderRuntime:
         if value.get("format") != "stoe.coder.state.v1":
             raise RuntimeError("incompatible SToE Coder state")
         return value
+
+    def _role_transition(self, action, before, after):
+        changed = [key for key in ('name', 'enabled', 'contract', 'model_mode', 'model') if before is None or after is None or before.get(key) != after.get(key)]
+        name = (after or before)['name']
+        transition = action
+        if action == 'updated' and changed == ['enabled']:
+            transition = 'enabled' if after['enabled'] else 'disabled'
+        event_id = self._event('Roles', f'role {transition}: {name}', changes=changed)
+        try:
+            store = self._field_store()
+            if store is not None:
+                ref = 'IP_role_' + event_id
+                store.add_ip(ref=ref, content=f'Role {name} {transition}; changed fields: {", ".join(changed)}.',
+                             kind='RoleTransitionIP', origin='runtime_reasoning', outcome='supported',
+                             session_id='development:stoe-coder-roles', metadata={'before': before, 'after': after, 'changes': changed})
+                prior = getattr(self, '_last_role_ip', None)
+                if prior:
+                    store.add_relation(source_ref=ref, target_ref=prior, relation='follows', note='Role configuration succession')
+                self._last_role_ip = ref
+        except Exception as exc:
+            self._event('SToE', 'role transition persistence failed', level='warning', error=str(exc))
+
+    def _progress(self, percent, stage):
+        with self._state_lock:
+            state = self._load_state()
+            previous = state.get('progress', {}).get('percent', 0)
+            if percent < previous:
+                return
+            state['progress'] = {'percent': max(previous, percent), 'stage': stage}
+            self._save_state(state)
+
+    def _generate_role(self, *, role, **kwargs):
+        evidence = self._task_evidence
+        if evidence is None:
+            resolved = self.roles.resolve([role], self.ollama.choose)['selected'][0]
+        else:
+            resolved = next(r for r in evidence.selected_roles if r['name'] == role)
+            evidence.model_calls += 1
+        kwargs['prompt'] = {**kwargs['prompt'], 'role_contract': resolved['contract'],
+                            'contract_boundary': 'Role contract guides work; trusted capabilities remain unchanged.'}
+        result, metrics = self.ollama.generate(role=role, resolved_model=(resolved['resolved_model'], resolved['digest']), **kwargs)
+        if evidence is not None:
+            evidence.model_metrics.append(metrics)
+        return result, metrics
 
     def _save_state(self, value: dict[str, Any]) -> None:
         _atomic_json(self.state_path, value)
@@ -847,13 +898,17 @@ class StoeCoderRuntime:
             head = _git(self.repo_root, "rev-parse", "HEAD").stdout.strip()
             if not _development_branch(branch):
                 raise RuntimeError("autonomous development requires stoecoder or a feature/* branch")
-            if _git(self.repo_root, "status", "--porcelain=v1").stdout.strip():
+            if set(self._changed_paths()) - {'StoeCoder/roles.json'}:
                 raise RuntimeError("active repository must be clean before a task")
             task_id = self.task_identity(objective, head, state["observer"], predecessor)
             if task_id in state.get("closed_actions", []):
                 raise RuntimeError("task identity is already closed")
             state.update({"status": "queued", "objective": objective, "task_id": task_id, "active_action": None, "branch": branch, "head": head, "git": "clean", "tests": "not_run", "stop_requested": False, "last_result": None, "next_action": "worker_inspection", "task_options": {"allow_commit": bool(allow_commit), "allow_push": bool(allow_push), "allowed_paths": allowed_paths}})
             state.update({"tests_head": None, "tests_fingerprint": None, "review_status": "not_reviewed", "review_head": None, "review_fingerprint": None, "reviewed_paths": []})
+            state['progress'] = {'percent': 0, 'stage': 'Accepted'}
+            state['task_report'] = None
+            state['task_registry'] = self.roles.path.read_text(encoding='utf-8')
+            state['task_base_fingerprint'] = self._working_fingerprint()
             self._save_state(state)
             self._stop.clear()
             self._thread = threading.Thread(target=self._task_main, args=(task_id, objective, bool(allow_commit), bool(allow_push), allowed_paths), daemon=True)
@@ -948,17 +1003,34 @@ class StoeCoderRuntime:
     def _task_main(self, task_id: str, objective: str, commit_requested: bool, push_requested: bool, allowed_paths: list[str] | None) -> None:
         worktree = self.worktree_root / task_id
         parent_head = _git(self.repo_root, "rev-parse", "HEAD").stdout.strip()
+        evidence = TaskEvidence(task_id, self._load_state()['observer'])
+        self._task_evidence = evidence
+        outcome, failure = 'failure', ''
+        self._event('Task', f'started {task_id}', event_type='task_started', task_id=task_id, observer=evidence.observer_before)
         history: list[dict[str, Any]] = []
         metrics: list[dict[str, Any]] = []
         touched: list[str] = []
         integrated = False
         try:
+            resolved = self.roles.resolve(['coder', 'reviewer'], self.ollama.choose)
+            registry_snapshot = self._load_state()['task_registry']
+            if self.roles.path.read_text(encoding='utf-8') != registry_snapshot:
+                raise RuntimeError('Role registry changed during task-start resolution')
+            evidence.selected_roles = resolved['selected']
+            evidence.disabled_roles = resolved['disabled']
+            role_log = ' | '.join(f"{r['name']}={r['model_mode'].title()}({r['resolved_model']})" for r in evidence.selected_roles)
+            self._event('Roles', role_log, task_id=task_id, selected_roles=[{k:r[k] for k in ('name','model_mode','resolved_model','digest')} for r in evidence.selected_roles])
+            self._event('Roles', 'disabled: ' + (', '.join(evidence.disabled_roles) or '(none)'), task_id=task_id, disabled_roles=evidence.disabled_roles)
             _git(self.repo_root, "worktree", "add", "--detach", str(worktree), parent_head, timeout=180)
+            (worktree / 'StoeCoder').mkdir(exist_ok=True)
+            (worktree / 'StoeCoder' / 'roles.json').write_text(registry_snapshot, encoding='utf-8', newline='\n')
             memory_context = self._memory_context(task_id, objective)
+            self._progress(10, 'Observer/context loaded')
             self._event("SToE", "observer loaded", observer=self._load_state()["observer"])
             with self._state_lock:
                 state = self._load_state(); state.update({"status": "active", "worker": "coder", "next_action": "local_tool_loop"}); self._save_state(state)
             for step in range(1, MAX_TOOL_STEPS + 1):
+                self._progress(20, 'Worker inspection')
                 if self._stop.is_set():
                     raise InterruptedError("operator stopped task")
                 action_id = f"{task_id}:coder:{step}"
@@ -966,9 +1038,14 @@ class StoeCoderRuntime:
                     state = self._load_state(); state.update({"active_action": action_id, "next_action": "worker_tool_request"}); self._save_state(state)
                 prompt = {"objective": objective, "candidate_workspace": "isolated Git worktree", "allowed_paths": allowed_paths or ["repository files except .git and credentials"], "available_tools": {"inspect": "read one repository-relative file", "search": "ripgrep query under optional relative path", "write": "replace/create UTF-8 text file", "delete": "delete ordinary candidate file", "move": "rename ordinary candidate file", "run": "execute argv list in candidate workspace", "finish": "declare candidate ready only after inspecting diff and running relevant tests"}, "recent_tool_feedback": self._worker_observation(history), "instruction": "Choose exactly one next tool action. Inspect before editing. Run tests and inspect git diff before finish. Use ordinary file mechanics; no patch serialization."}
                 prompt["prior_evidence"] = memory_context
-                request, call_metrics = self.ollama.generate(action_id=action_id, role="coder", prompt=prompt, schema=TOOL_SCHEMA, output_tokens=4_000, seed=9200 + step)
+                request, call_metrics = self._generate_role(action_id=action_id, role="coder", prompt=prompt, schema=TOOL_SCHEMA, output_tokens=4_000, seed=9200 + step)
                 metrics.append(call_metrics)
+                if self._stop.is_set():
+                    raise InterruptedError('operator stopped task')
                 self._event("Worker", f"{request['kind']} requested", action_id=action_id, model=call_metrics["model"], metrics=call_metrics)
+                evidence.tool_steps += 1
+                if request['kind'] in {'write','delete','move'}:
+                    self._progress(45, 'Coding/editing')
                 feedback = self._execute_tool(task_id, step, worktree, request, allowed_paths)
                 history.append({"request": {key: value for key, value in request.items() if key != "content"}, "feedback": feedback})
                 if request["kind"] == "finish":
@@ -977,20 +1054,36 @@ class StoeCoderRuntime:
                 self._event("Worker", "tool-step budget reached; candidate sent to deterministic gates", level="warning", task_id=task_id)
             _git(worktree, "add", "-N", ".")
             touched = [path for path in _git(worktree, "diff", "--name-only", "-z").stdout.split("\x00") if path]
+            evidence.files = list(touched)
+            for record in _git(worktree, 'diff', '--numstat', '-z').stdout.split('\x00'):
+                counts = record.split('\t', 2)
+                if len(counts) == 3:
+                    if counts[0] == '-' or counts[1] == '-':
+                        evidence.binary_files += 1
+                    else:
+                        evidence.additions += int(counts[0]); evidence.deletions += int(counts[1])
             if not touched:
                 raise RuntimeError("worker finished without a repository change")
-            if allowed_paths and any(path not in allowed_paths for path in touched):
+            if allowed_paths and any(path not in allowed_paths and not (path == 'StoeCoder/roles.json' and (worktree / path).read_text(encoding='utf-8') == registry_snapshot) for path in touched):
                 raise RuntimeError(f"worker changed path outside task scope: {touched}")
             diff = _git(worktree, "diff", "--binary", "--no-ext-diff").stdout
             diff_path = self.artifact_root / task_id / "candidate.diff"
             diff_path.parent.mkdir(parents=True, exist_ok=True)
             diff_path.write_text(diff, encoding="utf-8", newline="\n")
+            self._progress(60, 'Candidate produced')
+            self._progress(70, 'Candidate verification')
             tests = self._verify_candidate(task_id, worktree, touched)
+            self._progress(80, 'Independent review')
             review = self._review(task_id, objective, diff, tests, metrics)
+            evidence.review = review['verdict']
             if review["verdict"] != "accept":
                 raise RuntimeError("independent reviewer rejected candidate: " + "; ".join(review.get("defects", [])))
+            self._progress(90, 'Integrating reviewed candidate')
+            if self._stop.is_set():
+                raise InterruptedError('operator stopped task')
             self._integrate(task_id, parent_head, worktree, touched)
             integrated = True
+            self._progress(95, 'Active-tree verification/conservation')
             active_tests = self._verify_candidate(task_id + ":active", self.repo_root, touched)
             integrated_fingerprint = self._working_fingerprint()
             with self._state_lock:
@@ -1009,6 +1102,7 @@ class StoeCoderRuntime:
                 message = "SToE Coder: " + re.sub(r"\s+", " ", objective).strip()[:68]
                 _git(self.repo_root, "commit", "-m", message)
                 commit_sha = _git(self.repo_root, "rev-parse", "HEAD").stdout.strip()
+                evidence.commit = commit_sha
                 with self._state_lock:
                     state = self._load_state()
                     state.update({"tests_head": commit_sha, "tests_fingerprint": None, "review_head": commit_sha, "review_fingerprint": None})
@@ -1021,12 +1115,15 @@ class StoeCoderRuntime:
                     self._record_git_transition("model_push", "failed", condition=push.stderr[-500:], before=self._git_snapshot(), task_id=task_id)
                     raise RuntimeError("authenticated git push failed: " + push.stderr[-500:])
                 push_result = "passed"
+                evidence.push = push_result
                 self._record_git_transition("model_push", "succeeded", before={"head": commit_sha}, after=self._git_snapshot(), branch=branch, commit=commit_sha, task_id=task_id)
             observer = self._conserve(task_id, objective, parent_head, touched, tests, commit_sha, push_result, metrics)
             with self._state_lock:
                 state = self._load_state(); state["closed_actions"] = list(dict.fromkeys(state.get("closed_actions", []) + [task_id] + [item["action_id"] for item in metrics])); state.update({"status": "completed", "observer": observer, "active_action": None, "head": _git(self.repo_root, "rev-parse", "HEAD").stdout.strip(), "tests": "passed", "worker": None, "model": None, "stop_requested": False, "last_result": {"touched": touched, "tests": active_tests, "review": review, "commit": commit_sha, "push": push_result, "metrics": metrics}, "next_action": "operator_intent"}); self._save_state(state)
             self._event("SToE", f"{observer}", observer=observer)
+            outcome = 'success'
         except InterruptedError as exc:
+            outcome, failure = 'stopped', str(exc)
             self._conserve_failure(task_id, objective, str(exc))
             if integrated and _git(self.repo_root, "rev-parse", "HEAD").stdout.strip() == parent_head:
                 self._rollback(parent_head, touched)
@@ -1034,6 +1131,7 @@ class StoeCoderRuntime:
             with self._state_lock:
                 state = self._load_state(); state["closed_actions"] = list(dict.fromkeys(item for item in state.get("closed_actions", []) + [state.get("active_action")] if item)); state.update({"status": "stopped", "last_result": {"error": str(exc)}, "next_action": "resume"}); self._save_state(state)
         except Exception as exc:
+            failure = str(exc)
             self._conserve_failure(task_id, objective, str(exc))
             if integrated and _git(self.repo_root, "rev-parse", "HEAD").stdout.strip() == parent_head:
                 self._rollback(parent_head, touched)
@@ -1043,6 +1141,21 @@ class StoeCoderRuntime:
         finally:
             if worktree.exists():
                 _git(self.repo_root, "worktree", "remove", "--force", str(worktree), timeout=180, check=False)
+            if outcome == 'success':
+                self._progress(100, 'Task finished')
+            report = evidence.snapshot(outcome, self._load_state()['observer'], failure)
+            with self._state_lock:
+                state = self._load_state(); state['task_report'] = report
+                state['progress']['outcome'] = outcome
+                self._save_state(state)
+            _atomic_json(self.artifact_root / task_id / 'task_report.json', report)
+            summary = (f"TASK FINISHED · {outcome.upper()} · {task_id} | duration={report['duration_seconds']}s"
+                       f" | roles={len(evidence.selected_roles)} | model_calls={evidence.model_calls} | tool_steps={evidence.tool_steps}"
+                       f" | checks={report['checks_passed']}/{len(evidence.checks)} PASS | reviewer={evidence.review or 'not run'}"
+                       f" | files={len(evidence.files)} | +{evidence.additions}/-{evidence.deletions}"
+                       f" | commit={evidence.commit or 'no'} | push={evidence.push or 'no'}")
+            self._event('Task', summary, level='info' if outcome == 'success' else 'error', event_type='task_finished', **report)
+            self._task_evidence = None
 
     def _execute_tool(self, task_id: str, step: int, worktree: Path, request: dict[str, Any], allowed_paths: list[str] | None) -> dict[str, Any]:
         kind = request["kind"]
@@ -1115,6 +1228,8 @@ class StoeCoderRuntime:
             result = self._runner.run(action_id=f"{task_id}:verify:{index}", command=command, cwd=workspace, timeout=600,
                                       env={"PYTHONPATH": env_path, "STOE_TEST_SCRATCH": str(self.runtime_root / "test_scratch")})
             results.append(result.compact())
+            if self._task_evidence is not None:
+                self._task_evidence.checks.append({'command': command, 'passed': result.exit_code == 0 and not result.timed_out and not result.cancelled})
             self._event("Tests", "PASS" if result.exit_code == 0 else "FAIL", command=command, exit_code=result.exit_code)
             if result.exit_code or result.timed_out or result.cancelled:
                 raise RuntimeError(f"deterministic verification failed: {' '.join(command)}")
@@ -1123,13 +1238,15 @@ class StoeCoderRuntime:
     def _review(self, task_id: str, objective: str, diff: str, tests: list[dict[str, Any]], metrics: list[dict[str, Any]]) -> dict[str, Any]:
         schema = {"type": "object", "properties": {"verdict": {"type": "string", "enum": ["accept", "reject"]}, "summary": {"type": "string", "maxLength": 1_200}, "defects": {"type": "array", "items": {"type": "string", "maxLength": 600}, "maxItems": 8}}, "required": ["verdict", "summary", "defects"], "additionalProperties": False}
         action_id = f"{task_id}:reviewer:1"
-        result, review_metrics = self.ollama.generate(action_id=action_id, role="reviewer", prompt={"objective": objective, "candidate_diff": diff[:30_000], "diff_truncated": len(diff) > 30_000, "deterministic_tests": [{"command": item["command"], "exit_code": item["exit_code"]} for item in tests], "requirements": ["change implements objective", "no unrelated authority expansion", "tests support acceptance", "no credential material"]}, schema=schema, output_tokens=1_200, seed=9301)
+        result, review_metrics = self._generate_role(action_id=action_id, role="reviewer", prompt={"objective": objective, "candidate_diff": diff[:30_000], "diff_truncated": len(diff) > 30_000, "deterministic_tests": [{"command": item["command"], "exit_code": item["exit_code"]} for item in tests], "requirements": ["change implements objective", "no unrelated authority expansion", "tests support acceptance", "no credential material"]}, schema=schema, output_tokens=1_200, seed=9301)
         metrics.append(review_metrics)
         self._event("Reviewer", result["verdict"], model=review_metrics["model"], metrics=review_metrics)
         return result
 
     def _integrate(self, task_id: str, parent_head: str, candidate_root: Path, touched: list[str]) -> None:
-        if _git(self.repo_root, "rev-parse", "HEAD").stdout.strip() != parent_head or _git(self.repo_root, "status", "--porcelain=v1").stdout.strip():
+        state = self._load_state()
+        baseline_matches = self._working_fingerprint() == state.get('task_base_fingerprint') if state.get('task_id') == task_id else not self._changed_paths()
+        if _git(self.repo_root, "rev-parse", "HEAD").stdout.strip() != parent_head or not baseline_matches:
             raise RuntimeError("active repository changed before trusted integration")
         for relative in touched:
             source = _safe_repo_path(candidate_root, relative)
@@ -1144,9 +1261,17 @@ class StoeCoderRuntime:
             self._rollback(parent_head, touched)
             raise RuntimeError("integrated path set differs from reviewed candidate")
         self._event("Coder", "reviewed candidate integrated", task_id=task_id, touched=touched)
+        self._integrated_registry = self.roles.path.read_text(encoding='utf-8')
 
     def _rollback(self, parent_head: str, touched: list[str]) -> None:
         for path in touched:
+            if path == 'StoeCoder/roles.json':
+                saved = self._load_state().get('task_registry')
+                if saved is not None:
+                    current = self.roles.path.read_text(encoding='utf-8')
+                    if current == getattr(self, '_integrated_registry', current):
+                        self.roles.path.write_text(saved, encoding='utf-8', newline='\n')
+                    continue
             tracked = _git(self.repo_root, "cat-file", "-e", f"{parent_head}:{path}", check=False).returncode == 0
             if tracked:
                 _git(self.repo_root, "restore", "--source", parent_head, "--staged", "--worktree", "--", path, check=False)

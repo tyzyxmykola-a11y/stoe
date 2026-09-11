@@ -83,6 +83,20 @@ def coder_events():
 def coder_models():
     return _coder_call(coder.models)
 
+@app.route('/api/coder/roles', methods=['GET'])
+def coder_roles():
+    return _coder_call(coder.roles.load)
+
+@app.route('/api/coder/roles/save', methods=['POST'])
+def coder_role_save():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.roles.save(data.get('role'), data.get('original_name')))
+
+@app.route('/api/coder/roles/delete', methods=['POST'])
+def coder_role_delete():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.roles.delete(data.get('name')))
+
 @app.route("/api/coder/chat", methods=["POST"])
 def coder_chat():
     data = request.get_json(silent=True) or {}

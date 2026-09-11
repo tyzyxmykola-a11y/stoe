@@ -189,6 +189,16 @@ Coder_n
 → active Coder_n+1
 ```
 
-The next planned self-hosted feature is a persistent configurable worker-role system. The initial registry should seed roles such as `planner`, `coder`, `reviewer`, `debugger`, and `test-analyst`, while treating them as editable initial configuration rather than mandatory hardcoded roles.
+## Worker roles and task observability
 
-Planned role behavior includes persistent custom roles, editable contracts, Auto/manual Ollama model selection, enable/disable checkboxes without losing role definitions, deliberate deletion, task-start role/model logging, a distinct task-finished event with metrics, and a stage-based progress bar. Role configuration must never expand trusted runtime authority.
+`roles.json` is Git-visible configuration. First initialization seeds planner, coder, reviewer, debugger, and test-analyst. Saved configuration is authoritative, including an empty registry. Disabled roles retain their contracts and model settings; deletion removes the active definition without deleting its SToE history. A local initialization marker prevents silently reseeding a removed registry file.
+
+The Worker Roles panel supports add, edit, enable/disable, and deliberate delete. Contracts are bounded to 4,000 characters and role names to 48 safe characters, with at most 32 roles. Auto uses the existing Ollama router. Manual requires an exact installed model and never substitutes another model. An unavailable saved model remains visible and can be disabled, changed, or deleted.
+
+The current workflow requires enabled `coder` and `reviewer` roles. Other configured roles are available definitions for later workflows; adding a role does not add an execution stage or authority. Missing/disabled required roles fail explicitly. Each Run resolves and freezes its role contracts and model identities; edits apply to subsequent Runs. Only the current worker's contract enters that request.
+
+A registry-only dirty tree may start a Run. Its exact configuration snapshot enters the candidate and is included in review/qualification when changed. Other dirty files still block a Run. A concurrent registry edit invalidates integration, and rollback preserves the operator's starting configuration. Configuration updates alone do not authorize Git commits or bypass review.
+
+Task-start events identify selected roles, disabled roles, model modes, and resolved model identities without displaying full contracts. A separate TASK FINISHED event and persisted artifact record success, failure, or stop, duration, observer succession, model calls/tokens when available, tool actions, changed files and diff sizes, verification checks, review, and commit/push results. Verification counts are **command checks**, not guessed individual test-case counts. Token totals cover calls that supplied metrics; missing token data is not reported as zero.
+
+The progress bar represents governed stages, not estimated time. Successful tasks reach 100%; failures/stops retain the last reached percentage with their outcome and exact condition. Later operator Git actions do not change task progress. Role changes use the existing SToE field when available; task reports use existing local state/artifacts, not another history database. Role names and contracts grant no new capabilities.

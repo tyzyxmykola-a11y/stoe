@@ -424,6 +424,26 @@ canvas:active { cursor: grabbing; }
         <button class="btn-ghost btn-sm" id="mode-field" onclick="setAgentMode('field')">Field Agent</button>
         <span id="coder-status" style="margin-left:auto;color:var(--text-dim);font-size:10px">idle</span>
       </div>
+      <div style="padding:8px 14px" id="coder-observability">
+        <progress id="coder-stage-progress" max="100" value="0" style="width:100%;height:6px" aria-label="Governed task stage progress"></progress>
+        <div id="coder-stage-label" style="font-size:11px;color:var(--text-dim)">0% · Idle</div>
+        <pre id="coder-finished" hidden style="white-space:pre-wrap;border:1px solid var(--accent2);padding:8px;font-size:11px" aria-live="polite"></pre>
+        <details id="worker-roles"><summary style="cursor:pointer">Worker Roles</summary>
+          <div id="worker-role-list"></div>
+          <div id="worker-role-error" role="alert" style="color:#f87171"></div>
+          <button class="btn-ghost btn-sm" onclick="editRole()">+ Add Role</button>
+          <button class="btn-ghost btn-sm" onclick="refreshRoles()">Refresh</button>
+          <form id="role-editor" hidden onsubmit="saveRole(event)" style="padding:8px;display:grid;gap:8px">
+            <label>Role name <input id="role-name" required maxlength="48" pattern="[a-z][a-z0-9-]{0,47}"></label>
+            <label><input id="role-enabled" type="checkbox"> Enabled</label>
+            <label>Contract <textarea id="role-contract" required maxlength="4000" rows="4" style="width:100%"></textarea></label>
+            <label>Model <select id="role-mode" onchange="updateRoleMode()"><option value="auto">Auto</option><option value="manual">Manual</option></select></label>
+            <label>Installed model <select id="role-model"></select></label>
+            <div id="role-editor-error" role="alert" style="color:#f87171"></div>
+            <div><button class="btn-ghost btn-sm" type="submit">Save</button> <button class="btn-ghost btn-sm" type="button" onclick="roleElement('role-editor').hidden=true">Cancel</button></div>
+          </form>
+        </details>
+      </div>
       <div class="messages" id="agent-messages">
         <div class="msg msg-system">
           <div class="msg-label">SToE Agent</div>
@@ -2094,11 +2114,12 @@ async function refreshCoderStatus() {
   if(agentMode!=='coder') return;
   try {
     const s=await coderRequest('status');
+    renderTaskProgress(s);
     const sync=s.upstream ? `↑${s.ahead??'?'} ↓${s.behind??'?'}` : 'no upstream';
     const validity=`tests:${s.tests_status} review:${s.reviewed_candidate_status}`;
     document.getElementById('coder-status').textContent=[s.status,s.branch,(s.head||'').slice(0,8),s.git,sync,validity,s.head_pushed?'pushed':'not pushed'].filter(Boolean).join(' | ');
     const events=await coderRequest('events?limit=40');
-    events.filter(e=>e.time>lastCoderEventTime).forEach(e=>agentLogEntry(e.source+' · '+e.message,e.level==='error'?'err':e.level==='warning'?'warn':'info'));
+    events.filter(e=>e.time>lastCoderEventTime).forEach(e=>agentLogEntry((e.metadata?.event_type==='task_finished'?'★ ':'')+e.source+' · '+e.message,e.level==='error'?'err':e.level==='warning'?'warn':'info'));
     if(events.length) lastCoderEventTime=Math.max(lastCoderEventTime,...events.map(e=>e.time));
   } catch(e) { document.getElementById('coder-status').textContent='offline'; }
 }
@@ -2138,7 +2159,7 @@ async function coderGitPull() {
   await refreshCoderStatus();
 }
 async function coderGitPush() {
-  if(!window.confirm('Push the current feature branch without force?')) return;
+  if(!window.confirm('Push the current development branch without force?')) return;
   try { const r=await coderRequest('git/push',{}); showCoderGitResult('Pushed '+r.branch+' at '+r.head); }
   catch(e) { showCoderGitResult('Push rejected: '+e.message); }
   await refreshCoderStatus();
@@ -3665,5 +3686,11 @@ async function viewTraceFor(entityId) {
 }
 </script>
 
+<style>
+#role-editor[hidden] { display:none !important; }
+.worker-role-row { display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px; }
+#coder-finished[data-outcome="failure"], #coder-finished[data-outcome="stopped"] { border-color:#f87171 !important; }
+</style>
+<script src="/static/roles.js"></script>
 </body>
 </html>

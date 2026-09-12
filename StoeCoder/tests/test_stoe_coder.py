@@ -22,6 +22,9 @@ class FakeOllama:
     def models(self):
         return [{"name": "local-test", "digest": "d" * 64, "size": 1}]
 
+    def choose(self, role):
+        return 'local-test', 'd' * 64
+
     def generate(self, **kwargs):
         self.calls.append(kwargs)
         reply = self.replies.pop(0)
@@ -40,7 +43,7 @@ def action(kind, **values):
 
 class StoeCoderTests(unittest.TestCase):
     def setUp(self):
-        scratch = Path(os.environ.get("STOE_TEST_SCRATCH", Path(__file__).resolve().parents[3] / "agent" / "runtime" / "stoe_coder_tests"))
+        scratch = Path(os.environ.get("STOE_TEST_SCRATCH", Path(__file__).resolve().parents[2] / "agent" / "runtime" / "stoe_coder_tests"))
         scratch.mkdir(parents=True, exist_ok=True)
         self.test_root = scratch / uuid.uuid4().hex
         self.test_root.mkdir()
@@ -49,6 +52,11 @@ class StoeCoderTests(unittest.TestCase):
         subprocess.run(["git", "init"], cwd=self.repo, check=True, capture_output=True)
         subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=self.repo, check=True)
         subprocess.run(["git", "config", "user.name", "Test"], cwd=self.repo, check=True)
+        from roles import RoleRegistry
+        config = self.repo / 'StoeCoder'
+        config.mkdir()
+        (config / '.gitignore').write_text('.runtime/\n', encoding='utf-8')
+        RoleRegistry(config / 'roles.json', lambda: [], lambda *args: None).initialize()
         (self.repo / "sample.py").write_text("def value():\n    return 1\n", encoding="utf-8")
         subprocess.run(["git", "add", "."], cwd=self.repo, check=True)
         subprocess.run(["git", "commit", "-m", "base"], cwd=self.repo, check=True, capture_output=True)
@@ -358,6 +366,159 @@ class StoeCoderTests(unittest.TestCase):
         failed = [item for item in events if item["source"] == "Git" and item["metadata"].get("outcome") == "failed"]
         self.assertTrue(failed)
         self.assertIn("nothing to commit", failed[-1]["message"])
+
+    def test_standalone_root_and_launcher(self):
+        import stoe_coder
+        import server
+        import ui_server
+        self.assertEqual(Path(__file__).resolve().parents[2], stoe_coder.REPO_ROOT)
+        self.assertEqual(stoe_coder.REPO_ROOT, ui_server.coder.repo_root)
+        client = server.app.test_client()
+        with client.get("/") as response:
+            self.assertEqual(200, response.status_code)
+        self.assertEqual(200, client.get("/api/operators").status_code)
+
+    def test_origin_validation_rejects_prefixes_and_malformed_origins(self):
+        import server
+        import ui_server
+        client = server.app.test_client()
+        for origin in ("http://localhost.example.org", "http://127.0.0.1.example.org", "null",
+                       "http://localhost@evil.example", "http://localhost:bad", "http://localhost/path"):
+            with self.subTest(origin=origin), mock.patch.object(ui_server.coder, "stop") as stop:
+                response = client.post("/api/coder/stop", headers={"Origin": origin})
+                self.assertEqual(403, response.status_code)
+                self.assertNotIn("Access-Control-Allow-Origin", response.headers)
+                self.assertEqual(403, client.options("/api/coder/stop", headers={"Origin": origin}).status_code)
+                stop.assert_not_called()
+        for origin in ("http://localhost:5000", "http://127.0.0.1:5000", "http://[::1]:5000"):
+            with mock.patch.object(ui_server.coder, "events", return_value=[]):
+                response = client.get("/api/coder/events", headers={"Origin": origin})
+                self.assertEqual(200, response.status_code)
+                self.assertEqual(origin, response.headers["Access-Control-Allow-Origin"])
+
+    def test_failing_standalone_test_blocks_verification(self):
+        runtime = self.runtime()
+        tests = self.repo / "StoeCoder" / "tests"
+        tests.mkdir(parents=True)
+        (tests / "test_failure.py").write_text("import unittest\nclass Regression(unittest.TestCase):\n    def test_failure(self):\n        self.fail('candidate regression')\n", encoding="utf-8")
+        with self.assertRaisesRegex(RuntimeError, "deterministic verification failed"):
+            runtime._verify_candidate("failing_standalone", self.repo, ["StoeCoder/stoe_coder.py"])
+        failures = [item for item in runtime.events() if item["source"] == "Tests" and item["message"] == "FAIL"]
+        self.assertEqual(1, len(failures))
+        self.assertIn("StoeCoder/tests", failures[0]["metadata"]["command"])
+
+    def test_dirty_qualification_is_bound_to_parent_commit(self):
+        runtime = self.runtime()
+        (self.repo / "sample.py").write_text("def value():\n    return 2\n", encoding="utf-8")
+        self.qualify(runtime)
+        self.assertTrue(runtime.status()["tests_current"])
+        _git(self.repo, "commit", "--allow-empty", "-m", "new parent")
+        self.assertFalse(runtime.status()["tests_current"])
+        self.assertFalse(runtime.status()["review_current"])
+
+    def test_failed_test_status_cannot_reuse_matching_head(self):
+        runtime = self.runtime()
+        self.qualify(runtime, clean=True)
+        state = runtime._load_state()
+        state["tests"] = "not_run"
+        runtime._save_state(state)
+        self.assertFalse(runtime.status()["tests_current"])
+
+    def test_git_guard_handles_global_options_and_refspecs(self):
+        for command in (["git", "-C", ".", "push", "--force", "origin", "HEAD"],
+                        ["git", "push", "origin", "HEAD:refs/heads/main"],
+                        ["git", "push", "origin", "+HEAD:feature/test"],
+                        ["git", "-C", ".", "reset", "--hard"],
+                        ["git", "-c", "alias.publish=push", "publish"]):
+            with self.subTest(command=command), self.assertRaises(PermissionError):
+                FullLocalRunner.validate_command(command)
+        self.assertEqual(["git", "diff", "--check"], FullLocalRunner.validate_command(["git", "diff", "--check"]))
+
+    def test_command_output_artifacts_are_bounded_during_execution(self):
+        import stoe_coder
+        runner = FullLocalRunner(self.runtime_root / "bounded")
+        with mock.patch.object(stoe_coder, "MAX_OUTPUT_BYTES", 16384):
+            result = runner.run(action_id="flood", command=[sys.executable, "-c", "import os; os.write(1,b'x'*200000); os.write(2,b'y'*200000)"], cwd=self.repo)
+        self.assertTrue(result.timed_out)
+        self.assertTrue(result.truncated)
+        self.assertLessEqual(Path(result.stdout_artifact).stat().st_size + Path(result.stderr_artifact).stat().st_size, 16384)
+
+    def test_integration_handles_non_ascii_filename(self):
+        runtime = self.runtime()
+        candidate = self.test_root / "candidate"
+        candidate.mkdir()
+        name = "résumé file.txt"
+        (candidate / name).write_text("content", encoding="utf-8")
+        runtime._integrate("unicode", _git(self.repo, "rev-parse", "HEAD").stdout.strip(), candidate, [name])
+        self.assertEqual("content", (self.repo / name).read_text(encoding="utf-8"))
+
+    def test_intent_questions_and_quoted_commands_remain_conversation(self):
+        from coder_intent import classify_operator_intent
+        for text in ("How do I push a commit?", "show the last commit", "do not delete this", 'Explain "fix"', "the push failed"):
+            self.assertEqual("conversation", classify_operator_intent(text), text)
+        self.assertEqual("development", classify_operator_intent("Please fix the startup"))
+
+    def test_failure_memory_reaches_worker_prompt_with_provenance(self):
+        import importlib.util
+        core = Path(__file__).resolve().parents[2] / "plugins" / "stoe-memory" / "core.py"
+        spec = importlib.util.spec_from_file_location("coder_test_memory", core)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        store = module.FieldStore(db_path=self.test_root / "memory.sqlite3")
+        store.initialize()
+        worker = FakeOllama([action("finish", summary="no candidate")])
+        runtime = StoeCoderRuntime(self.repo, ollama=worker, field_store=store, runtime_root=self.runtime_root)
+        runtime._conserve_failure("TASK_prior", "Repair startup", "missing operators module")
+        saved = store.get_ip("IP_prior_failure")
+        self.assertEqual("failure_history", saved["origin"])
+        self.assertEqual("missing operators module", saved["failure_condition"])
+        runtime.submit_task("Repair startup after the missing operators module")
+        runtime._thread.join(10)
+        self.assertFalse(runtime._thread.is_alive())
+        context = worker.calls[0]["prompt"]["prior_evidence"]
+        self.assertIn("IP_prior_failure", [item["ref"] for item in context["items"]])
+        self.assertLessEqual(sum(len(item["content"]) for item in context["items"]), 2400)
+        self.assertTrue(context["run_id"].startswith("RETRIEVAL_"))
+        failure = store.get_ip("IP_" + runtime._load_state()["task_id"][5:].lower() + "_failure")
+        self.assertIn("without a repository change", failure["failure_condition"])
+
+    def test_stop_when_idle_preserves_idle_status(self):
+        runtime = self.runtime()
+        self.assertFalse(runtime.stop()["stopping"])
+        self.assertEqual("idle", runtime.status()["status"])
+
+    def test_repeated_chat_uses_distinct_action_identity(self):
+        worker = FakeOllama([{"answer": "clean"}, {"answer": "clean"}])
+        runtime = StoeCoderRuntime(self.repo, ollama=worker, runtime_root=self.runtime_root)
+        runtime.chat("status?")
+        runtime.chat("status?")
+        self.assertNotEqual(worker.calls[0]["action_id"], worker.calls[1]["action_id"])
+
+    def test_timeout_cleans_up_observed_child_process(self):
+        import psutil
+        runner = FullLocalRunner(self.runtime_root / "timeout")
+        script = "import subprocess,sys,time; p=subprocess.Popen([sys.executable,'-c','import time; time.sleep(30)']); print(p.pid,flush=True); time.sleep(30)"
+        result = runner.run(action_id="child", command=[sys.executable, "-c", script], cwd=self.repo, timeout=1)
+        self.assertTrue(result.timed_out)
+        pid = int(result.stdout.strip())
+        try:
+            child = psutil.Process(pid)
+        except psutil.NoSuchProcess:
+            return
+        self.assertTrue(not child.is_running() or child.status() == psutil.STATUS_ZOMBIE)
+
+    def test_stoecoder_branch_supports_development_push_and_merge(self):
+        self.add_remote()
+        _git(self.repo, "branch", "-m", "stoecoder")
+        _git(self.repo, "push", "--set-upstream", "origin", "stoecoder")
+        runtime = self.runtime()
+        with mock.patch.object(runtime, "_task_main", return_value=None):
+            self.assertTrue(runtime.submit_task("Develop on stoecoder")["accepted"])
+            runtime._thread.join(2)
+        self.qualify(runtime, clean=True)
+        self.assertTrue(runtime.git_push()["head_pushed"])
+        self.assertEqual("succeeded", runtime.git_merge()["outcome"])
 
 
 if __name__ == "__main__":

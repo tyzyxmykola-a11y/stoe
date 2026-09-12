@@ -4,15 +4,35 @@ This keeps the preserved Navigator implementation under engine/v7 untouched whil
 reusing its current UI/API surface from the StoeCoder project directory.
 """
 
-from pathlib import Path
+from ui_server import app, coder, _coder_local_request
+from event_logging import install_event_logging
+from tool_contracts import install_tool_contracts
+from role_config_isolation import install_role_config_isolation
+from repository_navigation import install_repository_navigation
+from inspection_navigation import install_inspection_navigation
+from anti_loop import install_anti_loop
+from navigation_evidence import install_navigation_evidence
+from verification_policy import install_verification_policy
+from workflow_guard import install_workflow_guard
+from workflow_controls import install_workflow_controls
+from diagnostic_logging import install_diagnostic_logging
+from model_io import install_model_io_capture, install_model_io_ui
 
-import stoe_coder as _stoe_coder
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-_runtime = _stoe_coder.StoeCoderRuntime(repo_root=REPO_ROOT)
-_stoe_coder.get_runtime = lambda: _runtime
-
-from ui_server import app  # noqa: E402
+install_event_logging(coder)
+# Install the canonical model-facing tool contract innermost so later adapters
+# may add runtime behavior without being able to discard the final guidance.
+install_tool_contracts(coder)
+install_role_config_isolation(coder)
+install_repository_navigation(coder)
+install_inspection_navigation(coder)
+install_anti_loop(coder)
+install_navigation_evidence(coder)
+install_verification_policy(coder)
+install_workflow_guard(coder)
+install_workflow_controls(coder)
+install_diagnostic_logging(coder)
+install_model_io_capture(coder)
+install_model_io_ui(app, coder, _coder_local_request)
 
 
 if __name__ == "__main__":

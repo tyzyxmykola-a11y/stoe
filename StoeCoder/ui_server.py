@@ -7,11 +7,12 @@ from flask import Flask, jsonify, request, send_from_directory
 import requests as _req
 import os
 import sys
+from urllib.parse import urlsplit
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 sys.path.insert(0, os.path.dirname(__file__))
 from field import InformationField, CATEGORIES, EDGE_TYPES, OPERATORS
 from stoe_coder import get_runtime
-from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 VERSION = os.getenv("VERSION", "v7")
 OLLAMA_URL   = os.getenv("OLLAMA_URL",   "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
@@ -20,17 +21,28 @@ app = Flask(__name__, static_folder="static")
 field = InformationField(storage_path=os.path.join(os.path.dirname(__file__), "field_data.json"))
 coder = get_runtime()
 
+def _local_origin(origin):
+    if not origin:
+        return True
+    try:
+        parsed = urlsplit(origin)
+        return (parsed.scheme == "http" and parsed.hostname in {"127.0.0.1", "localhost", "::1"}
+                and parsed.username is None and parsed.password is None
+                and not parsed.path and not parsed.query and not parsed.fragment
+                and (parsed.port is None or 1 <= parsed.port <= 65535))
+    except ValueError:
+        return False
+
+
 def _coder_local_request():
-    origin = request.headers.get("Origin", "")
-    local_origin = not origin or origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost")
-    return request.remote_addr in {"127.0.0.1", "::1"} and local_origin
+    return request.remote_addr in {"127.0.0.1", "::1"} and _local_origin(request.headers.get("Origin", ""))
 
 # ---- CORS — global handler ----
 @app.after_request
 def add_cors(response):
     if request.path.startswith("/api/coder/"):
         origin = request.headers.get("Origin", "")
-        if not origin or origin.startswith("http://127.0.0.1") or origin.startswith("http://localhost"):
+        if _local_origin(origin):
             response.headers["Access-Control-Allow-Origin"] = origin or "http://127.0.0.1:5000"
     else:
         response.headers["Access-Control-Allow-Origin"] = "*"
@@ -70,6 +82,20 @@ def coder_events():
 @app.route("/api/coder/models", methods=["GET"])
 def coder_models():
     return _coder_call(coder.models)
+
+@app.route('/api/coder/roles', methods=['GET'])
+def coder_roles():
+    return _coder_call(coder.roles.load)
+
+@app.route('/api/coder/roles/save', methods=['POST'])
+def coder_role_save():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.roles.save(data.get('role'), data.get('original_name')))
+
+@app.route('/api/coder/roles/delete', methods=['POST'])
+def coder_role_delete():
+    data = request.get_json(silent=True) or {}
+    return _coder_call(lambda: coder.roles.delete(data.get('name')))
 
 @app.route("/api/coder/chat", methods=["POST"])
 def coder_chat():

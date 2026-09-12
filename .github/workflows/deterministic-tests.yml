@@ -27,6 +27,7 @@ jobs:
           cache-dependency-path: |
             experiments/stoe_v3/requirements.txt
             plugins/stoe-memory/requirements.txt
+            StoeCoder/requirements.txt
 
       - name: Install deterministic-suite dependencies
         run: >-
@@ -34,6 +35,10 @@ jobs:
           psutil==7.0.0
           -r experiments/stoe_v3/requirements.txt
           -r plugins/stoe-memory/requirements.txt
+          -r StoeCoder/requirements.txt
+
+      - name: Standalone Coder suite
+        run: python -m unittest discover -s StoeCoder/tests -v
 
       - name: Agent suite
         working-directory: agent
